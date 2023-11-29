@@ -11,7 +11,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
@@ -29,10 +29,14 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, './public/index.html'),
+      template: './public/index.html',
     }),
   ],
   resolve: {
-    extensions: ['.web.js', '.js'],
+    alias: {
+      'react-native$': 'react-native-web',
+    },
+    extensions: ['.js', '.ts', '.jsx', '.tsx'],
   },
+  devtool: 'source-map',
 };
