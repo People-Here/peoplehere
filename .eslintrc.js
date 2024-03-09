@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   extends: [
+    'prettier',
     '@react-native',
     'eslint:recommended',
     'plugin:react/recommended',
@@ -21,9 +22,6 @@ module.exports = {
     'no-console': 'warn',
     'comma-dangle': ['error', 'always-multiline'],
     'comma-spacing': ['warn', {before: false, after: true}],
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      {prefer: 'type-imports'},
-    ],
+    '@typescript-eslint/consistent-type-imports': ['error', {prefer: 'type-imports'}],
   },
 };
