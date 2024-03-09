@@ -24,7 +24,7 @@ class MainActivity : ReactActivity() {
   /**
    * Code for react-native navigation
    */
-  override func onCreate(savedInstanceState: Bundle?) {
+  override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(null)
   }
 }
