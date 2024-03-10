@@ -1,0 +1,27 @@
+const colorStyles = {
+  orange1: '#FFF2EB',
+  orange2: '#FFE7DB',
+  orange3: '#FFC5A8',
+  orange4: '#FFA375',
+  orange5: '#FF7834',
+  orange6: '#F66015',
+  orange7: '#CD4D0C',
+  orange8: '#943F14',
+  gray1: '#F8F8F9',
+  'gray1.5': '#F4F5F7',
+  gray2: '#E9EBED',
+  gray3: '#D8DBE0',
+  gray4: '#CACDD2',
+  gray5: '#9FA4A9',
+  'gray5.5': '#646B72',
+  gray6: '#464C52',
+  gray7: '#26282B',
+  gray8: '#1B1D1F',
+  white: '#FFFFFF',
+  black: '#000000',
+  red1: '#FFF0ED',
+  red2: '#FFDAD3',
+  red3: '#F17272',
+};
+
+export default colorStyles;
