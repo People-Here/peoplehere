@@ -1,4 +1,5 @@
-import { StyleSheet, TextStyle } from 'react-native';
+import type { TextStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const textStyles = StyleSheet.create<Record<string, TextStyle>>({
   caption3: {

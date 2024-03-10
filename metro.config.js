@@ -1,4 +1,4 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+import { getDefaultConfig, mergeConfig } from '@react-native/metro-config';
 
 /**
  * Metro configuration
@@ -8,4 +8,5 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
  */
 const config = {};
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call, no-undef
+export default mergeConfig(getDefaultConfig(__dirname), config);
