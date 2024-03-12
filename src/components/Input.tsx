@@ -1,8 +1,8 @@
 import colorStyles from '@styles/colors';
 import textStyles from '@styles/typos';
-import { useCallback, useState } from 'react';
+import { useRef, useCallback, useState } from 'react';
 import type { InputModeOptions } from 'react-native';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, Easing, StyleSheet, TextInput } from 'react-native';
 
 interface Props {
   type: 'text' | 'password' | 'email' | 'number' | 'tel';
@@ -14,77 +14,96 @@ interface Props {
 }
 
 const Input = ({ type, value, onChange, label, readonly = false, placeholder }: Props) => {
+  const animatedValue = useRef(new Animated.Value(0));
+
   const [focused, setFocused] = useState(false);
 
   const getInputMode = useCallback((type: Props['type']) => {
-    if (['email', 'numeric', 'tel'].includes(type)) {
+    if (['email', 'number', 'tel'].includes(type)) {
       return type as InputModeOptions;
     }
 
     return 'text';
   }, []);
 
+  const returnAnimatedTitleStyles = {
+    transform: [
+      {
+        translateY: animatedValue?.current?.interpolate({
+          inputRange: [0, 1],
+          outputRange: [24, 10],
+          extrapolate: 'clamp',
+        }),
+      },
+    ],
+    fontSize: animatedValue?.current?.interpolate({
+      inputRange: [0, 1],
+      outputRange: [14, 12],
+      extrapolate: 'clamp',
+    }),
+    color: animatedValue?.current?.interpolate({
+      inputRange: [0, 1],
+      outputRange: [colorStyles.gray5, colorStyles.gray6],
+    }),
+  };
+
+  const onFocus = () => {
+    setFocused(true);
+    Animated.timing(animatedValue?.current, {
+      toValue: 1,
+      duration: 300,
+      easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const onBlur = () => {
+    setFocused(false);
+    if (!value) {
+      Animated.timing(animatedValue?.current, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text
-        style={
-          focused || value
-            ? [styles.focusedLabel, textStyles.caption2]
-            : [styles.label, textStyles.body1]
-        }>
+    <Animated.View style={[styles.container, focused && styles.focusedContainer]}>
+      <Animated.Text style={[{ paddingLeft: 4 }, textStyles.body1, returnAnimatedTitleStyles]}>
         {label}
-      </Text>
+      </Animated.Text>
 
       <TextInput
-        readOnly={readonly}
-        value={value}
-        placeholder={placeholder}
         inputMode={getInputMode(type)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onChangeText={(text) => onChange && onChange(text)}
+        onChangeText={onChange}
+        value={value}
+        style={textStyles.body1}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        autoCorrect={false}
+        placeholder={placeholder}
+        readOnly={readonly}
       />
-    </View>
+    </Animated.View>
   );
 };
-
-export default Input;
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: 54,
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-
     backgroundColor: colorStyles['gray1.5'],
-
     borderRadius: 12,
-
-    padding: 16,
+    paddingHorizontal: 16,
+    display: 'flex',
+    justifyContent: 'center',
   },
-  label: {
-    position: 'absolute',
-    left: 16,
-    color: colorStyles.gray5,
-    transform: 'translateY(0)',
-  },
-  focusedLabel: {
-    position: 'absolute',
-    left: 16,
-    color: colorStyles.gray5,
-    transform: 'translateY(-12px)',
-  },
-  input: {
-    width: '100%',
-    backgroundColor: 'transparent',
-    paddingTop: 4,
-    color: colorStyles.gray8,
-  },
-  focusedInput: {
-    width: '100%',
-    backgroundColor: 'transparent',
-    color: colorStyles.gray8,
+  focusedContainer: {
+    borderColor: colorStyles.gray3,
+    borderWidth: 1,
   },
 });
+
+export default Input;
