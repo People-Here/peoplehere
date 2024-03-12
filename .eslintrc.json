@@ -17,6 +17,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "unused-imports"],
   "rules": {
+    "react/react-in-jsx-scope": "off",
     "unused-imports/no-unused-imports": "error",
     "no-console": "warn",
     "comma-dangle": ["error", "always-multiline"],

@@ -1,7 +1,6 @@
-import type { TextStyle } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-const textStyles = StyleSheet.create<Record<string, TextStyle>>({
+const textStyles = StyleSheet.create({
   caption3: {
     fontFamily: 'Pretendard-Regular',
     fontSize: 10,
