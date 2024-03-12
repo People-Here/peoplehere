@@ -4,7 +4,7 @@ import EmailLogin from '@screens/login/EmailLogin';
 
 const Stack = createNativeStackNavigator();
 
-function App(): React.JSX.Element {
+function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
