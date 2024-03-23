@@ -8,7 +8,7 @@ const typos = {
   ".font-caption2": {
     fontSize: "0.75rem",
     fontWeight: 400,
-    lineHeight: "1rem",
+    lineHeight: "1.125rem",
     letterSpacing: "-0.0125rem",
   },
   ".font-caption1": {
@@ -36,8 +36,8 @@ const typos = {
     letterSpacing: "-0.0125rem",
   },
   ".font-subheading2": {
-    fontSize: "1.125rem",
-    fontWeight: 700,
+    fontSize: "1rem",
+    fontWeight: 500,
     lineHeight: "1.5rem",
     letterSpacing: "-0.0125rem",
   },
