@@ -4,9 +4,36 @@
 
 :root {
   font-size: 16px;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
   -webkit-text-size-adjust: none; /*Chrome, Safari, newer versions of Opera*/
   -moz-text-size-adjust: none; /*Firefox*/
   -ms-text-size-adjust: none; /*Ie*/
   -o-text-size-adjust: none; /*old versions of Opera*/
+}
+
+@layer components {
+  .svg-xl {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .svg-lg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .svg-md {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+  .svg-sm {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  .svg-xs {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
 }
