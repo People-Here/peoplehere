@@ -1,8 +1,16 @@
 import { create } from 'zustand';
 
-const useStore = create((set) => ({
-  region: 'KR',
-  setRegion: (region: string) => set({ region }),
+type State = {
+  region: string;
+};
+
+type Action = {
+  setRegion: (region: State['region']) => void;
+};
+
+const useRegionStore = create<State & Action>((set) => ({
+  region: '',
+  setRegion: (region: string) => set(() => ({ region })),
 }));
 
-export default useStore;
+export default useRegionStore;

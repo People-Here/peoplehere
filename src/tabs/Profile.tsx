@@ -10,7 +10,7 @@ const Profile = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <Link to="/login">
+        <Link to="/login/region">
           <IonText>goto login</IonText>
         </Link>
       </IonContent>

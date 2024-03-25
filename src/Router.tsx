@@ -1,10 +1,11 @@
 import { Redirect, Route } from 'react-router';
-import LoginLanding from './pages/login/LoginLanding';
+import Region from './pages/login/Region';
 import Home from './tabs/Home';
 import Bookmark from './tabs/Bookmark';
 import Post from './tabs/Post';
 import Message from './tabs/Message';
 import Profile from './tabs/Profile';
+import Login from './pages/login/Login';
 
 const Router = () => {
   return (
@@ -24,8 +25,12 @@ const Router = () => {
       <Route path="/profile">
         <Profile />
       </Route>
-      <Route path="/login">
-        <LoginLanding />
+
+      <Route exact path="/login">
+        <Login />
+      </Route>
+      <Route path="/login/region">
+        <Region />
       </Route>
 
       <Route exact path="/">
