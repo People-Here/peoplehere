@@ -48,7 +48,7 @@ const SelectRegion = () => {
   };
 
   return (
-    <div className="relative p-4 pt-10 overflow-y-scroll mb-28">
+    <div className="relative p-4 pt-10 overflow-y-scrollmb-28">
       <IonIcon className="absolute svg-lg stroke-gray7 top-4 right-4" src={CloseIcon} />
 
       <IonText className="font-headline2 text-gray8">출신 국가를 선택하세요</IonText>
@@ -64,7 +64,7 @@ const SelectRegion = () => {
 
       <IonList lines="full">
         {regions.map((region) => (
-          <IonItem>
+          <IonItem key={region.digitCode}>
             <IonLabel>{region.nameKR}</IonLabel>
           </IonItem>
         ))}

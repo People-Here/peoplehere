@@ -1,4 +1,4 @@
-import { IonIcon, IonImg, IonModal, IonText, useIonModal } from '@ionic/react';
+import { IonIcon, IonImg, IonModal, IonText } from '@ionic/react';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
 import SelectRegion from './SelectRegion';
