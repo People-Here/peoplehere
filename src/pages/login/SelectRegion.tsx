@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from 'react';
 
 import CloseIcon from '../../assets/svgs/close.svg';
 import allRegions from '../../constants/region';
+import Footer from '../../layouts/Footer';
 
 const SelectRegion = () => {
   const [searchText, setSearchText] = useState('');
@@ -47,7 +48,7 @@ const SelectRegion = () => {
   };
 
   return (
-    <div className="relative p-4 pt-10">
+    <div className="relative p-4 pt-10 overflow-y-scroll mb-28">
       <IonIcon className="absolute svg-lg stroke-gray7 top-4 right-4" src={CloseIcon} />
 
       <IonText className="font-headline2 text-gray8">출신 국가를 선택하세요</IonText>
@@ -68,6 +69,10 @@ const SelectRegion = () => {
           </IonItem>
         ))}
       </IonList>
+
+      <Footer bottom={9}>
+        <button className="w-full text-white button-primary button-lg">선택</button>
+      </Footer>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { IonIcon, IonImg, IonModal, IonText } from '@ionic/react';
+import { IonIcon, IonImg, IonModal, IonText, useIonModal } from '@ionic/react';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
 import SelectRegion from './SelectRegion';
@@ -18,7 +18,7 @@ const LoginLanding = () => {
 
       <IonImg className="absolute bottom-4 w-[6.75rem] h-[1.875rem]" src={LogoWithLabelImage} />
 
-      <IonModal trigger="region-modal" initialBreakpoint={0.95} breakpoints={[0, 0.5, 0.95]}>
+      <IonModal trigger="region-modal" initialBreakpoint={0.95} breakpoints={[0, 0.95]}>
         <SelectRegion />
       </IonModal>
     </div>
