@@ -1,7 +1,7 @@
 import { IonIcon, IonImg, IonModal, IonText } from '@ionic/react';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
-import SelectRegion from '../../modals/SelectRegion';
+import SelectRegion from '../modals/SelectRegion';
 import { useState } from 'react';
 
 const LoginLanding = () => {

@@ -1,9 +1,12 @@
-import useRegionStore from '../../stores/user';
+import CloseHeader from '../../components/CloseHeader';
 
 const Login = () => {
-  const userRegion = useRegionStore((state) => state.region);
-
-  return <div>login</div>;
+  return (
+    <>
+      <CloseHeader />
+      <h1>hello</h1>
+    </>
+  );
 };
 
 export default Login;

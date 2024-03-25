@@ -108,7 +108,7 @@ const SelectRegion = ({ closeModal }: Props) => {
           disabled={!selectedRegion}
           onClick={() => {
             setRegion(selectedRegion);
-            router.push('/login');
+            router.push('/');
           }}
         >
           선택
