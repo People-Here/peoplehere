@@ -12,6 +12,9 @@ export default {
         0.5: '.125rem',
         1.5: '.375rem',
       },
+      fontFamily: {
+        suite: 'SUITE Variable',
+      },
     },
     colors: colors,
   },

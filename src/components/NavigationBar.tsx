@@ -10,7 +10,7 @@ import MessageIcon from '../assets/svgs/message.svg';
 import MessageLineIcon from '../assets/svgs/message-line.svg';
 import ProfileIcon from '../assets/svgs/user.svg';
 import ProfileLineIcon from '../assets/svgs/user-line.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Router from '../Router';
 import { useLocation } from 'react-router';
 
@@ -19,6 +19,10 @@ const whiteList = ['home', 'bookmark', 'post', 'message', 'profile'];
 const NavigationBar = () => {
   const [currentTab, setCurrentTab] = useState('home');
   const location = useLocation();
+
+  useEffect(() => {
+    setCurrentTab(location.pathname.split('/')[1]);
+  }, [location.pathname]);
 
   return (
     <IonTabs>

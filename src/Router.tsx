@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router';
-import Region from './pages/Region';
+import Region from './pages/region/Region';
 import Home from './tabs/Home';
 import Bookmark from './tabs/Bookmark';
 import Post from './tabs/Post';
