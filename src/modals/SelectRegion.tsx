@@ -1,4 +1,13 @@
-import { IonIcon, IonInput, IonItem, IonLabel, IonList, IonText, useIonRouter } from '@ionic/react';
+import {
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+  useIonRouter,
+  useIonToast,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import CloseIcon from '../assets/svgs/close.svg';
@@ -12,6 +21,7 @@ type Props = {
 const SelectRegion = ({ closeModal }: Props) => {
   const setRegion = useRegionStore((state) => state.setRegion);
   const router = useIonRouter();
+  const toast = useIonToast();
 
   const [regions, setRegions] = useState(() =>
     allRegions.map((region) => {
@@ -96,7 +106,8 @@ const SelectRegion = ({ closeModal }: Props) => {
 
       <Footer bottom={9}>
         <button
-          className="w-full text-white button-primary button-lg"
+          className="w-full button-primary button-lg"
+          disabled={!selectedRegion}
           onClick={() => {
             setRegion(selectedRegion);
             router.push('/login');
