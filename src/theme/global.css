@@ -1,0 +1,5 @@
+:root {
+  ion-input {
+    --highlight-color-focused: 'none';
+  }
+}
