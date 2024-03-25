@@ -1,15 +1,7 @@
-import {
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonText,
-  useIonRouter,
-  useIonToast,
-} from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonList, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
+import CheckIcon from '../assets/svgs/check.svg';
 import CloseIcon from '../assets/svgs/close.svg';
 import allRegions from '../constants/region';
 import Footer from '../layouts/Footer';
@@ -21,7 +13,6 @@ type Props = {
 const SelectRegion = ({ closeModal }: Props) => {
   const setRegion = useRegionStore((state) => state.setRegion);
   const router = useIonRouter();
-  const toast = useIonToast();
 
   const [regions, setRegions] = useState(() =>
     allRegions.map((region) => {
@@ -98,7 +89,14 @@ const SelectRegion = ({ closeModal }: Props) => {
         <IonList lines="full" onClick={onClickRegion}>
           {regions.map((region) => (
             <IonItem key={region.digitCode}>
-              <IonLabel>{region.nameKR}</IonLabel>
+              {selectedRegion === region.digitCode ? (
+                <div className="flex items-center justify-between w-full">
+                  <p className="font-body1 text-orange6">{region.nameKR}</p>
+                  <IonIcon className="svg-md" src={CheckIcon} />
+                </div>
+              ) : (
+                <p className="font-body1 text-gray8">{region.nameKR}</p>
+              )}
             </IonItem>
           ))}
         </IonList>
