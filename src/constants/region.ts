@@ -1,4 +1,4 @@
-const regions = [
+const allRegions = [
   {
     '2digitCode': 'AF',
     '3digitCode': 'AFG',
@@ -1961,4 +1961,4 @@ const regions = [
   },
 ];
 
-export default regions;
+export default allRegions;

@@ -1,10 +1,50 @@
-import { IonIcon, IonInput, IonText } from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
+import { memo, useEffect, useState } from 'react';
 
 import CloseIcon from '../../assets/svgs/close.svg';
-import { memo, useState } from 'react';
+import allRegions from '../../constants/region';
 
 const SelectRegion = () => {
   const [searchText, setSearchText] = useState('');
+  const [regions, setRegions] = useState(() =>
+    allRegions.map((region) => {
+      return {
+        digitCode: region['2digitCode'],
+        numericCode: region.ISONumbericCode,
+        nameKR: region.CountryNameKR,
+        nameEN: region.CountryNameEN,
+      };
+    }),
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      filterCountries(searchText);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchText]);
+
+  const filterCountries = (keyword: string) => {
+    const filtered = allRegions
+      .filter(
+        (region) =>
+          region.CountryNameKR.includes(keyword) ||
+          region.CountryNameEN.toLowerCase().includes(keyword.toLowerCase()),
+      )
+      .map((region) => {
+        return {
+          digitCode: region['2digitCode'],
+          numericCode: region.ISONumbericCode,
+          nameKR: region.CountryNameKR,
+          nameEN: region.CountryNameEN,
+        };
+      });
+
+    setRegions(filtered);
+  };
 
   return (
     <div className="relative p-4 pt-10">
@@ -20,6 +60,14 @@ const SelectRegion = () => {
           onIonInput={(e) => setSearchText(e.target.value as string)}
         />
       </div>
+
+      <IonList lines="full">
+        {regions.map((region) => (
+          <IonItem>
+            <IonLabel>{region.nameKR}</IonLabel>
+          </IonItem>
+        ))}
+      </IonList>
     </div>
   );
 };
