@@ -5,6 +5,7 @@ import CloseHeader from '../../components/CloseHeader';
 import LabelInput from '../../components/LabelInput';
 import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
+import PasswordInput from '../../components/PasswordInput';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +30,7 @@ const Login = () => {
 
         <div className="flex flex-col w-full gap-2 mb-4">
           <LabelInput label="이메일" value={email} onChange={setEmail} />
-          <LabelInput label="비밀번호" value={password} onChange={setPassword} />
+          <PasswordInput value={password} onChange={setPassword} />
 
           <PasswordValidator password={password} />
         </div>
