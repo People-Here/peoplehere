@@ -9,7 +9,7 @@ type Props = {
 const LabelInput = ({ label, value, onChange }: Props) => {
   return (
     <IonItem
-      className="h-[54px]"
+      className="h-[54px] [&_label]:text-gray5"
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',
