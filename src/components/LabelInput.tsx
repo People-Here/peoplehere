@@ -1,4 +1,4 @@
-import { IonInput, IonItem, IonLabel } from '@ionic/react';
+import { IonInput, IonItem } from '@ionic/react';
 import { memo } from 'react';
 
 type Props = {

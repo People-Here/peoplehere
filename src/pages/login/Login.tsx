@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IonIcon, IonText } from '@ionic/react';
+import { IonText } from '@ionic/react';
 
 import CloseHeader from '../../components/CloseHeader';
 import LabelInput from '../../components/LabelInput';

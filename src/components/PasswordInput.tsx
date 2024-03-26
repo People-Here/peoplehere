@@ -1,4 +1,4 @@
-import { IonIcon, IonInput, IonItem, IonLabel } from '@ionic/react';
+import { IonIcon, IonInput, IonItem } from '@ionic/react';
 
 import EyeClosedIcon from '../assets/svgs/eye-closed.svg';
 import EyeOpenIcon from '../assets/svgs/eye-open.svg';
