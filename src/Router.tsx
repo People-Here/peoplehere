@@ -6,6 +6,7 @@ import Post from './tabs/Post';
 import Message from './tabs/Message';
 import Profile from './tabs/Profile';
 import Login from './pages/login/Login';
+import PhoneAuth from './pages/sign-in/PhoneAuth';
 
 const Router = () => {
   return (
@@ -31,6 +32,10 @@ const Router = () => {
       </Route>
       <Route path="/login/region">
         <Region />
+      </Route>
+
+      <Route path="/sign-in/phone">
+        <PhoneAuth />
       </Route>
 
       <Route exact path="/">

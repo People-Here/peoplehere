@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IonText } from '@ionic/react';
+import { IonText, useIonRouter } from '@ionic/react';
 
 import CloseHeader from '../../components/CloseHeader';
 import LabelInput from '../../components/LabelInput';
@@ -8,6 +8,8 @@ import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 
 const Login = () => {
+  const router = useIonRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -42,7 +44,14 @@ const Login = () => {
           >
             로그인
           </button>
-          <button className="button-primary button-lg">회원가입</button>
+          <button
+            className="button-primary button-lg"
+            onClick={() => {
+              router.push('/sign-in/phone');
+            }}
+          >
+            회원가입
+          </button>
         </div>
 
         <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
