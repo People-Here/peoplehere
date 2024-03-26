@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import { IonIcon, IonText } from '@ionic/react';
+
 import CloseHeader from '../../components/CloseHeader';
-import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import LabelInput from '../../components/LabelInput';
+import PasswordValidator from '../../components/PasswordValidator';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const isEmailValid = EMAIL_VALIDATION.test(email);
+  const isPasswordValid =
+    PASSWORD_VALIDATION.moreThan8.test(password) &&
+    PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(password);
 
   return (
     <>
@@ -15,14 +23,28 @@ const Login = () => {
         <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem]">
           PeopleHere
         </h1>
-        <p className="mt-4 text-center whitespace-pre-wrap font-body1 text-gray6">
+        <p className="mt-4 mb-12 text-center whitespace-pre-wrap font-body1 text-gray6">
           {'여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요.'}
         </p>
 
-        <form>
+        <div className="flex flex-col w-full gap-2 mb-4">
           <LabelInput label="이메일" value={email} onChange={setEmail} />
           <LabelInput label="비밀번호" value={password} onChange={setPassword} />
-        </form>
+
+          <PasswordValidator password={password} />
+        </div>
+
+        <div className="flex flex-col w-full gap-3 mb-4">
+          <button
+            className="text-white bg-orange5 button-lg disabled:bg-gray4"
+            disabled={!(isEmailValid || isPasswordValid)}
+          >
+            로그인
+          </button>
+          <button className="button-primary button-lg">회원가입</button>
+        </div>
+
+        <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
       </div>
     </>
   );
