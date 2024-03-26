@@ -1,4 +1,5 @@
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
+import { memo } from 'react';
 
 type Props = {
   label: string;
@@ -22,7 +23,7 @@ const LabelInput = ({ label, value, onChange }: Props) => {
         label={label}
         labelPlacement="floating"
         value={value}
-        onIonChange={(e) => onChange(e.target.value as string)}
+        onIonInput={(e) => onChange(e.target.value as string)}
         style={{
           '--highlight-color-focused': '#9FA4A9',
         }}
@@ -31,4 +32,4 @@ const LabelInput = ({ label, value, onChange }: Props) => {
   );
 };
 
-export default LabelInput;
+export default memo(LabelInput);
