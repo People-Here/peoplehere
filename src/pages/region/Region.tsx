@@ -1,10 +1,14 @@
-import { IonIcon, IonImg, IonModal, IonText } from '@ionic/react';
+import { IonIcon, IonImg, IonModal, IonText, useIonRouter } from '@ionic/react';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
 import SelectRegion from '../../modals/SelectRegion';
 import { useState } from 'react';
+import useRegionStore from '../../stores/user';
 
 const LoginLanding = () => {
+  const router = useIonRouter();
+  const region = useRegionStore((state) => state.region);
+
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -22,7 +26,14 @@ const LoginLanding = () => {
       <IonImg className="absolute bottom-4 w-[6.75rem] h-[1.875rem]" src={LogoWithLabelImage} />
 
       <IonModal isOpen={openModal} initialBreakpoint={0.95} breakpoints={[0, 0.95]}>
-        <SelectRegion closeModal={() => setOpenModal(false)} />
+        <SelectRegion
+          closeModal={() => {
+            setOpenModal(false);
+            if (!!region) {
+              router.push('/');
+            }
+          }}
+        />
       </IonModal>
     </div>
   );

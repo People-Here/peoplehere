@@ -1,4 +1,4 @@
-import { IonIcon, IonInput, IonItem, IonList, IonText, useIonRouter } from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonList, IonText } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
@@ -12,7 +12,6 @@ type Props = {
 };
 const SelectRegion = ({ closeModal }: Props) => {
   const setRegion = useRegionStore((state) => state.setRegion);
-  const router = useIonRouter();
 
   const [regions, setRegions] = useState(() =>
     allRegions.map((region) => {
@@ -108,7 +107,6 @@ const SelectRegion = ({ closeModal }: Props) => {
           disabled={!selectedRegion}
           onClick={() => {
             setRegion(selectedRegion);
-            router.push('/');
           }}
         >
           선택
