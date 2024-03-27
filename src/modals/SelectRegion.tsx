@@ -24,7 +24,10 @@ const SelectRegion = ({ closeModal }: Props) => {
     }),
   );
   const [searchText, setSearchText] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState({
+    '2digitCode': '',
+    ISONumbericCode: 0,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,7 +64,12 @@ const SelectRegion = ({ closeModal }: Props) => {
       (region) => region.CountryNameKR === event.target.innerText,
     );
 
-    setSelectedRegion(targetRegion?.['2digitCode'] ?? '');
+    if (!targetRegion) return;
+
+    setSelectedRegion({
+      '2digitCode': targetRegion['2digitCode'],
+      ISONumbericCode: targetRegion.ISONumbericCode,
+    });
   };
 
   return (
@@ -88,7 +96,7 @@ const SelectRegion = ({ closeModal }: Props) => {
         <IonList lines="full" onClick={onClickRegion}>
           {regions.map((region) => (
             <IonItem key={region.digitCode}>
-              {selectedRegion === region.digitCode ? (
+              {selectedRegion['2digitCode'] === region.digitCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="font-body1 text-orange6">{region.nameKR}</p>
                   <IonIcon className="svg-md" src={CheckIcon} />
@@ -107,6 +115,7 @@ const SelectRegion = ({ closeModal }: Props) => {
           disabled={!selectedRegion}
           onClick={() => {
             setRegion(selectedRegion);
+            closeModal();
           }}
         >
           선택

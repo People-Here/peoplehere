@@ -1,16 +1,17 @@
 import { IonInput, IonItem } from '@ionic/react';
-import { memo } from 'react';
+import { ComponentProps, memo } from 'react';
 
 type Props = {
   label: string;
   value: string;
   onChange: (input: string) => void;
+  type?: ComponentProps<typeof IonInput>['type'];
 };
 
-const LabelInput = ({ label, value, onChange }: Props) => {
+const LabelInput = ({ label, value, onChange, type }: Props) => {
   return (
     <IonItem
-      className="h-[54px]"
+      className="h-[54px] w-full"
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',
@@ -20,6 +21,7 @@ const LabelInput = ({ label, value, onChange }: Props) => {
     >
       <IonInput
         className="font-body1 text-gray8"
+        type={type}
         label={label}
         labelPlacement="floating"
         value={value}
