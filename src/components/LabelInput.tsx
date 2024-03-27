@@ -12,12 +12,12 @@ const LabelInput = ({ label, value, onChange, type }: Props) => {
   return (
     <IonItem
       className="h-[54px] w-full"
+      lines="none"
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',
         '--border-width': 0,
       }}
-      lines="none"
     >
       <IonInput
         className="font-body1 text-gray8"
