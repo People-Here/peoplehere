@@ -1,12 +1,11 @@
+import { IonFooter, IonToolbar } from '@ionic/react';
 import type { PropsWithChildren } from 'react';
 
-type Props = {
-  bottom?: number;
-};
-
-const Footer = ({ bottom = 0, children }: PropsWithChildren<Props>) => {
+const Footer = ({ children }: PropsWithChildren) => {
   return (
-    <footer className={`fixed left-0 right-0 p-4 bg-white bottom-${bottom}`}>{children}</footer>
+    <IonFooter class="ion-no-border" className="fixed bottom-0 left-0 right-0">
+      <IonToolbar className="p-4">{children}</IonToolbar>
+    </IonFooter>
   );
 };
 

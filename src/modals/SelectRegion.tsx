@@ -73,43 +73,45 @@ const SelectRegion = ({ closeModal }: Props) => {
   };
 
   return (
-    <div className="relative p-4 pt-10 mb-28">
-      <IonIcon
-        className="absolute svg-lg stroke-gray7 top-4 right-4"
-        src={CloseIcon}
-        onClick={closeModal}
-      />
-
-      <IonText className="font-headline2 text-gray8">출신 국가를 선택하세요</IonText>
-
-      <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
-        <IonInput
-          className="font-body1 text-gray8"
-          placeholder="국가 이름"
-          clearInput
-          value={searchText}
-          onIonInput={(e) => setSearchText(e.target.value as string)}
+    <>
+      <div className="relative p-4 pt-10 mb-28">
+        <IonIcon
+          className="absolute svg-lg stroke-gray7 top-4 right-4"
+          src={CloseIcon}
+          onClick={closeModal}
         />
+
+        <IonText className="font-headline2 text-gray8">출신 국가를 선택하세요</IonText>
+
+        <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
+          <IonInput
+            className="font-body1 text-gray8"
+            placeholder="국가 이름"
+            clearInput
+            value={searchText}
+            onIonInput={(e) => setSearchText(e.target.value as string)}
+          />
+        </div>
+
+        <section className="overflow-y-scroll">
+          <IonList lines="full" onClick={onClickRegion}>
+            {regions.map((region) => (
+              <IonItem key={region.digitCode}>
+                {selectedRegion['2digitCode'] === region.digitCode ? (
+                  <div className="flex items-center justify-between w-full">
+                    <p className="font-body1 text-orange6">{region.nameKR}</p>
+                    <IonIcon className="svg-md" src={CheckIcon} />
+                  </div>
+                ) : (
+                  <p className="font-body1 text-gray8">{region.nameKR}</p>
+                )}
+              </IonItem>
+            ))}
+          </IonList>
+        </section>
       </div>
 
-      <section className="h-[32.5rem] overflow-y-scroll">
-        <IonList lines="full" onClick={onClickRegion}>
-          {regions.map((region) => (
-            <IonItem key={region.digitCode}>
-              {selectedRegion['2digitCode'] === region.digitCode ? (
-                <div className="flex items-center justify-between w-full">
-                  <p className="font-body1 text-orange6">{region.nameKR}</p>
-                  <IonIcon className="svg-md" src={CheckIcon} />
-                </div>
-              ) : (
-                <p className="font-body1 text-gray8">{region.nameKR}</p>
-              )}
-            </IonItem>
-          ))}
-        </IonList>
-      </section>
-
-      <Footer bottom={9}>
+      <Footer>
         <button
           className="w-full button-primary button-lg"
           disabled={!selectedRegion}
@@ -121,7 +123,7 @@ const SelectRegion = ({ closeModal }: Props) => {
           선택
         </button>
       </Footer>
-    </div>
+    </>
   );
 };
 
