@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IonModal, IonText } from '@ionic/react';
+import { IonModal, IonText, useIonRouter } from '@ionic/react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -8,6 +8,7 @@ import SelectRegion from '../../modals/SelectRegion';
 import useRegionStore from '../../stores/user';
 
 const PhoneAuth = () => {
+  const router = useIonRouter();
   const region = useRegionStore((state) => state.region);
 
   const [openModal, setOpenModal] = useState(false);
@@ -33,7 +34,10 @@ const PhoneAuth = () => {
           </button>
         </div>
 
-        <IonText className="pl-1 underline font-body1 text-gray5">
+        <IonText
+          className="pl-1 underline font-body1 text-gray5"
+          onClick={() => router.push('/sign-in/email')}
+        >
           전화번호 인증이 불가한가요?
         </IonText>
 
