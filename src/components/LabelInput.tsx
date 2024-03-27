@@ -6,9 +6,10 @@ type Props = {
   value: string;
   onChange: (input: string) => void;
   type?: ComponentProps<typeof IonInput>['type'];
+  readonly?: boolean;
 };
 
-const LabelInput = ({ label, value, onChange, type }: Props) => {
+const LabelInput = ({ label, value, onChange, type, readonly }: Props) => {
   return (
     <IonItem
       className="h-[54px] w-full"
@@ -26,6 +27,7 @@ const LabelInput = ({ label, value, onChange, type }: Props) => {
         labelPlacement="floating"
         value={value}
         onIonInput={(e) => onChange(e.target.value as string)}
+        readonly={readonly}
         style={{
           '--highlight-color-focused': '#9FA4A9',
         }}
