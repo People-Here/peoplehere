@@ -10,10 +10,9 @@ import useRegionStore from '../../stores/user';
 const PhoneAuth = () => {
   const region = useRegionStore((state) => state.region);
 
-  console.log('region', region);
-
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [authCode, setAuthCode] = useState('');
 
   return (
     <>
@@ -37,6 +36,21 @@ const PhoneAuth = () => {
         <IonText className="pl-1 underline font-body1 text-gray5">
           전화번호 인증이 불가한가요?
         </IonText>
+
+        <div className="mt-[2.875rem]">
+          <IonText className="pl-1 font-body2 text-gray6">남은 시간 3:00</IonText>
+
+          <div className="flex items-center gap-2 mt-2">
+            <LabelInput label="인증번호 입력" value={authCode} onChange={setAuthCode} />
+
+            <button
+              className="px-3 w-[6.25rem] button-primary button-lg shrink-0"
+              disabled={!authCode.length}
+            >
+              <IonText className="text-white font-body1">확인</IonText>
+            </button>
+          </div>
+        </div>
       </div>
 
       <IonModal isOpen={openModal} initialBreakpoint={0.95} breakpoints={[0, 0.95]}>
