@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { IonText, useIonRouter } from '@ionic/react';
 
-import CloseHeader from '../../components/CloseHeader';
 import LabelInput from '../../components/LabelInput';
 import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
+import Header from '../../components/Header';
 
 const Login = () => {
   const router = useIonRouter();
@@ -20,7 +20,7 @@ const Login = () => {
 
   return (
     <>
-      <CloseHeader />
+      <Header type="close" />
 
       <div className="flex flex-col items-center justify-center px-4 mt-[3.125rem]">
         <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem]">
