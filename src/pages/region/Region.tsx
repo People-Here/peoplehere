@@ -30,7 +30,10 @@ const LoginLanding = () => {
         isOpen={openModal}
         initialBreakpoint={0.95}
         breakpoints={[0, 0.95]}
-        onDidDismiss={() => !!region['2digitCode'] && router.push('/', 'root', 'replace')}
+        onDidDismiss={() => {
+          setOpenModal(false);
+          !!region['2digitCode'] && router.push('/', 'root', 'replace');
+        }}
       >
         <SelectRegion closeModal={() => setOpenModal(false)} />
       </IonModal>

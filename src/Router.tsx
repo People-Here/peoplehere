@@ -8,6 +8,7 @@ import Profile from './tabs/Profile';
 import Login from './pages/login/Login';
 import PhoneAuth from './pages/sign-in/PhoneAuth';
 import EmailAuth from './pages/sign-in/EmailAuth';
+import SetPassword from './pages/sign-in/SetPassword';
 
 const Router = () => {
   return (
@@ -40,6 +41,9 @@ const Router = () => {
       </Route>
       <Route path="/sign-in/email">
         <EmailAuth />
+      </Route>
+      <Route path="/sign-in/password">
+        <SetPassword />
       </Route>
 
       <Route exact path="/">

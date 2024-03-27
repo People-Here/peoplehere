@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
-import { IonText } from '@ionic/react';
+import { IonText, useIonRouter } from '@ionic/react';
 import ProgressDots from '../../components/ProgressDots';
 
 const EmailAuth = () => {
+  const router = useIonRouter();
+
   const [email, setEmail] = useState('');
   const [authCode, setAuthCode] = useState('');
 
@@ -32,6 +34,7 @@ const EmailAuth = () => {
           <button
             className="px-3 button-primary button-lg w-[100px] shrink-0"
             disabled={!authCode.length}
+            onClick={() => router.push('/sign-in/password')}
           >
             <IonText className="text-white font-body1">확인</IonText>
           </button>
