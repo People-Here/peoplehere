@@ -11,6 +11,8 @@ import EmailAuth from './pages/sign-in/EmailAuth';
 import SetPassword from './pages/sign-in/SetPassword';
 import UserInfo from './pages/sign-in/UserInfo';
 import AlarmAgreement from './pages/sign-in/AlarmAgreement';
+import CheckEmail from './pages/login/CheckEmail';
+import ResetPassword from './pages/login/ResetPassword';
 
 const Router = () => {
   return (
@@ -36,6 +38,13 @@ const Router = () => {
       </Route>
       <Route path="/login/region">
         <Region />
+      </Route>
+
+      <Route exact path="/reset-password">
+        <ResetPassword />
+      </Route>
+      <Route path="/reset-password/check-email">
+        <CheckEmail />
       </Route>
 
       <Route path="/sign-in/phone">

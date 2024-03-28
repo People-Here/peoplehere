@@ -6,6 +6,7 @@ import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const router = useIonRouter();
@@ -61,7 +62,9 @@ const Login = () => {
           </button>
         </div>
 
-        <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
+        <Link to="/reset-password/check-email">
+          <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
+        </Link>
       </div>
     </>
   );

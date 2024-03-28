@@ -31,6 +31,7 @@ const CheckEmail = () => {
           <button
             className="px-3 button-primary button-lg shrink-0 w-[100px]"
             disabled={!authCode.length}
+            onClick={() => router.push('/reset-password')}
           >
             <IonText className="text-white font-body1">확인</IonText>
           </button>
