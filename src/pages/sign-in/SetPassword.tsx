@@ -6,6 +6,7 @@ import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
 import { IonContent } from '@ionic/react';
+import PasswordInput from '../../components/PasswordInput';
 
 const SetPassword = () => {
   const email = 'kim@gmail.com';
@@ -28,7 +29,7 @@ const SetPassword = () => {
         <div className="flex flex-col gap-2 mt-5">
           <LabelInput label="이메일" value={email} onChange={() => {}} readonly />
 
-          <LabelInput label="비밀번호를 설정해 주세요" value={password} onChange={setPassword} />
+          <PasswordInput value={password} onChange={setPassword} />
           <PasswordValidator password={password} />
         </div>
       </div>
