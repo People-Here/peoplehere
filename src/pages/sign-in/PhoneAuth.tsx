@@ -22,7 +22,7 @@ const PhoneAuth = () => {
       <div className="flex flex-col gap-2 px-4 mt-5">
         <SelectInput
           label="국가/지역"
-          value={`${region['2digitCode']} (+${String(region.ISONumbericCode).padStart(2, '0')})`}
+          value={`${region.CountryNameKR} (+${String(region.ISONumbericCode).padStart(2, '0')})`}
           openModal={() => setOpenModal(true)}
         />
 

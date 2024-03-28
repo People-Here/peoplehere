@@ -5,6 +5,8 @@ type State = {
   region: {
     '2digitCode': string;
     ISONumbericCode: number;
+    CountryNameKR: string;
+    CountryNameEN: string;
   };
 };
 
@@ -18,6 +20,8 @@ const useRegionStore = create(
       region: {
         '2digitCode': '',
         ISONumbericCode: 0,
+        CountryNameKR: '',
+        CountryNameEN: '',
       },
 
       setRegion: (region: State['region']) => set(() => ({ region })),

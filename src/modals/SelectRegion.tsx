@@ -27,6 +27,8 @@ const SelectRegion = ({ closeModal }: Props) => {
   const [selectedRegion, setSelectedRegion] = useState({
     '2digitCode': '',
     ISONumbericCode: 0,
+    CountryNameKR: '',
+    CountryNameEN: '',
   });
 
   useEffect(() => {
@@ -69,6 +71,8 @@ const SelectRegion = ({ closeModal }: Props) => {
     setSelectedRegion({
       '2digitCode': targetRegion['2digitCode'],
       ISONumbericCode: targetRegion.ISONumbericCode,
+      CountryNameKR: targetRegion.CountryNameKR,
+      CountryNameEN: targetRegion.CountryNameEN,
     });
   };
 
