@@ -1,9 +1,11 @@
-import { IonCheckbox, IonIcon, IonItem, IonText } from '@ionic/react';
+import { IonCheckbox, IonIcon, IonItem, IonText, useIonRouter } from '@ionic/react';
 
 import CloseIcon from '../assets/svgs/close.svg';
 import colors from '../theme/colors';
 
 const PolicyAgreement = () => {
+  const router = useIonRouter();
+
   return (
     <div className="relative p-4 pt-10 mb-28">
       <IonIcon className="absolute svg-lg stroke-gray7 top-4 right-4" src={CloseIcon} />
@@ -30,7 +32,12 @@ const PolicyAgreement = () => {
         </IonText>
       </div>
 
-      <button className="w-full mt-3 button-primary button-lg">회원가입 완료</button>
+      <button
+        className="w-full mt-3 button-primary button-lg"
+        onClick={() => router.push('/sign-in/alarm')}
+      >
+        회원가입 완료
+      </button>
     </div>
   );
 };
