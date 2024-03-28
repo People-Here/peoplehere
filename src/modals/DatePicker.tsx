@@ -13,8 +13,8 @@ const DatePicker = ({ date, setDate, closeModal }: Props) => {
   const [selectedDate, setSelectedDate] = useState('');
 
   return (
-    <div className="h-1/2">
-      <div className="relative p-4 pt-10 mb-28 h-1/2">
+    <>
+      <div className="relative p-4 pt-10 mb-28">
         <IonIcon
           className="absolute svg-lg stroke-gray7 top-4 right-4"
           src={CloseIcon}
@@ -43,7 +43,7 @@ const DatePicker = ({ date, setDate, closeModal }: Props) => {
           확인
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
