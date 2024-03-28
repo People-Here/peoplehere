@@ -12,6 +12,7 @@ type State = {
 
 type Action = {
   setRegion: (region: State['region']) => void;
+  resetRegion: () => void;
 };
 
 const useRegionStore = create(
@@ -25,6 +26,10 @@ const useRegionStore = create(
       },
 
       setRegion: (region: State['region']) => set(() => ({ region })),
+      resetRegion: () =>
+        set(() => ({
+          region: { '2digitCode': '', ISONumbericCode: 0, CountryNameKR: '', CountryNameEN: '' },
+        })),
     }),
     { name: 'region-storage' },
   ),

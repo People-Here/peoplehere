@@ -1,5 +1,5 @@
 import { IonIcon, IonImg, IonModal, IonText, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
@@ -8,9 +8,13 @@ import useRegionStore from '../../stores/user';
 
 const LoginLanding = () => {
   const router = useIonRouter();
-  const region = useRegionStore((state) => state.region);
+  const { region, resetRegion } = useRegionStore((state) => state);
 
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    resetRegion();
+  }, []);
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full gap-6">
