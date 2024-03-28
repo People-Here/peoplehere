@@ -8,6 +8,7 @@ import LabelInput from '../../components/LabelInput';
 import SelectInput from '../../components/SelectInput';
 import DatePicker from '../../modals/DatePicker';
 import SelectGender from '../../modals/SelectGender';
+import PolicyAgreement from '../../modals/PolicyAgreement';
 
 const UserInfo = () => {
   const [firstName, setFirstName] = useState('');
@@ -48,7 +49,9 @@ const UserInfo = () => {
         <SelectInput label="성별" value={gender} openModal={() => setOpenGenderModal(true)} />
 
         <Footer>
-          <button className="w-full button-primary button-lg">계속</button>
+          <button id="policy-modal" className="w-full button-primary button-lg">
+            계속
+          </button>
         </Footer>
       </div>
 
@@ -68,6 +71,10 @@ const UserInfo = () => {
         onDidDismiss={() => setOpenGenderModal(false)}
       >
         <SelectGender setGender={setGender} closeModal={() => setOpenGenderModal(false)} />
+      </IonModal>
+
+      <IonModal trigger="policy-modal" initialBreakpoint={0.45} breakpoints={[0, 0.45]}>
+        <PolicyAgreement />
       </IonModal>
     </IonContent>
   );
