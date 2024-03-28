@@ -12,6 +12,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const isEmailValid = EMAIL_VALIDATION.test(email);
   const isPasswordValid =
@@ -31,7 +32,12 @@ const Login = () => {
         </p>
 
         <div className="flex flex-col w-full gap-2 mb-4">
-          <LabelInput label="이메일" value={email} onChange={setEmail} />
+          <LabelInput
+            label="이메일"
+            value={email}
+            onChange={() => setEmail}
+            errorText={errorMessage}
+          />
           <PasswordInput value={password} onChange={setPassword} />
 
           <PasswordValidator password={password} />
@@ -41,6 +47,7 @@ const Login = () => {
           <button
             className="text-white bg-orange5 button-lg disabled:bg-gray4"
             disabled={!(isEmailValid || isPasswordValid)}
+            onClick={() => setErrorMessage('! 유효한 이메일 형식이 아닙니다.')}
           >
             로그인
           </button>
