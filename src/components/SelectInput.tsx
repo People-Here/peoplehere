@@ -23,7 +23,7 @@ const SelectInput = ({ label, value, openModal }: Props) => {
       <IonInput
         className="font-body1 text-gray8"
         label={label}
-        labelPlacement="stacked"
+        labelPlacement="floating"
         value={value}
         readonly
         style={{

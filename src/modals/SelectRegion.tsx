@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import CheckIcon from '../assets/svgs/check.svg';
 import CloseIcon from '../assets/svgs/close.svg';
 import allRegions from '../constants/region';
-import Footer from '../layouts/Footer';
 import useRegionStore from '../stores/user';
 
 type Props = {
@@ -97,7 +96,7 @@ const SelectRegion = ({ closeModal }: Props) => {
           />
         </div>
 
-        <section className="overflow-y-scroll">
+        <section className="overflow-y-scroll h-[65vh] mb-4">
           <IonList lines="full" onClick={onClickRegion}>
             {regions.map((region) => (
               <IonItem key={region.digitCode}>
@@ -113,9 +112,7 @@ const SelectRegion = ({ closeModal }: Props) => {
             ))}
           </IonList>
         </section>
-      </div>
 
-      <Footer>
         <button
           className="w-full button-primary button-lg"
           disabled={!selectedRegion}
@@ -126,7 +123,7 @@ const SelectRegion = ({ closeModal }: Props) => {
         >
           선택
         </button>
-      </Footer>
+      </div>
     </>
   );
 };

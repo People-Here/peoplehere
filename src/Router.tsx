@@ -9,6 +9,7 @@ import Login from './pages/login/Login';
 import PhoneAuth from './pages/sign-in/PhoneAuth';
 import EmailAuth from './pages/sign-in/EmailAuth';
 import SetPassword from './pages/sign-in/SetPassword';
+import UserInfo from './pages/sign-in/UserInfo';
 
 const Router = () => {
   return (
@@ -44,6 +45,9 @@ const Router = () => {
       </Route>
       <Route path="/sign-in/password">
         <SetPassword />
+      </Route>
+      <Route path="/sign-in/info">
+        <UserInfo />
       </Route>
 
       <Route exact path="/">

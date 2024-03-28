@@ -5,10 +5,12 @@ import ProgressDots from '../../components/ProgressDots';
 import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
-import { IonContent } from '@ionic/react';
+import { IonContent, useIonRouter } from '@ionic/react';
 import PasswordInput from '../../components/PasswordInput';
 
 const SetPassword = () => {
+  const router = useIonRouter();
+
   const email = 'kim@gmail.com';
   const [password, setPassword] = useState('');
 
@@ -35,7 +37,11 @@ const SetPassword = () => {
       </div>
 
       <Footer>
-        <button className="w-full button-primary button-lg" disabled={!isPasswordValid}>
+        <button
+          className="w-full button-primary button-lg"
+          disabled={!isPasswordValid}
+          onClick={() => router.push('/sign-in/info')}
+        >
           계속
         </button>
       </Footer>

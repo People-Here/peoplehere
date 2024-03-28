@@ -57,7 +57,12 @@ const PhoneAuth = () => {
         </div>
       </div>
 
-      <IonModal isOpen={openModal} initialBreakpoint={0.95} breakpoints={[0, 0.95]}>
+      <IonModal
+        isOpen={openModal}
+        initialBreakpoint={0.95}
+        breakpoints={[0, 0.95]}
+        onDidDismiss={() => setOpenModal(false)}
+      >
         <SelectRegion closeModal={() => setOpenModal(false)} />
       </IonModal>
     </>
