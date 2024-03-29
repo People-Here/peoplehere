@@ -1,7 +1,8 @@
 import { IonText, useIonRouter } from '@ionic/react';
+import { useState } from 'react';
+
 import Header from '../../components/Header';
 import PasswordInput from '../../components/PasswordInput';
-import { useState } from 'react';
 import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';

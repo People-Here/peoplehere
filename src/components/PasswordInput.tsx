@@ -1,8 +1,8 @@
 import { IonIcon, IonInput, IonItem } from '@ionic/react';
+import { useState } from 'react';
 
 import EyeClosedIcon from '../assets/svgs/eye-closed.svg';
 import EyeOpenIcon from '../assets/svgs/eye-open.svg';
-import { useState } from 'react';
 
 type Props = {
   value: string;

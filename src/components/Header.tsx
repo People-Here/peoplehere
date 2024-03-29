@@ -1,15 +1,7 @@
+import { IonButtons, IonIcon, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+
 import CloseIcon from '../assets/svgs/close.svg';
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
-import {
-  IonBackButton,
-  IonButtons,
-  IonIcon,
-  IonItem,
-  IonText,
-  IonTitle,
-  IonToolbar,
-  useIonRouter,
-} from '@ionic/react';
 
 type Props = {
   type: 'close' | 'back';

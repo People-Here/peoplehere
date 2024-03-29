@@ -1,4 +1,6 @@
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
 import SearchIcon from '../assets/svgs/search.svg';
 import SearchLineIcon from '../assets/svgs/search-line.svg';
@@ -10,9 +12,7 @@ import MessageIcon from '../assets/svgs/message.svg';
 import MessageLineIcon from '../assets/svgs/message-line.svg';
 import ProfileIcon from '../assets/svgs/user.svg';
 import ProfileLineIcon from '../assets/svgs/user-line.svg';
-import { useEffect, useState } from 'react';
 import Router from '../Router';
-import { useLocation } from 'react-router';
 
 const whiteList = ['home', 'bookmark', 'post', 'message', 'profile'];
 

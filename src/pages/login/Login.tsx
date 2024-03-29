@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { IonText, useIonRouter } from '@ionic/react';
+import { Link } from 'react-router-dom';
 
 import LabelInput from '../../components/LabelInput';
 import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
-import { Link } from 'react-router-dom';
 
 const Login = () => {
   const router = useIonRouter();

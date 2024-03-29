@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { IonContent, useIonRouter } from '@ionic/react';
+
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import ProgressDots from '../../components/ProgressDots';
 import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
-import { IonContent, useIonRouter } from '@ionic/react';
 import PasswordInput from '../../components/PasswordInput';
 
 const SetPassword = () => {

@@ -14,7 +14,7 @@ const LoginLanding = () => {
 
   useEffect(() => {
     resetRegion();
-  }, []);
+  }, [resetRegion]);
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full gap-6">

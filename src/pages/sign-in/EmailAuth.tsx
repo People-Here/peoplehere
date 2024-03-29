@@ -1,7 +1,8 @@
+import { IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
+
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
-import { IonText, useIonRouter } from '@ionic/react';
 import ProgressDots from '../../components/ProgressDots';
 
 const EmailAuth = () => {

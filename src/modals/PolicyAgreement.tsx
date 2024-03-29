@@ -1,4 +1,4 @@
-import { IonCheckbox, IonIcon, IonItem, IonText, useIonRouter } from '@ionic/react';
+import { IonCheckbox, IonIcon, IonText, useIonRouter } from '@ionic/react';
 
 import CloseIcon from '../assets/svgs/close.svg';
 import colors from '../theme/colors';

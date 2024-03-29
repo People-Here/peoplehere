@@ -1,5 +1,5 @@
-import { memo } from 'react';
 import { IonIcon, IonText } from '@ionic/react';
+import { memo } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import CheckGrayIcon from '../assets/svgs/check-gray.svg';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { IonIcon, IonItem, IonList, IonText } from '@ionic/react';
 import { useState } from 'react';
 
@@ -21,10 +22,9 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
         src={CloseIcon}
         onClick={closeModal}
       />
-
       <IonText className="mb-4 font-headline2 text-gray8">성별을 선택하세요</IonText>
 
-      <IonList onClick={(event: any) => setSelectedGender(event.target.innerText)}>
+      <IonList onClick={(event: any) => setSelectedGender(event.target.innerText as string)}>
         {genders.map((gender) => (
           <IonItem key={gender}>
             <IonText
@@ -38,7 +38,6 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
           </IonItem>
         ))}
       </IonList>
-
       <button
         className="w-full mt-5 button-primary button-lg"
         onClick={() => {

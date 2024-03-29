@@ -1,5 +1,7 @@
 import { IonInput, IonItem, IonText } from '@ionic/react';
-import { ComponentProps, memo } from 'react';
+import { memo } from 'react';
+
+import type { ComponentProps } from 'react';
 
 type Props = {
   label: string;

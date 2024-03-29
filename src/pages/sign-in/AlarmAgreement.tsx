@@ -1,8 +1,11 @@
-import { IonButtons, IonIcon, IonText, createAnimation, useIonRouter } from '@ionic/react';
-import type { Animation } from '@ionic/react';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable no-undef */
+import { IonIcon, IonText, createAnimation, useIonRouter } from '@ionic/react';
+import { useEffect, useRef } from 'react';
 
 import BellIcon from '../../assets/svgs/bell.svg';
-import { useEffect, useRef } from 'react';
+
+import type { Animation } from '@ionic/react';
 
 const AlarmAgreement = () => {
   const router = useIonRouter();
@@ -31,7 +34,7 @@ const AlarmAgreement = () => {
 
   useEffect(() => {
     animation.current?.play();
-  }, [animation.current]);
+  }, [animation]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full gap-16 px-4">
@@ -40,7 +43,9 @@ const AlarmAgreement = () => {
           ref={iconRef}
           icon={BellIcon}
           className="mb-6 w-14 h-14"
-          onClick={() => animation.current?.play()}
+          onClick={() => {
+            animation.current?.play();
+          }}
         />
 
         <IonText className="font-headline2 text-black mb-1.5">알림을 받으시겠어요?</IonText>

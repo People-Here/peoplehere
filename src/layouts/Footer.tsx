@@ -1,4 +1,5 @@
 import { IonFooter, IonToolbar } from '@ionic/react';
+
 import type { PropsWithChildren } from 'react';
 
 const Footer = ({ children }: PropsWithChildren) => {
