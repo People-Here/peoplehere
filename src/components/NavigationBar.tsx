@@ -12,7 +12,7 @@ import MessageIcon from '../assets/svgs/message.svg';
 import MessageLineIcon from '../assets/svgs/message-line.svg';
 import ProfileIcon from '../assets/svgs/user.svg';
 import ProfileLineIcon from '../assets/svgs/user-line.svg';
-import Router from '../router';
+import Router from '../Router';
 
 const whiteList = ['home', 'bookmark', 'post', 'message', 'profile'];
 
@@ -34,7 +34,7 @@ const NavigationBar = () => {
         slot="bottom"
         defaultValue="home"
         onIonTabsDidChange={(event) => setCurrentTab(event.detail.tab)}
-        hidden={!whiteList.includes(location.pathname.split('/')[1])}
+        hidden={whiteList.includes(location.pathname.split('/')[1]) ? false : true}
       >
         <IonTabButton tab="home" href="/home">
           <IonIcon
@@ -88,10 +88,10 @@ const NavigationBar = () => {
           <IonIcon
             aria-hidden="true"
             className="svg-lg"
-            src={currentTab === 'message' ? ProfileIcon : ProfileLineIcon}
+            src={currentTab === 'profile' ? ProfileIcon : ProfileLineIcon}
           />
           <IonLabel
-            className={`font-caption3 ${currentTab === 'message' ? 'text-orange5' : 'text-gray6'}`}
+            className={`font-caption3 ${currentTab === 'profile' ? 'text-orange5' : 'text-gray6'}`}
           >
             마이페이지
           </IonLabel>
