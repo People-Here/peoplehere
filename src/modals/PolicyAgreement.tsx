@@ -1,17 +1,13 @@
-import { IonCheckbox, IonIcon, IonText, useIonRouter } from '@ionic/react';
+import { IonCheckbox, useIonRouter } from '@ionic/react';
 
-import CloseIcon from '../assets/svgs/close.svg';
 import colors from '../theme/colors';
+import ModalContainer from '.';
 
 const PolicyAgreement = () => {
   const router = useIonRouter();
 
   return (
-    <div className="relative p-4 pt-10 mb-28">
-      <IonIcon className="absolute svg-lg stroke-gray7 top-4 right-4" src={CloseIcon} />
-
-      <IonText className="mb-5 font-headline2 text-gray8">약관 동의</IonText>
-
+    <ModalContainer title="약관동의">
       <div className="flex flex-col gap-4 mt-4">
         <PolicyItem
           label={
@@ -26,10 +22,10 @@ const PolicyAgreement = () => {
       </div>
 
       <div className="px-3 py-2.5 rounded bg-gray1 mt-3">
-        <IonText className="font-caption2 text-gray6">
+        <p className="font-caption2 text-gray6">
           아래 버튼을 클릭함으로써 피플히어의 서비스 약관, 위치기반서비스 이용 약관,
           개인정보처리방침에 동의합니다.
-        </IonText>
+        </p>
       </div>
 
       <button
@@ -38,7 +34,7 @@ const PolicyAgreement = () => {
       >
         회원가입 완료
       </button>
-    </div>
+    </ModalContainer>
   );
 };
 
@@ -46,6 +42,7 @@ type ItemProps = {
   label: string;
   checked?: boolean;
 };
+
 const PolicyItem = ({ label, checked = false }: ItemProps) => {
   return (
     <IonCheckbox
@@ -58,9 +55,7 @@ const PolicyItem = ({ label, checked = false }: ItemProps) => {
         '--border-width': 0,
       }}
     >
-      <IonText class="ion-no-margin" className="whitespace-pre-line font-caption2 text-gray7">
-        {label}
-      </IonText>
+      <p className="whitespace-pre-line font-caption2 text-gray7">{label}</p>
     </IonCheckbox>
   );
 };
