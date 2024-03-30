@@ -2,8 +2,8 @@
 import { IonIcon, IonItem, IonList, IonText } from '@ionic/react';
 import { useState } from 'react';
 
-import CloseIcon from '../assets/svgs/close.svg';
 import CheckIcon from '../assets/svgs/check.svg';
+import ModalContainer from '.';
 
 const genders = ['여성', '남성', '선택안함'];
 
@@ -16,14 +16,7 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
   const [selectedGender, setSelectedGender] = useState('');
 
   return (
-    <div className="relative p-4 pt-10 mb-28">
-      <IonIcon
-        className="absolute svg-lg stroke-gray7 top-4 right-4"
-        src={CloseIcon}
-        onClick={closeModal}
-      />
-      <IonText className="mb-4 font-headline2 text-gray8">성별을 선택하세요</IonText>
-
+    <ModalContainer title="성별을 선택하세요">
       <IonList onClick={(event: any) => setSelectedGender(event.target.innerText as string)}>
         {genders.map((gender) => (
           <IonItem key={gender}>
@@ -47,7 +40,7 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
       >
         확인
       </button>
-    </div>
+    </ModalContainer>
   );
 };
 

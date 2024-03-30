@@ -73,7 +73,7 @@ const UserInfo = () => {
         <SelectGender setGender={setGender} closeModal={() => setOpenGenderModal(false)} />
       </IonModal>
 
-      <IonModal trigger="policy-modal" initialBreakpoint={0.45} breakpoints={[0, 0.45]}>
+      <IonModal trigger="policy-modal" initialBreakpoint={0.4} breakpoints={[0, 0.4]}>
         <PolicyAgreement />
       </IonModal>
     </IonContent>
