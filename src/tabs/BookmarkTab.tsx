@@ -1,12 +1,6 @@
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
-const Bookmark = () => {
+const BookmarkTab = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -25,4 +19,4 @@ const Bookmark = () => {
   );
 };
 
-export default Bookmark;
+export default BookmarkTab;

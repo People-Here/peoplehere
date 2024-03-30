@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
-const Profile = () => {
+const ProfileTab = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -18,4 +18,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileTab;

@@ -1,11 +1,11 @@
 import { Redirect, Route } from 'react-router';
 
 import Region from './pages/region/Region';
-import Home from './tabs/Home';
-import Bookmark from './tabs/Bookmark';
-import Post from './tabs/Post';
-import Message from './tabs/Message';
-import Profile from './tabs/Profile';
+import HomeTab from './tabs/HomeTab';
+import BookmarkTab from './tabs/BookmarkTab';
+import PostTab from './tabs/PostTab';
+import Message from './tabs/MessageTab';
+import ProfileTab from './tabs/ProfileTab';
 import Login from './pages/login/Login';
 import PhoneAuth from './pages/sign-in/PhoneAuth';
 import EmailAuth from './pages/sign-in/EmailAuth';
@@ -19,19 +19,19 @@ const Router = () => {
   return (
     <>
       <Route exact path="/home">
-        <Home />
+        <HomeTab />
       </Route>
       <Route exact path="/bookmark">
-        <Bookmark />
+        <BookmarkTab />
       </Route>
       <Route path="/post">
-        <Post />
+        <PostTab />
       </Route>
       <Route path="/message">
         <Message />
       </Route>
       <Route path="/profile">
-        <Profile />
+        <ProfileTab />
       </Route>
 
       <Route exact path="/login">

@@ -1,23 +1,17 @@
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
-const Post = () => {
+const MessageTab = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Post</IonTitle>
+          <IonTitle>Message</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Post</IonTitle>
+            <IonTitle size="large">Message</IonTitle>
           </IonToolbar>
         </IonHeader>
       </IonContent>
@@ -25,4 +19,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default MessageTab;
