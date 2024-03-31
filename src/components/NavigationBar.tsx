@@ -2,8 +2,8 @@ import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
-import SearchIcon from '../assets/svgs/search.svg';
-import SearchLineIcon from '../assets/svgs/search-line.svg';
+import HomeIcon from '../assets/svgs/home.svg';
+import HomeLineIcon from '../assets/svgs/home-line.svg';
 import HeartIcon from '../assets/svgs/double-heart.svg';
 import HeartLineIcon from '../assets/svgs/heart-line.svg';
 import PlusIcon from '../assets/svgs/plus-circle.svg';
@@ -40,7 +40,7 @@ const NavigationBar = () => {
           <IonIcon
             aria-hidden="true"
             className="svg-lg"
-            src={currentTab === 'home' ? SearchIcon : SearchLineIcon}
+            src={currentTab === 'home' ? HomeIcon : HomeLineIcon}
           />
           <IonLabel
             className={`font-caption3 ${currentTab === 'home' ? 'text-orange5' : 'text-gray6'}`}
