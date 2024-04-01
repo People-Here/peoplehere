@@ -4,14 +4,21 @@ import colors from '../theme/colors';
 import ModalContainer from '.';
 
 type Props = {
-  closeModal: () => void;
+  trigger: string;
 };
 
-const PolicyAgreement = ({ closeModal }: Props) => {
+const PolicyAgreement = ({ trigger }: Props) => {
   const router = useIonRouter();
 
   return (
-    <ModalContainer title="약관동의" closeModal={closeModal}>
+    <ModalContainer
+      trigger={trigger}
+      title="약관동의"
+      buttonText="회원가입 완료"
+      initialBreakpoint={0.4}
+      breakpoints={[0, 0.4]}
+      onClickButton={() => router.push('/sign-in/alarm')}
+    >
       <div className="flex flex-col gap-4 mt-4">
         <PolicyItem
           label={
@@ -31,13 +38,6 @@ const PolicyAgreement = ({ closeModal }: Props) => {
           개인정보처리방침에 동의합니다.
         </p>
       </div>
-
-      <button
-        className="w-full mt-3 button-primary button-lg"
-        onClick={() => router.push('/sign-in/alarm')}
-      >
-        회원가입 완료
-      </button>
     </ModalContainer>
   );
 };

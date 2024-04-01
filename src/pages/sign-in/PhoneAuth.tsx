@@ -1,4 +1,4 @@
-import { IonModal, IonText, useIonRouter } from '@ionic/react';
+import { IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 
 import Header from '../../components/Header';
@@ -11,7 +11,6 @@ const PhoneAuth = () => {
   const router = useIonRouter();
   const region = useRegionStore((state) => state.region);
 
-  const [openModal, setOpenModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [authCode, setAuthCode] = useState('');
 
@@ -21,9 +20,9 @@ const PhoneAuth = () => {
 
       <div className="flex flex-col gap-2 px-4 mt-5">
         <SelectInput
+          id="region-modal"
           label="국가/지역"
           value={`${region.CountryNameKR} (+${String(region.ISONumbericCode).padStart(2, '0')})`}
-          openModal={() => setOpenModal(true)}
         />
 
         <div className="flex items-center gap-2">
@@ -57,14 +56,7 @@ const PhoneAuth = () => {
         </div>
       </div>
 
-      <IonModal
-        isOpen={openModal}
-        initialBreakpoint={0.95}
-        breakpoints={[0, 0.95]}
-        onDidDismiss={() => setOpenModal(false)}
-      >
-        <SelectRegion closeModal={() => setOpenModal(false)} />
-      </IonModal>
+      <SelectRegion trigger="region-modal" />
     </>
   );
 };

@@ -8,15 +8,22 @@ import ModalContainer from '.';
 const genders = ['여성', '남성', '선택안함'];
 
 type Props = {
+  trigger: string;
   setGender: (value: string) => void;
-  closeModal: () => void;
 };
 
-const SelectGender = ({ setGender, closeModal }: Props) => {
+const SelectGender = ({ trigger, setGender }: Props) => {
   const [selectedGender, setSelectedGender] = useState('');
 
   return (
-    <ModalContainer title="성별을 선택하세요" closeModal={closeModal}>
+    <ModalContainer
+      trigger={trigger}
+      title="성별을 선택하세요"
+      buttonText="확인"
+      initialBreakpoint={0.4}
+      breakpoints={[0, 0.4]}
+      onWillDismiss={() => setGender(selectedGender)}
+    >
       <IonList onClick={(event: any) => setSelectedGender(event.target.innerText as string)}>
         {genders.map((gender) => (
           <IonItem key={gender}>
@@ -31,15 +38,6 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
           </IonItem>
         ))}
       </IonList>
-      <button
-        className="w-full mt-5 button-primary button-lg"
-        onClick={() => {
-          setGender(selectedGender);
-          closeModal();
-        }}
-      >
-        확인
-      </button>
     </ModalContainer>
   );
 };

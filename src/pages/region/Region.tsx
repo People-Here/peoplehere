@@ -1,5 +1,5 @@
-import { IonIcon, IonImg, IonModal, IonText, useIonRouter } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
+import { useEffect } from 'react';
 
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
@@ -8,13 +8,13 @@ import useRegionStore from '../../stores/user';
 
 const LoginLanding = () => {
   const router = useIonRouter();
-  const { region, resetRegion } = useRegionStore((state) => state);
-
-  const [openModal, setOpenModal] = useState(false);
+  const { region } = useRegionStore((state) => state);
 
   useEffect(() => {
-    resetRegion();
-  }, [resetRegion]);
+    if (region['2digitCode']) {
+      router.push('/');
+    }
+  }, [region, router]);
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full gap-6">
@@ -22,7 +22,7 @@ const LoginLanding = () => {
 
       <div
         className="flex items-center justify-between p-4 bg-gray1.5 rounded-xl w-[15rem] cursor-pointer mb-[5rem]"
-        onClick={() => setOpenModal(true)}
+        id="region-modal"
       >
         <IonText className="text-gray5 font-body1">출신 국가를 선택하세요</IonText>
         <IonIcon className="svg-lg" src={GlobeIcon} />
@@ -30,17 +30,7 @@ const LoginLanding = () => {
 
       <IonImg className="absolute bottom-4 w-[6.75rem] h-[1.875rem]" src={LogoWithLabelImage} />
 
-      <IonModal
-        isOpen={openModal}
-        initialBreakpoint={0.95}
-        breakpoints={[0, 0.95]}
-        onDidDismiss={() => {
-          setOpenModal(false);
-          !!region['2digitCode'] && router.push('/', 'root', 'replace');
-        }}
-      >
-        <SelectRegion closeModal={() => setOpenModal(false)} />
-      </IonModal>
+      <SelectRegion trigger="region-modal" />
     </div>
   );
 };
