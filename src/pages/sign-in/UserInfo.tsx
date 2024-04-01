@@ -1,4 +1,4 @@
-import { IonContent, IonText } from '@ionic/react';
+import { IonContent, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 
 import Header from '../../components/Header';
@@ -11,9 +11,10 @@ import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
 
 const UserInfo = () => {
+  const router = useIonRouter();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
 
@@ -55,7 +56,7 @@ const UserInfo = () => {
       {/* Modals */}
       <DatePicker trigger="date-modal" setDate={setBirth} />
       <SelectGender trigger="gender-modal" setGender={setGender} />
-      <PolicyAgreement trigger="policy-modal" />
+      <PolicyAgreement trigger="policy-modal" onClickButton={() => router.push('/sign-in/alarm')} />
     </IonContent>
   );
 };

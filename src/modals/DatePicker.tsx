@@ -3,23 +3,24 @@ import { useState } from 'react';
 
 import ModalContainer from '.';
 
+import type { ModalProps } from '.';
+
 type Props = {
-  trigger: string;
   date?: string;
   setDate: (date: string) => void;
 };
 
-const DatePicker = ({ trigger, date, setDate }: Props) => {
+const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
   const [selectedDate, setSelectedDate] = useState('');
 
   return (
     <ModalContainer
       title="생년월일을 입력해주세요"
       buttonText="확인"
-      trigger={trigger}
       initialBreakpoint={0.45}
       breakpoints={[0, 0.45]}
       onWillDismiss={() => setDate(selectedDate)}
+      {...rest}
     >
       <IonDatetime
         preferWheel

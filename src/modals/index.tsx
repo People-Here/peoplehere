@@ -4,11 +4,16 @@ import { useRef, type ComponentProps, type PropsWithChildren } from 'react';
 
 import CloseIcon from '../assets/svgs/close.svg';
 
-type Props = {
+export type ModalProps = {
   trigger: string;
+  onClickButton?: () => void;
+  onWillDismiss?: () => void;
+  onDidDismiss?: () => void;
+};
+
+type Props = {
   title: string;
   buttonText: string;
-  onClickButton?: () => void;
 };
 
 const ModalContainer = ({
@@ -18,7 +23,7 @@ const ModalContainer = ({
   onClickButton,
   children,
   ...rest
-}: PropsWithChildren<Props & ComponentProps<typeof IonModal>>) => {
+}: PropsWithChildren<ModalProps & Props & ComponentProps<typeof IonModal>>) => {
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 

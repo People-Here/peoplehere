@@ -1,23 +1,19 @@
-import { IonCheckbox, useIonRouter } from '@ionic/react';
+import { IonCheckbox } from '@ionic/react';
 
 import colors from '../theme/colors';
 import ModalContainer from '.';
 
-type Props = {
-  trigger: string;
-};
+import type { ModalProps } from '.';
 
-const PolicyAgreement = ({ trigger }: Props) => {
-  const router = useIonRouter();
-
+const PolicyAgreement = ({ onClickButton, ...rest }: ModalProps) => {
   return (
     <ModalContainer
-      trigger={trigger}
       title="약관동의"
       buttonText="회원가입 완료"
       initialBreakpoint={0.4}
       breakpoints={[0, 0.4]}
-      onClickButton={() => router.push('/sign-in/alarm')}
+      onClickButton={onClickButton}
+      {...rest}
     >
       <div className="flex flex-col gap-4 mt-4">
         <PolicyItem

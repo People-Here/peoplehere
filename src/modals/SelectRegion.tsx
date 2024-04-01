@@ -6,11 +6,9 @@ import allRegions from '../constants/region';
 import useRegionStore from '../stores/user';
 import ModalContainer from '.';
 
-type Props = {
-  trigger: string;
-};
+import type { ModalProps } from '.';
 
-const SelectRegion = ({ trigger }: Props) => {
+const SelectRegion = (props: ModalProps) => {
   const setRegion = useRegionStore((state) => state.setRegion);
 
   const [regions, setRegions] = useState(() =>
@@ -78,12 +76,12 @@ const SelectRegion = ({ trigger }: Props) => {
 
   return (
     <ModalContainer
-      trigger={trigger}
       title="출신 국가를 선택하세요"
       buttonText="선택"
       initialBreakpoint={0.95}
       breakpoints={[0, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
+      {...props}
     >
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
         <IonInput
