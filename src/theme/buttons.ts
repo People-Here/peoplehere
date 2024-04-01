@@ -27,6 +27,7 @@ const buttonStyles = {
   '.button-line': {
     backgroundColor: colors.white,
     borderWidth: '1px',
+    borderStyle: 'solid',
     borderColor: colors.gray3,
     color: colors.gray6,
 
