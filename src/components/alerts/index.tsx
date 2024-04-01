@@ -42,22 +42,24 @@ const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomTex
           {subTitle ? <IonText className="font-body2 text-gray6">{subTitle}</IonText> : null}
         </div>
 
-        {/* buttons */}
-        {buttons.length === 1 ? (
-          <SingleButton button={buttons[0]} closeAlert={dismissAlert} />
-        ) : (
-          <DoubleButton buttons={buttons} closeAlert={dismissAlert} />
-        )}
+        <div className="flex flex-col gap-3">
+          {/* buttons */}
+          {buttons.length === 1 ? (
+            <SingleButton button={buttons[0]} closeAlert={dismissAlert} />
+          ) : (
+            <DoubleButton buttons={buttons} closeAlert={dismissAlert} />
+          )}
 
-        {/* bottom text */}
-        {bottomText ? (
-          <IonText
-            className="font-caption2 text-gray5.5 underline mt-3"
-            onClick={onClickBottomText}
-          >
-            {bottomText}
-          </IonText>
-        ) : null}
+          {/* bottom text */}
+          {bottomText ? (
+            <IonText
+              className="font-caption2 text-gray5.5 underline text-center"
+              onClick={onClickBottomText}
+            >
+              {bottomText}
+            </IonText>
+          ) : null}
+        </div>
       </div>
     </IonModal>
   );
