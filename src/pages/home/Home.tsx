@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 import useRegionStore from '../../stores/user';
 import SearchIcon from '../../assets/svgs/search.svg';
-import MessageIcon from '../../assets/svgs/message.svg';
+import MessageIcon from '../../assets/svgs/message-line-color.svg';
+import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import SampleUserImage from '../../assets/images/sample-user.png';
 import SamplePlaceImage from '../../assets/images/sample-place3.png';
@@ -42,14 +43,17 @@ const SearchBar = () => {
   );
 };
 
-const AvailableChip = ({ available }: { available?: boolean }) => {
+const StatusChip = ({ available }: { available?: boolean }) => {
   return available ? (
     <div className="flex items-center gap-[5px] px-2 py-1 bg-orange1 rounded-[10px] w-fit">
       <IonText className="font-caption1 text-orange5">말 걸 수 있음</IonText>
       <IonIcon icon={MessageIcon} className="svg-sm" />
     </div>
   ) : (
-    <div></div>
+    <div className="flex items-center gap-[5px] px-2 py-1 bg-gray1.5 rounded-[10px] w-fit">
+      <IonText className="font-caption1 text-gray6">쪽지 마감</IonText>
+      <IonIcon icon={MessageBlockedIcon} className="svg-sm" />
+    </div>
   );
 };
 
@@ -58,7 +62,7 @@ const Item = () => {
     <div className="flex flex-col gap-3">
       {/* title area */}
       <div className="flex flex-col gap-1.5">
-        <AvailableChip available />
+        <StatusChip />
         <div className="pl-1 flex flex-col gap-0.5">
           <div className="flex items-center justify-between">
             <IonText className="font-headline3 text-gray8">송리단길과 석촌호수 산책</IonText>
@@ -87,7 +91,7 @@ const Item2 = () => {
     <div className="-mr-4">
       {/* title area */}
       <div className="flex flex-col gap-1.5 mb-3 pr-4">
-        <AvailableChip available />
+        <StatusChip available />
         <div className="pl-1 flex flex-col gap-0.5">
           <div className="flex items-center justify-between">
             <IonText className="font-headline3 text-gray8">송리단길과 석촌호수 산책</IonText>
