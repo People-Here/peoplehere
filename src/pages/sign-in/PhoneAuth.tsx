@@ -6,6 +6,7 @@ import LabelInput from '../../components/LabelInput';
 import SelectInput from '../../components/SelectInput';
 import SelectRegion from '../../modals/SelectRegion';
 import useRegionStore from '../../stores/user';
+import Alert from '../../components/alerts';
 
 const PhoneAuth = () => {
   const router = useIonRouter();
@@ -33,10 +34,7 @@ const PhoneAuth = () => {
           </button>
         </div>
 
-        <IonText
-          className="pl-1 underline font-body1 text-gray5"
-          onClick={() => router.push('/sign-in/email')}
-        >
+        <IonText id="phone-alert" className="pl-1 underline font-body1 text-gray5">
           전화번호 인증이 불가한가요?
         </IonText>
 
@@ -57,6 +55,12 @@ const PhoneAuth = () => {
       </div>
 
       <SelectRegion trigger="region-modal" />
+
+      <Alert
+        trigger="phone-alert"
+        title="전화번호 인증이 어려운 상황인가요?"
+        buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-in/email') }]}
+      />
     </>
   );
 };
