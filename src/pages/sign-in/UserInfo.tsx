@@ -19,6 +19,7 @@ const UserInfo = () => {
 
   const [openDateModal, setOpenDateModal] = useState(false);
   const [openGenderModal, setOpenGenderModal] = useState(false);
+  const [openPolicyModal, setOpenPolicyModal] = useState(false);
 
   return (
     <IonContent className="relative h-full">
@@ -49,7 +50,10 @@ const UserInfo = () => {
         <SelectInput label="성별" value={gender} openModal={() => setOpenGenderModal(true)} />
 
         <Footer>
-          <button id="policy-modal" className="w-full button-primary button-lg">
+          <button
+            className="w-full button-primary button-lg"
+            onClick={() => setOpenPolicyModal(true)}
+          >
             계속
           </button>
         </Footer>
@@ -73,8 +77,13 @@ const UserInfo = () => {
         <SelectGender setGender={setGender} closeModal={() => setOpenGenderModal(false)} />
       </IonModal>
 
-      <IonModal trigger="policy-modal" initialBreakpoint={0.4} breakpoints={[0, 0.4]}>
-        <PolicyAgreement />
+      <IonModal
+        trigger="policy-modal"
+        initialBreakpoint={0.4}
+        breakpoints={[0, 0.4]}
+        onDidDismiss={() => setOpenPolicyModal(false)}
+      >
+        <PolicyAgreement closeModal={() => setOpenPolicyModal(false)} />
       </IonModal>
     </IonContent>
   );

@@ -77,7 +77,7 @@ const SelectRegion = ({ closeModal }: Props) => {
   };
 
   return (
-    <ModalContainer title="출신 국가를 선택하세요">
+    <ModalContainer title="출신 국가를 선택하세요" closeModal={closeModal}>
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
         <IonInput
           className="font-body1 text-gray8"

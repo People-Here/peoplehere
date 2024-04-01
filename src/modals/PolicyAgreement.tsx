@@ -3,11 +3,15 @@ import { IonCheckbox, useIonRouter } from '@ionic/react';
 import colors from '../theme/colors';
 import ModalContainer from '.';
 
-const PolicyAgreement = () => {
+type Props = {
+  closeModal: () => void;
+};
+
+const PolicyAgreement = ({ closeModal }: Props) => {
   const router = useIonRouter();
 
   return (
-    <ModalContainer title="약관동의">
+    <ModalContainer title="약관동의" closeModal={closeModal}>
       <div className="flex flex-col gap-4 mt-4">
         <PolicyItem
           label={

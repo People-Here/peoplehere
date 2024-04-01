@@ -13,7 +13,7 @@ const DatePicker = ({ date, setDate, closeModal }: Props) => {
   const [selectedDate, setSelectedDate] = useState('');
 
   return (
-    <ModalContainer title="생년월일을 입력해주세요">
+    <ModalContainer title="생년월일을 입력해주세요" closeModal={closeModal}>
       <IonDatetime
         preferWheel
         presentation="date"

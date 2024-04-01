@@ -16,7 +16,7 @@ const SelectGender = ({ setGender, closeModal }: Props) => {
   const [selectedGender, setSelectedGender] = useState('');
 
   return (
-    <ModalContainer title="성별을 선택하세요">
+    <ModalContainer title="성별을 선택하세요" closeModal={closeModal}>
       <IonList onClick={(event: any) => setSelectedGender(event.target.innerText as string)}>
         {genders.map((gender) => (
           <IonItem key={gender}>
