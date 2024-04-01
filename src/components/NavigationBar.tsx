@@ -63,14 +63,9 @@ const NavigationBar = () => {
         <IonTabButton tab="post" href="/post">
           <IonIcon
             aria-hidden="true"
-            className="svg-lg"
+            className="pb-3 w-9 h-9"
             src={currentTab === 'post' ? PlusIcon : PlusLineIcon}
           />
-          <IonLabel
-            className={`font-caption3 ${currentTab === 'post' ? 'text-orange5' : 'text-gray6'}`}
-          >
-            장소 올리기
-          </IonLabel>
         </IonTabButton>
         <IonTabButton tab="message" href="/message">
           <IonIcon
