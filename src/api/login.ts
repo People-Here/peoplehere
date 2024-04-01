@@ -1,12 +1,12 @@
 import { typedGet } from '.';
 
-export const login = async (req: LoginRequest) => {
-  const response = await typedGet<LoginResponse>('/account/login', { params: req });
+export const login = async (params: LoginRequest) => {
+  const response = await typedGet<LoginResponse>('/account/login', { params });
   return response.data;
 };
 
-export const getNewToken = async (req: GetNewTokenRequest) => {
-  const response = await typedGet<GetNewTokenResponse>('/account/token', { params: req });
+export const getNewToken = async (params: GetNewTokenRequest) => {
+  const response = await typedGet<GetNewTokenResponse>('/account/token', { params });
   return response.data;
 };
 
