@@ -2,12 +2,12 @@ import { typedGet } from '.';
 
 export const login = async (params: LoginRequest) => {
   const response = await typedGet<LoginResponse>('/account/login', { params });
-  return response.data;
+  return response;
 };
 
 export const getNewToken = async (params: GetNewTokenRequest) => {
   const response = await typedGet<GetNewTokenResponse>('/account/token', { params });
-  return response.data;
+  return response;
 };
 
 type LoginRequest = {
