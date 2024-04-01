@@ -3,17 +3,17 @@ import { IonIcon, IonInput, IonItem } from '@ionic/react';
 import ArrowDownIcon from '../assets/svgs/arrow-down.svg';
 
 type Props = {
+  id: string;
   label: string;
   value: string;
-  openModal: () => void;
 };
 
-const SelectInput = ({ label, value, openModal }: Props) => {
+const SelectInput = ({ id, label, value }: Props) => {
   return (
     <IonItem
+      id={id}
       className="h-[54px]"
       lines="none"
-      onClick={openModal}
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',

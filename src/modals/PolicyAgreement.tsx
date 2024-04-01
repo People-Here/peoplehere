@@ -1,17 +1,20 @@
-import { IonCheckbox, useIonRouter } from '@ionic/react';
+import { IonCheckbox } from '@ionic/react';
 
 import colors from '../theme/colors';
 import ModalContainer from '.';
 
-type Props = {
-  closeModal: () => void;
-};
+import type { ModalProps } from '.';
 
-const PolicyAgreement = ({ closeModal }: Props) => {
-  const router = useIonRouter();
-
+const PolicyAgreement = ({ onClickButton, ...rest }: ModalProps) => {
   return (
-    <ModalContainer title="약관동의" closeModal={closeModal}>
+    <ModalContainer
+      title="약관동의"
+      buttonText="회원가입 완료"
+      initialBreakpoint={0.4}
+      breakpoints={[0, 0.4]}
+      onClickButton={onClickButton}
+      {...rest}
+    >
       <div className="flex flex-col gap-4 mt-4">
         <PolicyItem
           label={
@@ -31,13 +34,6 @@ const PolicyAgreement = ({ closeModal }: Props) => {
           개인정보처리방침에 동의합니다.
         </p>
       </div>
-
-      <button
-        className="w-full mt-3 button-primary button-lg"
-        onClick={() => router.push('/sign-in/alarm')}
-      >
-        회원가입 완료
-      </button>
     </ModalContainer>
   );
 };

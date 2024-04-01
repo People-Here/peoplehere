@@ -1,4 +1,4 @@
-import { IonContent, IonModal, IonText } from '@ionic/react';
+import { IonContent, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 
 import Header from '../../components/Header';
@@ -11,15 +11,12 @@ import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
 
 const UserInfo = () => {
+  const router = useIonRouter();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
-
-  const [openDateModal, setOpenDateModal] = useState(false);
-  const [openGenderModal, setOpenGenderModal] = useState(false);
-  const [openPolicyModal, setOpenPolicyModal] = useState(false);
 
   return (
     <IonContent className="relative h-full">
@@ -38,53 +35,28 @@ const UserInfo = () => {
 
         <div className="flex flex-col gap-2 mb-9">
           <SelectInput
+            id="date-modal"
             label="생년월일(YYYY/MM/DD)"
             value={birth.split('T')[0].replaceAll('-', '/')}
-            openModal={() => setOpenDateModal(true)}
           />
           <IonText className="pl-1 font-caption2 text-gray6">
             피플히어에 가입하려면 만 18세 이상이어야 해요.
           </IonText>
         </div>
 
-        <SelectInput label="성별" value={gender} openModal={() => setOpenGenderModal(true)} />
+        <SelectInput id="gender-modal" label="성별" value={gender} />
 
         <Footer>
-          <button
-            className="w-full button-primary button-lg"
-            onClick={() => setOpenPolicyModal(true)}
-          >
+          <button id="policy-modal" className="w-full button-primary button-lg">
             계속
           </button>
         </Footer>
       </div>
 
-      <IonModal
-        isOpen={openDateModal}
-        initialBreakpoint={0.45}
-        breakpoints={[0, 0.45]}
-        onDidDismiss={() => setOpenDateModal(false)}
-      >
-        <DatePicker setDate={setBirth} closeModal={() => setOpenDateModal(false)} />
-      </IonModal>
-
-      <IonModal
-        isOpen={openGenderModal}
-        initialBreakpoint={0.4}
-        breakpoints={[0, 0.4]}
-        onDidDismiss={() => setOpenGenderModal(false)}
-      >
-        <SelectGender setGender={setGender} closeModal={() => setOpenGenderModal(false)} />
-      </IonModal>
-
-      <IonModal
-        trigger="policy-modal"
-        initialBreakpoint={0.4}
-        breakpoints={[0, 0.4]}
-        onDidDismiss={() => setOpenPolicyModal(false)}
-      >
-        <PolicyAgreement closeModal={() => setOpenPolicyModal(false)} />
-      </IonModal>
+      {/* Modals */}
+      <DatePicker trigger="date-modal" setDate={setBirth} />
+      <SelectGender trigger="gender-modal" setGender={setGender} />
+      <PolicyAgreement trigger="policy-modal" onClickButton={() => router.push('/sign-in/alarm')} />
     </IonContent>
   );
 };
