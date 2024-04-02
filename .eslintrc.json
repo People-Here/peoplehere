@@ -12,9 +12,15 @@
     "plugin:react-hooks/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "prettier"
+    "prettier",
+    "plugin:storybook/recommended"
   ],
-  "plugins": ["react", "@typescript-eslint", "import", "unused-imports"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "unused-imports"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -24,18 +30,31 @@
     }
   },
   "settings": {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/extensions": [
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx"
+    ],
     "import/resolver": {
       "typescript": {
         "alwaysTryTypes": true,
         "project": "./tsconfig.json"
       },
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
       }
     },
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
     },
     "react": {
       "version": "detect"
@@ -45,16 +64,40 @@
     "react/react-in-jsx-scope": "off",
     "unused-imports/no-unused-imports": "error",
     "no-console": "warn",
-    "comma-dangle": ["error", "always-multiline"],
-    "comma-spacing": ["warn", { "before": false, "after": true }],
-    "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports" }],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+    "comma-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports"
+      }
+    ],
     "no-unused-vars": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "import/order": [
       "warn",
       {
-        "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"], "type"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          [
+            "parent",
+            "sibling",
+            "index"
+          ],
+          "type"
+        ],
         "newlines-between": "always"
       }
     ]
