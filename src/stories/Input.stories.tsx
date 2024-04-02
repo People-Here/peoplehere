@@ -1,12 +1,12 @@
 import { fn } from '@storybook/test';
 
-import LabelInput from '../components/LabelInput';
+import L from '../components/LabelInput';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Component/Input',
-  component: LabelInput,
+  title: 'Components/Inputs/Labeled Input',
+  component: L,
   args: { onChange: fn() },
   argTypes: {
     type: {
@@ -14,7 +14,7 @@ const meta = {
       control: { type: 'radio' },
     },
   },
-} satisfies Meta<typeof LabelInput>;
+} satisfies Meta<typeof L>;
 
 export default meta;
 
