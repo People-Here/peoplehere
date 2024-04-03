@@ -1,11 +1,13 @@
-import { IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 
 import PostPlace from '../pages/post/PostPlace';
 
 const PostTab = () => {
   return (
     <IonPage>
-      <PostPlace />
+      <IonContent>
+        <PostPlace />
+      </IonContent>
     </IonPage>
   );
 };
