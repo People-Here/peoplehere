@@ -14,7 +14,7 @@ import ProfileIcon from '../assets/svgs/user.svg';
 import ProfileLineIcon from '../assets/svgs/user-line.svg';
 import Router from '../Router';
 
-const whiteList = ['home', 'bookmark', 'post', 'message', 'profile'];
+const whiteList = ['home', 'bookmark', 'message', 'profile'];
 
 const NavigationBar = () => {
   const [currentTab, setCurrentTab] = useState('home');
