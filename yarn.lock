@@ -3447,6 +3447,11 @@ axios@^1.6.8:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
+babel-core@^7.0.0-bridge.0:
+  version "7.0.0-bridge.0"
+  resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-7.0.0-bridge.0.tgz#95a492ddd90f9b4e9a4a1da14eb335b87b634ece"
+  integrity sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg==
+
 babel-plugin-polyfill-corejs2@^0.4.10:
   version "0.4.10"
   resolved "https://registry.yarnpkg.com/babel-plugin-polyfill-corejs2/-/babel-plugin-polyfill-corejs2-0.4.10.tgz#276f41710b03a64f6467433cab72cbc2653c38b1"
@@ -5161,6 +5166,11 @@ flatted@^3.2.9:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.1.tgz#21db470729a6734d4997002f439cb308987f567a"
   integrity sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==
+
+flow-parser@0.*:
+  version "0.233.0"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.233.0.tgz#b983e65812d5ecae79f08ae3ed8ad2e131a9b966"
+  integrity sha512-E/mv51GYJfLuRX6fZnw4M52gBxYa8pkHUOgNEZOcQK2RTXS8YXeU5rlalkTcY99UpwbeNVCSUFKaavpOksi/pQ==
 
 follow-redirects@^1.15.6:
   version "1.15.6"
