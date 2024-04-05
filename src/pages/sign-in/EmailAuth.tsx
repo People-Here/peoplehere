@@ -4,12 +4,30 @@ import { useState } from 'react';
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import ProgressDots from '../../components/ProgressDots';
+import { checkEmail } from '../../api/verification';
 
 const EmailAuth = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState('');
   const [authCode, setAuthCode] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const checkEmailExist = async () => {
+    const response = await checkEmail(email);
+    if (response.status === 200) {
+      // 이메일 인증코드 전송
+      return;
+    }
+
+    if (response.status === 400) {
+      setErrorMessage('이메일 형식이 유효하지 않아요.');
+    }
+
+    if (response.status === 409) {
+      setErrorMessage('이미 가입한 이메일이에요.');
+    }
+  };
 
   return (
     <>
@@ -22,9 +40,14 @@ const EmailAuth = () => {
         </h1>
 
         <div className="flex items-center gap-2 mt-5">
-          <LabelInput label="이메일" value={email} onChange={setEmail} />
+          <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
 
-          <button className="px-3 button-primary button-lg shrink-0" disabled={!email.length}>
+          <button
+            className="px-3 button-primary button-lg shrink-0"
+            disabled={!email.length}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={checkEmailExist}
+          >
             <IonText className="text-white font-body1">인증코드 발송</IonText>
           </button>
         </div>

@@ -3,8 +3,7 @@ import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const apiInstance = axios.create({
-  baseURL: '',
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_BASE_URL as string,
   responseType: 'json',
 });
 
