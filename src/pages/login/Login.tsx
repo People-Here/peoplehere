@@ -31,7 +31,7 @@ const Login = () => {
     try {
       await requestLogin(email, password);
     } catch (error) {
-      setErrorMessage('계정 정복 유효하지 않습니다.');
+      setErrorMessage('계정 정보가 유효하지 않습니다.');
     }
   };
 

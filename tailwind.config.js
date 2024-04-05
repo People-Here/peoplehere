@@ -15,6 +15,21 @@ export default {
       fontFamily: {
         suite: 'SUITE Variable',
       },
+      keyframes: {
+        fadeDown: {
+          from: {
+            opacity: 0,
+            transform: 'translateY(-1.5rem)',
+          },
+          to: {
+            opacity: 1,
+            transform: 'translateY(0)',
+          },
+        },
+      },
+      animation: {
+        'fade-down': 'fadeDown 0.5s linear',
+      },
     },
     colors: colors,
   },
