@@ -7,9 +7,11 @@ import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
+import useLogin from '../../hooks/useLogin';
 
 const Login = () => {
   const router = useIonRouter();
+  const { requestLogin } = useLogin();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +21,19 @@ const Login = () => {
   const isPasswordValid =
     PASSWORD_VALIDATION.moreThan8.test(password) &&
     PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(password);
+
+  const tryLogin = async () => {
+    if (!isEmailValid) {
+      setErrorMessage('유효한 이메일 형식이 아닙니다.');
+      return;
+    }
+
+    try {
+      await requestLogin(email, password);
+    } catch (error) {
+      setErrorMessage('계정 정복 유효하지 않습니다.');
+    }
+  };
 
   return (
     <>
@@ -33,12 +48,7 @@ const Login = () => {
         </p>
 
         <div className="flex flex-col w-full gap-2 mb-4">
-          <LabelInput
-            label="이메일"
-            value={email}
-            onChange={() => setEmail}
-            errorText={errorMessage}
-          />
+          <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
           <PasswordInput value={password} onChange={setPassword} />
 
           <PasswordValidator password={password} />
@@ -47,8 +57,8 @@ const Login = () => {
         <div className="flex flex-col w-full gap-3 mb-4">
           <button
             className="text-white bg-orange5 button-lg disabled:bg-gray4"
-            disabled={!(isEmailValid || isPasswordValid)}
-            onClick={() => setErrorMessage('! 유효한 이메일 형식이 아닙니다.')}
+            disabled={!isEmailValid || !isPasswordValid}
+            onClick={tryLogin}
           >
             로그인
           </button>

@@ -1,7 +1,7 @@
-import { typedGet } from '.';
+import { typedGet, typedPost } from '.';
 
-export const login = async (params: LoginRequest) => {
-  const response = await typedGet<LoginResponse>('/account/login', { params });
+export const signIn = async (params: LoginRequest) => {
+  const response = await typedPost<LoginResponse>('/account/sign-in', { ...params });
   return response;
 };
 
