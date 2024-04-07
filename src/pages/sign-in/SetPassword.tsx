@@ -8,11 +8,12 @@ import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
+import useUserStore from '../../stores/userInfo';
 
 const SetPassword = () => {
   const router = useIonRouter();
+  const { email } = useUserStore();
 
-  const email = 'kim@gmail.com';
   const [password, setPassword] = useState('');
 
   const isPasswordValid =

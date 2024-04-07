@@ -6,21 +6,23 @@ import LabelInput from '../../components/LabelInput';
 import ProgressDots from '../../components/ProgressDots';
 import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
 import { EMAIL_VALIDATION } from '../../constants/regex';
+import useUserStore from '../../stores/userInfo';
 
 const EmailAuth = () => {
   const router = useIonRouter();
+  const { setEmail } = useUserStore();
 
-  const [email, setEmail] = useState('');
+  const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
 
   const checkEmailExist = async () => {
-    const response = await checkEmail(email);
+    const response = await checkEmail(emailInput);
 
     if (response.status === 200) {
       setShowAuthCodeInput(true);
-      await sendEmailCode(email);
+      await sendEmailCode(emailInput);
       return;
     }
 
@@ -34,7 +36,7 @@ const EmailAuth = () => {
   };
 
   const confirmAuthCode = async () => {
-    const response = await verifyEmailCode(email, authCode);
+    const response = await verifyEmailCode(emailInput, authCode);
 
     if (response.status === 200) {
       router.push('/sign-in/password');
@@ -52,16 +54,15 @@ const EmailAuth = () => {
         </h1>
 
         <div className="flex items-center gap-2 mt-5">
-          <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
+          <LabelInput label="이메일" value={emailInput} onChange={setEmailInput} />
 
           <button
             className={
               showAuthCodeInput
                 ? 'button-sub button-lg shrink-0 w-[100px]'
-                : 'px-3 button-primary button-lg shrink-0'
+                : 'px-3 button-primary button-lg shrink-0 w-[100px]'
             }
-            disabled={!EMAIL_VALIDATION.test(email)}
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            disabled={!EMAIL_VALIDATION.test(emailInput)}
             onClick={checkEmailExist}
           >
             <IonText className="font-body1">
