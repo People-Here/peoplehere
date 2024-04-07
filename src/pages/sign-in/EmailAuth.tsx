@@ -10,7 +10,7 @@ import useUserStore from '../../stores/userInfo';
 
 const EmailAuth = () => {
   const router = useIonRouter();
-  const { setEmail } = useUserStore();
+  const setEmail = useUserStore((state) => state.setEmail);
 
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
@@ -39,6 +39,7 @@ const EmailAuth = () => {
     const response = await verifyEmailCode(emailInput, authCode);
 
     if (response.status === 200) {
+      setEmail(emailInput);
       router.push('/sign-in/password');
     }
   };

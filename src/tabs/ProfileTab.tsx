@@ -1,10 +1,10 @@
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
-import useRegionStore from '../stores/user';
+import useUserStore from '../stores/userInfo';
 
 const ProfileTab = () => {
-  const reset = useRegionStore((state) => state.resetRegion);
+  const reset = useUserStore((state) => state.resetRegion);
 
   return (
     <IonPage>

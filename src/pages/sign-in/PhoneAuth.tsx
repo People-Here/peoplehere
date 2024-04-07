@@ -5,12 +5,12 @@ import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import SelectInput from '../../components/SelectInput';
 import SelectRegion from '../../modals/SelectRegion';
-import useRegionStore from '../../stores/user';
 import Alert from '../../components/alerts';
+import useUserStore from '../../stores/userInfo';
 
 const PhoneAuth = () => {
   const router = useIonRouter();
-  const region = useRegionStore((state) => state.region);
+  const { region } = useUserStore((state) => state);
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [authCode, setAuthCode] = useState('');

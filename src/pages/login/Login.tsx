@@ -57,7 +57,7 @@ const Login = () => {
         <div className="flex flex-col w-full gap-3 mb-4">
           <button
             className="text-white bg-orange5 button-lg disabled:bg-gray4"
-            disabled={!isEmailValid || !isPasswordValid}
+            disabled={!email.length || !isPasswordValid}
             onClick={tryLogin}
           >
             로그인

@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import allRegions from '../constants/region';
-import useRegionStore from '../stores/user';
+import useUserStore from '../stores/userInfo';
 import ModalContainer from '.';
 
 import type { ModalProps } from '.';
 
 const SelectRegion = (props: ModalProps) => {
-  const setRegion = useRegionStore((state) => state.setRegion);
+  const setRegion = useUserStore((state) => state.setRegion);
 
   const [regions, setRegions] = useState(() =>
     allRegions.map((region) => {
