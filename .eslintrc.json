@@ -12,8 +12,8 @@
     "plugin:react-hooks/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "prettier",
-    "plugin:storybook/recommended"
+    "prettier"
+    // "plugin:storybook/recommended"
   ],
   "plugins": ["react", "@typescript-eslint", "import", "unused-imports"],
   "parser": "@typescript-eslint/parser",
