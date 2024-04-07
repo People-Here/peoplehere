@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
 import useLogin from '../../hooks/useLogin';
+import Alert from '../../components/alerts';
 
 const Login = () => {
   const router = useIonRouter();
@@ -16,6 +17,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const isEmailValid = EMAIL_VALIDATION.test(email);
   const isPasswordValid =
@@ -31,7 +34,7 @@ const Login = () => {
     try {
       await requestLogin(email, password);
     } catch (error) {
-      setErrorMessage('계정 정보가 유효하지 않습니다.');
+      buttonRef.current?.click();
     }
   };
 
@@ -76,6 +79,16 @@ const Login = () => {
           <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
         </Link>
       </div>
+
+      <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
+
+      <Alert
+        trigger="error-alert"
+        title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}
+        buttons={[{ text: '다시 입력' }]}
+        bottomText="비밀번호 재설정"
+        onClickBottomText={() => router.push('/reset-password/check-email')}
+      />
     </>
   );
 };

@@ -30,6 +30,7 @@ const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomTex
       style={{
         '--backdrop-opacity': '0.6',
         '--width': 'fit-content',
+        '--min-width': '17rem',
         '--height': 'fit-content',
         '--min-height': '8.25rem',
         '--border-radius': '16px',
@@ -38,7 +39,9 @@ const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomTex
       <div className="flex flex-col gap-5 p-5 pt-6">
         {/* content */}
         <div className="flex flex-col gap-1.5">
-          <IonText className="font-subheading1 text-gray8">{title}</IonText>
+          <IonText className="text-center whitespace-pre-line font-subheading1 text-gray8">
+            {title}
+          </IonText>
           {subTitle ? <IonText className="font-body2 text-gray6">{subTitle}</IonText> : null}
         </div>
 
