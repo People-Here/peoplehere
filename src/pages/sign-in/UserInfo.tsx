@@ -35,7 +35,7 @@ const UserInfo = () => {
       lastName,
       birthDate: formatDataToString(birth),
       email,
-      gender: GENDER[gender as '남성' | '여성' | '기타'],
+      gender: GENDER[gender as '남성' | '여성' | '선택안함'],
       password,
       region: region['2digitCode'],
       phoneNumber,
