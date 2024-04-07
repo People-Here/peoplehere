@@ -130,7 +130,9 @@ const UserImage = () => {
           background: 'linear-gradient(180deg, rgba(27, 29, 31, 0.00) 0%, #1B1D1F 100%)',
         }}
       ></div>
-      <IonText className="absolute bottom-3 font-body1 text-gray2">Rachel</IonText>
+      <IonText className="absolute overflow-hidden text-sm font-bold leading-6 tracking-tight bottom-3 font-suite text-gray2 text-ellipsis">
+        Rachel
+      </IonText>
     </div>
   );
 };
