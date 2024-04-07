@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
@@ -7,18 +7,36 @@ import PasswordValidator from '../../components/PasswordValidator';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
+import useLogin from '../../hooks/useLogin';
+import Alert from '../../components/alerts';
 
 const Login = () => {
   const router = useIonRouter();
+  const { requestLogin } = useLogin();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const isEmailValid = EMAIL_VALIDATION.test(email);
   const isPasswordValid =
     PASSWORD_VALIDATION.moreThan8.test(password) &&
     PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(password);
+
+  const tryLogin = async () => {
+    if (!isEmailValid) {
+      setErrorMessage('유효한 이메일 형식이 아닙니다.');
+      return;
+    }
+
+    try {
+      await requestLogin(email, password);
+    } catch (error) {
+      buttonRef.current?.click();
+    }
+  };
 
   return (
     <>
@@ -33,12 +51,7 @@ const Login = () => {
         </p>
 
         <div className="flex flex-col w-full gap-2 mb-4">
-          <LabelInput
-            label="이메일"
-            value={email}
-            onChange={() => setEmail}
-            errorText={errorMessage}
-          />
+          <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
           <PasswordInput value={password} onChange={setPassword} />
 
           <PasswordValidator password={password} />
@@ -47,8 +60,8 @@ const Login = () => {
         <div className="flex flex-col w-full gap-3 mb-4">
           <button
             className="text-white bg-orange5 button-lg disabled:bg-gray4"
-            disabled={!(isEmailValid || isPasswordValid)}
-            onClick={() => setErrorMessage('! 유효한 이메일 형식이 아닙니다.')}
+            disabled={!email.length || !isPasswordValid}
+            onClick={tryLogin}
           >
             로그인
           </button>
@@ -66,6 +79,16 @@ const Login = () => {
           <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
         </Link>
       </div>
+
+      <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
+
+      <Alert
+        trigger="error-alert"
+        title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}
+        buttons={[{ text: '다시 입력' }]}
+        bottomText="비밀번호 재설정"
+        onClickBottomText={() => router.push('/reset-password/check-email')}
+      />
     </>
   );
 };

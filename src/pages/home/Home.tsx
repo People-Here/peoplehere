@@ -1,7 +1,6 @@
 import { IonIcon, IonImg, IonText } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
-import useRegionStore from '../../stores/user';
 import SearchIcon from '../../assets/svgs/search.svg';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
@@ -10,6 +9,7 @@ import SampleUserImage from '../../assets/images/sample-user.png';
 import SamplePlaceImage from '../../assets/images/sample-place3.png';
 import SamplePlaceImage2 from '../../assets/images/sample-place2.png';
 import SamplePlaceImage3 from '../../assets/images/sample-place1.png';
+import useUserStore from '../../stores/userInfo';
 
 const Home = () => {
   return (
@@ -27,7 +27,7 @@ const Home = () => {
 };
 
 const SearchBar = () => {
-  const region = useRegionStore((state) => state.region);
+  const { region } = useUserStore((state) => state);
 
   return (
     <Link to="/search">

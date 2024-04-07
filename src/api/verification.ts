@@ -6,7 +6,7 @@ export const checkEmail = async (email: string) => {
 };
 
 export const sendEmailCode = async (email: string) => {
-  const response = await typedPost('/account/email/verification', { email });
+  const response = await typedPost<SendEmailResponse>('/account/email/verification', { email });
   return response;
 };
 
@@ -23,4 +23,8 @@ export const sendPhoneCode = async (region: string, phone: string) => {
 export const verifyPhoneCode = async (phone: string, code: string) => {
   const response = await typedPost('/account/phone/verify', { phone, code });
   return response;
+};
+
+type SendEmailResponse = {
+  expireTime: string;
 };

@@ -5,7 +5,21 @@ import ModalContainer from '.';
 
 import type { ModalProps } from '.';
 
-const PolicyAgreement = ({ onClickButton, ...rest }: ModalProps) => {
+type Props = {
+  privacyChecked: boolean;
+  marketingChecked: boolean;
+  setPrivacyChecked: (checked: boolean) => void;
+  setMarketingChecked: (checked: boolean) => void;
+};
+
+const PolicyAgreement = ({
+  privacyChecked,
+  marketingChecked,
+  setPrivacyChecked,
+  setMarketingChecked,
+  onClickButton,
+  ...rest
+}: Props & ModalProps) => {
   return (
     <ModalContainer
       title="약관동의"
@@ -20,11 +34,15 @@ const PolicyAgreement = ({ onClickButton, ...rest }: ModalProps) => {
           label={
             '개인정보 수집 및 이용에 동의합니다.\n피플히어가 수집하는 개인정보를 보려면 클릭하세요.'
           }
+          checked={privacyChecked}
+          setChecked={setPrivacyChecked}
         />
         <PolicyItem
           label={
             '마케팅 이메일을 수신하겠습니다. (선택)\n설정에서 언제든지 수신을 거부할 수 있습니다.'
           }
+          checked={marketingChecked}
+          setChecked={setMarketingChecked}
         />
       </div>
 
@@ -40,14 +58,17 @@ const PolicyAgreement = ({ onClickButton, ...rest }: ModalProps) => {
 
 type ItemProps = {
   label: string;
-  checked?: boolean;
+  checked: boolean;
+  setChecked: (checked: boolean) => void;
 };
 
-const PolicyItem = ({ label, checked = false }: ItemProps) => {
+const PolicyItem = ({ label, checked = false, setChecked }: ItemProps) => {
   return (
     <IonCheckbox
       class="ion-no-margin"
       justify="space-between"
+      checked={checked}
+      onIonChange={(e) => setChecked(e.detail.checked)}
       style={{
         '--size': '18px',
         '--checkbox-background': colors.gray3,
