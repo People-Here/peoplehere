@@ -1,9 +1,14 @@
-import { typedGet } from '.';
+import { typedGet, typedPost } from '.';
 
 import type { AxiosResponse } from 'axios';
 
 export const getTourList = async () => {
   const response = await typedGet('/tours');
+  return response as unknown as AxiosResponse<TourListResponse>;
+};
+
+export const searchTour = async (keyword: string) => {
+  const response = await typedPost('/tours/serach', { keyword });
   return response as unknown as AxiosResponse<TourListResponse>;
 };
 
