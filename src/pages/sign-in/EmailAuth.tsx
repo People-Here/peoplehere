@@ -56,7 +56,7 @@ const EmailAuth = () => {
           </h1>
 
           <div className="flex items-center gap-2 mt-5">
-            <LabelInput label="이메일" value={emailInput} onChange={setEmailInput} />
+            <LabelInput label="이메일" type="email" value={emailInput} onChange={setEmailInput} />
 
             <button
               className={

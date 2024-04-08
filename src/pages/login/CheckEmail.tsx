@@ -19,7 +19,7 @@ const CheckEmail = () => {
           <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
 
           <div className="flex items-center gap-2 mt-2">
-            <LabelInput label="이메일" value={email} onChange={setEmail} />
+            <LabelInput label="이메일" type="email" value={email} onChange={setEmail} />
 
             <button className="px-3 button-primary button-lg shrink-0" disabled={!email.length}>
               <IonText className="text-white font-body1">인증코드 발송</IonText>

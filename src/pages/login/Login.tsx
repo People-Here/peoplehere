@@ -52,7 +52,13 @@ const Login = () => {
           </p>
 
           <div className="flex flex-col w-full gap-2 mb-4">
-            <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
+            <LabelInput
+              label="이메일"
+              type="email"
+              value={email}
+              onChange={setEmail}
+              errorText={errorMessage}
+            />
             <PasswordInput value={password} onChange={setPassword} />
 
             <PasswordValidator password={password} />
