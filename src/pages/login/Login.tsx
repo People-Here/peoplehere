@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { IonText, useIonRouter } from '@ionic/react';
+import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
 import LabelInput from '../../components/LabelInput';
@@ -39,57 +39,59 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Header type="close" />
+    <IonPage>
+      <IonContent fullscreen>
+        <Header type="close" />
 
-      <div className="flex flex-col items-center justify-center px-4 mt-[3.125rem]">
-        <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem]">
-          PeopleHere
-        </h1>
-        <p className="mt-4 mb-12 text-center whitespace-pre-wrap font-body1 text-gray6">
-          {'여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요.'}
-        </p>
+        <div className="flex flex-col items-center justify-center px-4 mt-[3.125rem]">
+          <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem]">
+            PeopleHere
+          </h1>
+          <p className="mt-4 mb-12 text-center whitespace-pre-wrap font-body1 text-gray6">
+            {'여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요.'}
+          </p>
 
-        <div className="flex flex-col w-full gap-2 mb-4">
-          <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
-          <PasswordInput value={password} onChange={setPassword} />
+          <div className="flex flex-col w-full gap-2 mb-4">
+            <LabelInput label="이메일" value={email} onChange={setEmail} errorText={errorMessage} />
+            <PasswordInput value={password} onChange={setPassword} />
 
-          <PasswordValidator password={password} />
+            <PasswordValidator password={password} />
+          </div>
+
+          <div className="flex flex-col w-full gap-3 mb-4">
+            <button
+              className="text-white bg-orange5 button-lg disabled:bg-gray4"
+              disabled={!email.length || !isPasswordValid}
+              onClick={tryLogin}
+            >
+              로그인
+            </button>
+            <button
+              className="button-primary button-lg"
+              onClick={() => {
+                router.push('/sign-in/phone');
+              }}
+            >
+              회원가입
+            </button>
+          </div>
+
+          <Link to="/reset-password/check-email">
+            <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
+          </Link>
         </div>
 
-        <div className="flex flex-col w-full gap-3 mb-4">
-          <button
-            className="text-white bg-orange5 button-lg disabled:bg-gray4"
-            disabled={!email.length || !isPasswordValid}
-            onClick={tryLogin}
-          >
-            로그인
-          </button>
-          <button
-            className="button-primary button-lg"
-            onClick={() => {
-              router.push('/sign-in/phone');
-            }}
-          >
-            회원가입
-          </button>
-        </div>
+        <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
 
-        <Link to="/reset-password/check-email">
-          <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
-        </Link>
-      </div>
-
-      <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
-
-      <Alert
-        trigger="error-alert"
-        title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}
-        buttons={[{ text: '다시 입력' }]}
-        bottomText="비밀번호 재설정"
-        onClickBottomText={() => router.push('/reset-password/check-email')}
-      />
-    </>
+        <Alert
+          trigger="error-alert"
+          title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}
+          buttons={[{ text: '다시 입력' }]}
+          bottomText="비밀번호 재설정"
+          onClickBottomText={() => router.push('/reset-password/check-email')}
+        />
+      </IonContent>
+    </IonPage>
   );
 };
 

@@ -26,7 +26,7 @@ const SetPassword = () => {
   };
 
   return (
-    <IonContent className="relative h-full">
+    <IonContent fullscreen className="relative">
       <Header type="back" />
 
       <div className="px-4 mt-5">

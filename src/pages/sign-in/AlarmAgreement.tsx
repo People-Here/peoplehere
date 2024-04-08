@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-undef */
-import { IonIcon, IonText, createAnimation, useIonRouter } from '@ionic/react';
+import { IonContent, IonIcon, IonPage, IonText, createAnimation, useIonRouter } from '@ionic/react';
 import { useEffect, useRef } from 'react';
 
 import BellIcon from '../../assets/svgs/bell.svg';
@@ -37,32 +37,36 @@ const AlarmAgreement = () => {
   }, [animation]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full gap-16 px-4">
-      <div className="flex flex-col items-center">
-        <IonIcon
-          ref={iconRef}
-          icon={BellIcon}
-          className="mb-6 w-14 h-14"
-          onClick={() => {
-            animation.current?.play();
-          }}
-        />
+    <IonPage>
+      <IonContent fullscreen>
+        <div className="flex flex-col items-center justify-center w-full h-full gap-16 px-4">
+          <div className="flex flex-col items-center">
+            <IonIcon
+              ref={iconRef}
+              icon={BellIcon}
+              className="mb-6 w-14 h-14"
+              onClick={() => {
+                animation.current?.play();
+              }}
+            />
 
-        <IonText className="font-headline2 text-black mb-1.5">알림을 받으시겠어요?</IonText>
-        <IonText className="whitespace-pre-line font-body1 text-gray5">
-          {'새로운 쪽지, 다가오는 약속 등\n중요한 소식을 놓치지 마세요.'}
-        </IonText>
-      </div>
+            <IonText className="font-headline2 text-black mb-1.5">알림을 받으시겠어요?</IonText>
+            <IonText className="whitespace-pre-line font-body1 text-gray5">
+              {'새로운 쪽지, 다가오는 약속 등\n중요한 소식을 놓치지 마세요.'}
+            </IonText>
+          </div>
 
-      <div className="flex flex-col items-center w-full gap-4">
-        <button className="w-full button-primary button-lg" onClick={() => router.push('/')}>
-          네, 알림을 받을게요
-        </button>
-        <IonText className="font-body1 text-gray6" onClick={() => router.push('/')}>
-          나중에 설정하기
-        </IonText>
-      </div>
-    </div>
+          <div className="flex flex-col items-center w-full gap-4">
+            <button className="w-full button-primary button-lg" onClick={() => router.push('/')}>
+              네, 알림을 받을게요
+            </button>
+            <IonText className="font-body1 text-gray6" onClick={() => router.push('/')}>
+              나중에 설정하기
+            </IonText>
+          </div>
+        </div>
+      </IonContent>
+    </IonPage>
   );
 };
 

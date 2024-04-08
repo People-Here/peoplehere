@@ -1,4 +1,4 @@
-import { IonText, useIonRouter } from '@ionic/react';
+import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 
 import Header from '../../components/Header';
@@ -45,48 +45,55 @@ const EmailAuth = () => {
   };
 
   return (
-    <>
-      <Header type="back" />
+    <IonPage>
+      <IonContent fullscreen>
+        <Header type="back" />
 
-      <div className="px-4 mt-5">
-        <ProgressDots total={3} current={1} />
-        <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-          {'아이디로 사용할\n이메일을 설정해 주세요'}
-        </h1>
+        <div className="px-4 mt-5">
+          <ProgressDots total={3} current={1} />
+          <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
+            {'아이디로 사용할\n이메일을 설정해 주세요'}
+          </h1>
 
-        <div className="flex items-center gap-2 mt-5">
-          <LabelInput label="이메일" value={emailInput} onChange={setEmailInput} />
-
-          <button
-            className={
-              showAuthCodeInput
-                ? 'button-sub button-lg shrink-0 w-[100px]'
-                : 'px-3 button-primary button-lg shrink-0 w-[100px]'
-            }
-            disabled={!EMAIL_VALIDATION.test(emailInput)}
-            onClick={checkEmailExist}
-          >
-            <IonText className="font-body1">
-              {showAuthCodeInput ? '재발송' : '인증코드 발송'}
-            </IonText>
-          </button>
-        </div>
-
-        {showAuthCodeInput && (
-          <div className="flex items-center gap-2 mt-3 animate-fade-down">
-            <LabelInput label="인증번호 입력" value={authCode} onChange={setAuthCode} />
+          <div className="flex items-center gap-2 mt-5">
+            <LabelInput label="이메일" value={emailInput} onChange={setEmailInput} />
 
             <button
-              className="px-3 button-primary button-lg w-[100px] shrink-0"
-              disabled={!authCode.length}
-              onClick={confirmAuthCode}
+              className={
+                showAuthCodeInput
+                  ? 'button-sub button-lg shrink-0 w-[100px]'
+                  : 'px-3 button-primary button-lg shrink-0 w-[100px]'
+              }
+              disabled={!EMAIL_VALIDATION.test(emailInput)}
+              onClick={checkEmailExist}
             >
-              <IonText className="text-white font-body1">확인</IonText>
+              <IonText className="font-body1">
+                {showAuthCodeInput ? '재발송' : '인증코드 발송'}
+              </IonText>
             </button>
           </div>
-        )}
-      </div>
-    </>
+
+          {showAuthCodeInput && (
+            <div className="flex items-center gap-2 mt-3 animate-fade-down">
+              <LabelInput
+                label="인증번호 입력"
+                type="number"
+                value={authCode}
+                onChange={setAuthCode}
+              />
+
+              <button
+                className="px-3 button-primary button-lg w-[100px] shrink-0"
+                disabled={!authCode.length}
+                onClick={confirmAuthCode}
+              >
+                <IonText className="text-white font-body1">확인</IonText>
+              </button>
+            </div>
+          )}
+        </div>
+      </IonContent>
+    </IonPage>
   );
 };
 
