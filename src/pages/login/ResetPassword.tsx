@@ -1,4 +1,4 @@
-import { IonText, useIonRouter } from '@ionic/react';
+import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 
 import Header from '../../components/Header';
@@ -17,27 +17,29 @@ const ResetPassword = () => {
     PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(password);
 
   return (
-    <>
-      <Header type="close" title="비밀번호 재설정" />
+    <IonPage>
+      <IonContent fullscreen>
+        <Header type="close" title="비밀번호 재설정" />
 
-      <div className="flex flex-col gap-2 px-4 mt-5">
-        <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
+        <div className="flex flex-col gap-2 px-4 mt-5">
+          <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
 
-        <PasswordInput value={password} onChange={setPassword} />
+          <PasswordInput value={password} onChange={setPassword} />
 
-        <PasswordValidator password={password} />
-      </div>
+          <PasswordValidator password={password} />
+        </div>
 
-      <Footer>
-        <button
-          className="w-full button-primary button-lg"
-          disabled={!isPasswordValid}
-          onClick={() => router.push('/login')}
-        >
-          계속
-        </button>
-      </Footer>
-    </>
+        <Footer>
+          <button
+            className="w-full button-primary button-lg"
+            disabled={!isPasswordValid}
+            onClick={() => router.push('/login')}
+          >
+            계속
+          </button>
+        </Footer>
+      </IonContent>
+    </IonPage>
   );
 };
 
