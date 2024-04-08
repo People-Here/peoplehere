@@ -122,15 +122,15 @@ const TourItem = ({
       </div>
 
       {/* content area */}
-      {place.imageUrlList.length === 1 ? (
+      {place.imageUrlList?.length === 1 ? (
         <div className="flex gap-2 h-[140px]">
           <UserImage {...user} />
-          <SingleImage image={place.imageUrlList[0]} />
+          <SingleImage image={place.imageUrlList[0].imageUrl} />
         </div>
       ) : (
         <div className="flex gap-2 h-[140px] w-full overflow-x-scroll pr-4">
           <UserImage {...user} />
-          <Images images={place.imageUrlList} />
+          <Images images={place.imageUrlList.map((el) => el.imageUrl) ?? []} />
         </div>
       )}
     </div>

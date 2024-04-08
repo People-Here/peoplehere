@@ -14,21 +14,21 @@ type TourListResponse = {
 export type Tour = {
   id: number;
   title: string;
-  categoryList: string[];
+  categoryList: { name: string }[];
   like: boolean;
   placeInfo: Place;
   userInfo: User;
 };
 
 export type Place = {
-  placeId: string;
+  id: string;
   name: string;
-  imageUrlList: string[];
+  imageUrlList: { imageUrl: string }[];
   district: string;
 };
 
 export type User = {
-  accountId: number;
+  id: number;
   firstName: string;
   lastName: string;
   profileImageUrl: string;
