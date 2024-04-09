@@ -1,5 +1,5 @@
 export const GENDER = {
-  남성: 'MALE',
-  여성: 'FEMALE',
-  선택안함: 'OTHER',
+  MALE: '남성',
+  FEMALE: '여성',
+  OTHER: '선택안함',
 };
