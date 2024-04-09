@@ -9,10 +9,6 @@ const ProfileTab = () => {
   return (
     <IonPage>
       <IonContent>
-        <Link to="/login/region">
-          <IonText>goto login</IonText>
-        </Link>
-
         <Link to="/login">
           <IonText>goto login</IonText>
         </Link>
