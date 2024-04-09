@@ -9,7 +9,7 @@ const HomeTab = () => {
   const region = useUserStore((state) => state.region);
 
   useEffect(() => {
-    if (!region['2digitCode']) {
+    if (!region.countryCode) {
       router.push('/region');
     }
   }, []);

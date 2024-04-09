@@ -11,7 +11,7 @@ const LoginLanding = () => {
   const { region } = useUserStore((state) => state);
 
   useEffect(() => {
-    if (region['2digitCode']) {
+    if (region.countryCode) {
       router.push('/');
     }
   }, [region, router]);

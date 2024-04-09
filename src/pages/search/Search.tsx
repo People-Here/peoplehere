@@ -17,7 +17,7 @@ const Search = () => {
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
 
-    const { data } = await searchPlace({ name: search, region: region['2digitCode'] });
+    const { data } = await searchPlace({ name: search, region: region.countryCode });
 
     if (data.status === 'OK') {
       setSearchResult(data.predictions);
