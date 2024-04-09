@@ -39,11 +39,12 @@ const Router = () => {
         <Search />
       </Route>
 
+      <Route path="/region">
+        <Region />
+      </Route>
+
       <Route exact path="/login">
         <Login />
-      </Route>
-      <Route path="/login/region">
-        <Region />
       </Route>
 
       <Route exact path="/reset-password">

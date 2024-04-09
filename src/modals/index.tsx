@@ -29,7 +29,7 @@ const ModalContainer = ({
 
   return (
     <IonModal ref={modalRef} trigger={trigger} {...rest}>
-      <div className="relative p-4 pt-10 mb-28">
+      <div className={'relative p-4 pt-10 mb-28'}>
         <IonIcon
           className="absolute svg-lg stroke-gray7 top-4 right-4"
           src={CloseIcon}

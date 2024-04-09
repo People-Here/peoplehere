@@ -22,8 +22,6 @@ const Post = () => {
     })();
   }, []);
 
-  console.log('image', images);
-
   return (
     <>
       <Header type="close" />

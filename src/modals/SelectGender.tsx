@@ -20,8 +20,8 @@ const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
     <ModalContainer
       title="성별을 선택하세요"
       buttonText="확인"
-      initialBreakpoint={0.4}
-      breakpoints={[0, 0.4]}
+      initialBreakpoint={0.5}
+      breakpoints={[0, 0.5]}
       onWillDismiss={() => setGender(selectedGender)}
       {...rest}
     >
