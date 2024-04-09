@@ -18,7 +18,7 @@ const PostTab = () => {
       const token = await getItem('token');
 
       if (!token) {
-        router.push('/login');
+        router.push('/login', 'forward', 'replace');
         return;
       }
 
