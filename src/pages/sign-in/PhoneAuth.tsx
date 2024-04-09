@@ -25,7 +25,7 @@ const PhoneAuth = () => {
           <SelectInput
             id="region-modal"
             label="국가/지역"
-            value={`${region.CountryNameKR} (+${String(region.ISONumbericCode).padStart(2, '0')})`}
+            value={`${region.koreanName} (+${String(region.dialCode).padStart(2, '0')})`}
           />
 
           <div className="flex items-center gap-2">

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { IonIcon, IonItem, IonList, IonText } from '@ionic/react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import ModalContainer from '.';
+import { getAllGenders } from '../api/constants';
+import { GENDER } from '../constants/gender';
 
 import type { ModalProps } from '.';
-
-const genders = ['여성', '남성', '선택안함'];
 
 type Props = {
   setGender: (value: string) => void;
@@ -15,6 +15,18 @@ type Props = {
 
 const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
   const [selectedGender, setSelectedGender] = useState('');
+  const [genders, setGenders] = useState<string[]>([]);
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getAllGenders();
+
+      if (response.status === 200) {
+        setGenders(response.data);
+      }
+    })();
+  }, []);
 
   return (
     <ModalContainer
@@ -33,7 +45,7 @@ const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
                 gender === selectedGender ? 'font-body1 text-orange5' : 'font-body1 text-gray8'
               }
             >
-              {gender}
+              {GENDER[gender as keyof typeof GENDER]}
             </IonText>
             {gender === selectedGender && <IonIcon className="svg-md" slot="end" src={CheckIcon} />}
           </IonItem>

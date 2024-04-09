@@ -14,10 +14,10 @@ type State = {
     marketing: boolean;
   };
   region: {
-    '2digitCode': string;
-    ISONumbericCode: number;
-    CountryNameKR: string;
-    CountryNameEN: string;
+    countryCode: string;
+    englishName: string;
+    koreanName: string;
+    dialCode: number;
   };
 };
 
@@ -42,10 +42,10 @@ const useUserStore = create(
       birthDate: '',
       gender: 'OTHER',
       region: {
-        '2digitCode': '',
-        ISONumbericCode: 0,
-        CountryNameKR: '',
-        CountryNameEN: '',
+        countryCode: '',
+        dialCode: 0,
+        koreanName: '',
+        englishName: '',
       },
       policyConsent: {
         privacy: false,
@@ -62,7 +62,7 @@ const useUserStore = create(
       setRegion: (region: State['region']) => set(() => ({ region })),
       resetRegion: () =>
         set(() => ({
-          region: { '2digitCode': '', ISONumbericCode: 0, CountryNameKR: '', CountryNameEN: '' },
+          region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
         })),
     }),
     { name: 'user-storage' },

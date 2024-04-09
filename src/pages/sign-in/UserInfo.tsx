@@ -13,7 +13,6 @@ import useUserStore from '../../stores/userInfo';
 import { signUp, type SignInRequest } from '../../api/sign-in';
 import Toast from '../../toasts/Toast';
 import { formatDataToString } from '../../utils/date';
-import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
   const router = useIonRouter();
@@ -35,9 +34,9 @@ const UserInfo = () => {
       lastName,
       birthDate: formatDataToString(birth),
       email,
-      gender: GENDER[gender as '남성' | '여성' | '선택안함'],
+      gender,
       password,
-      region: region['2digitCode'],
+      region: region.countryCode,
       phoneNumber,
       privacyConsent: privacyChecked,
       marketingConsent: marketingChecked,
