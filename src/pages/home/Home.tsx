@@ -1,5 +1,5 @@
 import { IonIcon, IonImg, IonText } from '@ionic/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Fragment, useLayoutEffect, useState } from 'react';
 
 import SearchIcon from '../../assets/svgs/search.svg';
@@ -7,8 +7,9 @@ import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
+import EmptyListIcon from '../../assets/svgs/empty-result.svg';
 import useUserStore from '../../stores/userInfo';
-import { getTourList } from '../../api/tour';
+import { getTourList, searchTour } from '../../api/tour';
 
 import type { Place, Tour, User } from '../../api/tour';
 
@@ -16,17 +17,27 @@ const Home = () => {
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const location = useLocation();
+
   useLayoutEffect(() => {
     setLoading(true);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const { data, status } = await getTourList();
+      if (location.search) {
+        const keyword = location.search.split('=')[1];
 
-      if (status === 200) {
-        setList(data.tourList);
-        setLoading(false);
-        return;
+        const { data, status } = await searchTour(keyword);
+
+        if (status === 200) {
+          setList(data.tourList);
+        }
+      } else {
+        const { data, status } = await getTourList();
+
+        if (status === 200) {
+          setList(data.tourList);
+        }
       }
 
       setLoading(false);
@@ -42,18 +53,30 @@ const Home = () => {
       <SearchBar />
 
       <div className="flex flex-col mt-6 gap-7">
-        {list.map((tour) => (
-          <Fragment key={tour.id}>
-            <TourItem
-              id={tour.id}
-              title={tour.title}
-              categoryList={tour.categoryList}
-              like={tour.like}
-              place={tour.placeInfo}
-              user={tour.userInfo}
-            />
-          </Fragment>
-        ))}
+        {list.length === 0 ? (
+          <div className="mt-60">
+            <div className="flex flex-col items-center gap-8">
+              <IonIcon icon={EmptyListIcon} className="w-[67px] h-[53px]" />
+
+              <IonText className="font-headline3 text-gray5.5">검색 결과가 없어요.</IonText>
+            </div>
+          </div>
+        ) : (
+          <>
+            {list.map((tour) => (
+              <Fragment key={tour.id}>
+                <TourItem
+                  id={tour.id}
+                  title={tour.title}
+                  categoryList={tour.categoryList}
+                  like={tour.like}
+                  place={tour.placeInfo}
+                  user={tour.userInfo}
+                />
+              </Fragment>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
