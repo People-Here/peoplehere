@@ -8,7 +8,7 @@ export const getTourList = async () => {
 };
 
 export const searchTour = async (keyword: string) => {
-  const response = await typedPost('/tours/serach', { keyword });
+  const response = await typedPost('/tours/search', { keyword });
   return response as unknown as AxiosResponse<TourListResponse>;
 };
 
