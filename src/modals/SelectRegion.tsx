@@ -1,11 +1,12 @@
 import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
-import allRegions from '../constants/region';
 import useUserStore from '../stores/userInfo';
 import ModalContainer from '.';
+import { getAllRegions } from '../api/constants';
 
+import type { Region } from '../api/constants';
 import type { ModalProps } from '.';
 
 const SelectRegion = (props: ModalProps) => {
@@ -13,22 +14,25 @@ const SelectRegion = (props: ModalProps) => {
 
   const setRegion = useUserStore((state) => state.setRegion);
 
-  const [regions, setRegions] = useState(() =>
-    allRegions.map((region) => {
-      return {
-        digitCode: region['2digitCode'],
-        numericCode: region.ISONumbericCode,
-        nameKR: region.CountryNameKR,
-        nameEN: region.CountryNameEN,
-      };
-    }),
-  );
+  const [regions, setRegions] = useState<Region[]>([]);
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getAllRegions();
+
+      if (response.status === 200) {
+        setRegions(response.data);
+      }
+    })();
+  }, []);
+
   const [searchText, setSearchText] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState({
-    '2digitCode': '',
-    ISONumbericCode: 0,
-    CountryNameKR: '',
-    CountryNameEN: '',
+  const [selectedRegion, setSelectedRegion] = useState<Region>({
+    countryCode: '',
+    dialCode: 0,
+    englishName: '',
+    koreanName: '',
   });
 
   useEffect(() => {
@@ -42,38 +46,24 @@ const SelectRegion = (props: ModalProps) => {
   }, [searchText]);
 
   const filterCountries = (keyword: string) => {
-    const filtered = allRegions
-      .filter(
-        (region) =>
-          region.CountryNameKR.includes(keyword) ||
-          region.CountryNameEN.toLowerCase().includes(keyword.toLowerCase()),
-      )
-      .map((region) => {
-        return {
-          digitCode: region['2digitCode'],
-          numericCode: region.ISONumbericCode,
-          nameKR: region.CountryNameKR,
-          nameEN: region.CountryNameEN,
-        };
-      });
+    const filtered = regions.filter(
+      (region) =>
+        region.koreanName.includes(keyword) ||
+        region.englishName.toLowerCase().includes(keyword.toLowerCase()),
+    );
 
     setRegions(filtered);
   };
 
   const onClickRegion = (event: any) => {
-    const targetRegion = allRegions.find(
+    const targetRegion = regions.find(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      (region) => region.CountryNameKR === event.target.innerText,
+      (region) => region.koreanName === event.target.innerText,
     );
 
     if (!targetRegion) return;
 
-    setSelectedRegion({
-      '2digitCode': targetRegion['2digitCode'],
-      ISONumbericCode: targetRegion.ISONumbericCode,
-      CountryNameKR: targetRegion.CountryNameKR,
-      CountryNameEN: targetRegion.CountryNameEN,
-    });
+    setSelectedRegion(targetRegion);
   };
 
   return (
@@ -100,14 +90,14 @@ const SelectRegion = (props: ModalProps) => {
       >
         <IonList lines="full" onClick={onClickRegion}>
           {regions.map((region) => (
-            <IonItem key={region.digitCode}>
-              {selectedRegion['2digitCode'] === region.digitCode ? (
+            <IonItem key={region.countryCode}>
+              {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
-                  <p className="font-body1 text-orange6">{region.nameKR}</p>
+                  <p className="font-body1 text-orange6">{region.koreanName}</p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
-                <p className="font-body1 text-gray8">{region.nameKR}</p>
+                <p className="font-body1 text-gray8">{region.koreanName}</p>
               )}
             </IonItem>
           ))}
