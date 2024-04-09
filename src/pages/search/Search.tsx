@@ -3,21 +3,24 @@ import { useState } from 'react';
 
 import Header from '../../components/Header';
 import { searchPlace } from '../../api/search';
+import useUserStore from '../../stores/userInfo';
 
 import type { SearchPlaceResponse } from '../../api/search';
 import type { FormEvent } from 'react';
 
 const Search = () => {
+  const region = useUserStore((state) => state.region);
+
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
 
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
 
-    const response = await searchPlace({ name: '', region: search });
+    const { data } = await searchPlace({ name: search, region: region['2digitCode'] });
 
-    if (response.status === 'OK') {
-      setSearchResult(response.predictions);
+    if (data.status === 'OK') {
+      setSearchResult(data.predictions);
     }
   };
 
