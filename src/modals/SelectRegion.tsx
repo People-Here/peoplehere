@@ -1,4 +1,4 @@
-import { IonIcon, IonInput, IonItem, IonList } from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
@@ -9,6 +9,8 @@ import ModalContainer from '.';
 import type { ModalProps } from '.';
 
 const SelectRegion = (props: ModalProps) => {
+  const isMobile = isPlatform('iphone') || isPlatform('android');
+
   const setRegion = useUserStore((state) => state.setRegion);
 
   const [regions, setRegions] = useState(() =>
@@ -93,7 +95,9 @@ const SelectRegion = (props: ModalProps) => {
         />
       </div>
 
-      <section className="overflow-y-scroll h-[65vh] mb-4">
+      <section
+        className={isMobile ? 'overflow-y-scroll h-[57vh] mb-4' : 'overflow-y-scroll h-[65vh] mb-4'}
+      >
         <IonList lines="full" onClick={onClickRegion}>
           {regions.map((region) => (
             <IonItem key={region.digitCode}>
