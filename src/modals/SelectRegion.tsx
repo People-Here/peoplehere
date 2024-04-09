@@ -15,6 +15,7 @@ const SelectRegion = (props: ModalProps) => {
   const setRegion = useUserStore((state) => state.setRegion);
 
   const [regions, setRegions] = useState<Region[]>([]);
+  const [filteredRegions, setFilteredRegions] = useState<Region[]>([]);
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -23,6 +24,7 @@ const SelectRegion = (props: ModalProps) => {
 
       if (response.status === 200) {
         setRegions(response.data);
+        setFilteredRegions(response.data);
       }
     })();
   }, []);
@@ -36,6 +38,8 @@ const SelectRegion = (props: ModalProps) => {
   });
 
   useEffect(() => {
+    if (!searchText) return;
+
     const timer = setTimeout(() => {
       filterCountries(searchText);
     }, 500);
@@ -52,7 +56,7 @@ const SelectRegion = (props: ModalProps) => {
         region.englishName.toLowerCase().includes(keyword.toLowerCase()),
     );
 
-    setRegions(filtered);
+    setFilteredRegions(filtered);
   };
 
   const onClickRegion = (event: any) => {
@@ -89,7 +93,7 @@ const SelectRegion = (props: ModalProps) => {
         className={isMobile ? 'overflow-y-scroll h-[57vh] mb-4' : 'overflow-y-scroll h-[65vh] mb-4'}
       >
         <IonList lines="full" onClick={onClickRegion}>
-          {regions.map((region) => (
+          {filteredRegions.map((region) => (
             <IonItem key={region.countryCode}>
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
