@@ -37,9 +37,9 @@ const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
       onWillDismiss={() => setGender(selectedGender)}
       {...rest}
     >
-      <IonList onClick={(event: any) => setSelectedGender(event.target.innerText as string)}>
+      <IonList>
         {genders.map((gender) => (
-          <IonItem key={gender}>
+          <IonItem key={gender} onClick={() => setSelectedGender(gender)}>
             <IonText
               className={
                 gender === selectedGender ? 'font-body1 text-orange5' : 'font-body1 text-gray8'
