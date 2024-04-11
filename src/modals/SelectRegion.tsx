@@ -80,8 +80,8 @@ const SelectRegion = (props: ModalProps) => {
     <ModalContainer
       title="출신 국가를 선택하세요"
       buttonText="선택"
-      initialBreakpoint={0.95}
-      breakpoints={[0, 0.95]}
+      initialBreakpoint={0.87}
+      breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
       {...props}
     >

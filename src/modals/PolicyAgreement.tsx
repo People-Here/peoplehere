@@ -20,8 +20,8 @@ const PolicyAgreement = ({
     <ModalContainer
       title="약관동의"
       buttonText="회원가입 완료"
-      initialBreakpoint={0.4}
-      breakpoints={[0, 0.4]}
+      initialBreakpoint={0.35}
+      breakpoints={[0, 0.35, 0.4]}
       onClickButton={onClickButton}
       {...rest}
     >
