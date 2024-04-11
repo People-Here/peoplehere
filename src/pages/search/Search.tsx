@@ -1,4 +1,12 @@
-import { IonInput, IonItem, IonLabel, IonList, IonText, useIonRouter } from '@ionic/react';
+import {
+  IonContent,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+  useIonRouter,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
@@ -31,7 +39,7 @@ const Search = () => {
   };
 
   return (
-    <>
+    <IonContent fullscreen>
       <Header type="back" />
 
       <div className="px-4 mt-2.5">
@@ -58,7 +66,7 @@ const Search = () => {
           </div>
         )}
       </div>
-    </>
+    </IonContent>
   );
 };
 
