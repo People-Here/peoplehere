@@ -1,5 +1,5 @@
 import { IonInput, IonItem, IonLabel, IonList, IonText, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import { searchPlace } from '../../api/search';
@@ -13,6 +13,12 @@ const Search = () => {
 
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
+
+  useEffect(() => {
+    if (!search) {
+      setSearchResult([]);
+    }
+  }, [search]);
 
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
