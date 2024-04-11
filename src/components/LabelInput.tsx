@@ -10,9 +10,10 @@ type Props = {
   type?: ComponentProps<typeof IonInput>['type'];
   readonly?: boolean;
   errorText?: string;
+  inputMode?: ComponentProps<typeof IonInput>['inputMode'];
 };
 
-const LabelInput = ({ label, value, onChange, type, readonly, errorText }: Props) => {
+const LabelInput = ({ label, value, onChange, type, readonly, errorText, inputMode }: Props) => {
   return (
     <>
       <IonItem
@@ -28,6 +29,7 @@ const LabelInput = ({ label, value, onChange, type, readonly, errorText }: Props
           className="font-body1 text-gray8"
           type={type}
           label={label}
+          inputMode={inputMode}
           labelPlacement="floating"
           value={value}
           onIonInput={(e) => onChange(e.target.value as string)}
