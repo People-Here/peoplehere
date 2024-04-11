@@ -29,7 +29,13 @@ const PhoneAuth = () => {
           />
 
           <div className="flex items-center gap-2">
-            <LabelInput label="전화번호" type="tel" value={phoneNumber} onChange={setPhoneNumber} />
+            <LabelInput
+              label="전화번호"
+              type="tel"
+              inputMode="tel"
+              value={phoneNumber}
+              onChange={setPhoneNumber}
+            />
 
             <button
               className="px-3 button-primary button-lg shrink-0"
@@ -51,7 +57,7 @@ const PhoneAuth = () => {
               <div className="flex items-center gap-2 mt-2">
                 <LabelInput
                   label="인증번호 입력"
-                  type="number"
+                  inputMode="numeric"
                   value={authCode}
                   onChange={setAuthCode}
                 />

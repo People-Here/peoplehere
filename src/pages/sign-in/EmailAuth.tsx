@@ -56,7 +56,14 @@ const EmailAuth = () => {
           </h1>
 
           <div className="flex items-center gap-2 mt-5">
-            <LabelInput label="이메일" type="email" value={emailInput} onChange={setEmailInput} />
+            <LabelInput
+              label="이메일"
+              type="email"
+              inputMode="email"
+              value={emailInput}
+              onChange={setEmailInput}
+              errorText={errorMessage}
+            />
 
             <button
               className={
@@ -77,7 +84,7 @@ const EmailAuth = () => {
             <div className="flex items-center gap-2 mt-3 animate-fade-down">
               <LabelInput
                 label="인증번호 입력"
-                type="number"
+                inputMode="numeric"
                 value={authCode}
                 onChange={setAuthCode}
               />

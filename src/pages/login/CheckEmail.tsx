@@ -19,7 +19,13 @@ const CheckEmail = () => {
           <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
 
           <div className="flex items-center gap-2 mt-2">
-            <LabelInput label="이메일" type="email" value={email} onChange={setEmail} />
+            <LabelInput
+              label="이메일"
+              type="email"
+              inputMode="email"
+              value={email}
+              onChange={setEmail}
+            />
 
             <button className="px-3 button-primary button-lg shrink-0" disabled={!email.length}>
               <IonText className="text-white font-body1">인증코드 발송</IonText>
@@ -27,7 +33,12 @@ const CheckEmail = () => {
           </div>
 
           <div className="flex items-center gap-2 mt-3">
-            <LabelInput label="인증번호 입력" value={authCode} onChange={setAuthCode} />
+            <LabelInput
+              label="인증번호 입력"
+              inputMode="numeric"
+              value={authCode}
+              onChange={setAuthCode}
+            />
 
             <button
               className="px-3 button-primary button-lg shrink-0 w-[100px]"
