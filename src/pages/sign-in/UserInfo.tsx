@@ -24,7 +24,6 @@ const UserInfo = () => {
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
 
-  const [privacyChecked, setPrivacyChecked] = useState(false);
   const [marketingChecked, setMarketingChecked] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -39,7 +38,7 @@ const UserInfo = () => {
       password,
       region: region.countryCode,
       phoneNumber,
-      privacyConsent: privacyChecked,
+      privacyConsent: true,
       marketingConsent: marketingChecked,
     };
   };
@@ -98,8 +97,6 @@ const UserInfo = () => {
       <PolicyAgreement
         trigger="policy-modal"
         onClickButton={userSignUp}
-        privacyChecked={privacyChecked}
-        setPrivacyChecked={setPrivacyChecked}
         marketingChecked={marketingChecked}
         setMarketingChecked={setMarketingChecked}
       />
