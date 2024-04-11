@@ -1,5 +1,5 @@
 import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import useUserStore from '../stores/userInfo';
@@ -37,8 +37,24 @@ const SelectRegion = (props: ModalProps) => {
     koreanName: '',
   });
 
+  const filterCountries = useCallback(
+    (keyword: string) => {
+      const filtered = regions.filter(
+        (region) =>
+          region.koreanName.includes(keyword) ||
+          region.englishName.toLowerCase().includes(keyword.toLowerCase()),
+      );
+
+      setFilteredRegions(filtered);
+    },
+    [regions],
+  );
+
   useEffect(() => {
-    if (!searchText) return;
+    if (!searchText) {
+      setFilteredRegions(regions);
+      return;
+    }
 
     const timer = setTimeout(() => {
       filterCountries(searchText);
@@ -47,17 +63,7 @@ const SelectRegion = (props: ModalProps) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchText]);
-
-  const filterCountries = (keyword: string) => {
-    const filtered = regions.filter(
-      (region) =>
-        region.koreanName.includes(keyword) ||
-        region.englishName.toLowerCase().includes(keyword.toLowerCase()),
-    );
-
-    setFilteredRegions(filtered);
-  };
+  }, [searchText, regions, filterCountries]);
 
   const onClickRegion = (event: any) => {
     const targetRegion = regions.find(
