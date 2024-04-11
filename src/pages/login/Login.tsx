@@ -55,6 +55,7 @@ const Login = () => {
             <LabelInput
               label="이메일"
               type="email"
+              inputMode="email"
               value={email}
               onChange={setEmail}
               errorText={errorMessage}

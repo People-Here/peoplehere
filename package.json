@@ -36,6 +36,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "5.7.4",
     "@chromatic-com/storybook": "1.2.25",
     "@storybook/addon-essentials": "^8.0.5",

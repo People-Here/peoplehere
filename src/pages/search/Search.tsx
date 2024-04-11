@@ -1,5 +1,13 @@
-import { IonInput, IonItem, IonLabel, IonList, IonText, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
+import {
+  IonContent,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+  useIonRouter,
+} from '@ionic/react';
+import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import { searchPlace } from '../../api/search';
@@ -14,6 +22,12 @@ const Search = () => {
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
 
+  useEffect(() => {
+    if (!search) {
+      setSearchResult([]);
+    }
+  }, [search]);
+
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -25,7 +39,7 @@ const Search = () => {
   };
 
   return (
-    <>
+    <IonContent fullscreen>
       <Header type="back" />
 
       <div className="px-4 mt-2.5">
@@ -52,7 +66,7 @@ const Search = () => {
           </div>
         )}
       </div>
-    </>
+    </IonContent>
   );
 };
 

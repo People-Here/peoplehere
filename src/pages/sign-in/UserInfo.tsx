@@ -13,6 +13,7 @@ import useUserStore from '../../stores/userInfo';
 import { signUp, type SignInRequest } from '../../api/sign-in';
 import Toast from '../../toasts/Toast';
 import { formatDataToString } from '../../utils/date';
+import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
   const router = useIonRouter();
@@ -23,7 +24,6 @@ const UserInfo = () => {
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
 
-  const [privacyChecked, setPrivacyChecked] = useState(false);
   const [marketingChecked, setMarketingChecked] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -38,7 +38,7 @@ const UserInfo = () => {
       password,
       region: region.countryCode,
       phoneNumber,
-      privacyConsent: privacyChecked,
+      privacyConsent: true,
       marketingConsent: marketingChecked,
     };
   };
@@ -82,7 +82,7 @@ const UserInfo = () => {
           </IonText>
         </div>
 
-        <SelectInput id="gender-modal" label="성별" value={gender} />
+        <SelectInput id="gender-modal" label="성별" value={GENDER[gender as keyof typeof GENDER]} />
 
         <Footer>
           <button id="policy-modal" className="w-full button-primary button-lg">
@@ -97,8 +97,6 @@ const UserInfo = () => {
       <PolicyAgreement
         trigger="policy-modal"
         onClickButton={userSignUp}
-        privacyChecked={privacyChecked}
-        setPrivacyChecked={setPrivacyChecked}
         marketingChecked={marketingChecked}
         setMarketingChecked={setMarketingChecked}
       />
