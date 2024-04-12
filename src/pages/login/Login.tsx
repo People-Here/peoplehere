@@ -33,6 +33,7 @@ const Login = () => {
 
     try {
       await requestLogin(email, password);
+      router.push('/');
     } catch (error) {
       buttonRef.current?.click();
     }
