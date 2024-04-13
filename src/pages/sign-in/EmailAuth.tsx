@@ -94,7 +94,7 @@ const EmailAuth = () => {
                 disabled={!authCode.length}
                 onClick={confirmAuthCode}
               >
-                <IonText className="text-white font-body1">확인</IonText>
+                <IonText className="font-body1">확인</IonText>
               </button>
             </div>
           )}
