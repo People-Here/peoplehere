@@ -34,7 +34,12 @@ const NavigationBar = () => {
         slot="bottom"
         defaultValue="home"
         onIonTabsDidChange={(event) => setCurrentTab(event.detail.tab)}
-        hidden={whiteList.includes(location.pathname.split('/')[1]) ? false : true}
+        hidden={
+          location.pathname.split('/').length <= 2 &&
+          whiteList.includes(location.pathname.split('/')[1])
+            ? false
+            : true
+        }
       >
         <IonTabButton tab="home" href="/home">
           <IonIcon
