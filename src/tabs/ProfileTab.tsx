@@ -1,17 +1,26 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import useUserStore from '../stores/userInfo';
-import Alert from '../components/alerts';
+import useStorage from '../hooks/useStorage';
 
 const ProfileTab = () => {
   const reset = useUserStore((state) => state.resetRegion);
 
   const router = useIonRouter();
-  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const { getItem } = useStorage();
 
   useEffect(() => {
-    buttonRef.current?.click();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const token = await getItem('accessToken');
+
+      if (!token) {
+        router.push('/login', 'forward', 'replace');
+        return;
+      }
+    })();
   }, []);
 
   return (
@@ -21,16 +30,6 @@ const ProfileTab = () => {
           reset region
         </button>
       </IonContent>
-
-      <button id="ready-alert" ref={buttonRef} className="hidden" />
-
-      <Alert
-        trigger="ready-alert"
-        title="준비중인 기능이에요."
-        buttons={[
-          { text: '홈으로 돌아가기', onClick: () => router.push('/', 'forward', 'replace') },
-        ]}
-      />
     </IonPage>
   );
 };
