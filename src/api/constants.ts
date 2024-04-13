@@ -1,17 +1,15 @@
 import { typedGet } from '.';
 
-import type { AxiosResponse } from 'axios';
-
 export const getAllRegions = async () => {
-  const response = await typedGet('/constants/regions');
+  const response = await typedGet<Region[]>('/constants/regions');
 
-  return response as unknown as AxiosResponse<Region[]>;
+  return response;
 };
 
 export const getAllGenders = async () => {
-  const response = await typedGet('/constants/genders');
+  const response = await typedGet<string[]>('/constants/genders');
 
-  return response as unknown as AxiosResponse<string[]>;
+  return response;
 };
 
 export type Region = {

@@ -8,8 +8,8 @@ const useLogin = () => {
     const response = await signIn({ email, password });
 
     if (response.status === 200) {
-      await setItem('accessToken', response.data.data.accessToken);
-      await setItem('refreshToken', response.data.data.refreshToken);
+      await setItem('accessToken', response.data.accessToken);
+      await setItem('refreshToken', response.data.refreshToken);
       return;
     }
 
