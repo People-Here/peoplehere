@@ -5,7 +5,7 @@ import useUserStore from '../stores/userInfo';
 import useStorage from '../hooks/useStorage';
 
 const ProfileTab = () => {
-  const reset = useUserStore((state) => state.resetRegion);
+  const { resetRegion } = useUserStore((state) => state);
 
   const router = useIonRouter();
 
@@ -21,12 +21,14 @@ const ProfileTab = () => {
         return;
       }
     })();
+
+    router.push('/profile/onboarding');
   }, []);
 
   return (
     <IonPage>
       <IonContent>
-        <button className="button-primary button-md" onClick={() => reset()}>
+        <button className="button-primary button-md" onClick={resetRegion}>
           reset region
         </button>
       </IonContent>
