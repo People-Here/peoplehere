@@ -15,7 +15,7 @@ const PostTab = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const token = await getItem('token');
+      const token = await getItem('accessToken');
 
       if (!token) {
         router.push('/login', 'forward', 'replace');
