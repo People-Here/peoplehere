@@ -15,7 +15,7 @@ type Props = {
 
 const LabelInput = ({ label, value, onChange, type, readonly, errorText, inputMode }: Props) => {
   return (
-    <>
+    <div className="w-full">
       <IonItem
         className="h-[54px] w-full"
         lines="none"
@@ -26,7 +26,7 @@ const LabelInput = ({ label, value, onChange, type, readonly, errorText, inputMo
         }}
       >
         <IonInput
-          className="font-body1 text-gray8"
+          className="w-full font-body1 text-gray8"
           type={type}
           label={label}
           inputMode={inputMode}
@@ -41,7 +41,7 @@ const LabelInput = ({ label, value, onChange, type, readonly, errorText, inputMo
       </IonItem>
 
       {errorText ? <IonText className="pl-1 font-caption2 text-red3">{errorText}</IonText> : null}
-    </>
+    </div>
   );
 };
 
