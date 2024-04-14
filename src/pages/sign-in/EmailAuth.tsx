@@ -8,6 +8,8 @@ import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verificati
 import { EMAIL_VALIDATION } from '../../constants/regex';
 import useUserStore from '../../stores/userInfo';
 
+import type { AxiosError } from 'axios';
+
 const EmailAuth = () => {
   const router = useIonRouter();
   const setEmail = useUserStore((state) => state.setEmail);
@@ -18,20 +20,20 @@ const EmailAuth = () => {
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
 
   const checkEmailExist = async () => {
-    const response = await checkEmail(emailInput);
-
-    if (response.status === 200) {
+    try {
+      await checkEmail(emailInput);
       setShowAuthCodeInput(true);
       await sendEmailCode(emailInput);
-      return;
-    }
+    } catch (error) {
+      const errorInstance = error as AxiosError;
 
-    if (response.status === 400) {
-      setErrorMessage('이메일 형식이 유효하지 않아요.');
-    }
+      if (errorInstance.response?.status === 400) {
+        setErrorMessage('이메일 형식이 유효하지 않아요.');
+      }
 
-    if (response.status === 409) {
-      setErrorMessage('이미 가입한 이메일이에요.');
+      if (errorInstance.response?.status === 409) {
+        setErrorMessage('이미 가입한 이메일이에요.');
+      }
     }
   };
 
@@ -55,7 +57,7 @@ const EmailAuth = () => {
             {'아이디로 사용할\n이메일을 설정해 주세요'}
           </h1>
 
-          <div className="flex items-center gap-2 mt-5">
+          <div className="flex gap-2 mt-5">
             <LabelInput
               label="이메일"
               type="email"
