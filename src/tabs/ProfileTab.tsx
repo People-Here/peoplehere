@@ -21,8 +21,6 @@ const ProfileTab = () => {
         return;
       }
     })();
-
-    router.push('/profile/onboarding');
   }, []);
 
   return (
