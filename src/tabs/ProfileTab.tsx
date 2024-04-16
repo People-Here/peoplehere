@@ -21,6 +21,8 @@ const ProfileTab = () => {
         return;
       }
     })();
+
+    router.push('/profile/me');
   }, []);
 
   return (
