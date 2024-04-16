@@ -1,4 +1,6 @@
-import { IonContent, IonIcon, IonLabel, IonPage, IonText } from '@ionic/react';
+import { IonContent, IonIcon, IonImg, IonLabel, IonPage, IonText } from '@ionic/react';
+import { useState } from 'react';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -85,16 +87,38 @@ const RequiredChip = () => {
 };
 
 const ImageArea = () => {
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const selectPhoto = async () => {
+    const selectedImage = await Camera.getPhoto({
+      quality: 70,
+      allowEditing: true,
+      resultType: CameraResultType.Uri,
+      promptLabelHeader: '프로필 사진 추가',
+      promptLabelPicture: '사진 촬영하기',
+      promptLabelPhoto: '앨범에서 사진 선택하기',
+      promptLabelCancel: '취소',
+    });
+
+    setSelectedImage(selectedImage.webPath ?? '');
+  };
+
   return (
     <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative">
-      <div className="absolute top-4 right-4">
-        <RequiredChip />
-      </div>
+      {selectedImage ? (
+        <IonImg src={selectedImage} className="object-cover w-full h-full" />
+      ) : (
+        <>
+          <div className="absolute top-4 right-4">
+            <RequiredChip />
+          </div>
 
-      <div className="flex flex-col items-center gap-3">
-        <IonIcon icon={PlusCircleOrange} className="w-9 h-9" />
-        <IonText className="font-subheading2 text-gray5.5">프로필 사진을 추가하세요</IonText>
-      </div>
+          <div className="flex flex-col items-center gap-3" onClick={selectPhoto}>
+            <IonIcon icon={PlusCircleOrange} className="w-9 h-9" />
+            <IonText className="font-subheading2 text-gray5.5">프로필 사진을 추가하세요</IonText>
+          </div>
+        </>
+      )}
     </div>
   );
 };
