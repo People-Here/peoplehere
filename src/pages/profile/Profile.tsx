@@ -14,26 +14,33 @@ import LocationIcon from '../../assets/svgs/location.svg';
 import BagIcon from '../../assets/svgs/bag.svg';
 import SchoolIcon from '../../assets/svgs/school.svg';
 import Footer from '../../layouts/Footer';
-
-const listItems = [
-  {
-    iconSrc: GlobeIcon,
-    title: '출신국가',
-    value: '대한민국',
-    modalId: 'introduce-modal',
-    required: true,
-  },
-  { iconSrc: LanguageIcon, title: '구사언어', modalId: 'language-modal', required: true },
-  { iconSrc: DoubleHeartIcon, title: '좋아하는 것', modalId: 'favorite-modal', required: false },
-  { iconSrc: ClockIcon, title: '취미', modalId: 'hobby-modal', required: false },
-  { iconSrc: DogIcon, title: '반려동물', modalId: 'pet-modal', required: false },
-  { iconSrc: CakeIcon, title: '나이', required: false },
-  { iconSrc: LocationIcon, title: '거주지', required: false },
-  { iconSrc: BagIcon, title: '직업', required: false },
-  { iconSrc: SchoolIcon, title: '출신학교', required: false },
-];
+import Introduce from '../../modals/Introduce';
+import SelectRegion from '../../modals/SelectRegion';
+import useUserStore from '../../stores/userInfo';
 
 const Profile = () => {
+  const { region } = useUserStore((state) => state);
+
+  const [introduce, setIntroduce] = useState('');
+
+  const listItems = [
+    {
+      iconSrc: GlobeIcon,
+      title: '출신국가',
+      value: region.koreanName,
+      modalId: 'region-modal',
+      required: true,
+    },
+    { iconSrc: LanguageIcon, title: '구사언어', modalId: 'language-modal', required: true },
+    { iconSrc: DoubleHeartIcon, title: '좋아하는 것', modalId: 'favorite-modal', required: false },
+    { iconSrc: ClockIcon, title: '취미', modalId: 'hobby-modal', required: false },
+    { iconSrc: DogIcon, title: '반려동물', modalId: 'pet-modal', required: false },
+    { iconSrc: CakeIcon, title: '나이', required: false },
+    { iconSrc: LocationIcon, title: '거주지', required: false },
+    { iconSrc: BagIcon, title: '직업', required: false },
+    { iconSrc: SchoolIcon, title: '출신학교', required: false },
+  ];
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -61,11 +68,9 @@ const Profile = () => {
             <RequiredChip />
           </div>
 
-          <div className="p-4 bg-gray1.5 rounded-xl mb-4">
-            <IonText className="font-body1 text-gray8">
-              {
-                '서울 26년 토박이 쩝쩝박사 🍕🧀🥖\n26년차 경력으로 맛집을 소개드려요.\n많이 걷고 맛있게 먹고 즐겁게 수다 떠는 것을 좋아해요. 신나고 맛있는 한국 여행을 원한다면 저와 함께 떠나요!'
-              }
+          <div id="introduce-modal" className="p-4 bg-gray1.5 rounded-xl mb-4">
+            <IonText className="whitespace-pre-wrap font-body1 text-gray8">
+              {introduce ? introduce : '나에 대한 자유로운 소개글을 작성해 보세요.'}
             </IonText>
           </div>
 
@@ -73,6 +78,7 @@ const Profile = () => {
             {listItems.map((item) => (
               <ListItem
                 key={item.title}
+                id={item.modalId}
                 iconSrc={item.iconSrc}
                 title={item.title}
                 value={item.value}
@@ -86,6 +92,10 @@ const Profile = () => {
           <button className="w-full button-primary button-lg">완료</button>
         </Footer>
       </IonContent>
+
+      {/* modals */}
+      <Introduce trigger="introduce-modal" setIntroduce={setIntroduce} />
+      <SelectRegion trigger="region-modal" />
     </IonPage>
   );
 };
@@ -138,12 +148,13 @@ const ImageArea = () => {
 type ListItemProps = {
   iconSrc: string;
   title: string;
+  id?: string;
   value?: string;
   required?: boolean;
 };
-const ListItem = ({ iconSrc, title, value, required }: ListItemProps) => {
+const ListItem = ({ iconSrc, title, id, value, required }: ListItemProps) => {
   return (
-    <div className="flex items-center justify-between py-4 border-b border-gray1.5">
+    <div className="flex items-center justify-between py-4 border-b border-gray1.5" id={id}>
       <div className="flex items-center gap-4">
         <IonIcon icon={iconSrc} className="svg-lg" />
         <IonLabel className="font-body1 text-gray8">
