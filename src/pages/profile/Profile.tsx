@@ -10,15 +10,27 @@ import DoubleHeartIcon from '../../assets/svgs/double-heart.svg';
 import ClockIcon from '../../assets/svgs/clock.svg';
 import DogIcon from '../../assets/svgs/dog.svg';
 import CakeIcon from '../../assets/svgs/cake.svg';
+import LocationIcon from '../../assets/svgs/location.svg';
+import BagIcon from '../../assets/svgs/bag.svg';
+import SchoolIcon from '../../assets/svgs/school.svg';
 import Footer from '../../layouts/Footer';
 
 const listItems = [
-  { iconSrc: GlobeIcon, title: '출신국가', value: '대한민국', required: true },
-  { iconSrc: LanguageIcon, title: '구사언어', required: true },
-  { iconSrc: DoubleHeartIcon, title: '좋아하는 것', required: false },
-  { iconSrc: ClockIcon, title: '취미', required: false },
-  { iconSrc: DogIcon, title: '반려동물', required: false },
+  {
+    iconSrc: GlobeIcon,
+    title: '출신국가',
+    value: '대한민국',
+    modalId: 'introduce-modal',
+    required: true,
+  },
+  { iconSrc: LanguageIcon, title: '구사언어', modalId: 'language-modal', required: true },
+  { iconSrc: DoubleHeartIcon, title: '좋아하는 것', modalId: 'favorite-modal', required: false },
+  { iconSrc: ClockIcon, title: '취미', modalId: 'hobby-modal', required: false },
+  { iconSrc: DogIcon, title: '반려동물', modalId: 'pet-modal', required: false },
   { iconSrc: CakeIcon, title: '나이', required: false },
+  { iconSrc: LocationIcon, title: '거주지', required: false },
+  { iconSrc: BagIcon, title: '직업', required: false },
+  { iconSrc: SchoolIcon, title: '출신학교', required: false },
 ];
 
 const Profile = () => {
