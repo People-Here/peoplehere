@@ -18,12 +18,12 @@ const Introduce = ({ setIntroduce, ...rest }: ModalProps & Props) => {
       buttonText="저장"
       initialBreakpoint={0.9}
       breakpoints={[0, 0.45, 0.9]}
-      onWillDismiss={() => setIntroduce}
+      onWillDismiss={() => setIntroduce(input)}
       {...rest}
     >
-      <div>
+      <div className="flex flex-col gap-1.5 items-end mb-5">
         <textarea
-          className="px-4 py-2.5 rounded-lg bg-gray1.5 h-[8.75rem] w-full mb-1.5"
+          className="px-4 py-2.5 rounded-lg bg-gray1.5 h-[8.75rem] w-full font-body1 text-gray8"
           value={input}
           onChange={(e) => setInput(e.currentTarget.value)}
           maxLength={450}
