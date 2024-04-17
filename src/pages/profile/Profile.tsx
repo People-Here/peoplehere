@@ -17,11 +17,19 @@ import Footer from '../../layouts/Footer';
 import Introduce from '../../modals/Introduce';
 import SelectRegion from '../../modals/SelectRegion';
 import useUserStore from '../../stores/userInfo';
+import SimpleInputModal from '../../modals/SimpleInputModal';
 
 const Profile = () => {
   const { region } = useUserStore((state) => state);
 
   const [introduce, setIntroduce] = useState('');
+  const [favorite, setFavorite] = useState('');
+  const [hobby, setHobby] = useState('');
+  const [pet, setPet] = useState('');
+  const [showAge, setShowAge] = useState(false);
+  const [location, setLocation] = useState('');
+  const [job, setJob] = useState('');
+  const [school, setSchool] = useState('');
 
   const listItems = [
     {
@@ -31,14 +39,32 @@ const Profile = () => {
       modalId: 'region-modal',
       required: true,
     },
-    { iconSrc: LanguageIcon, title: '구사언어', modalId: 'language-modal', required: true },
-    { iconSrc: DoubleHeartIcon, title: '좋아하는 것', modalId: 'favorite-modal', required: false },
-    { iconSrc: ClockIcon, title: '취미', modalId: 'hobby-modal', required: false },
-    { iconSrc: DogIcon, title: '반려동물', modalId: 'pet-modal', required: false },
+    {
+      iconSrc: LanguageIcon,
+      title: '구사언어',
+      value: region.koreanName,
+      modalId: 'language-modal',
+      required: true,
+    },
+    {
+      iconSrc: DoubleHeartIcon,
+      title: '좋아하는 것',
+      value: favorite,
+      modalId: 'favorite-modal',
+      required: false,
+    },
+    { iconSrc: ClockIcon, title: '취미', value: hobby, modalId: 'hobby-modal', required: false },
+    { iconSrc: DogIcon, title: '반려동물', value: pet, modalId: 'pet-modal', required: false },
     { iconSrc: CakeIcon, title: '나이', required: false },
-    { iconSrc: LocationIcon, title: '거주지', required: false },
-    { iconSrc: BagIcon, title: '직업', required: false },
-    { iconSrc: SchoolIcon, title: '출신학교', required: false },
+    { iconSrc: LocationIcon, title: '거주지', value: location, required: false },
+    { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
+    {
+      iconSrc: SchoolIcon,
+      title: '출신학교',
+      value: school,
+      modalId: 'school-modal',
+      required: false,
+    },
   ];
 
   return (
@@ -96,6 +122,41 @@ const Profile = () => {
       {/* modals */}
       <Introduce trigger="introduce-modal" setIntroduce={setIntroduce} />
       <SelectRegion trigger="region-modal" />
+      <SimpleInputModal
+        trigger="favorite-modal"
+        title="무엇을 좋아하나요?"
+        placeholder="예: 샤워하면서 춤추기, 호밀빵"
+        maxLength={20}
+        setValue={setFavorite}
+      />
+      <SimpleInputModal
+        trigger="hobby-modal"
+        title="어떤 취미를 가지고 있나요?"
+        placeholder="예: 배드민턴, 요리"
+        maxLength={20}
+        setValue={setHobby}
+      />
+      <SimpleInputModal
+        trigger="pet-modal"
+        title="같이 사는 반려동물이 있나요?"
+        placeholder="예: 하얀 말티즈 밍키와 샐리"
+        maxLength={20}
+        setValue={setPet}
+      />
+      <SimpleInputModal
+        trigger="job-modal"
+        title="어떤 일을 하시나요?"
+        placeholder="직업 또는 인생의 목표"
+        maxLength={20}
+        setValue={setJob}
+      />
+      <SimpleInputModal
+        trigger="school-modal"
+        title="어떤 학교를 졸업했나요?"
+        placeholder="홈스쿨링, 고등학교, 직업학교 등 출신학교"
+        maxLength={20}
+        setValue={setSchool}
+      />
     </IonPage>
   );
 };
