@@ -42,7 +42,6 @@ const Profile = () => {
     {
       iconSrc: LanguageIcon,
       title: '구사언어',
-      value: region.koreanName,
       modalId: 'language-modal',
       required: true,
     },
