@@ -32,7 +32,7 @@ const SimpleInputModal = ({
     >
       <div className="flex flex-col gap-1.5 items-end mb-4 mt-3">
         <input
-          className="w-full px-4 py-2.5 rounded-lg bg-gray1.5 font-body1 text-gray5"
+          className="w-full px-4 py-2.5 rounded-lg bg-gray1.5 font-body1 text-gray8"
           type="text"
           value={input}
           onChange={(e) => setInput(e.currentTarget.value)}

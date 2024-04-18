@@ -18,6 +18,7 @@ import Introduce from '../../modals/Introduce';
 import SelectRegion from '../../modals/SelectRegion';
 import useUserStore from '../../stores/userInfo';
 import SimpleInputModal from '../../modals/SimpleInputModal';
+import ShowAge from '../../modals/ShowAge';
 
 const Profile = () => {
   const { region } = useUserStore((state) => state);
@@ -54,7 +55,7 @@ const Profile = () => {
     },
     { iconSrc: ClockIcon, title: '취미', value: hobby, modalId: 'hobby-modal', required: false },
     { iconSrc: DogIcon, title: '반려동물', value: pet, modalId: 'pet-modal', required: false },
-    { iconSrc: CakeIcon, title: '나이', required: false },
+    { iconSrc: CakeIcon, title: '나이', value: '90년대생', modalId: 'age-modal', required: false },
     { iconSrc: LocationIcon, title: '거주지', value: location, required: false },
     { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
     {
@@ -156,6 +157,7 @@ const Profile = () => {
         maxLength={20}
         setValue={setSchool}
       />
+      <ShowAge trigger="age-modal" age="90년대생" setShowAge={setShowAge} />
     </IonPage>
   );
 };
