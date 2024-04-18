@@ -15,7 +15,7 @@ import AlarmAgreement from './pages/sign-in/AlarmAgreement';
 import CheckEmail from './pages/login/CheckEmail';
 import ResetPassword from './pages/login/ResetPassword';
 import Search from './pages/search/Search';
-import ProfileOnboarding from './pages/profile/Onboarding';
+import Profile from './pages/profile/Profile';
 
 const Router = () => {
   return (
@@ -71,8 +71,8 @@ const Router = () => {
         <AlarmAgreement />
       </Route>
 
-      <Route path={'/profile/onboarding'}>
-        <ProfileOnboarding />
+      <Route path="/profile/me">
+        <Profile />
       </Route>
 
       <Route exact path="/">

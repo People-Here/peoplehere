@@ -22,7 +22,7 @@ const ProfileTab = () => {
       }
     })();
 
-    router.push('/profile/onboarding');
+    router.push('/profile/me');
   }, []);
 
   return (
