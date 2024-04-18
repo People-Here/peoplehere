@@ -19,11 +19,15 @@ import SelectRegion from '../../modals/SelectRegion';
 import useUserStore from '../../stores/userInfo';
 import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
+import SelectLanguages from '../../modals/SelectLanguages';
+
+import type { Language } from '../../modals/SelectLanguages';
 
 const Profile = () => {
   const { region } = useUserStore((state) => state);
 
   const [introduce, setIntroduce] = useState('');
+  const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
   const [favorite, setFavorite] = useState('');
   const [hobby, setHobby] = useState('');
   const [pet, setPet] = useState('');
@@ -43,6 +47,7 @@ const Profile = () => {
     {
       iconSrc: LanguageIcon,
       title: '구사언어',
+      value: languages.map((lang) => lang.koreanName).join(', '),
       modalId: 'language-modal',
       required: true,
     },
@@ -122,6 +127,7 @@ const Profile = () => {
       {/* modals */}
       <Introduce trigger="introduce-modal" setIntroduce={setIntroduce} />
       <SelectRegion trigger="region-modal" />
+      <SelectLanguages trigger="language-modal" setLanguages={setLanguages} />
       <SimpleInputModal
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"
