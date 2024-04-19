@@ -4,13 +4,8 @@ import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
 import ModalContainer from '.';
 import colors from '../theme/colors';
 
+import type { Language } from '../types/language';
 import type { ModalProps } from '.';
-
-export type Language = {
-  koreanName: string;
-  englishName: string;
-  lang: string;
-};
 
 type Props = {
   setLanguages: (languages: Language[]) => void;
