@@ -2,6 +2,7 @@ import { IonCheckbox } from '@ionic/react';
 
 import colors from '../theme/colors';
 import ModalContainer from '.';
+import Checkbox from '../components/Checkbox';
 
 import type { ModalProps } from '.';
 
@@ -26,12 +27,24 @@ const PolicyAgreement = ({
       {...rest}
     >
       <div className="flex flex-col gap-4 mt-4">
-        <PolicyItem
+        {/* <PolicyItem
           label={
             '마케팅 이메일을 수신하겠습니다. (선택)\n설정에서 언제든지 수신을 거부할 수 있습니다.'
           }
           checked={marketingChecked}
           setChecked={setMarketingChecked}
+        /> */}
+        <Checkbox
+          checked={marketingChecked}
+          onChange={setMarketingChecked}
+          label={
+            <label>
+              <p className="font-caption2 text-gray7">마케팅 이메일을 수신하겠습니다. (선택)</p>
+              <p className="font-caption2 text-gray5.5">
+                설정에서 언제든지 수신을 거부할 수 있습니다.
+              </p>
+            </label>
+          }
         />
       </div>
 
