@@ -4,7 +4,7 @@ import type { Language } from '../types/language';
 type State = {
   introduce: string;
   languages: Language[];
-  age: string;
+  showAge: boolean;
   school: string;
   job: string;
   location: string;
@@ -16,7 +16,7 @@ type State = {
 type Action = {
   setIntroduce: (introduce: string) => void;
   setLanguages: (languages: Language[]) => void;
-  setAge: (age: string) => void;
+  setShowAge: (show: boolean) => void;
   setSchool: (school: string) => void;
   setJob: (job: string) => void;
   setLocation: (location: string) => void;
@@ -30,7 +30,7 @@ export type ProfileSlice = State & Action;
 const createProfileSlice: StoreSlice<ProfileSlice> = (set) => ({
   introduce: '',
   languages: [],
-  age: '',
+  showAge: false,
   school: '',
   job: '',
   location: '',
@@ -40,7 +40,7 @@ const createProfileSlice: StoreSlice<ProfileSlice> = (set) => ({
 
   setIntroduce: (introduce) => set(() => ({ introduce })),
   setLanguages: (languages) => set(() => ({ languages })),
-  setAge: (age) => set(() => ({ age })),
+  setShowAge: (show) => set(() => ({ showAge: show })),
   setSchool: (school) => set(() => ({ school })),
   setJob: (job) => set(() => ({ job })),
   setLocation: (location) => set(() => ({ location })),

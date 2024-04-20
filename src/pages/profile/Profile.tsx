@@ -20,18 +20,19 @@ import useUserStore from '../../stores/userInfo';
 import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
 import SelectLanguages from '../../modals/SelectLanguages';
+import { useAppStore } from '../../stores';
 
-import type { Language } from '../../modals/SelectLanguages';
+import type { Language } from '../../types/language';
 
 const Profile = () => {
   const { region } = useUserStore((state) => state);
 
-  const [introduce, setIntroduce] = useState('');
+  const { introduce } = useAppStore((state) => state);
+
   const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
   const [favorite, setFavorite] = useState('');
   const [hobby, setHobby] = useState('');
   const [pet, setPet] = useState('');
-  const [showAge, setShowAge] = useState(false);
   const [location, setLocation] = useState('');
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
@@ -125,7 +126,7 @@ const Profile = () => {
       </IonContent>
 
       {/* modals */}
-      <Introduce trigger="introduce-modal" setIntroduce={setIntroduce} />
+      <Introduce trigger="introduce-modal" />
       <SelectRegion trigger="region-modal" />
       <SelectLanguages trigger="language-modal" setLanguages={setLanguages} />
       <SimpleInputModal
@@ -163,7 +164,7 @@ const Profile = () => {
         maxLength={20}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age="90년대생" setShowAge={setShowAge} />
+      <ShowAge trigger="age-modal" age="90년대생" />
     </IonPage>
   );
 };

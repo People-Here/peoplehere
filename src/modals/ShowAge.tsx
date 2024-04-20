@@ -3,15 +3,17 @@ import { IonCheckbox, IonText } from '@ionic/react';
 
 import ModalContainer from '.';
 import colors from '../theme/colors';
+import { useAppStore } from '../stores';
 
 import type { ModalProps } from '.';
 
 type Props = {
   age: string;
-  setShowAge: (value: boolean) => void;
 };
 
-const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
+const ShowAge = ({ age, ...rest }: ModalProps & Props) => {
+  const setShowAge = useAppStore((state) => state.setShowAge);
+
   const [show, setShow] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
       initialBreakpoint={0.35}
       breakpoints={[0, 0.35, 0.5]}
       onClickButton={() => setShowAge(show)}
-      {...props}
+      {...rest}
     >
       <div className="px-4 py-2.5 w-full rounded-lg bg-gray1.5">
         <IonText className="font-body1 text-gray8">{age}</IonText>

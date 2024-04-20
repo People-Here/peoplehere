@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { IonText } from '@ionic/react';
 
 import ModalContainer from '.';
+import { useAppStore } from '../stores';
 
 import type { ModalProps } from '.';
 
-type Props = {
-  setIntroduce: (value: string) => void;
-};
+const Introduce = (props: ModalProps) => {
+  const setIntroduce = useAppStore((state) => state.setIntroduce);
 
-const Introduce = ({ setIntroduce, ...rest }: ModalProps & Props) => {
   const [input, setInput] = useState('');
 
   return (
@@ -19,7 +18,7 @@ const Introduce = ({ setIntroduce, ...rest }: ModalProps & Props) => {
       initialBreakpoint={0.9}
       breakpoints={[0, 0.45, 0.9]}
       onWillDismiss={() => setIntroduce(input)}
-      {...rest}
+      {...props}
     >
       <div className="flex flex-col gap-1.5 items-end mb-5">
         <textarea
