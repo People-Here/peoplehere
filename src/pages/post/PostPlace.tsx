@@ -1,4 +1,4 @@
-import { IonCol, IonGrid, IonIcon, IonImg, IonRow, IonText, useIonRouter } from '@ionic/react';
+import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 
@@ -97,7 +97,7 @@ type ImageProps = {
   images: string[];
   setImages: (images: string[]) => void;
 };
-const UploadImages = ({ setImages }: ImageProps) => {
+const UploadImages = ({ images, setImages }: ImageProps) => {
   const selectPhotosFromGallery = async () => {
     const selectedImages = await Camera.pickImages({
       limit: 12,
@@ -114,7 +114,7 @@ const UploadImages = ({ setImages }: ImageProps) => {
     >
       <div className="bg-gray1.5 px-4 py-3 flex items-center gap-1 w-fit rounded-full">
         <IonIcon src={CameraIcon} className="svg-md" />
-        <IonText className="font-body1 text-gray6">0 / 12</IonText>
+        <IonText className="font-body1 text-gray6">{images.length} / 12</IonText>
       </div>
       <IonText className="font-body1 text-gray5.5">관련 사진을 추가하세요</IonText>
     </div>
@@ -140,29 +140,49 @@ const PlaceItem = ({ text, description }: Place) => {
 };
 
 const ImageList = ({ images, setImages }: ImageProps) => {
+  const selectPhotosFromGallery = async () => {
+    const selectedImages = await Camera.pickImages({
+      limit: 12 - images.length,
+    });
+
+    setImages(selectedImages.photos.map((photo) => photo.webPath));
+  };
+
+  const removeImage = (image: string) => {
+    setImages(images.filter((img) => img !== image));
+  };
+
   return (
-    <div className="p-4 flex flex-col gap-3 border-[1.5px] border-gray2 rounded-3xl">
-      <div className="flex items-center justify-center">
+    <div className="p-4 flex flex-col gap-3 border-[1.5px] border-gray2 rounded-3xl w-full">
+      <div className="flex items-center justify-between">
         <IonText className="font-caption2 text-gray5.5">
           저작권법 위반 시 임의로 삭제될 수 있어요.
         </IonText>
 
-        <div className="py-2.5 px-3 flex items-center gap-1">
+        <div
+          className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full"
+          onClick={selectPhotosFromGallery}
+        >
           <IonIcon className="svg-md" src={CameraIcon} />
           <IonText className="font-body1 text-gray6">{images.length} / 12</IonText>
         </div>
       </div>
 
-      <IonGrid>
-        <IonRow>
-          {images.map((image) => (
-            <IonCol key={image} className="relative">
-              <IonImg src={image} className="w-[4.25rem] h-[4.25rem] object-cover" />
-              <IonIcon src={GridDeleteIcon} className="absolute svg-md -top-0.5 -right-0.5" />
-            </IonCol>
-          ))}
-        </IonRow>
-      </IonGrid>
+      <div className="grid grid-cols-4 gap-2">
+        {images.map((image) => (
+          <div key={image} className="relative">
+            <IonImg
+              src={image}
+              className="w-[4.25rem] h-[4.25rem] object-cover rounded-xl overflow-hidden"
+            />
+            <IonIcon
+              src={GridDeleteIcon}
+              className="absolute svg-md -top-1.5 -right-1.5"
+              onClick={() => removeImage(image)}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
