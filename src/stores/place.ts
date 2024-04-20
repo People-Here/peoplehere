@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import type { StoreSlice } from '../types/store';
 
 type State = {
   place: {
@@ -12,7 +12,9 @@ type Action = {
   setPlace: (place: State['place']) => void;
 };
 
-const usePlaceStore = create<State & Action>((set) => ({
+export type PlaceSlice = State & Action;
+
+const createPlaceSlice: StoreSlice<PlaceSlice> = (set) => ({
   place: {
     id: '',
     text: '',
@@ -20,6 +22,6 @@ const usePlaceStore = create<State & Action>((set) => ({
   },
 
   setPlace: (place) => set(() => ({ place })),
-}));
+});
 
-export default usePlaceStore;
+export default createPlaceSlice;
