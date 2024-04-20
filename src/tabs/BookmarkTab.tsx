@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import { useEffect, useRef } from 'react';
 
-import Alert from '../components/alerts';
+import Alert from '../components/Alert';
 
 const BookmarkTab = () => {
   const router = useIonRouter();

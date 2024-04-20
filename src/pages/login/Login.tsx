@@ -8,7 +8,7 @@ import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
 import Header from '../../components/Header';
 import useLogin from '../../hooks/useLogin';
-import Alert from '../../components/alerts';
+import Alert from '../../components/Alert';
 
 const Login = () => {
   const router = useIonRouter();

@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import PostPlace from '../pages/post/PostPlace';
 import useStorage from '../hooks/useStorage';
-import Alert from '../components/alerts';
+import Alert from '../components/Alert';
 
 const PostTab = () => {
   const router = useIonRouter();
