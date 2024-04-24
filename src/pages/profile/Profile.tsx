@@ -16,7 +16,7 @@ import SchoolIcon from '../../assets/svgs/school.svg';
 import Footer from '../../layouts/Footer';
 import Introduce from '../../modals/Introduce';
 import SelectRegion from '../../modals/SelectRegion';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
 import SelectLanguages from '../../modals/SelectLanguages';
@@ -24,7 +24,7 @@ import SelectLanguages from '../../modals/SelectLanguages';
 import type { Language } from '../../modals/SelectLanguages';
 
 const Profile = () => {
-  const { region } = useUserStore((state) => state);
+  const { region } = useSignInStore((state) => state);
 
   const [introduce, setIntroduce] = useState('');
   const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx

@@ -6,13 +6,13 @@ import LabelInput from '../../components/LabelInput';
 import ProgressDots from '../../components/ProgressDots';
 import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
 import { EMAIL_VALIDATION } from '../../constants/regex';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 
 import type { AxiosError } from 'axios';
 
 const EmailAuth = () => {
   const router = useIonRouter();
-  const setEmail = useUserStore((state) => state.setEmail);
+  const setEmail = useSignInStore((state) => state.setEmail);
 
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');

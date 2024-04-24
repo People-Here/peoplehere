@@ -11,13 +11,13 @@ import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import { searchPlace } from '../../api/search';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 
 import type { SearchPlaceResponse } from '../../api/search';
 import type { FormEvent } from 'react';
 
 const Search = () => {
-  const region = useUserStore((state) => state.region);
+  const region = useSignInStore((state) => state.region);
 
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);

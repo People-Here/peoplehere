@@ -1,11 +1,11 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useEffect } from 'react';
 
-import useUserStore from '../stores/userInfo';
+import useSignInStore from '../stores/signIn';
 import useStorage from '../hooks/useStorage';
 
 const ProfileTab = () => {
-  const { resetRegion } = useUserStore((state) => state);
+  const { resetRegion } = useSignInStore((state) => state);
 
   const router = useIonRouter();
 
