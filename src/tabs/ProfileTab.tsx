@@ -1,20 +1,18 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useEffect } from 'react';
+import { Preferences } from '@capacitor/preferences';
 
 import useUserStore from '../stores/userInfo';
-import useStorage from '../hooks/useStorage';
 
 const ProfileTab = () => {
   const { resetRegion } = useUserStore((state) => state);
 
   const router = useIonRouter();
 
-  const { getItem } = useStorage();
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const token = await getItem('accessToken');
+      const token = await Preferences.get({ key: 'accessToken' });
 
       if (!token) {
         router.push('/login', 'forward', 'replace');

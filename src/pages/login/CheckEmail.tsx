@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
-import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
+import { checkEmailExist, sendEmailCode, verifyEmailCode } from '../../api/verification';
 
 const CheckEmail = () => {
   const router = useIonRouter();
@@ -13,8 +13,8 @@ const CheckEmail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
 
-  const checkEmailExist = async () => {
-    const response = await checkEmail(emailInput);
+  const checkEmail = async () => {
+    const response = await checkEmailExist(emailInput);
 
     if (response.status === 200) {
       setShowAuthCodeInput(true);
@@ -60,7 +60,7 @@ const CheckEmail = () => {
             <button
               className="px-3 button-primary button-lg shrink-0"
               disabled={!emailInput.length}
-              onClick={checkEmailExist}
+              onClick={checkEmail}
             >
               <IonText className="font-body1">
                 {showAuthCodeInput ? '재발송' : '인증코드 발송'}

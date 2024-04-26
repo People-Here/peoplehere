@@ -1,8 +1,8 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useEffect, useRef } from 'react';
+import { Preferences } from '@capacitor/preferences';
 
 import PostPlace from '../pages/post/PostPlace';
-import useStorage from '../hooks/useStorage';
 import Alert from '../components/Alert';
 
 const PostTab = () => {
@@ -10,12 +10,10 @@ const PostTab = () => {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const { getItem } = useStorage();
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const token = await getItem('accessToken');
+      const token = await Preferences.get({ key: 'accessToken' });
 
       if (!token) {
         router.push('/login', 'forward', 'replace');

@@ -12,9 +12,22 @@ export const getAllGenders = async () => {
   return response;
 };
 
+export const getAllLanguages = async () => {
+  const response = await typedGet<Language[]>('/constants/langs');
+
+  return response;
+};
+
 export type Region = {
   countryCode: string;
   englishName: string;
   koreanName: string;
   dialCode: number;
+};
+
+export type Language = {
+  langCode: string;
+  englishName: string;
+  koreanName: string;
+  code: string;
 };
