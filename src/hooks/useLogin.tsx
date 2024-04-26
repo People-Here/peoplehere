@@ -1,15 +1,14 @@
+import { Preferences } from '@capacitor/preferences';
+
 import { signIn } from '../api/login';
-import useStorage from './useStorage';
 
 const useLogin = () => {
-  const { setItem, removeItem } = useStorage();
-
   const requestLogin = async (email: string, password: string) => {
     const response = await signIn({ email, password });
 
     if (response.status === 200) {
-      await setItem('accessToken', response.data.accessToken);
-      await setItem('refreshToken', response.data.refreshToken);
+      await Preferences.set({ key: 'accessToken', value: response.data.accessToken });
+      await Preferences.set({ key: 'refreshToken', value: response.data.refreshToken });
       return;
     }
 
@@ -17,8 +16,8 @@ const useLogin = () => {
   };
 
   const requestLogout = async () => {
-    await removeItem('accessToken');
-    await removeItem('refreshToken');
+    await Preferences.remove({ key: 'accessToken' });
+    await Preferences.remove({ key: 'refreshToken' });
   };
 
   return { requestLogin, requestLogout };

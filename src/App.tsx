@@ -1,5 +1,8 @@
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { useLayoutEffect } from 'react';
+import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
 
 import NavigationBar from './components/NavigationBar';
 
@@ -26,12 +29,30 @@ import './theme/global.css';
 
 setupIonicReact();
 
-const App = () => (
-  <IonApp>
-    <IonReactRouter>
-      <NavigationBar />
-    </IonReactRouter>
-  </IonApp>
-);
+const App = () => {
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      // const lang = await Preferences.get('language');
+      // if (lang) return;
+
+      // const response = await getAllLanguages();
+
+      const id = await Device.getId();
+      const userLang = await Device.getLanguageCode();
+
+      await Preferences.set({ key: 'DeviceId', value: id.identifier });
+      await Preferences.set({ key: 'language', value: userLang.value });
+    })();
+  }, []);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <NavigationBar />
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
