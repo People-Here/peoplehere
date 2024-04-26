@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import { checkEmailExist, sendEmailCode, verifyEmailCode } from '../../api/verification';
 
+import type { AxiosError } from 'axios';
+
 const CheckEmail = () => {
   const router = useIonRouter();
 
@@ -14,20 +16,20 @@ const CheckEmail = () => {
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
 
   const checkEmail = async () => {
-    const response = await checkEmailExist(emailInput);
-
-    if (response.status === 200) {
+    try {
+      await checkEmailExist(emailInput);
       setShowAuthCodeInput(true);
       await sendEmailCode(emailInput);
-      return;
-    }
+    } catch (error) {
+      const errorInstance = error as AxiosError;
 
-    if (response.status === 400) {
-      setErrorMessage('이메일 형식이 유효하지 않아요.');
-    }
+      if (errorInstance.response?.status === 400) {
+        setErrorMessage('이메일 형식이 유효하지 않아요.');
+      }
 
-    if (response.status === 409) {
-      setErrorMessage('이미 가입한 이메일이에요.');
+      if (errorInstance.response?.status === 409) {
+        setErrorMessage('이미 가입한 이메일이에요.');
+      }
     }
   };
 
@@ -58,7 +60,11 @@ const CheckEmail = () => {
             />
 
             <button
-              className="px-3 button-primary button-lg shrink-0"
+              className={
+                showAuthCodeInput
+                  ? 'px-3 button-sub button-lg w-[100px] shrink-0'
+                  : 'px-3 button-primary button-lg w-[100px] shrink-0'
+              }
               disabled={!emailInput.length}
               onClick={checkEmail}
             >
