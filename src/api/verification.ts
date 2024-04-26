@@ -5,8 +5,14 @@ export const checkEmail = async (email: string) => {
   return response;
 };
 
+export const checkEmailExist = async (email: string) => {
+  const response = await typedGet('/account/email/exist', { params: { email } });
+  return response;
+};
+
 export const sendEmailCode = async (email: string) => {
   const response = await typedPost<SendEmailResponse>('/account/email/verification', { email });
+
   return response;
 };
 

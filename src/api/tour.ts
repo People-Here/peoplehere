@@ -1,7 +1,7 @@
 import { typedGet, typedPost } from '.';
 
 export const getTourList = async () => {
-  const response = await typedGet<TourListResponse>('/tours');
+  const response = await typedGet<TourListResponse>('/tours/ORIGIN');
   return response;
 };
 
