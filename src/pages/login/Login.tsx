@@ -35,6 +35,8 @@ const Login = () => {
       await requestLogin(email, password);
       router.push('/');
     } catch (error) {
+      console.error('login failed with error:', error);
+
       buttonRef.current?.click();
     }
   };
