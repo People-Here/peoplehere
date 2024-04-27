@@ -5,8 +5,13 @@ export const getTourList = async () => {
   return response;
 };
 
-export const searchTour = async (keyword: string) => {
-  const response = await typedPost<TourListResponse>('/tours/search', { keyword });
+export const searchTour = async (keyword: string, langCode: string) => {
+  const response = await typedPost<TourListResponse>('/tours/search', { keyword, langCode });
+  return response;
+};
+
+export const postTour = async (body: NewTourRequest) => {
+  const response = await typedPost('/tours', body);
   return response;
 };
 
@@ -35,4 +40,12 @@ export type User = {
   firstName: string;
   lastName: string;
   profileImageUrl: string;
+};
+
+export type NewTourRequest = {
+  placeId: string;
+  images: string[];
+  title: string;
+  description: string;
+  theme: string;
 };
