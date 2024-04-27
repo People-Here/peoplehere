@@ -8,13 +8,16 @@ import CameraIcon from '../../assets/svgs/camera.svg';
 import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
-import usePlaceStore from '../../stores/place';
 import { postTour } from '../../api/tour';
+import SearchPlace from '../../modals/SearchPlace';
+import { imageToFile } from '../../utils/image';
+
+import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
 const Post = () => {
   const router = useIonRouter();
 
-  const place = usePlaceStore((state) => state.place);
+  const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -36,9 +39,11 @@ const Post = () => {
       return;
     }
 
+    const imageFiles = await Promise.all(images.map((image) => imageToFile(image)));
+
     const requestBody = {
       placeId: place.id,
-      images,
+      images: imageFiles,
       title,
       description,
       theme: 'black',
@@ -60,13 +65,11 @@ const Post = () => {
         <IonText className="mb-4 font-headline2 text-gray7">외국인과 어디서 만날까?</IonText>
 
         {place.id ? (
-          <PlaceItem id={place.id} text={place.text} description={place.description} />
+          <PlaceItem id={place.id} text={place.title} description={place.address} />
         ) : (
           <button
+            id="search-modal"
             className="w-full py-5 flex items-center justify-center gap-1.5 bg-orange5 rounded-3xl mb-3"
-            onClick={() => {
-              router.push('/search');
-            }}
           >
             <IonIcon className="svg-lg" src={PlusCircleWhiteIcon} />
             <IonText className="text-white font-heading">장소 등록</IonText>
@@ -111,6 +114,8 @@ const Post = () => {
           미리보기
         </button>
       </Footer>
+
+      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} />
     </>
   );
 };

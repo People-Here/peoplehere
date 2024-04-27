@@ -1,7 +1,6 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
 import { Fragment, useLayoutEffect, useState } from 'react';
-import { Preferences } from '@capacitor/preferences';
 
 import SearchIcon from '../../assets/svgs/search.svg';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
@@ -27,8 +26,6 @@ const Home = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const { value } = await Preferences.get({ key: 'language' });
-
       if (location.search) {
         const keyword = location.search.split('=')[1];
 

@@ -20,7 +20,7 @@ import useSignInStore from '../stores/signIn';
 import type { FormEvent } from 'react';
 import type { ModalProps } from '.';
 
-type PlaceItem = {
+export type PlaceItem = {
   id: string;
   title: string;
   address: string;
@@ -87,6 +87,8 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
                 })}
                 onClickItem={(item) => {
                   onClickItem && onClickItem(item);
+                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                  modalRef.current?.dismiss();
                 }}
               />
             </div>
