@@ -1,5 +1,5 @@
 import { IonContent, IonIcon, IonImg, IonLabel, IonPage, IonText } from '@ionic/react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 import Header from '../../components/Header';
@@ -20,11 +20,14 @@ import useSignInStore from '../../stores/signIn';
 import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
 import SelectLanguages from '../../modals/SelectLanguages';
+import useProfileStore from '../../stores/user';
+import { getUserProfile } from '../../api/profile';
 
 import type { Language } from '../../modals/SelectLanguages';
 
 const Profile = () => {
-  const { region } = useSignInStore((state) => state);
+  const region = useSignInStore((state) => state.region);
+  const userId = useProfileStore((state) => state.user.id);
 
   const [introduce, setIntroduce] = useState('');
   const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
@@ -35,6 +38,13 @@ const Profile = () => {
   const [location, setLocation] = useState('');
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getUserProfile(userId, region.countryCode);
+    })();
+  }, []);
 
   const listItems = [
     {

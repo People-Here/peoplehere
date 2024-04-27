@@ -65,7 +65,7 @@ const useSignInStore = create(
           region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
         })),
     }),
-    { name: 'user-storage' },
+    { name: 'signin-storage' },
   ),
 );
 

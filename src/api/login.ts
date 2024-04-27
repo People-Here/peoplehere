@@ -18,6 +18,7 @@ type LoginRequest = {
 type LoginResponse = {
   accessToken: string;
   refreshToken: string;
+  id: bigint;
 };
 
 type GetNewTokenRequest = {
