@@ -8,7 +8,7 @@ import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import EmptyListIcon from '../../assets/svgs/empty-result.svg';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 import { getTourList, searchTour } from '../../api/tour';
 
 import type { Place, Tour, User } from '../../api/tour';
@@ -83,7 +83,7 @@ const Home = () => {
 };
 
 const SearchBar = () => {
-  const { region } = useUserStore((state) => state);
+  const { region } = useSignInStore((state) => state);
 
   return (
     <Link to="/search">

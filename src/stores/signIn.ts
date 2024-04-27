@@ -31,7 +31,7 @@ type Action = {
   resetRegion: () => void;
 };
 
-const useUserStore = create(
+const useSignInStore = create(
   persist<State & Action>(
     (set) => ({
       email: '',
@@ -65,8 +65,8 @@ const useUserStore = create(
           region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
         })),
     }),
-    { name: 'user-storage' },
+    { name: 'signin-storage' },
   ),
 );
 
-export default useUserStore;
+export default useSignInStore;

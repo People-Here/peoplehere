@@ -36,7 +36,7 @@ export const typedPost = async <T>(url: string, body?: unknown, config?: AxiosRe
   return response;
 };
 
-export const typedPatch = async <T>(url: string, body?: unknown, config?: AxiosRequestConfig) => {
-  const response = await apiInstance.patch<T>(url, body, config);
+export const typedPut = async <T>(url: string, body?: unknown, config?: AxiosRequestConfig) => {
+  const response = await apiInstance.put<T>(url, body, config);
   return response;
 };

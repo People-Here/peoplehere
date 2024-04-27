@@ -2,7 +2,7 @@ import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import CheckIcon from '../assets/svgs/check.svg';
-import useUserStore from '../stores/userInfo';
+import useSignInStore from '../stores/signIn';
 import ModalContainer from '.';
 import { getAllRegions } from '../api/constants';
 
@@ -12,7 +12,7 @@ import type { ModalProps } from '.';
 const SelectRegion = (props: ModalProps) => {
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
-  const setRegion = useUserStore((state) => state.setRegion);
+  const setRegion = useSignInStore((state) => state.setRegion);
 
   const [regions, setRegions] = useState<Region[]>([]);
   const [filteredRegions, setFilteredRegions] = useState<Region[]>([]);

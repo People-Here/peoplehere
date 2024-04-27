@@ -1,7 +1,14 @@
 import { typedGet, typedPost } from '.';
+import { parseBigint } from '../utils/parse';
 
 export const signIn = async (params: LoginRequest) => {
-  const response = await typedPost<LoginResponse>('/account/sign-in', { ...params });
+  const response = await typedPost<LoginResponse>(
+    '/account/sign-in',
+    { ...params },
+    {
+      transformResponse: [(data: string) => parseBigint(data)],
+    },
+  );
   return response;
 };
 
@@ -18,6 +25,7 @@ type LoginRequest = {
 type LoginResponse = {
   accessToken: string;
   refreshToken: string;
+  id: string;
 };
 
 type GetNewTokenRequest = {

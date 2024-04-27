@@ -8,11 +8,11 @@ import PasswordValidator from '../../components/PasswordValidator';
 import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
 import PasswordInput from '../../components/PasswordInput';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 
 const SetPassword = () => {
   const router = useIonRouter();
-  const { email, setPassword } = useUserStore((state) => state);
+  const { email, setPassword } = useSignInStore((state) => state);
 
   const [passwordInput, setPasswordInput] = useState('');
 

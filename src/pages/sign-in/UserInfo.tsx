@@ -9,7 +9,7 @@ import SelectInput from '../../components/SelectInput';
 import DatePicker from '../../modals/DatePicker';
 import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 import { signUp, type SignInRequest } from '../../api/sign-in';
 import Toast from '../../toasts/Toast';
 import { formatDataToString } from '../../utils/date';
@@ -17,7 +17,7 @@ import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
   const router = useIonRouter();
-  const { phoneNumber, email, password, region } = useUserStore((state) => state);
+  const { phoneNumber, email, password, region } = useSignInStore((state) => state);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

@@ -1,5 +1,13 @@
-import { IonContent, IonIcon, IonImg, IonLabel, IonPage, IonText } from '@ionic/react';
-import { useState } from 'react';
+import {
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonLabel,
+  IonPage,
+  IonText,
+  useIonRouter,
+} from '@ionic/react';
+import { useLayoutEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 import Header from '../../components/Header';
@@ -16,16 +24,23 @@ import SchoolIcon from '../../assets/svgs/school.svg';
 import Footer from '../../layouts/Footer';
 import Introduce from '../../modals/Introduce';
 import SelectRegion from '../../modals/SelectRegion';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
 import SelectLanguages from '../../modals/SelectLanguages';
+import useProfileStore from '../../stores/user';
+import { getUserProfile, updateUserProfile } from '../../api/profile';
 
+import type { UpdateProfileRequest } from '../../api/profile';
 import type { Language } from '../../modals/SelectLanguages';
 
-const Profile = () => {
-  const { region } = useUserStore((state) => state);
+const EditProfile = () => {
+  const router = useIonRouter();
 
+  const region = useSignInStore((state) => state.region);
+  const userId = useProfileStore((state) => state.user.id);
+
+  const [image, setImage] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
   const [favorite, setFavorite] = useState('');
@@ -35,6 +50,24 @@ const Profile = () => {
   const [location, setLocation] = useState('');
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getUserProfile(userId, region.countryCode);
+
+      setImage(response.data.profileImageUrl);
+      setIntroduce(response.data.introduce);
+      setLanguages(
+        response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
+      );
+      setFavorite(response.data.favorite ?? '');
+      setHobby(response.data.hobby ?? '');
+      setPet(response.data.pet ?? '');
+      setJob(response.data.job ?? '');
+      setSchool(response.data.school ?? '');
+    })();
+  }, []);
 
   const listItems = [
     {
@@ -72,6 +105,29 @@ const Profile = () => {
     },
   ];
 
+  const saveProfile = async () => {
+    const requestData: UpdateProfileRequest = {
+      id: userId,
+      profileImageUrl: image,
+      introduce,
+      region: region.countryCode,
+      languages: languages.map((lang) => lang.englishName.toUpperCase()),
+      favorite,
+      hobby,
+      pet,
+      job,
+      school,
+      placeId: '',
+    };
+
+    try {
+      await updateUserProfile(requestData);
+      router.push('/profile/me', 'forward', 'replace');
+    } catch (error) {
+      console.error('Failed to update user profile:', error);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -90,7 +146,7 @@ const Profile = () => {
         </div>
 
         {/* image area */}
-        <ImageArea />
+        <ImageArea image={image} setImage={setImage} />
 
         {/* content area */}
         <div className="px-4 pb-28 mt-7">
@@ -120,7 +176,9 @@ const Profile = () => {
         </div>
 
         <Footer>
-          <button className="w-full button-primary button-lg">완료</button>
+          <button className="w-full button-primary button-lg" onClick={saveProfile}>
+            완료
+          </button>
         </Footer>
       </IonContent>
 
@@ -176,9 +234,11 @@ const RequiredChip = () => {
   );
 };
 
-const ImageArea = () => {
-  const [selectedImage, setSelectedImage] = useState('');
-
+type ImageProps = {
+  image: string;
+  setImage: (image: string) => void;
+};
+const ImageArea = ({ image, setImage }: ImageProps) => {
   const selectPhoto = async () => {
     const selectedImage = await Camera.getPhoto({
       quality: 70,
@@ -190,13 +250,13 @@ const ImageArea = () => {
       promptLabelCancel: '취소',
     });
 
-    setSelectedImage(selectedImage.webPath ?? '');
+    setImage(selectedImage.webPath ?? '');
   };
 
   return (
-    <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative">
-      {selectedImage ? (
-        <IonImg src={selectedImage} className="object-cover w-full h-full" />
+    <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative overflow-hidden">
+      {image ? (
+        <IonImg src={image} className="object-cover w-full h-full" />
       ) : (
         <>
           <div className="absolute top-4 right-4">
@@ -236,4 +296,4 @@ const ListItem = ({ iconSrc, title, id, value, required }: ListItemProps) => {
   );
 };
 
-export default Profile;
+export default EditProfile;

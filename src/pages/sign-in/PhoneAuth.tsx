@@ -6,11 +6,11 @@ import LabelInput from '../../components/LabelInput';
 import SelectInput from '../../components/SelectInput';
 import SelectRegion from '../../modals/SelectRegion';
 import Alert from '../../components/Alert';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 
 const PhoneAuth = () => {
   const router = useIonRouter();
-  const { region } = useUserStore((state) => state);
+  const { region } = useSignInStore((state) => state);
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [authCode, setAuthCode] = useState('');

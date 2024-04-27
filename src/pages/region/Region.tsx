@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
 import SelectRegion from '../../modals/SelectRegion';
-import useUserStore from '../../stores/userInfo';
+import useSignInStore from '../../stores/signIn';
 
 const LoginLanding = () => {
   const router = useIonRouter();
-  const { region } = useUserStore((state) => state);
+  const { region } = useSignInStore((state) => state);
 
   useEffect(() => {
     if (region.countryCode) {

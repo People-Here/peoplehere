@@ -35,6 +35,8 @@ const Login = () => {
       await requestLogin(email, password);
       router.push('/');
     } catch (error) {
+      console.error('login failed with error:', error);
+
       buttonRef.current?.click();
     }
   };
@@ -90,7 +92,6 @@ const Login = () => {
         </div>
 
         <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
-
         <Alert
           trigger="error-alert"
           title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}

@@ -41,6 +41,10 @@ const App = () => {
       const id = await Device.getId();
       const userLang = await Device.getLanguageCode();
 
+      if (userLang.value === 'ko') {
+        userLang.value = 'ko-KR';
+      }
+
       await Preferences.set({ key: 'DeviceId', value: id.identifier });
       await Preferences.set({ key: 'language', value: userLang.value });
     })();
