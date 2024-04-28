@@ -1,40 +1,18 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
-import { useEffect, useRef } from 'react';
-
-import Alert from '../components/Alert';
+import { IonContent, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 const MessageTab = () => {
-  const router = useIonRouter();
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    buttonRef.current?.click();
-  }, []);
-
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Message</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonToolbar className="px-4 h-14">
+        <IonTitle className="pl-0 font-headline3 text-gray8">쪽지</IonTitle>
+      </IonToolbar>
+
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Message</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <div className="flex flex-col gap-1.5 items-center justify-center w-full h-full text-center">
+          <p className="text-black font-headline2">아직 주고 받은 쪽지가 없어요</p>
+          <p className="font-body1 text-gray5">만나고 싶은 사람에게 쪽지를 보내 보세요!</p>
+        </div>
       </IonContent>
-
-      <button id="ready-alert" ref={buttonRef} className="hidden" />
-
-      <Alert
-        trigger="ready-alert"
-        title="준비중인 기능이에요."
-        buttons={[
-          { text: '홈으로 돌아가기', onClick: () => router.push('/', 'forward', 'replace') },
-        ]}
-      />
     </IonPage>
   );
 };
