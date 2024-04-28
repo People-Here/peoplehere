@@ -14,7 +14,6 @@ import UserInfo from './pages/sign-in/UserInfo';
 import AlarmAgreement from './pages/sign-in/AlarmAgreement';
 import CheckEmail from './pages/login/CheckEmail';
 import ResetPassword from './pages/login/ResetPassword';
-import Search from './pages/search/Search';
 import EditProfile from './pages/profile/EditProfile';
 
 const Router = () => {
@@ -34,10 +33,6 @@ const Router = () => {
       </Route>
       <Route path="/profile">
         <ProfileTab />
-      </Route>
-
-      <Route path="/search">
-        <Search />
       </Route>
 
       <Route path="/region">
