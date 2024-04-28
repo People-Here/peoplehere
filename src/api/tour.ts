@@ -12,7 +12,7 @@ export const searchTour = async (keyword: string, langCode: string) => {
   return response;
 };
 
-export const postTour = async (body: NewTourRequest) => {
+export const postTour = async (body: FormData) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedPost('/tours', body, {
