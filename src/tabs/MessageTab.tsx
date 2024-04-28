@@ -1,9 +1,10 @@
 import { IonContent, IonImg, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { Link } from 'react-router-dom';
 
 const MessageTab = () => {
   return (
     <IonPage>
-      <IonToolbar className="px-4 h-14">
+      <IonToolbar className="px-4 bg-white h-14">
         <IonTitle className="pl-0 font-headline3 text-gray8">쪽지</IonTitle>
       </IonToolbar>
 
@@ -13,14 +14,16 @@ const MessageTab = () => {
           <p className="font-body1 text-gray5">만나고 싶은 사람에게 쪽지를 보내 보세요!</p>
         </div> */}
         <div className="px-4 pb-16 mt-14">
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
+          <Link to={'/message/123123'}>
+            <ChatListItem
+              imageUrl="https://picsum.photos/seed/picsum/100/200"
+              name="예지나"
+              hasSchedule
+              date="2024-04-28 19:00"
+              lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
+              placeName="서울숲 1티어 맛집"
+            />
+          </Link>
           <ChatListItem
             imageUrl="https://picsum.photos/seed/picsum/100/200"
             name="예지나"
