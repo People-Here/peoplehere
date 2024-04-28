@@ -2,34 +2,30 @@ import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useEffect } from 'react';
 import { Preferences } from '@capacitor/preferences';
 
-import useSignInStore from '../stores/signIn';
+import useUserStore from '../stores/user';
 
 const ProfileTab = () => {
-  const { resetRegion } = useSignInStore((state) => state);
-
   const router = useIonRouter();
+
+  const { user } = useUserStore((state) => state);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const token = await Preferences.get({ key: 'accessToken' });
 
-      if (!token) {
+      if (!token || !user.id) {
         router.push('/login', 'forward', 'replace');
         return;
       }
     })();
 
-    router.push('/profile/me');
-  }, []);
+    router.push(`/profile/${user.id}`);
+  }, [user.id, router]);
 
   return (
     <IonPage>
-      <IonContent>
-        <button className="button-primary button-md" onClick={resetRegion}>
-          reset region
-        </button>
-      </IonContent>
+      <IonContent />
     </IonPage>
   );
 };
