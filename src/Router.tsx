@@ -29,14 +29,11 @@ const Router = () => {
       <Route path="/post">
         <PostTab />
       </Route>
-      <Route path="/message">
+      <Route exact path="/message">
         <Message />
       </Route>
-      <Route path="/profile">
+      <Route exact path="/profile">
         <ProfileTab />
-      </Route>
-      <Route path="/profile/:id">
-        <Profile />
       </Route>
 
       <Route path="/region">
@@ -70,6 +67,9 @@ const Router = () => {
         <AlarmAgreement />
       </Route>
 
+      <Route path="/profile/:id">
+        <Profile />
+      </Route>
       <Route path="/profile/edit">
         <EditProfile />
       </Route>

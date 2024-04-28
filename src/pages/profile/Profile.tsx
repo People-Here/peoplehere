@@ -42,6 +42,12 @@ const Profile = () => {
     }
   }, [location.pathname, user.id]);
 
+  const handleClickIcon = () => {
+    if (isMe) {
+      router.push('/profile/edit');
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -59,7 +65,7 @@ const Profile = () => {
             <IonIcon
               src={isMe ? EditIcon : LanguageIcon}
               className="svg-lg"
-              onClick={() => router.push('/profile/edit')}
+              onClick={handleClickIcon}
             />
           </IonButtons>
         </IonToolbar>
