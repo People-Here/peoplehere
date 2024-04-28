@@ -9,7 +9,6 @@ import {
   IonModal,
   IonText,
   IonToolbar,
-  useIonRouter,
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -31,7 +30,6 @@ type Props = {
 };
 
 const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
-  const router = useIonRouter();
   const region = useSignInStore((state) => state.region);
 
   // eslint-disable-next-line no-undef
@@ -61,7 +59,11 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
       <IonContent fullscreen>
         <IonToolbar className="px-4 h-14">
           <IonButtons slot="start">
-            <IonIcon icon={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
+            <IonIcon
+              icon={ArrowLeftIcon}
+              className="svg-lg"
+              onClick={() => modalRef.current?.dismiss()}
+            />
           </IonButtons>
         </IonToolbar>
 

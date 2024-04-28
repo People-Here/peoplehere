@@ -16,6 +16,7 @@ import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
 import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
 import Alert from '../../components/Alert';
+import SendMessage from '../../modals/SendMessage';
 
 const messages = [];
 
@@ -68,7 +69,10 @@ const MessageRoom = () => {
           >
             약속 잡기
           </button>
-          <button className="flex gap-2.5 items-center button-primary button-lg w-full justify-center">
+          <button
+            id="send-message-modal"
+            className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
+          >
             <IonIcon src={MessageIcon} className="svg-lg" />
             <p className="text-white font-subheading1">쪽지 작성</p>
           </button>
@@ -85,6 +89,8 @@ const MessageRoom = () => {
           },
         ]}
       />
+
+      <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
     </IonPage>
   );
 };
