@@ -8,15 +8,16 @@ import CameraIcon from '../../assets/svgs/camera.svg';
 import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
+import { postTour } from '../../api/tour';
+import SearchPlace from '../../modals/SearchPlace';
+import { imageToFile } from '../../utils/image';
 
-const place = {
-  id: 123,
-  text: '로니로티 건대점',
-  description: '서울 광진구 아차산로 225 단산화빌딩',
-};
+import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
 const Post = () => {
   const router = useIonRouter();
+
+  const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -32,6 +33,32 @@ const Post = () => {
     })();
   }, []);
 
+  const uploadPost = async () => {
+    if (!place.id || !images.length || !title || !description) {
+      console.error('place, images, title, description are required');
+      return;
+    }
+
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+
+    const formData = new FormData();
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('theme', 'black');
+
+    imageBlobs.forEach((blob) => {
+      formData.append('images', blob);
+    });
+
+    try {
+      await postTour(formData);
+      router.push('/');
+    } catch (error) {
+      console.error('failed with uploading post', error);
+    }
+  };
+
   return (
     <>
       <Header type="close" />
@@ -39,14 +66,12 @@ const Post = () => {
       <div className="flex flex-col items-center px-4">
         <IonText className="mb-4 font-headline2 text-gray7">외국인과 어디서 만날까?</IonText>
 
-        {place ? (
-          <PlaceItem id={place.id} text={place.text} description={place.description} />
+        {place.id ? (
+          <PlaceItem id={place.id} text={place.title} description={place.address} />
         ) : (
           <button
+            id="search-modal"
             className="w-full py-5 flex items-center justify-center gap-1.5 bg-orange5 rounded-3xl mb-3"
-            onClick={() => {
-              router.push('/search');
-            }}
           >
             <IonIcon className="svg-lg" src={PlusCircleWhiteIcon} />
             <IonText className="text-white font-heading">장소 등록</IonText>
@@ -87,8 +112,12 @@ const Post = () => {
       </div>
 
       <Footer>
-        <button className="w-full button-primary button-lg">미리보기</button>
+        <button className="w-full button-primary button-lg" onClick={uploadPost}>
+          미리보기
+        </button>
       </Footer>
+
+      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} />
     </>
   );
 };
@@ -122,13 +151,18 @@ const UploadImages = ({ images, setImages }: ImageProps) => {
 };
 
 interface Place {
-  id: number;
+  id: string;
   text: string;
   description: string;
 }
 const PlaceItem = ({ text, description }: Place) => {
+  const router = useIonRouter();
+
   return (
-    <div className="px-4 py-2.5 border-[1.5px] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3">
+    <div
+      className="px-4 py-2.5 border-[1.5px] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3"
+      onClick={() => router.push('/search')}
+    >
       <div className="flex flex-col">
         <IonText className="font-subheading1 text-orange6">{text}</IonText>
         <IonText className="font-caption1 text-gray5.5">{description}</IonText>

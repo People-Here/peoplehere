@@ -1,5 +1,5 @@
-import { IonIcon, IonImg, IonText } from '@ionic/react';
-import { Link, useLocation } from 'react-router-dom';
+import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
+import { useLocation } from 'react-router-dom';
 import { Fragment, useLayoutEffect, useState } from 'react';
 
 import SearchIcon from '../../assets/svgs/search.svg';
@@ -10,14 +10,16 @@ import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import EmptyListIcon from '../../assets/svgs/empty-result.svg';
 import useSignInStore from '../../stores/signIn';
 import { getTourList, searchTour } from '../../api/tour';
+import SearchPlace from '../../modals/SearchPlace';
 
 import type { Place, Tour, User } from '../../api/tour';
 
 const Home = () => {
+  const router = useIonRouter();
+  const location = useLocation();
+
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const location = useLocation();
 
   useLayoutEffect(() => {
     setLoading(true);
@@ -27,7 +29,7 @@ const Home = () => {
       if (location.search) {
         const keyword = location.search.split('=')[1];
 
-        const { data, status } = await searchTour(keyword);
+        const { data, status } = await searchTour(keyword, 'ORIGIN');
 
         if (status === 200) {
           setList(data.tourList);
@@ -42,7 +44,7 @@ const Home = () => {
 
       setLoading(false);
     })();
-  }, []);
+  }, [location.search]);
 
   if (loading) {
     return <>Loading...</>;
@@ -78,6 +80,11 @@ const Home = () => {
           </>
         )}
       </div>
+
+      <SearchPlace
+        trigger="search-modal"
+        onClickItem={(item) => router.push(`/home?search=${item.title}`)}
+      />
     </div>
   );
 };
@@ -86,7 +93,7 @@ const SearchBar = () => {
   const { region } = useSignInStore((state) => state);
 
   return (
-    <Link to="/search">
+    <div id="search-modal" className="w-full">
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
           <IonText className="font-headline3 text-gray7">어디서 만날까요?</IonText>
@@ -95,7 +102,7 @@ const SearchBar = () => {
 
         <IonIcon icon={SearchIcon} className="svg-lg" />
       </div>
-    </Link>
+    </div>
   );
 };
 

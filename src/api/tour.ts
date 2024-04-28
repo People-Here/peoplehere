@@ -1,3 +1,5 @@
+import { Preferences } from '@capacitor/preferences';
+
 import { typedGet, typedPost } from '.';
 
 export const getTourList = async () => {
@@ -5,8 +7,20 @@ export const getTourList = async () => {
   return response;
 };
 
-export const searchTour = async (keyword: string) => {
-  const response = await typedPost<TourListResponse>('/tours/search', { keyword });
+export const searchTour = async (keyword: string, langCode: string) => {
+  const response = await typedPost<TourListResponse>('/tours/search', { keyword, langCode });
+  return response;
+};
+
+export const postTour = async (body: FormData) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost('/tours', body, {
+    withCredentials: true,
+    headers: {
+      Authorization: value,
+    },
+  });
   return response;
 };
 
@@ -35,4 +49,12 @@ export type User = {
   firstName: string;
   lastName: string;
   profileImageUrl: string;
+};
+
+export type NewTourRequest = {
+  placeId: string;
+  images: File[];
+  title: string;
+  description: string;
+  theme: string;
 };
