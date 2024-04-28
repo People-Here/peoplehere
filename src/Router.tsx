@@ -15,6 +15,7 @@ import AlarmAgreement from './pages/sign-in/AlarmAgreement';
 import CheckEmail from './pages/login/CheckEmail';
 import ResetPassword from './pages/login/ResetPassword';
 import EditProfile from './pages/profile/EditProfile';
+import Profile from './pages/profile/Profile';
 
 const Router = () => {
   return (
@@ -28,10 +29,10 @@ const Router = () => {
       <Route path="/post">
         <PostTab />
       </Route>
-      <Route path="/message">
+      <Route exact path="/message">
         <Message />
       </Route>
-      <Route path="/profile">
+      <Route exact path="/profile">
         <ProfileTab />
       </Route>
 
@@ -66,6 +67,9 @@ const Router = () => {
         <AlarmAgreement />
       </Route>
 
+      <Route path="/profile/:id">
+        <Profile />
+      </Route>
       <Route path="/profile/edit">
         <EditProfile />
       </Route>
