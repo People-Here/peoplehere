@@ -94,7 +94,7 @@ const Post = () => {
         <div className="flex flex-col w-full gap-3">
           <div className="p-3.5 border-[1.5px] border-gray2 rounded-xl">
             <input
-              className="w-full h-full outline-none font-body1 text-gray8"
+              className="w-full h-full bg-white outline-none font-body1 text-gray8"
               placeholder="짧고 재치있는 한 줄 제목"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
@@ -102,7 +102,7 @@ const Post = () => {
           </div>
           <div className="h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5">
             <textarea
-              className="w-full h-full outline-none resize-none font-body1 text-gray8"
+              className="w-full h-full bg-white outline-none resize-none font-body1 text-gray8"
               placeholder="함께 하고 싶은 활동에 대해 얘기해 보세요."
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
