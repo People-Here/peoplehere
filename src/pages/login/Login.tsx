@@ -33,7 +33,7 @@ const Login = () => {
 
     try {
       await requestLogin(email, password);
-      router.push('/');
+      router.push('/', 'root', 'replace');
     } catch (error) {
       console.error('login failed with error:', error);
 

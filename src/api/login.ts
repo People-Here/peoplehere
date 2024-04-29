@@ -1,4 +1,6 @@
-import { typedGet, typedPost } from '.';
+import { Preferences } from '@capacitor/preferences';
+
+import { typedPost } from '.';
 import { parseBigint } from '../utils/parse';
 
 export const signIn = async (params: LoginRequest) => {
@@ -12,8 +14,14 @@ export const signIn = async (params: LoginRequest) => {
   return response;
 };
 
-export const getNewToken = async (params: GetNewTokenRequest) => {
-  const response = await typedGet<GetNewTokenResponse>('/account/token', { params });
+export const getNewToken = async () => {
+  const accessToken = await Preferences.get({ key: 'accessToken' });
+  const refreshToken = await Preferences.get({ key: 'refreshToken' });
+
+  const response = await typedPost<GetNewTokenResponse>('/account/token', {
+    accessToken: accessToken.value,
+    refreshToken: refreshToken.value,
+  });
   return response;
 };
 
@@ -28,12 +36,6 @@ type LoginResponse = {
   id: string;
 };
 
-type GetNewTokenRequest = {
-  refreshToken: string;
-};
-
 type GetNewTokenResponse = {
-  id: string;
   accessToken: string;
-  refreshToken: string;
 };

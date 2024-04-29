@@ -1,6 +1,7 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
+import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -8,14 +9,15 @@ import CameraIcon from '../../assets/svgs/camera.svg';
 import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
-import { postTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
-import { imageToFile } from '../../utils/image';
+import useUserStore from '../../stores/user';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
 const Post = () => {
   const router = useIonRouter();
+
+  const user = useUserStore((state) => state.user);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
 
@@ -26,6 +28,13 @@ const Post = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const token = await Preferences.get({ key: 'accessToken' });
+
+      if (token.value === 'undefined' || !user.id) {
+        router.push('/login');
+        return;
+      }
+
       const permissions = await Camera.checkPermissions();
       if (permissions.photos === 'denied' || permissions.camera === 'denied') {
         await Camera.requestPermissions();
@@ -33,30 +42,32 @@ const Post = () => {
     })();
   }, []);
 
-  const uploadPost = async () => {
-    if (!place.id || !images.length || !title || !description) {
-      console.error('place, images, title, description are required');
-      return;
-    }
+  const uploadPost = () => {
+    // if (!place.id || !images.length || !title || !description) {
+    //   console.error('place, images, title, description are required');
+    //   return;
+    // }
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+    router.push('/post/preview');
 
-    const formData = new FormData();
-    formData.append('placeId', place.id);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('theme', 'black');
+    // const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
 
-    imageBlobs.forEach((blob) => {
-      formData.append('images', blob);
-    });
+    // const formData = new FormData();
+    // formData.append('placeId', place.id);
+    // formData.append('title', title);
+    // formData.append('description', description);
+    // formData.append('theme', 'black');
 
-    try {
-      await postTour(formData);
-      router.push('/');
-    } catch (error) {
-      console.error('failed with uploading post', error);
-    }
+    // imageBlobs.forEach((blob) => {
+    //   formData.append('images', blob);
+    // });
+
+    // try {
+    //   await postTour(formData);
+    //   router.push('/');
+    // } catch (error) {
+    //   console.error('failed with uploading post', error);
+    // }
   };
 
   return (

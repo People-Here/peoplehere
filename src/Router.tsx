@@ -17,6 +17,7 @@ import ResetPassword from './pages/login/ResetPassword';
 import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/Profile';
 import MessageRoom from './pages/message/MessageRoom';
+import Preview from './pages/post/Preview';
 
 const Router = () => {
   return (
@@ -77,6 +78,10 @@ const Router = () => {
 
       <Route path="/message/:id">
         <MessageRoom />
+      </Route>
+
+      <Route path="/post/preview">
+        <Preview />
       </Route>
 
       <Route exact path="/">
