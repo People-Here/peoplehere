@@ -9,27 +9,40 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
-import { useRef } from 'react';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
 import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
-import Alert from '../../components/Alert';
 import SendMessage from '../../modals/SendMessage';
+import LanguageIcon from '../../assets/svgs/language.svg';
 
-const messages = [];
+type Message = {
+  type: 'send' | 'receive';
+  message: string;
+  time: string;
+};
+
+const messages: Message[] = [
+  {
+    type: 'receive',
+    message: '안녕하세요 ㅎㅎ 혹시 언제 시간 괜찮으세요?',
+    time: '24/01/24 22:46',
+  },
+  {
+    type: 'send',
+    message: '안녕하세요~\n저는 이번주 일요일 3시가 좋아요.\n예지나님은요??',
+    time: '24/01/24 22:48',
+  },
+  {
+    type: 'receive',
+    message: '일요일 3시면 괜찮아요! 어디에서 만나면 될까요?',
+    time: '24/01/24 23:20',
+  },
+];
 
 const MessageRoom = () => {
   const router = useIonRouter();
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const makeAppointment = () => {
-    if (messages.length === 0) {
-      buttonRef.current?.click();
-    }
-  };
 
   return (
     <IonPage>
@@ -57,18 +70,20 @@ const MessageRoom = () => {
         />
 
         <div className="px-4">
-          <NoChatChip userName="예지나" />
+          {messages.length === 0 ? (
+            <NoChatChip userName="예지나" />
+          ) : (
+            <div className="flex flex-col gap-8 mt-4">
+              {messages.map((msg) => (
+                <Chat key={msg.message} {...msg} />
+              ))}
+            </div>
+          )}
         </div>
       </IonContent>
 
       <Footer>
         <div className="flex items-center gap-3">
-          {/* <button
-            className="px-5 button-line button-lg whitespace-nowrap font-subheading1 text-gray6"
-            onClick={makeAppointment}
-          >
-            약속 잡기
-          </button> */}
           <button
             id="send-message-modal"
             className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
@@ -78,17 +93,6 @@ const MessageRoom = () => {
           </button>
         </div>
       </Footer>
-
-      <button ref={buttonRef} id="no-message-alert" className="hidden" />
-      <Alert
-        trigger="no-message-alert"
-        title={'아직 쪽지를 보내지 않아서\n약속을 잡을 수 없어요.'}
-        buttons={[
-          {
-            text: '확인',
-          },
-        ]}
-      />
 
       <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
     </IonPage>
@@ -132,6 +136,34 @@ const NoChatChip = ({ userName }: { userName: string }) => {
       <p className="font-caption1 text-gray7">
         {userName} 님에게 쪽지를 보내고 약속을 잡아 보세요.
       </p>
+    </div>
+  );
+};
+
+type ChatProps = {
+  type: 'send' | 'receive';
+  message: string;
+  time: string;
+};
+const Chat = ({ type, message, time }: ChatProps) => {
+  return (
+    <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
+      <div className="flex flex-col gap-0.5 w-fit">
+        {type === 'receive' ? (
+          <p className="font-body1 text-orange6">받은 쪽지</p>
+        ) : (
+          <p className="font-body1 text-gray5">보낸 쪽지</p>
+        )}
+
+        <div className="px-2.5 py-2 bg-gray1.5 rounded-md whitespace-pre-wrap max-w-[16.5rem]">
+          <p className="font-body1 text-gray8">{message}</p>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p className="font-caption2 text-gray5.5">{time}</p>
+          <IonIcon src={LanguageIcon} className="svg-md" />
+        </div>
+      </div>
     </div>
   );
 };

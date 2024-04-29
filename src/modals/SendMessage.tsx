@@ -50,6 +50,7 @@ const SendMessage = ({ sendMessage, ...rest }: Props & ModalProps) => {
             </button>
           </Footer>
         </IonContent>
+
         <Alert
           trigger="send-confirm-alert"
           title="쪽지를 전송할까요?"
