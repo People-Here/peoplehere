@@ -18,7 +18,7 @@ const Header = ({ type, title }: Props) => {
       </IonButtons>
 
       {title ? (
-        <IonTitle class="ion-text-center" className="pl-0 font-headline3 text-gray8">
+        <IonTitle class="ion-text-center" className="font-headline3 text-gray8">
           {title}
         </IonTitle>
       ) : null}

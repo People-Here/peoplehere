@@ -16,6 +16,7 @@ import CheckEmail from './pages/login/CheckEmail';
 import ResetPassword from './pages/login/ResetPassword';
 import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/Profile';
+import MessageRoom from './pages/message/MessageRoom';
 
 const Router = () => {
   return (
@@ -72,6 +73,10 @@ const Router = () => {
       </Route>
       <Route path="/profile/edit">
         <EditProfile />
+      </Route>
+
+      <Route path="/message/:id">
+        <MessageRoom />
       </Route>
 
       <Route exact path="/">

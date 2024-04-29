@@ -54,7 +54,11 @@ const Profile = () => {
         {/* header */}
         <IonToolbar className="px-4 h-14">
           <IonButtons slot="start">
-            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
+            <IonIcon
+              src={ArrowLeftIcon}
+              className="svg-lg"
+              onClick={() => router.push('/', 'forward', 'replace')}
+            />
           </IonButtons>
 
           <IonTitle class="ion-text-center" className="font-headline3 text-gray8">
