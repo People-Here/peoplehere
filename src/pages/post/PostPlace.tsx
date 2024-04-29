@@ -11,6 +11,7 @@ import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
 import SearchPlace from '../../modals/SearchPlace';
 import useUserStore from '../../stores/user';
+import usePostPlaceStore from '../../stores/place';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
@@ -18,6 +19,12 @@ const Post = () => {
   const router = useIonRouter();
 
   const user = useUserStore((state) => state.user);
+  const {
+    setPlace: storePlace,
+    setTitle: storeTitle,
+    setDescription: storeDescription,
+    setImages: storeImages,
+  } = usePostPlaceStore((state) => state);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
 
@@ -43,10 +50,15 @@ const Post = () => {
   }, []);
 
   const uploadPost = () => {
-    // if (!place.id || !images.length || !title || !description) {
-    //   console.error('place, images, title, description are required');
-    //   return;
-    // }
+    if (!place.id || !images.length || !title || !description) {
+      console.error('place, images, title, description are required');
+      return;
+    }
+
+    storePlace(place);
+    storeTitle(title);
+    storeDescription(description);
+    storeImages(images);
 
     router.push('/post/preview');
 
