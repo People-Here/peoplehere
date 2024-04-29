@@ -16,11 +16,19 @@ import LanguagueIcon from '../../assets/svgs/language.svg';
 import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import ChevronUpIcon from '../../assets/svgs/chevron-up.svg';
+import usePostPlaceStore from '../../stores/place';
 
 const Preview = () => {
   const router = useIonRouter();
+  const { place, title, description, images } = usePostPlaceStore((state) => state);
 
   const [theme, setTheme] = useState('black');
+
+  const themeColors = {
+    black: 'bg-gray8',
+    pink: 'bg-[#F4B7C6]',
+    yellow: 'bg-[#FAE09F]',
+  };
 
   return (
     <IonPage>
@@ -41,8 +49,10 @@ const Preview = () => {
           <UserImage src="https://picsum.photos/seed/picsum/200/300" name="Rachel" />
         </div>
 
-        <div className="relative bg-gray8">
-          <div className="absolute rounded-full w-[37.5rem] h-[37.5rem] bg-gray8 -top-28 -left-[7.1875rem] -z-10" />
+        <div className={`relative ${themeColors[theme as keyof typeof themeColors]}`}>
+          <div
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[theme as keyof typeof themeColors]} -top-28 -left-[7.1875rem] -z-10`}
+          />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
@@ -86,7 +96,7 @@ const Preview = () => {
           </div>
         </div>
 
-        <SelectTheme />
+        <SelectTheme currentTheme={theme} setTheme={setTheme} />
       </IonContent>
     </IonPage>
   );
@@ -149,10 +159,12 @@ const themes = {
   pink: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#F4B7C6]',
   yellow: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#FAE09F]',
 };
-const SelectTheme = () => {
+type ThemeProps = {
+  currentTheme: string;
+  setTheme: (theme: string) => void;
+};
+const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
   const [expand, setExpand] = useState(true);
-
-  const onChangeTheme = () => {};
 
   return (
     <IonFooter
@@ -173,7 +185,19 @@ const SelectTheme = () => {
         {expand && (
           <div className="flex gap-[1.125rem]">
             {Object.keys(themes).map((theme) => (
-              <div key={theme} className={themes[theme as keyof typeof themes]} />
+              <>
+                {currentTheme === theme ? (
+                  <div className="border-2 rounded-full border-orange5">
+                    <div className={themes[theme as keyof typeof themes]} />
+                  </div>
+                ) : (
+                  <div
+                    key={theme}
+                    className={themes[theme as keyof typeof themes]}
+                    onClick={() => setTheme(theme)}
+                  />
+                )}
+              </>
             ))}
           </div>
         )}

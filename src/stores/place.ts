@@ -3,23 +3,35 @@ import { create } from 'zustand';
 type State = {
   place: {
     id: string;
-    text: string;
-    description: string;
+    title: string;
+    address: string;
   };
+  title: string;
+  description: string;
+  images: string[];
 };
 
 type Action = {
   setPlace: (place: State['place']) => void;
+  setTitle: (title: string) => void;
+  setDescription: (description: string) => void;
+  setImages: (images: string[]) => void;
 };
 
-const usePlaceStore = create<State & Action>((set) => ({
+const usePostPlaceStore = create<State & Action>((set) => ({
   place: {
     id: '',
-    text: '',
-    description: '',
+    title: '',
+    address: '',
   },
+  title: '',
+  description: '',
+  images: [],
 
   setPlace: (place) => set(() => ({ place })),
+  setTitle: (title) => set(() => ({ title })),
+  setDescription: (description) => set(() => ({ description })),
+  setImages: (images) => set(() => ({ images })),
 }));
 
-export default usePlaceStore;
+export default usePostPlaceStore;
