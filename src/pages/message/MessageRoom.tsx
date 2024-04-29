@@ -47,7 +47,7 @@ const MessageRoom = () => {
   return (
     <IonPage>
       {/* header */}
-      <IonToolbar className="px-4 h-14">
+      <IonToolbar className="px-4 bg-white h-14">
         <IonButtons slot="start">
           <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
         </IonButtons>
