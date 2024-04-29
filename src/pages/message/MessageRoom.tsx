@@ -4,7 +4,6 @@ import {
   IonIcon,
   IonImg,
   IonPage,
-  IonTitle,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
@@ -46,22 +45,21 @@ const MessageRoom = () => {
 
   return (
     <IonPage>
-      {/* header */}
-      <IonToolbar className="px-4 bg-white h-14">
-        <IonButtons slot="start">
-          <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
-        </IonButtons>
-
-        <IonTitle className="pl-1.5 font-headline3 text-gray8">Rachel</IonTitle>
-
-        <IonButtons slot="end">
-          <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
-            새로고침
-          </span>
-        </IonButtons>
-      </IonToolbar>
-
       <IonContent>
+        {/* header */}
+        <IonToolbar className="px-4 bg-white h-14">
+          <IonButtons slot="start">
+            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
+          </IonButtons>
+          <p className="pl-1.5 font-headline3 text-gray8">Rachel</p>
+
+          <IonButtons slot="end">
+            <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
+              새로고침
+            </span>
+          </IonButtons>
+        </IonToolbar>
+
         <ChatInfo
           imageUrl="https://picsum.photos/seed/picsum/100/200"
           languages={['한국어', '영어']}
@@ -80,21 +78,20 @@ const MessageRoom = () => {
             </div>
           )}
         </div>
+
+        <Footer>
+          <div className="flex items-center gap-3">
+            <button
+              id="send-message-modal"
+              className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
+            >
+              <IonIcon src={MessageIcon} className="svg-lg" />
+              <p className="text-white font-subheading1">쪽지 작성</p>
+            </button>
+          </div>
+        </Footer>
+        <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
       </IonContent>
-
-      <Footer>
-        <div className="flex items-center gap-3">
-          <button
-            id="send-message-modal"
-            className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
-          >
-            <IonIcon src={MessageIcon} className="svg-lg" />
-            <p className="text-white font-subheading1">쪽지 작성</p>
-          </button>
-        </div>
-      </Footer>
-
-      <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
     </IonPage>
   );
 };
