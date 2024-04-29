@@ -42,7 +42,7 @@ const MessageRoom = () => {
         <IonTitle className="pl-1.5 font-headline3 text-gray8">Rachel</IonTitle>
 
         <IonButtons slot="end">
-          <span className="flex py-[3px] px-3 border border-gray3 rounded-md font-body2 text-gray6 w-fit">
+          <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
             새로고침
           </span>
         </IonButtons>
@@ -63,12 +63,12 @@ const MessageRoom = () => {
 
       <Footer>
         <div className="flex items-center gap-3">
-          <button
+          {/* <button
             className="px-5 button-line button-lg whitespace-nowrap font-subheading1 text-gray6"
             onClick={makeAppointment}
           >
             약속 잡기
-          </button>
+          </button> */}
           <button
             id="send-message-modal"
             className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
