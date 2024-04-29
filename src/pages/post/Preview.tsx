@@ -1,6 +1,7 @@
 import {
   IonButtons,
   IonContent,
+  IonFooter,
   IonIcon,
   IonImg,
   IonPage,
@@ -8,14 +9,18 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
+import { useState } from 'react';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
 import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
+import ChevronUpIcon from '../../assets/svgs/chevron-up.svg';
 
 const Preview = () => {
   const router = useIonRouter();
+
+  const [theme, setTheme] = useState('black');
 
   return (
     <IonPage>
@@ -53,7 +58,7 @@ const Preview = () => {
             </p>
           </div>
 
-          <div className="px-4 pb-20">
+          <div className="px-4 pb-40">
             <p className="mb-4 text-center font-headline1 text-gray1">송리단길과 석촌호수 산책</p>
 
             <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
@@ -80,6 +85,8 @@ const Preview = () => {
             </div>
           </div>
         </div>
+
+        <SelectTheme />
       </IonContent>
     </IonPage>
   );
@@ -134,6 +141,48 @@ const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
 
       <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem]" />
     </div>
+  );
+};
+
+const themes = {
+  black: 'w-[3.75rem] h-[3.75rem] rounded-full bg-gray8',
+  pink: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#F4B7C6]',
+  yellow: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#FAE09F]',
+};
+const SelectTheme = () => {
+  const [expand, setExpand] = useState(true);
+
+  const onChangeTheme = () => {};
+
+  return (
+    <IonFooter
+      class="ion-no-border"
+      className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[20px]"
+    >
+      <div className="flex flex-col gap-4 p-4">
+        <div className="flex items-center justify-between w-full">
+          <p className="font-headline2 text-gray8">스킨 색상 선택</p>
+          <div
+            className="py-0.5 px-2 rounded-[26px] bg-gray2 flex items-center justify-center"
+            onClick={() => setExpand((prev) => !prev)}
+          >
+            <IonIcon src={ChevronUpIcon} className={expand ? 'svg-md rotate-180' : 'svg-md'} />
+          </div>
+        </div>
+
+        {expand && (
+          <div className="flex gap-[1.125rem]">
+            {Object.keys(themes).map((theme) => (
+              <div key={theme} className={themes[theme as keyof typeof themes]} />
+            ))}
+          </div>
+        )}
+
+        <button className="w-full text-white bg-orange5 button-lg font-subheading1">
+          장소 올리기
+        </button>
+      </div>
+    </IonFooter>
   );
 };
 
