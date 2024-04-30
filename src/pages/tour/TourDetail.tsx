@@ -1,6 +1,7 @@
 import {
   IonButtons,
   IonContent,
+  IonFooter,
   IonIcon,
   IonImg,
   IonPage,
@@ -15,6 +16,7 @@ import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
 import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
+import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour';
 
 const TourDetail = () => {
@@ -88,7 +90,7 @@ const TourDetail = () => {
             </p>
           </div>
 
-          <div className="px-4 pb-40">
+          <div className="px-4 pb-32">
             <p className="mb-4 text-center font-headline1 text-gray1">{tourDetail.title}</p>
 
             <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
@@ -111,6 +113,20 @@ const TourDetail = () => {
             </div>
           </div>
         </div>
+
+        <IonFooter class="ion-no-border" className="fixed bottom-0 left-0 right-0 bg-gray8">
+          <IonToolbar className="p-4">
+            <div className="flex gap-3">
+              <div className="flex items-center justify-center border border-gray6 bg-gray7 rounded-xl w-14 h-[3.25rem] shrink-0">
+                <IonIcon src={HeartLineRedIcon} className="svg-lg" />
+              </div>
+
+              <button className="w-full text-white button-primary button-lg bg-orange6 font-subheading1">
+                Rachel 님에게 쪽지하기
+              </button>
+            </div>
+          </IonToolbar>
+        </IonFooter>
       </IonContent>
     </IonPage>
   );
