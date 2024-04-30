@@ -26,6 +26,7 @@ import ChangeName from './pages/settings/ChangeName';
 import ChangeEmail from './pages/settings/ChangeEmail';
 import ManageAlerts from './pages/settings/ManageAlerts';
 import Support from './pages/settings/Support';
+import TourDetail from './pages/tour/TourDetail';
 
 const Router = () => {
   return (
@@ -115,6 +116,10 @@ const Router = () => {
       </Route>
       <Route path="/settings/policy/privacy">
         <Privacy />
+      </Route>
+
+      <Route path="/tour/:id">
+        <TourDetail />
       </Route>
 
       <Route exact path="/">

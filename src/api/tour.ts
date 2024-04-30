@@ -1,9 +1,17 @@
 import { Preferences } from '@capacitor/preferences';
+import JSONbig from 'json-bigint';
 
 import { typedGet, typedPost } from '.';
 
 export const getTourList = async () => {
-  const response = await typedGet<TourListResponse>('/tours/ORIGIN');
+  const response = await typedGet<TourListResponse>('/tours/ORIGIN', {
+    transformResponse: [(data: string) => JSONbig.parse(data)],
+  });
+  return response;
+};
+
+export const getTourDetail = async (tourId: string, region: string) => {
+  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}`);
   return response;
 };
 
@@ -29,12 +37,34 @@ type TourListResponse = {
 };
 
 export type Tour = {
-  id: number;
+  id: string;
   title: string;
   categoryList: { name: string }[];
   like: boolean;
   placeInfo: Place;
   userInfo: User;
+};
+
+export type TourDetail = {
+  userInfo: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    profileImageUrl: string;
+    languages: string[];
+    introduce: string;
+  };
+  title: string;
+  description: string;
+  placeInfo: {
+    placeId: string;
+    name: string;
+    imageUrlList: { imageUrl: string }[];
+    address: string;
+  };
+  like: boolean;
+  available: boolean;
+  theme: string;
 };
 
 export type Place = {
@@ -45,7 +75,7 @@ export type Place = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   profileImageUrl: string;
