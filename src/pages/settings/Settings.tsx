@@ -45,7 +45,7 @@ const Settings = () => {
 
           <div className="mt-4">
             <MenuItem title="개인정보" icon={UserIcon} routeTo="/settings/informations" />
-            <MenuItem title="알림" icon={BellIcon} routeTo="" />
+            <MenuItem title="알림" icon={BellIcon} routeTo="/settings/alert" />
             <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="" />
             <MenuItem title="법률" icon={PaperIcon} routeTo="/settings/policy" />
           </div>

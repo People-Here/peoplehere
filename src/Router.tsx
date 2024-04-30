@@ -24,6 +24,7 @@ import Privacy from './pages/settings/Privacy';
 import Informations from './pages/settings/Informations';
 import ChangeName from './pages/settings/ChangeName';
 import ChangeEmail from './pages/settings/ChangeEmail';
+import ManageAlerts from './pages/settings/ManageAlerts';
 
 const Router = () => {
   return (
@@ -101,6 +102,9 @@ const Router = () => {
       </Route>
       <Route path="/settings/informations/email">
         <ChangeEmail />
+      </Route>
+      <Route path="/settings/alert">
+        <ManageAlerts />
       </Route>
       <Route path="/settings/policy">
         <Policy />
