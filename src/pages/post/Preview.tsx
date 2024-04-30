@@ -9,7 +9,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -17,18 +17,41 @@ import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import ChevronUpIcon from '../../assets/svgs/chevron-up.svg';
 import usePostPlaceStore from '../../stores/place';
+import useUserStore from '../../stores/user';
+import { getUserProfile } from '../../api/profile';
+
+import type { ProfileResponse } from '../../api/profile';
 
 const Preview = () => {
   const router = useIonRouter();
   const { place, title, description, images } = usePostPlaceStore((state) => state);
+  const user = useUserStore((state) => state.user);
 
   const [theme, setTheme] = useState('black');
+  const [userInfo, setUserInfo] = useState<ProfileResponse>();
+
+  useLayoutEffect(() => {
+    if (!user.id) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getUserProfile(user.id, 'KR');
+
+      if (response.status === 200) {
+        setUserInfo(response.data);
+      }
+    })();
+  }, [user.id]);
 
   const themeColors = {
     black: 'bg-gray8',
     pink: 'bg-[#F4B7C6]',
     yellow: 'bg-[#FAE09F]',
   };
+
+  if (!userInfo) {
+    return <>loading...</>;
+  }
 
   return (
     <IonPage>
@@ -46,7 +69,7 @@ const Preview = () => {
         </IonToolbar>
 
         <div className="flex justify-center w-full mt-6 mb-12">
-          <UserImage src="https://picsum.photos/seed/picsum/200/300" name="Rachel" />
+          <UserImage src="https://picsum.photos/seed/picsum/200/300" name={user.firstName} />
         </div>
 
         <div className={`relative ${themeColors[theme as keyof typeof themeColors]}`}>
@@ -58,40 +81,24 @@ const Preview = () => {
             <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
               <p className="font-body1 text-gray2">구사언어</p>
               <Divider />
-              <p className="font-body1 text-gray2">한국어, 영어, 스페인어</p>
+              <p className="font-body1 text-gray2">{userInfo.languages.join(', ')}</p>
             </div>
 
-            <p className="leading-6 text-center text-white font-body1">
-              {
-                '새로운 사람을 만나고 다양한 문화에 대해 알아가는 것을 좋아해요! 감성적인 장소, 맛있는 음식, 도란도란한 산책을 좋아하는 분들과 즐거운 시간을 보내고 싶어요. ☺️'
-              }
-            </p>
+            <p className="leading-6 text-center text-white font-body1">{userInfo.introduce}</p>
           </div>
 
           <div className="px-4 pb-40">
-            <p className="mb-4 text-center font-headline1 text-gray1">송리단길과 석촌호수 산책</p>
+            <p className="mb-4 text-center font-headline1 text-gray1">{title}</p>
 
             <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
-              <IonImg
-                src="https://picsum.photos/seed/picsum/200/300"
-                alt="place image"
-                className="object-cover w-full h-full"
-              />
+              <IonImg src={images[0]} alt="place image" className="object-cover w-full h-full" />
             </div>
 
-            <PlaceInfo
-              image="https://picsum.photos/seed/picsum/200/300"
-              title="로니로티 건대점"
-              address="서울 광진구 아차산로 225 단산화빌딩"
-            />
+            <PlaceInfo image={images[0]} title={place.title} address={place.address} />
 
             <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
               <p className="font-headline3 text-gray1">우리 여기서 같이 뭐할까?</p>
-              <p className="font-body2 text-gray2">
-                {
-                  '근처 송리단길에서 밥 먹고 석촌호수 공원 한 바퀴 돌아요! 그러다 좀 심심하면 월드타워 가서 같이 아이쇼핑해도 재밌을 것 같아요 ㅎㅎ'
-                }
-              </p>
+              <p className="font-body2 text-gray2">{description}</p>
             </div>
           </div>
         </div>

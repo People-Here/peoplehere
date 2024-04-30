@@ -10,7 +10,7 @@ export const updateUserProfile = async (body: UpdateProfileRequest) => {
   return response;
 };
 
-type ProfileResponse = {
+export type ProfileResponse = {
   id: bigint;
   profileImageUrl: string;
   introduce: string;
