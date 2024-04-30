@@ -1,4 +1,5 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar } from '@ionic/react';
+import { Link } from 'react-router-dom';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -20,7 +21,9 @@ const MyPage = () => {
       </IonToolbar>
 
       <div className="px-4 mt-6">
-        <UserInfo image="https://picsum.photos/seed/picsum/200/300" name="레이첼" />
+        <Link to="/my-page/settings">
+          <UserInfo image="https://picsum.photos/seed/picsum/200/300" name="레이첼" />
+        </Link>
 
         <div className="flex flex-col gap-4 mt-10">
           <NoPlace />

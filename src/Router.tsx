@@ -18,6 +18,7 @@ import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/Profile';
 import MessageRoom from './pages/message/MessageRoom';
 import Preview from './pages/post/Preview';
+import Settings from './pages/my-page/Settings';
 
 const Router = () => {
   return (
@@ -82,6 +83,10 @@ const Router = () => {
 
       <Route path="/post/preview">
         <Preview />
+      </Route>
+
+      <Route path="/my-page/settings">
+        <Settings />
       </Route>
 
       <Route exact path="/">
