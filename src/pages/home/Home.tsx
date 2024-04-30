@@ -1,5 +1,5 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Fragment, useLayoutEffect, useState } from 'react';
 
 import SearchIcon from '../../assets/svgs/search.svg';
@@ -66,7 +66,7 @@ const Home = () => {
         ) : (
           <>
             {list.map((tour) => (
-              <Fragment key={tour.id}>
+              <Link key={tour.id} to={`/tour/${tour.id}`}>
                 <TourItem
                   id={tour.id}
                   title={tour.title}
@@ -75,7 +75,7 @@ const Home = () => {
                   place={tour.placeInfo}
                   user={tour.userInfo}
                 />
-              </Fragment>
+              </Link>
             ))}
           </>
         )}

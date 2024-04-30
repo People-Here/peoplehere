@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Preferences } from '@capacitor/preferences';
 
 import useUserStore from '../stores/user';
+import MyPage from '../pages/my-page/MyPage';
 
 const ProfileTab = () => {
   const router = useIonRouter();
@@ -19,13 +20,13 @@ const ProfileTab = () => {
         return;
       }
     })();
-
-    router.push(`/profile/${user.id}`);
   }, [user.id, router]);
 
   return (
     <IonPage>
-      <IonContent />
+      <IonContent fullscreen>
+        <MyPage />
+      </IonContent>
     </IonPage>
   );
 };

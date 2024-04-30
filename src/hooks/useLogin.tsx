@@ -1,10 +1,12 @@
 import { Preferences } from '@capacitor/preferences';
+import { useIonRouter } from '@ionic/react';
 
 import { signIn } from '../api/login';
 import useUserStore from '../stores/user';
 
 const useLogin = () => {
-  const setUser = useUserStore((state) => state.setUser);
+  const router = useIonRouter();
+  const { user, setUser } = useUserStore((state) => state);
 
   const requestLogin = async (email: string, password: string) => {
     const response = await signIn({ email, password });
@@ -29,9 +31,23 @@ const useLogin = () => {
   const requestLogout = async () => {
     await Preferences.remove({ key: 'accessToken' });
     await Preferences.remove({ key: 'refreshToken' });
+
+    setUser({ id: '0', profileImageUrl: '', firstName: '', lastName: '' });
+
+    router.push('/login', 'forward', 'replace');
   };
 
-  return { requestLogin, requestLogout };
+  const isLoggedIn = async () => {
+    const { value } = await Preferences.get({ key: 'accessToken' });
+
+    if (user.id === '0' || !value || value === 'undefined') {
+      return false;
+    }
+
+    return true;
+  };
+
+  return { requestLogin, requestLogout, isLoggedIn };
 };
 
 export default useLogin;

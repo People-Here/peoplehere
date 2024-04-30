@@ -18,6 +18,15 @@ import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/Profile';
 import MessageRoom from './pages/message/MessageRoom';
 import Preview from './pages/post/Preview';
+import Settings from './pages/settings/Settings';
+import Policy from './pages/settings/Policy';
+import Privacy from './pages/settings/Privacy';
+import Informations from './pages/settings/Informations';
+import ChangeName from './pages/settings/ChangeName';
+import ChangeEmail from './pages/settings/ChangeEmail';
+import ManageAlerts from './pages/settings/ManageAlerts';
+import Support from './pages/settings/Support';
+import TourDetail from './pages/tour/TourDetail';
 
 const Router = () => {
   return (
@@ -82,6 +91,35 @@ const Router = () => {
 
       <Route path="/post/preview">
         <Preview />
+      </Route>
+
+      <Route path="/settings">
+        <Settings />
+      </Route>
+      <Route path="/settings/informations">
+        <Informations />
+      </Route>
+      <Route path="/settings/informations/name">
+        <ChangeName />
+      </Route>
+      <Route path="/settings/informations/email">
+        <ChangeEmail />
+      </Route>
+      <Route path="/settings/alert">
+        <ManageAlerts />
+      </Route>
+      <Route path="/settings/support">
+        <Support />
+      </Route>
+      <Route path="/settings/policy">
+        <Policy />
+      </Route>
+      <Route path="/settings/policy/privacy">
+        <Privacy />
+      </Route>
+
+      <Route path="/tour/:id">
+        <TourDetail />
       </Route>
 
       <Route exact path="/">

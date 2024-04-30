@@ -1,37 +1,101 @@
-import { IonContent, IonPage, useIonRouter } from '@ionic/react';
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { IonContent, IonIcon, IonPage, IonText, IonToolbar, useIonRouter } from '@ionic/react';
+import { Preferences } from '@capacitor/preferences';
+import { useEffect } from 'react';
 
-import Alert from '../components/Alert';
+import MessageIcon from '../assets/svgs/message-line-color.svg';
+import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
+import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
+import useUserStore from '../stores/user';
 
 const BookmarkTab = () => {
   const router = useIonRouter();
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    buttonRef.current?.click();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const token = await Preferences.get({ key: 'accessToken' });
+
+      if (!token.value || token.value === 'undefined' || user.id === '0') {
+        router.push('/login', 'forward', 'replace');
+        return;
+      }
+    })();
   }, []);
 
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Link to={'/login'}>
-          <button>go to login</button>
-        </Link>
+        {/* header */}
+        <IonToolbar className="px-4 bg-white h-14">
+          <p className="pl-0 font-headline1 text-gray8">관심 목록</p>
+        </IonToolbar>
+
+        {/* body */}
+        <div className="flex items-center justify-center h-full -mt-14">
+          <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
+        </div>
       </IonContent>
-
-      <button id="ready-alert" ref={buttonRef} className="hidden" />
-
-      <Alert
-        trigger="ready-alert"
-        title="준비중인 기능이에요."
-        buttons={[
-          { text: '홈으로 돌아가기', onClick: () => router.push('/', 'forward', 'replace') },
-        ]}
-      />
     </IonPage>
   );
+};
+
+type ListItemProps = {
+  title: string;
+  placeName: string;
+  district: string;
+  images: string[];
+  available: boolean;
+  user: {
+    id: string;
+    name: string;
+    imageUrl: string;
+  };
+};
+const ListItem = ({ title, placeName, district, images, available, user }: ListItemProps) => {
+  return (
+    <div className="flex flex-col gap-3 p-3 border border-gray2 rounded-2xl">
+      <div className="-mr-4">
+        {/* title area */}
+        <div className="flex flex-col gap-1.5 mb-3 pr-4">
+          <StatusChip available />
+
+          <div className="pl-1 flex flex-col gap-0.5">
+            <div className="flex items-center justify-between">
+              <IonText className="font-headline3 text-gray8">{title}</IonText>
+              <IonIcon icon={HeartFilledIcon} className="svg-lg" />
+            </div>
+
+            <div className="flex items-center">
+              <IonText className="font-caption1 text-gray6">{placeName}</IonText>
+              <Divider />
+              <IonText className="font-caption2 text-gray6">{district}</IonText>
+            </div>
+          </div>
+        </div>
+
+        {/* content area */}
+      </div>
+    </div>
+  );
+};
+
+const StatusChip = ({ available }: { available?: boolean }) => {
+  return available ? (
+    <div className="flex items-center gap-[5px] px-2 py-1 bg-orange1 rounded-[10px] w-fit">
+      <IonText className="font-caption1 text-orange5">말 걸 수 있음</IonText>
+      <IonIcon icon={MessageIcon} className="svg-sm" />
+    </div>
+  ) : (
+    <div className="flex items-center gap-[5px] px-2 py-1 bg-gray1.5 rounded-[10px] w-fit">
+      <IonText className="font-caption1 text-gray6">쪽지 마감</IonText>
+      <IonIcon icon={MessageBlockedIcon} className="svg-sm" />
+    </div>
+  );
+};
+
+const Divider = () => {
+  return <div className="w-[1px] bg-gray6 h-3 mx-1.5" />;
 };
 
 export default BookmarkTab;

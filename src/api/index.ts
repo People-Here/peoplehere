@@ -40,3 +40,8 @@ export const typedPut = async <T>(url: string, body?: unknown, config?: AxiosReq
   const response = await apiInstance.put<T>(url, body, config);
   return response;
 };
+
+export const typedDelete = async <T>(url: string, config?: AxiosRequestConfig) => {
+  const response = await apiInstance.delete<T>(url, config);
+  return response;
+};

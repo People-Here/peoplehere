@@ -1,7 +1,26 @@
-import { IonContent, IonImg, IonPage, IonToolbar } from '@ionic/react';
+import { Preferences } from '@capacitor/preferences';
+import { IonContent, IonImg, IonPage, IonToolbar, useIonRouter } from '@ionic/react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import useUserStore from '../stores/user';
+
 const MessageTab = () => {
+  const router = useIonRouter();
+  const user = useUserStore((state) => state.user);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const token = await Preferences.get({ key: 'accessToken' });
+
+      if (!token.value || token.value === 'undefined' || user.id === '0') {
+        router.push('/login', 'forward', 'replace');
+        return;
+      }
+    })();
+  }, []);
+
   return (
     <IonPage>
       <IonContent fullscreen>

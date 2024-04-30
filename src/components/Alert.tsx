@@ -86,7 +86,7 @@ const DoubleButton = ({ buttons, closeAlert }: { buttons: Button[]; closeAlert: 
   return (
     <div className="flex gap-2.5">
       <button
-        className="flex-1 button-line button-md"
+        className="flex-1 button-line button-md text-gray6 font-body1"
         onClick={() => {
           buttons[0].onClick?.();
           closeAlert();
@@ -95,7 +95,7 @@ const DoubleButton = ({ buttons, closeAlert }: { buttons: Button[]; closeAlert: 
         {buttons[0].text}
       </button>
       <button
-        className="flex-1 button-primary button-md"
+        className="flex-1 text-white button-primary button-md font-body1"
         onClick={() => {
           buttons[1].onClick?.();
           closeAlert();
