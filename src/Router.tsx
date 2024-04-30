@@ -25,6 +25,7 @@ import Informations from './pages/settings/Informations';
 import ChangeName from './pages/settings/ChangeName';
 import ChangeEmail from './pages/settings/ChangeEmail';
 import ManageAlerts from './pages/settings/ManageAlerts';
+import Support from './pages/settings/Support';
 
 const Router = () => {
   return (
@@ -105,6 +106,9 @@ const Router = () => {
       </Route>
       <Route path="/settings/alert">
         <ManageAlerts />
+      </Route>
+      <Route path="/settings/support">
+        <Support />
       </Route>
       <Route path="/settings/policy">
         <Policy />
