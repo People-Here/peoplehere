@@ -69,16 +69,18 @@ const TourDetail = () => {
           />
         </div>
 
-        <div className={`relative ${themeColors[tourDetail.theme as keyof typeof themeColors]}`}>
+        <div
+          className={`relative ${themeColors[(tourDetail.theme as keyof typeof themeColors) ?? 'black']}`}
+        >
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme as keyof typeof themeColors]} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[(tourDetail.theme as keyof typeof themeColors) ?? 'black']} -top-28 -left-[7.1875rem] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
               <p className="font-body1 text-gray2">구사언어</p>
               <Divider />
-              <p className="font-body1 text-gray2">{tourDetail.userInfo.languages.join(', ')}</p>
+              <p className="font-body1 text-gray2">{tourDetail.userInfo.languages}</p>
             </div>
 
             <p className="leading-6 text-center text-white font-body1">
