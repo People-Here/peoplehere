@@ -1,6 +1,7 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
+import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -8,14 +9,22 @@ import CameraIcon from '../../assets/svgs/camera.svg';
 import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
-import { postTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
-import { imageToFile } from '../../utils/image';
+import useUserStore from '../../stores/user';
+import usePostPlaceStore from '../../stores/place';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
 const Post = () => {
   const router = useIonRouter();
+
+  const user = useUserStore((state) => state.user);
+  const {
+    setPlace: storePlace,
+    setTitle: storeTitle,
+    setDescription: storeDescription,
+    setImages: storeImages,
+  } = usePostPlaceStore((state) => state);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
 
@@ -26,6 +35,13 @@ const Post = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const token = await Preferences.get({ key: 'accessToken' });
+
+      if (token.value === 'undefined' || !user.id) {
+        router.push('/login');
+        return;
+      }
+
       const permissions = await Camera.checkPermissions();
       if (permissions.photos === 'denied' || permissions.camera === 'denied') {
         await Camera.requestPermissions();
@@ -33,30 +49,37 @@ const Post = () => {
     })();
   }, []);
 
-  const uploadPost = async () => {
+  const uploadPost = () => {
     if (!place.id || !images.length || !title || !description) {
       console.error('place, images, title, description are required');
       return;
     }
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+    storePlace(place);
+    storeTitle(title);
+    storeDescription(description);
+    storeImages(images);
 
-    const formData = new FormData();
-    formData.append('placeId', place.id);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('theme', 'black');
+    router.push('/post/preview');
 
-    imageBlobs.forEach((blob) => {
-      formData.append('images', blob);
-    });
+    // const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
 
-    try {
-      await postTour(formData);
-      router.push('/');
-    } catch (error) {
-      console.error('failed with uploading post', error);
-    }
+    // const formData = new FormData();
+    // formData.append('placeId', place.id);
+    // formData.append('title', title);
+    // formData.append('description', description);
+    // formData.append('theme', 'black');
+
+    // imageBlobs.forEach((blob) => {
+    //   formData.append('images', blob);
+    // });
+
+    // try {
+    //   await postTour(formData);
+    //   router.push('/');
+    // } catch (error) {
+    //   console.error('failed with uploading post', error);
+    // }
   };
 
   return (
@@ -94,7 +117,7 @@ const Post = () => {
         <div className="flex flex-col w-full gap-3">
           <div className="p-3.5 border-[1.5px] border-gray2 rounded-xl">
             <input
-              className="w-full h-full outline-none font-body1 text-gray8"
+              className="w-full h-full bg-white outline-none font-body1 text-gray8"
               placeholder="짧고 재치있는 한 줄 제목"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
@@ -102,7 +125,7 @@ const Post = () => {
           </div>
           <div className="h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5">
             <textarea
-              className="w-full h-full outline-none resize-none font-body1 text-gray8"
+              className="w-full h-full bg-white outline-none resize-none font-body1 text-gray8"
               placeholder="함께 하고 싶은 활동에 대해 얘기해 보세요."
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
