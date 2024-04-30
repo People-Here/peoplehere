@@ -14,11 +14,13 @@ import useUserStore from '../../stores/user';
 import DeleteUser from '../../modals/DeleteUser';
 import Alert from '../../components/Alert';
 import { deleteAccount } from '../../api/sign-in';
+import useLogin from '../../hooks/useLogin';
 
 const Settings = () => {
   const router = useIonRouter();
 
   const { id } = useUserStore((state) => state.user);
+  const { requestLogout } = useLogin();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -29,7 +31,7 @@ const Settings = () => {
     (async () => {
       const { value } = await Preferences.get({ key: 'accessToken' });
 
-      if (id && value !== 'undefined') {
+      if (id && value && value !== 'undefined') {
         setIsLogin(true);
       }
     })();
@@ -53,7 +55,9 @@ const Settings = () => {
 
         <Footer>
           {isLogin ? (
-            <button className="w-full mb-4 button-gray button-lg">로그아웃</button>
+            <button className="w-full mb-4 button-gray button-lg" onClick={requestLogout}>
+              로그아웃
+            </button>
           ) : (
             <Link to="/login">
               <button className="w-full mb-4 button-sub button-lg">로그인</button>

@@ -37,8 +37,8 @@ const Post = () => {
     (async () => {
       const token = await Preferences.get({ key: 'accessToken' });
 
-      if (token.value === 'undefined' || !user.id) {
-        router.push('/login');
+      if (!token.value || token.value === 'undefined' || user.id === '0') {
+        router.push('/login', 'forward', 'replace');
         return;
       }
 

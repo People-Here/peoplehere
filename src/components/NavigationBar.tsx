@@ -6,7 +6,6 @@ import HomeIcon from '../assets/svgs/home.svg';
 import HomeLineIcon from '../assets/svgs/home-line.svg';
 import HeartIcon from '../assets/svgs/double-heart.svg';
 import HeartLineIcon from '../assets/svgs/heart-line.svg';
-import PlusIcon from '../assets/svgs/plus-circle.svg';
 import PlusLineIcon from '../assets/svgs/plus-circle-line.svg';
 import MessageIcon from '../assets/svgs/message.svg';
 import MessageLineIcon from '../assets/svgs/message-line.svg';
@@ -66,11 +65,7 @@ const NavigationBar = () => {
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="post" href="/post">
-          <IonIcon
-            aria-hidden="true"
-            className="pb-3 w-9 h-9"
-            src={currentTab === 'post' ? PlusIcon : PlusLineIcon}
-          />
+          <IonIcon aria-hidden="true" className="pb-3 w-9 h-9" src={PlusLineIcon} />
         </IonTabButton>
         <IonTabButton tab="message" href="/message">
           <IonIcon
