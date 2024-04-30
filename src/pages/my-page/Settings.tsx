@@ -44,10 +44,10 @@ const Settings = () => {
           <IonText className="mt-1 font-headline1 text-[#1D1B20]">환경 설정</IonText>
 
           <div className="mt-4">
-            <MenuItem title="개인정보" icon={UserIcon} onClick={() => {}} />
-            <MenuItem title="알림" icon={BellIcon} onClick={() => {}} />
-            <MenuItem title="문의하기" icon={CustomerSupportIcon} onClick={() => {}} />
-            <MenuItem title="법률" icon={PaperIcon} onClick={() => {}} />
+            <MenuItem title="개인정보" icon={UserIcon} routeTo="" />
+            <MenuItem title="알림" icon={BellIcon} routeTo="" />
+            <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="" />
+            <MenuItem title="법률" icon={PaperIcon} routeTo="/my-page/settings/policy" />
           </div>
         </div>
 
@@ -108,17 +108,17 @@ const Settings = () => {
 type MenuItemProps = {
   title: string;
   icon: string;
-  onClick: () => void;
+  routeTo: string;
 };
-const MenuItem = ({ title, icon, onClick }: MenuItemProps) => {
+const MenuItem = ({ title, icon, routeTo }: MenuItemProps) => {
   return (
-    <div
+    <Link
+      to={routeTo}
       className="w-full py-5 flex items-center gap-4 border-b border-gray1.5 bg-white"
-      onClick={onClick}
     >
       <IonIcon icon={icon} className="svg-lg" />
       <p className="font-subheading2 text-gray8">{title}</p>
-    </div>
+    </Link>
   );
 };
 
