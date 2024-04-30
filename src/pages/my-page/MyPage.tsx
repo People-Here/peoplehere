@@ -1,4 +1,4 @@
-import { IonButtons, IonIcon, IonImg, IonText, IonToolbar } from '@ionic/react';
+import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
@@ -7,8 +7,12 @@ import ThreeDotsIcon from '../../assets/svgs/three-dots.svg';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import PlusCircleOrangeIcon from '../../assets/svgs/plus-circle-orange.svg';
+import useUserStore from '../../stores/user';
 
 const MyPage = () => {
+  const router = useIonRouter();
+  const user = useUserStore((state) => state.user);
+
   return (
     <>
       {/* header */}
@@ -16,12 +20,16 @@ const MyPage = () => {
         <p className="font-headline3 text-gray8">마이페이지</p>
 
         <IonButtons slot="end">
-          <IonIcon src={SettingIcon} className="svg-lg" />
+          <IonIcon
+            src={SettingIcon}
+            className="svg-lg"
+            onClick={() => router.push('/my-page/settings')}
+          />
         </IonButtons>
       </IonToolbar>
 
       <div className="px-4 mt-6">
-        <Link to="/my-page/settings">
+        <Link to={`/profile/${user.id}`}>
           <UserInfo image="https://picsum.photos/seed/picsum/200/300" name="레이첼" />
         </Link>
 

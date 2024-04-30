@@ -1,6 +1,6 @@
-import { IonContent, IonIcon, IonPage, IonText } from '@ionic/react';
+import { IonContent, IonIcon, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
@@ -11,16 +11,23 @@ import PaperIcon from '../../assets/svgs/paper.svg';
 import LogoBlackIcon from '../../assets/svgs/logo-black.svg';
 import Footer from '../../layouts/Footer';
 import useUserStore from '../../stores/user';
+import DeleteUser from '../../modals/DeleteUser';
+import Alert from '../../components/Alert';
+import { deleteAccount } from '../../api/sign-in';
 
 const Settings = () => {
+  const router = useIonRouter();
+
   const { id } = useUserStore((state) => state.user);
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const { value } = await Preferences.get({ key: 'accessToken ' });
+      const { value } = await Preferences.get({ key: 'accessToken' });
 
       if (id && value !== 'undefined') {
         setIsLogin(true);
@@ -66,13 +73,33 @@ const Settings = () => {
           </div>
 
           {isLogin ? (
-            <p className="text-center underline font-caption1 text-gray5.5">계정 삭제</p>
+            <p id="delete-modal" className="text-center underline font-caption1 text-gray5.5">
+              계정 삭제
+            </p>
           ) : (
             <Link to="/sign-in/email">
               <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
             </Link>
           )}
         </Footer>
+
+        <DeleteUser trigger="delete-modal" onDidDismiss={() => buttonRef.current?.click()} />
+
+        <button id="delete-confirm-alert" className="hidden" ref={buttonRef} />
+        <Alert
+          trigger="delete-confirm-alert"
+          title="정말로 계정을 삭제할까요?"
+          buttons={[
+            {
+              text: '계정 삭제',
+              onClick: () =>
+                deleteAccount(id).then(() => router.push('/login', 'forward', 'replace')),
+            },
+            {
+              text: '취소',
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   );
