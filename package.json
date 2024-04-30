@@ -17,6 +17,7 @@
     "@capacitor/android": "^5.7.4",
     "@capacitor/app": "5.0.7",
     "@capacitor/camera": "^5.0.9",
+    "@capacitor/clipboard": "^6.0.0",
     "@capacitor/core": "5.7.4",
     "@capacitor/device": "^6.0.0",
     "@capacitor/haptics": "5.0.7",

@@ -1,8 +1,21 @@
 import { IonContent, IonPage } from '@ionic/react';
+import { useRef } from 'react';
+import { Clipboard } from '@capacitor/clipboard';
 
 import Header from '../../components/Header';
+import Toast from '../../toasts/Toast';
 
 const Support = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const copyText = async () => {
+    await Clipboard.write({
+      string: 'peoplehere986@gmail.com',
+    });
+
+    buttonRef.current?.click();
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -15,14 +28,18 @@ const Support = () => {
             </p>
             <p className="mb-8 text-center font-heading text-gray7">peoplehere986@gmail.com</p>
 
-            <a href="mailto:peoplehere986@gmail.com">
-              <button className="w-full button-gray button-lg font-subheading1 text-gray6">
-                이메일 보내기
-              </button>
-            </a>
+            <button
+              className="w-full button-gray button-lg font-subheading1 text-gray6"
+              onClick={copyText}
+            >
+              이메일 복사하기
+            </button>
           </div>
         </div>
+
+        <button id="copy-toast" ref={buttonRef} className="hidden" />
       </IonContent>
+      <Toast type="info" trigger="copy-toast" message="이메일 주소가 복사되었어요." />
     </IonPage>
   );
 };
