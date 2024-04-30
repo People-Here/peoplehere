@@ -31,17 +31,21 @@ const Informations = () => {
               <p className="font-body2 text-gray6">p********e@team.com</p>
             </div>
 
-            <IonIcon icon={PencilWithCircleIcon} className="svg-lg" />
+            <IonIcon
+              icon={PencilWithCircleIcon}
+              className="svg-lg"
+              onClick={() => router.push('/settings/informations/email')}
+            />
           </div>
 
-          <div className="flex items-center justify-between w-full py-4 border-b border-gray1.5">
+          {/* <div className="flex items-center justify-between w-full py-4 border-b border-gray1.5">
             <div>
               <p className="mb-1 font-subheading2 text-gray7">전화번호</p>
               <p className="font-body2 text-gray6">안전한 만남을 위해 본인인증을 완료해 주세요.</p>
             </div>
 
             <IonIcon icon={PencilWithCircleIcon} className="svg-lg" />
-          </div>
+          </div> */}
         </div>
       </IonContent>
     </IonPage>

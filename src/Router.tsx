@@ -23,6 +23,7 @@ import Policy from './pages/settings/Policy';
 import Privacy from './pages/settings/Privacy';
 import Informations from './pages/settings/Informations';
 import ChangeName from './pages/settings/ChangeName';
+import ChangeEmail from './pages/settings/ChangeEmail';
 
 const Router = () => {
   return (
@@ -99,7 +100,7 @@ const Router = () => {
         <ChangeName />
       </Route>
       <Route path="/settings/informations/email">
-        <Informations />
+        <ChangeEmail />
       </Route>
       <Route path="/settings/policy">
         <Policy />
