@@ -18,9 +18,11 @@ import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/Profile';
 import MessageRoom from './pages/message/MessageRoom';
 import Preview from './pages/post/Preview';
-import Settings from './pages/my-page/Settings';
-import Policy from './pages/my-page/Policy';
-import Privacy from './pages/my-page/Privacy';
+import Settings from './pages/settings/Settings';
+import Policy from './pages/settings/Policy';
+import Privacy from './pages/settings/Privacy';
+import Informations from './pages/settings/Informations';
+import ChangeName from './pages/settings/ChangeName';
 
 const Router = () => {
   return (
@@ -87,13 +89,22 @@ const Router = () => {
         <Preview />
       </Route>
 
-      <Route path="/my-page/settings">
+      <Route path="/settings">
         <Settings />
       </Route>
-      <Route path="/my-page/settings/policy">
+      <Route path="/settings/informations">
+        <Informations />
+      </Route>
+      <Route path="/settings/informations/name">
+        <ChangeName />
+      </Route>
+      <Route path="/settings/informations/email">
+        <Informations />
+      </Route>
+      <Route path="/settings/policy">
         <Policy />
       </Route>
-      <Route path="/my-page/settings/policy/privacy">
+      <Route path="/settings/policy/privacy">
         <Privacy />
       </Route>
 

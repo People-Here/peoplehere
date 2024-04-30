@@ -41,13 +41,13 @@ const Settings = () => {
         <Header type="close" />
 
         <div className="px-4">
-          <IonText className="mt-1 font-headline1 text-[#1D1B20]">환경 설정</IonText>
+          <IonText className="mt-1 font-headline1 text-gray8">환경 설정</IonText>
 
           <div className="mt-4">
-            <MenuItem title="개인정보" icon={UserIcon} routeTo="" />
+            <MenuItem title="개인정보" icon={UserIcon} routeTo="/settings/informations" />
             <MenuItem title="알림" icon={BellIcon} routeTo="" />
             <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="" />
-            <MenuItem title="법률" icon={PaperIcon} routeTo="/my-page/settings/policy" />
+            <MenuItem title="법률" icon={PaperIcon} routeTo="/settings/policy" />
           </div>
         </div>
 

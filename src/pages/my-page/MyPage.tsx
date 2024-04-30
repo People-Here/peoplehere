@@ -20,11 +20,7 @@ const MyPage = () => {
         <p className="font-headline3 text-gray8">마이페이지</p>
 
         <IonButtons slot="end">
-          <IonIcon
-            src={SettingIcon}
-            className="svg-lg"
-            onClick={() => router.push('/my-page/settings')}
-          />
+          <IonIcon src={SettingIcon} className="svg-lg" onClick={() => router.push('/settings')} />
         </IonButtons>
       </IonToolbar>
 
