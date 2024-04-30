@@ -79,7 +79,7 @@ const Login = () => {
             <button
               className="button-primary button-lg"
               onClick={() => {
-                router.push('/sign-in/phone');
+                router.push('/sign-in/email');
               }}
             >
               회원가입
