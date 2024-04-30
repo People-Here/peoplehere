@@ -20,6 +20,7 @@ import MessageRoom from './pages/message/MessageRoom';
 import Preview from './pages/post/Preview';
 import Settings from './pages/my-page/Settings';
 import Policy from './pages/my-page/Policy';
+import Privacy from './pages/my-page/Privacy';
 
 const Router = () => {
   return (
@@ -91,6 +92,9 @@ const Router = () => {
       </Route>
       <Route path="/my-page/settings/policy">
         <Policy />
+      </Route>
+      <Route path="/my-page/settings/policy/privacy">
+        <Privacy />
       </Route>
 
       <Route exact path="/">
