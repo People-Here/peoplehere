@@ -23,7 +23,8 @@ const MyPage = () => {
         <UserInfo image="https://picsum.photos/seed/picsum/200/300" name="레이첼" />
 
         <div className="flex flex-col gap-4 mt-10">
-          <TourInfo
+          <NoPlace />
+          {/* <TourInfo
             image="https://picsum.photos/seed/picsum/200/300"
             title="홍대에서 만나는 디자인과 예술"
             placeName="건국대학교"
@@ -35,12 +36,12 @@ const MyPage = () => {
             title="홍대에서 만나는 디자인과 예술"
             placeName="건국대학교"
             district="광진구"
-          />
+          /> */}
 
-          <div className="flex items-center justify-center gap-1 p-3">
+          {/* <div className="flex items-center justify-center gap-1 p-3">
             <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
             <p className="font-body1 text-orange6">장소 올리기</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
@@ -109,6 +110,20 @@ const TourInfo = ({ image, title, placeName, district, available }: TourInfoProp
           </p>
         </div>
       </div>
+    </div>
+  );
+};
+
+const NoPlace = () => {
+  return (
+    <div className="flex flex-col items-center gap-6 mt-20">
+      <p className="text-center whitespace-pre-wrap font-body1 text-gray5">
+        {'장소를 올리고\n사람들과 약속을 잡아 보세요!'}
+      </p>
+      <button className="flex items-center gap-2 px-3 button-sub button-lg w-fit h-11">
+        <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
+        <p className="font-body1 text-orange5">장소 올리기</p>
+      </button>
     </div>
   );
 };
