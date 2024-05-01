@@ -1,4 +1,5 @@
 import { IonCheckbox } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import colors from '../theme/colors';
 import ModalContainer from '.';
@@ -17,10 +18,12 @@ const PolicyAgreement = ({
   onClickButton,
   ...rest
 }: Props & ModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <ModalContainer
-      title="약관동의"
-      buttonText="회원가입 완료"
+      title={t('signup.policy.title')}
+      buttonText={t('signup.policy.agree')}
       initialBreakpoint={0.35}
       breakpoints={[0, 0.35, 0.4]}
       onClickButton={onClickButton}
@@ -39,21 +42,15 @@ const PolicyAgreement = ({
           onChange={setMarketingChecked}
           label={
             <label>
-              <p className="font-caption2 text-gray7">마케팅 이메일을 수신하겠습니다. (선택)</p>
-              <p className="font-caption2 text-gray5.5">
-                설정에서 언제든지 수신을 거부할 수 있습니다.
-              </p>
+              <p className="font-caption2 text-gray7">{t('signup.policy.marketingAgreement1')}</p>
+              <p className="font-caption2 text-gray5.5">{t('signup.policy.marketingAgreement2')}</p>
             </label>
           }
         />
       </div>
 
       <div className="px-3 py-2.5 rounded bg-gray1 mt-7 mb-3">
-        <p className="font-caption2 text-gray6">
-          {
-            "'동의 및 완료'를 클릭함으로써 피플히어의 서비스 약관, 위치기반서비스 이용 약관, 개인정보처리방침에 동의합니다."
-          }
-        </p>
+        <p className="font-caption2 text-gray6">{t('signup.policy.confirmText')}</p>
       </div>
     </ModalContainer>
   );

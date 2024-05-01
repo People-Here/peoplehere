@@ -22,7 +22,8 @@
     "login": "Log in",
     "signup": "Sign up",
     "retry": "Try again",
-    "continue": "Continue"
+    "continue": "Continue",
+    "save": "Save"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
@@ -45,6 +46,25 @@
     },
     "password": {
       "title": "Set your account password"
+    },
+    "info": {
+      "title": "Almost done!\nPlease enter your details",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "birthDay": "Birthday (YYYY/MM/DD)",
+      "ageLimit": "To sign up, you need to be at least 18.",
+      "gender": "Gender",
+      "selectGender": "Choose your gender",
+      "showAgeTitle": "Show your age to public",
+      "showAge": "Show to public?",
+      "selectBirthDay": "Select your birthday"
+    },
+    "policy": {
+      "title": "Terms and conditions",
+      "agree": "Agree and sign up",
+      "marketingAgreement1": "I will receive marketing emails. (optional)",
+      "marketingAgreement2": "You can opt out at any time in your account settings.",
+      "confirmText": "By selecting Agree and sign up, I agree to Peoplehere's Terms of service."
     }
   }
 }
