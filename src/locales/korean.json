@@ -1,5 +1,9 @@
 {
   "searchBar": {
     "title": "어디서 만날까요?"
+  },
+  "tour": {
+    "available": "말 걸 수 있음",
+    "unavailable": "쪽지 마감"
   }
 }

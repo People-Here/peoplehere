@@ -1,5 +1,9 @@
 {
   "searchBar": {
     "title": "Where to meet?"
+  },
+  "tour": {
+    "available": "Talk to me",
+    "unavailable": "Unavailable"
   }
 }

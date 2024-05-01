@@ -7,7 +7,7 @@ import translateKO from './locales/korean.json';
 import translateEN from './locales/english.json';
 
 i18next.use(initReactI18next).init({
-  resources: { ko: translateKO, en: translateEN },
+  resources: { ko: { translation: translateKO }, en: { translation: translateEN } },
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,
