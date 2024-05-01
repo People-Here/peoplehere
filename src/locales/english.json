@@ -25,7 +25,8 @@
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
-    "invalidEmail": "Invalid email format."
+    "invalidEmail": "Invalid email format.",
+    "alreadyInUse": "Email already in use."
   },
   "password": {
     "reset": "Reset password",

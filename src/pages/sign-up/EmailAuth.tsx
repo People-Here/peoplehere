@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -11,6 +12,8 @@ import useSignInStore from '../../stores/signIn';
 import type { AxiosError } from 'axios';
 
 const EmailAuth = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const setEmail = useSignInStore((state) => state.setEmail);
 
@@ -30,11 +33,11 @@ const EmailAuth = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 400) {
-        setErrorMessage('이메일 형식이 유효하지 않아요.');
+        setErrorMessage(t('error.invalidEmail'));
       }
 
       if (errorInstance.response?.status === 409) {
-        setErrorMessage('이미 가입한 이메일이에요.');
+        setErrorMessage(t('error.alreadyInUse'));
       }
     }
   };
@@ -44,7 +47,7 @@ const EmailAuth = () => {
 
     if (response.status === 200) {
       setEmail(emailInput);
-      router.push('/sign-in/password');
+      router.push('/sign-up/password');
     }
   };
 

@@ -52,7 +52,7 @@ const UserInfo = () => {
 
     if (response.status === 200) {
       clearSignInInfo();
-      router.push('/sign-in/alarm');
+      router.push('/sign-up/alarm');
       return;
     }
 

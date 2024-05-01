@@ -22,7 +22,7 @@ const SetPassword = () => {
 
   const onClickNext = () => {
     setPassword(passwordInput);
-    router.push('/sign-in/info');
+    router.push('/sign-up/info');
   };
 
   return (

@@ -25,11 +25,13 @@
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
-    "invalidEmail": "유효한 이메일 형식이 아닙니다."
+    "invalidEmail": "유효한 이메일 형식이 아닙니다.",
+    "alreadyInUse": "이미 사용 중인 이메일입니다."
   },
   "password": {
     "reset": "비밀번호 재설정",
     "length": "8자리 이상",
     "format": "기호나 숫자를 1자 이상 포함"
-  }
+  },
+  "sign"
 }
