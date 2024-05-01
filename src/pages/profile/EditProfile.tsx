@@ -122,14 +122,13 @@ const EditProfile = () => {
     formData.append('profileImage', imageBlob);
     formData.append('introduce', introduce);
     formData.append('region', region.countryCode);
-    formData.append(
-      'languages',
-      JSON.stringify(languages.map((lang) => lang.englishName.toUpperCase())),
-    );
+    languages.forEach((lang) => {
+      formData.append('languages', lang.englishName.toUpperCase());
+    });
     formData.append('favorite', favorite);
     formData.append('hobby', hobby);
     formData.append('pet', pet);
-    formData.append('birthDate', age);
+    formData.append('birthDate', '');
     formData.append('showBirth', String(showAge));
     formData.append('job', job);
     formData.append('school', school);
@@ -137,7 +136,7 @@ const EditProfile = () => {
 
     try {
       await updateUserProfile(formData);
-      router.push('/profile/me', 'forward', 'replace');
+      router.push(`/profile/${userId}`, 'forward', 'replace');
     } catch (error) {
       console.error('Failed to update user profile:', error);
     }
