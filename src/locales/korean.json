@@ -1,4 +1,10 @@
 {
+  "nav": {
+    "home": "둘러보기",
+    "bookmark": "관심 목록",
+    "message": "쪽지",
+    "mypage": "마이페이지"
+  },
   "searchBar": {
     "title": "어디서 만날까요?",
     "noResults": "검색 결과가 없어요."

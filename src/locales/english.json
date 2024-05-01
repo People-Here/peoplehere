@@ -1,4 +1,10 @@
 {
+  "nav": {
+    "home": "Explore",
+    "bookmark": "Saved list",
+    "message": "Message",
+    "mypage": "My page"
+  },
   "searchBar": {
     "title": "Where to meet?",
     "noResults": "No results found."
