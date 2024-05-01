@@ -65,6 +65,12 @@
       "marketingAgreement1": "I will receive marketing emails. (optional)",
       "marketingAgreement2": "You can opt out at any time in your account settings.",
       "confirmText": "By selecting Agree and sign up, I agree to Peoplehere's Terms of service."
+    },
+    "alarm": {
+      "title": "Turn on notifications?",
+      "description": "Don't miss new messages.",
+      "agree": "Yes, notify me",
+      "skip": "Skip"
     }
   }
 }
