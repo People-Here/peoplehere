@@ -82,7 +82,7 @@ const SelectRegion = (props: ModalProps) => {
   return (
     <ModalContainer
       title={t('region.selectRegion')}
-      buttonText={t('confirm')}
+      buttonText={t('common.confirm')}
       initialBreakpoint={0.87}
       breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}

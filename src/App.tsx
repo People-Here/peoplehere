@@ -44,8 +44,6 @@ const App = () => {
       await Preferences.set({ key: 'DeviceId', value: id.identifier });
       await Preferences.set({ key: 'language', value: userLang.value });
 
-      console.log('lang', userLang.value);
-
       await i18n.changeLanguage(userLang.value);
     })();
   }, [i18n]);

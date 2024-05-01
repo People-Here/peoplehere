@@ -12,5 +12,24 @@
     "selectRegion": "Choose your country",
     "placeholder": "Enter your country"
   },
-  "confirm": "Done"
+  "app": {
+    "description": "Meet people here,\ntravel the living life of here"
+  },
+  "common": {
+    "confirm": "Done",
+    "email": "Email",
+    "password": "Password",
+    "login": "Log in",
+    "signup": "Sign up",
+    "retry": "Try again"
+  },
+  "error": {
+    "invalidAccount": "Incorrect email or password",
+    "invalidEmail": "Invalid email format."
+  },
+  "password": {
+    "reset": "Reset password",
+    "length": "At least 8 characters",
+    "format": "At least 1 symbol or number"
+  }
 }
