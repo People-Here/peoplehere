@@ -1,5 +1,6 @@
 import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import useSignInStore from '../stores/signIn';
@@ -10,6 +11,8 @@ import type { Region } from '../api/constants';
 import type { ModalProps } from '.';
 
 const SelectRegion = (props: ModalProps) => {
+  const { t } = useTranslation();
+
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
   const setRegion = useSignInStore((state) => state.setRegion);
@@ -78,8 +81,8 @@ const SelectRegion = (props: ModalProps) => {
 
   return (
     <ModalContainer
-      title="출신 국가를 선택하세요"
-      buttonText="선택"
+      title={t('region.selectRegion')}
+      buttonText={t('confirm')}
       initialBreakpoint={0.87}
       breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
@@ -88,7 +91,7 @@ const SelectRegion = (props: ModalProps) => {
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
         <IonInput
           className="font-body1 text-gray8"
-          placeholder="국가 이름"
+          placeholder={t('region.placeholder')}
           clearInput
           value={searchText}
           onIonInput={(e) => setSearchText(e.target.value as string)}

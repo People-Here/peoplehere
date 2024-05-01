@@ -6,5 +6,11 @@
   "tour": {
     "available": "Talk to me",
     "unavailable": "Unavailable"
-  }
+  },
+  "region": {
+    "welcome": "Hello :)\nWhere are you from?",
+    "selectRegion": "Choose your country",
+    "placeholder": "Enter your country"
+  },
+  "confirm": "Done"
 }

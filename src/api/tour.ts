@@ -4,7 +4,7 @@ import JSONbig from 'json-bigint';
 import { typedGet, typedPost } from '.';
 
 export const getTourList = async () => {
-  const response = await typedGet<TourListResponse>('/tours/ORIGIN', {
+  const response = await typedGet<TourListResponse>('/tours/KR/KOREAN', {
     transformResponse: [(data: string) => JSONbig.parse(data)],
   });
   return response;
