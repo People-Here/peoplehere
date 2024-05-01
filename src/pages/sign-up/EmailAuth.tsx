@@ -20,7 +20,7 @@ const EmailAuth = () => {
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
+  const [showAuthCodeInput, setShowAuthCodeInput] = useState(true);
 
   const checkEmailExist = async () => {
     setErrorMessage('');
@@ -59,12 +59,12 @@ const EmailAuth = () => {
         <div className="px-4 mt-5">
           <ProgressDots total={3} current={1} />
           <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-            {'아이디로 사용할\n이메일을 설정해 주세요'}
+            {t('signup.email.title')}
           </h1>
 
           <div className="flex gap-2 mt-5">
             <LabelInput
-              label="이메일"
+              label={t('common.email')}
               type="email"
               inputMode="email"
               value={emailInput}
@@ -82,7 +82,7 @@ const EmailAuth = () => {
               onClick={checkEmailExist}
             >
               <IonText className="font-body1">
-                {showAuthCodeInput ? '재발송' : '인증코드 발송'}
+                {showAuthCodeInput ? t('signup.verify.resend') : t('signup.verify.send')}
               </IonText>
             </button>
           </div>
@@ -90,7 +90,7 @@ const EmailAuth = () => {
           {showAuthCodeInput && (
             <div className="flex items-center gap-2 mt-3 animate-fade-down">
               <LabelInput
-                label="인증번호 입력"
+                label={t('signup.verify.placeholder')}
                 inputMode="numeric"
                 value={authCode}
                 onChange={setAuthCode}
@@ -101,7 +101,7 @@ const EmailAuth = () => {
                 disabled={!authCode.length}
                 onClick={confirmAuthCode}
               >
-                <IonText className="font-body1">확인</IonText>
+                <IonText className="font-body1">{t('common.confirm')}</IonText>
               </button>
             </div>
           )}

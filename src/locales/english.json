@@ -32,5 +32,15 @@
     "reset": "Reset password",
     "length": "At least 8 characters",
     "format": "At least 1 symbol or number"
+  },
+  "signup": {
+    "email": {
+      "title": "Choose an email to use as an  account ID"
+    },
+    "verify": {
+      "send": "Send code",
+      "resend": "Resend",
+      "placeholder": "Enter 6-digit code"
+    }
   }
 }
