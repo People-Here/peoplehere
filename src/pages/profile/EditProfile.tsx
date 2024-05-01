@@ -31,7 +31,6 @@ import SelectLanguages from '../../modals/SelectLanguages';
 import useProfileStore from '../../stores/user';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
 
-import type { UpdateProfileRequest } from '../../api/profile';
 import type { Language } from '../../modals/SelectLanguages';
 
 const EditProfile = () => {
@@ -116,22 +115,28 @@ const EditProfile = () => {
   ];
 
   const saveProfile = async () => {
-    const requestData: UpdateProfileRequest = {
-      id: userId,
-      profileImageUrl: image,
-      introduce,
-      region: region.countryCode,
-      languages: languages.map((lang) => lang.englishName.toUpperCase()),
-      favorite,
-      hobby,
-      pet,
-      job,
-      school,
-      placeId: '',
-    };
+    const imageBlob = await fetch(image).then((res) => res.blob());
+
+    const formData = new FormData();
+    formData.append('id', userId);
+    formData.append('profileImage', imageBlob);
+    formData.append('introduce', introduce);
+    formData.append('region', region.countryCode);
+    formData.append(
+      'languages',
+      JSON.stringify(languages.map((lang) => lang.englishName.toUpperCase())),
+    );
+    formData.append('favorite', favorite);
+    formData.append('hobby', hobby);
+    formData.append('pet', pet);
+    formData.append('birthDate', age);
+    formData.append('showBirth', String(showAge));
+    formData.append('job', job);
+    formData.append('school', school);
+    formData.append('placeId', '');
 
     try {
-      await updateUserProfile(requestData);
+      await updateUserProfile(formData);
       router.push('/profile/me', 'forward', 'replace');
     } catch (error) {
       console.error('Failed to update user profile:', error);

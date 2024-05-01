@@ -4,16 +4,18 @@ import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
-  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
-    headers: {
-      Authorization: `Bearer ${value}`,
-    },
-  });
+  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`);
   return response;
 };
 
-export const updateUserProfile = async (body: UpdateProfileRequest) => {
-  const response = await typedPut('/user', body);
+export const updateUserProfile = async (body: FormData) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPut('/user', body, {
+    headers: {
+      Authorization: `${value}`,
+    },
+  });
   return response;
 };
 
@@ -37,7 +39,7 @@ export type ProfileResponse = {
 
 export type UpdateProfileRequest = {
   id: string;
-  profileImageUrl: string;
+  profileImage: string;
   introduce: string;
   region: string;
   languages: string[];
