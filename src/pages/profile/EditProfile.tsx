@@ -40,12 +40,14 @@ const EditProfile = () => {
   const region = useSignInStore((state) => state.region);
   const userId = useProfileStore((state) => state.user.id);
 
+  const [firstName, setFirstName] = useState('');
   const [image, setImage] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
   const [favorite, setFavorite] = useState('');
   const [hobby, setHobby] = useState('');
   const [pet, setPet] = useState('');
+  const [age, setAge] = useState('');
   const [showAge, setShowAge] = useState(false);
   const [location, setLocation] = useState('');
   const [job, setJob] = useState('');
@@ -54,7 +56,7 @@ const EditProfile = () => {
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getUserProfile(userId, region.countryCode);
+      const response = await getUserProfile(userId, 'KR');
 
       setImage(response.data.profileImageUrl);
       setIntroduce(response.data.introduce);
@@ -66,6 +68,8 @@ const EditProfile = () => {
       setPet(response.data.pet ?? '');
       setJob(response.data.job ?? '');
       setSchool(response.data.school ?? '');
+      setFirstName(response.data.firstName);
+      setAge(response.data.birthDate);
     })();
   }, []);
 
@@ -93,7 +97,13 @@ const EditProfile = () => {
     },
     { iconSrc: ClockIcon, title: '취미', value: hobby, modalId: 'hobby-modal', required: false },
     { iconSrc: DogIcon, title: '반려동물', value: pet, modalId: 'pet-modal', required: false },
-    { iconSrc: CakeIcon, title: '나이', value: '90년대생', modalId: 'age-modal', required: false },
+    {
+      iconSrc: CakeIcon,
+      title: '나이',
+      value: age[2] + '0년대생',
+      modalId: 'age-modal',
+      required: false,
+    },
     { iconSrc: LocationIcon, title: '거주지', value: location, required: false },
     { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
     {
@@ -131,7 +141,7 @@ const EditProfile = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title="Rachel" />
+        <Header type="close" title={firstName} />
 
         {/* title area */}
         <div className="px-4 mt-2 mb-4">
@@ -256,7 +266,7 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
   return (
     <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative overflow-hidden">
       {image ? (
-        <IonImg src={image} className="object-cover w-full h-full" />
+        <IonImg src={image} className="object-cover w-full h-full" onClick={selectPhoto} />
       ) : (
         <>
           <div className="absolute top-4 right-4">

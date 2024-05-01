@@ -13,7 +13,7 @@ import Footer from '../../layouts/Footer';
 import useUserStore from '../../stores/user';
 import DeleteUser from '../../modals/DeleteUser';
 import Alert from '../../components/Alert';
-import { deleteAccount } from '../../api/sign-in';
+import { deleteAccount } from '../../api/sign-up';
 import useLogin from '../../hooks/useLogin';
 
 const Settings = () => {

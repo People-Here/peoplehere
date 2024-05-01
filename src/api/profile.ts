@@ -1,7 +1,14 @@
+import { Preferences } from '@capacitor/preferences';
+
 import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
-  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`);
+  const { value } = await Preferences.get({ key: 'accessToken' });
+  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
+    headers: {
+      Authorization: `Bearer ${value}`,
+    },
+  });
   return response;
 };
 
@@ -16,13 +23,15 @@ export type ProfileResponse = {
   introduce: string;
   languages: string[];
   region: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
   favorite?: string;
   hobby?: string;
   pet?: string;
   job?: string;
   school?: string;
   address?: string;
-  birthDate?: string;
   langCode?: string;
 };
 

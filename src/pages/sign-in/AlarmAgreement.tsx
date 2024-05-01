@@ -4,6 +4,7 @@ import { IonContent, IonIcon, IonPage, IonText, createAnimation, useIonRouter } 
 import { useEffect, useRef } from 'react';
 
 import BellIcon from '../../assets/svgs/bell.svg';
+import { postAlarmAgreement } from '../../api/sign-up';
 
 import type { Animation } from '@ionic/react';
 
@@ -36,6 +37,24 @@ const AlarmAgreement = () => {
     animation.current?.play();
   }, [animation]);
 
+  const agreeAlram = async () => {
+    try {
+      await postAlarmAgreement(true);
+      router.push('/login', 'forward', 'replace');
+    } catch (error) {
+      console.error('Failed to post alarm agreement with error:', error);
+    }
+  };
+
+  const disagreeAlarm = () => {
+    try {
+      // await postAlarmAgreement(false);
+      router.push('/login', 'forward', 'replace');
+    } catch (error) {
+      console.error('Failed to post alarm agreement with error:', error);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -57,10 +76,10 @@ const AlarmAgreement = () => {
           </div>
 
           <div className="flex flex-col items-center w-full gap-4">
-            <button className="w-full button-primary button-lg" onClick={() => router.push('/')}>
+            <button className="w-full button-primary button-lg" onClick={agreeAlram}>
               네, 알림을 받을게요
             </button>
-            <IonText className="font-body1 text-gray6" onClick={() => router.push('/')}>
+            <IonText className="font-body1 text-gray6" onClick={disagreeAlarm}>
               나중에 설정하기
             </IonText>
           </div>
