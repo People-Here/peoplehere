@@ -9,6 +9,10 @@
     "title": "Where to meet?",
     "noResults": "No results found."
   },
+  "search": {
+    "placeholder": "Places, regions, address",
+    "recent": "Recent"
+  },
   "tour": {
     "available": "Talk to me",
     "unavailable": "Unavailable"
@@ -29,7 +33,8 @@
     "signup": "Sign up",
     "retry": "Try again",
     "continue": "Continue",
-    "save": "Save"
+    "save": "Save",
+    "search": "Search"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
