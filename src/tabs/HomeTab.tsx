@@ -19,13 +19,13 @@ const HomeTab = () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const token = await isLoggedIn();
+    // (async () => {
+    //   const token = await isLoggedIn();
 
-      if (token && !user.firstName) {
-        router.push('/profile/edit');
-      }
-    })();
+    //   if (token && !user.firstName) {
+    //     router.push('/profile/edit');
+    //   }
+    // })();
   }, []);
 
   return (

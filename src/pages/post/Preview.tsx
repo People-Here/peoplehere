@@ -19,6 +19,7 @@ import ChevronUpIcon from '../../assets/svgs/chevron-up.svg';
 import usePostPlaceStore from '../../stores/place';
 import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
+import LogoRunning from '../../components/LogoRunning';
 
 import type { ProfileResponse } from '../../api/profile';
 
@@ -50,7 +51,7 @@ const Preview = () => {
   };
 
   if (!userInfo) {
-    return <>loading...</>;
+    return <LogoRunning />;
   }
 
   return (

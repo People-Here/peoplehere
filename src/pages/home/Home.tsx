@@ -11,6 +11,7 @@ import EmptyListIcon from '../../assets/svgs/empty-result.svg';
 import useSignInStore from '../../stores/signIn';
 import { getTourList, searchTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
+import LogoRunning from '../../components/LogoRunning';
 
 import type { Place, Tour, User } from '../../api/tour';
 
@@ -46,8 +47,8 @@ const Home = () => {
     })();
   }, [location.search]);
 
-  if (loading) {
-    return <>Loading...</>;
+  if (!loading) {
+    return <LogoRunning />;
   }
 
   return (
