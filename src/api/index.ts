@@ -25,6 +25,23 @@ apiInstance.defaults.timeout = 5000;
 //   { synchronous: true },
 // );
 
+// check token validation
+// apiInstance.interceptors.response.use(
+//   (res) => res,
+//   async (error: AxiosError) => {
+//     const originalRequest = error.config as AxiosRequestConfig;
+
+//     if (error.response?.status === 401) {
+//       const accessToken = await getNewToken();
+//       apiInstance.defaults.headers.common.Authorization = `Bearer ${accessToken.data.accessToken}`;
+
+//       return apiInstance(originalRequest);
+//     }
+
+//     return Promise.reject(error);
+//   },
+// );
+
 // types
 export const typedGet = async <T>(url: string, config?: AxiosRequestConfig) => {
   const response = await apiInstance.get<T>(url, config);

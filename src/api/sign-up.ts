@@ -6,6 +6,12 @@ export const signUp = async (body: SignInRequest) => {
   return response;
 };
 
+export const postAlarmAgreement = async (consent: boolean) => {
+  const response = await typedPost('/account/alarm', { consent });
+
+  return response;
+};
+
 export const deleteAccount = async (userId: string) => {
   const response = await typedDelete(`/account/${userId}`);
 

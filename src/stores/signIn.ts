@@ -29,6 +29,8 @@ type Action = {
   setPolicyConsent: (consent: State['policyConsent']) => void;
   setRegion: (region: State['region']) => void;
   resetRegion: () => void;
+
+  clearSignInInfo: () => void;
 };
 
 const useSignInStore = create(
@@ -63,6 +65,19 @@ const useSignInStore = create(
       resetRegion: () =>
         set(() => ({
           region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
+        })),
+
+      clearSignInInfo: () =>
+        set(() => ({
+          email: '',
+          phoneNumber: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          birthDate: '',
+          gender: 'OTHER',
+          region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
+          policyConsent: { privacy: false, marketing: false },
         })),
     }),
     { name: 'signin-storage' },

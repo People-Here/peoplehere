@@ -10,14 +10,16 @@ import DatePicker from '../../modals/DatePicker';
 import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
 import useSignInStore from '../../stores/signIn';
-import { signUp, type SignInRequest } from '../../api/sign-in';
+import { signUp, type SignInRequest } from '../../api/sign-up';
 import Toast from '../../toasts/Toast';
 import { formatDataToString } from '../../utils/date';
 import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
   const router = useIonRouter();
-  const { phoneNumber, email, password, region } = useSignInStore((state) => state);
+  const { phoneNumber, email, password, region, clearSignInInfo } = useSignInStore(
+    (state) => state,
+  );
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -49,6 +51,7 @@ const UserInfo = () => {
     const response = await signUp(signInData);
 
     if (response.status === 200) {
+      clearSignInInfo();
       router.push('/sign-in/alarm');
       return;
     }

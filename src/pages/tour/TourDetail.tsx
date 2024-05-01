@@ -18,6 +18,7 @@ import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour';
+import LogoRunning from '../../components/LogoRunning';
 
 const TourDetail = () => {
   const router = useIonRouter();
@@ -46,7 +47,7 @@ const TourDetail = () => {
   };
 
   if (!tourDetail) {
-    return <>loading...</>;
+    return <LogoRunning />;
   }
 
   return (
