@@ -1,6 +1,7 @@
 {
   "searchBar": {
-    "title": "Where to meet?"
+    "title": "Where to meet?",
+    "noResults": "No results found."
   },
   "tour": {
     "available": "Talk to me",

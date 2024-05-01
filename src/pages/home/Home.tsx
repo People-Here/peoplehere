@@ -16,6 +16,8 @@ import StatusChip from '../../components/StatusChip';
 import type { Place, Tour, User } from '../../api/tour';
 
 const Home = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const location = useLocation();
 
@@ -61,7 +63,7 @@ const Home = () => {
             <div className="flex flex-col items-center gap-8">
               <IonIcon icon={EmptyListIcon} className="w-[67px] h-[53px]" />
 
-              <IonText className="font-headline3 text-gray5.5">검색 결과가 없어요.</IonText>
+              <IonText className="font-headline3 text-gray5.5">{t('searchBar.noResults')}</IonText>
             </div>
           </div>
         ) : (

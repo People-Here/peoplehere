@@ -1,6 +1,7 @@
 {
   "searchBar": {
-    "title": "어디서 만날까요?"
+    "title": "어디서 만날까요?",
+    "noResults": "검색 결과가 없어요."
   },
   "tour": {
     "available": "말 걸 수 있음",
