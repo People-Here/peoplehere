@@ -47,7 +47,7 @@ const Home = () => {
     })();
   }, [location.search]);
 
-  if (!loading) {
+  if (loading) {
     return <LogoRunning />;
   }
 
