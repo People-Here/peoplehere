@@ -21,7 +21,8 @@
     "password": "Password",
     "login": "Log in",
     "signup": "Sign up",
-    "retry": "Try again"
+    "retry": "Try again",
+    "continue": "Continue"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
@@ -41,6 +42,9 @@
       "send": "Send code",
       "resend": "Resend",
       "placeholder": "Enter 6-digit code"
+    },
+    "password": {
+      "title": "Set your account password"
     }
   }
 }

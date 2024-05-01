@@ -21,7 +21,8 @@
     "password": "비밀번호",
     "login": "로그인",
     "signup": "회원가입",
-    "retry": "다시 입력"
+    "retry": "다시 입력",
+    "continue": "계속"
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
@@ -41,6 +42,9 @@
       "send": "인증코드 발송",
       "resend": "재발송",
       "placeholder": "인증번호 입력"
+    },
+    "password": {
+      "title": "비밀번호를\n설정해 주세요"
     }
   }
 }
