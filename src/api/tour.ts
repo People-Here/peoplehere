@@ -5,7 +5,7 @@ import { typedGet, typedPost } from '.';
 
 export const getTourList = async () => {
   const response = await typedGet<TourListResponse>('/tours/KR/ORIGIN', {
-    transformResponse: [(data: string) => JSONbig.parse(data)],
+    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
   });
   return response;
 };

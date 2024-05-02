@@ -25,6 +25,10 @@ import DoubleHeartIcon from '../../assets/svgs/double-heart.svg';
 import LanguageIcon from '../../assets/svgs/language.svg';
 import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
+import { getUserProfile } from '../../api/profile';
+import LogoRunning from '../../components/LogoRunning';
+
+import type { ProfileResponse } from '../../api/profile';
 
 const Profile = () => {
   const router = useIonRouter();
@@ -34,13 +38,26 @@ const Profile = () => {
   const region = useSignInStore((state) => state.region);
 
   const [isMe, setIsMe] = useState(false);
+  const [userInfo, setUserInfo] = useState<ProfileResponse>();
 
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
+    if (!userId) {
+      return;
+    }
 
     if (userId === user.id) {
       setIsMe(true);
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getUserProfile(userId, region.countryCode);
+
+      if (response.status === 200) {
+        setUserInfo(response.data);
+      }
+    })();
   }, [location.pathname, user.id]);
 
   const handleClickIcon = () => {
@@ -48,6 +65,10 @@ const Profile = () => {
       router.push('/profile/edit');
     }
   };
+
+  if (!userInfo) {
+    return <LogoRunning />;
+  }
 
   return (
     <IonPage>
@@ -59,7 +80,7 @@ const Profile = () => {
           </IonButtons>
 
           <IonTitle class="ion-text-center" className="font-headline3 text-gray8">
-            {user.firstName}
+            {userInfo.firstName}
           </IonTitle>
 
           <IonButtons slot="end">
@@ -73,9 +94,8 @@ const Profile = () => {
 
         {/* image area */}
         <IonImg
-          src={user.profileImageUrl}
+          src={userInfo.profileImageUrl ?? DefaultUserImage}
           className="object-cover w-full h-[20.5rem]"
-          onIonError={(e) => (e.target.src = DefaultUserImage)}
         />
 
         {/* content area */}
@@ -83,16 +103,14 @@ const Profile = () => {
           <p className="mb-3 font-headline1 text-orange6">{user.firstName} 님의 소개</p>
           <div className="p-4 mb-3 bg-gray1 rounded-xl">
             <IonText className="whitespace-pre-wrap font-body1 text-gray7">
-              {
-                '서울 26년 토박이 쩝쩝박사 🍕🧀🥖\n26년차 경력으로 맛집을 소개드려요.\n많이 걷고 맛있게 먹고 즐겁게 수다 떠는 것을 좋아해요. 신나고 맛있는 한국 여행을 원한다면 저와 함께 떠나요!'
-              }
+              {userInfo.introduce ?? '자기소개가 아직 없습니다.'}
             </IonText>
           </div>
 
           <div className="flex gap-3 mb-3">
             <div className="flex flex-col flex-1 gap-1 p-4 mb-3 bg-gray1 rounded-xl">
               <p className="font-headline3 text-gray6">구사 언어</p>
-              <p className="font-body1 text-gray7">한국어, 영어, 스페인어</p>
+              <p className="font-body1 text-gray7">{userInfo.languages.join(', ')}</p>
             </div>
             <div className="flex flex-col flex-1 gap-1 p-4 mb-3 bg-gray1 rounded-xl">
               <p className="font-headline3 text-gray6">출신 국가</p>
@@ -101,13 +119,21 @@ const Profile = () => {
           </div>
 
           <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
-            <IntroduceItem icon="location" title="거주지" value="대한민국 서울" />
-            <IntroduceItem icon="age" title="나이" value="90년대생" />
-            <IntroduceItem icon="job" title="직업" value="간호사" />
-            <IntroduceItem icon="school" title="출신학교" value="한국대" />
-            <IntroduceItem icon="hobby" title="취미" value="빵지순례" />
-            <IntroduceItem icon="pet" title="반려동물" value="리트리버 빵떡" />
-            <IntroduceItem icon="favorite" title="좋아하는 것" value="깨찰빵" />
+            {userInfo.address && (
+              <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
+            )}
+            {userInfo.birthDate && (
+              <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
+            )}
+            {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
+            {userInfo.school && (
+              <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
+            )}
+            {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
+            {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
+            {userInfo.favorite && (
+              <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
+            )}
           </div>
         </div>
       </IonContent>

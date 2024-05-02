@@ -40,6 +40,8 @@ const Home = () => {
       } else {
         const { data, status } = await getTourList();
 
+        console.log('list', data);
+
         if (status === 200) {
           setList(data.tourList);
         }

@@ -1,5 +1,4 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,6 +26,8 @@ const MyPage = () => {
       const response = await getUserProfile(user.id, region.countryCode);
 
       if (response.status === 200) {
+        console.log('id', response.data.id);
+
         setUser({
           id: response.data.id,
           firstName: response.data.firstName,
@@ -49,9 +50,7 @@ const MyPage = () => {
       </IonToolbar>
 
       <div className="px-4 mt-6">
-        <Link to={`/profile/${user.id}`}>
-          <UserInfo image={user.profileImageUrl} name={user.firstName} />
-        </Link>
+        <UserInfo image={user.profileImageUrl} name={user.firstName} />
 
         <div className="flex flex-col gap-4 mt-10">
           <NoPlace />
@@ -85,15 +84,20 @@ type UserInfoProps = {
 };
 const UserInfo = ({ image, name }: UserInfoProps) => {
   const { t } = useTranslation();
+  const router = useIonRouter();
+
+  const user = useUserStore((state) => state.user);
 
   return (
-    <div className="flex items-center justify-between px-4">
+    <div
+      className="flex items-center justify-between px-4"
+      onClick={() => router.push(`/profile/${user.id}`)}
+    >
       <div className="flex items-center gap-4">
         <IonImg
-          src={image}
+          src={image ?? DefaultUserImage}
           alt="user profile image"
           className="object-cover overflow-hidden rounded-full w-14 h-14"
-          onIonError={(e) => (e.target.src = DefaultUserImage)}
         />
 
         <div>
