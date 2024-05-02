@@ -1,26 +1,16 @@
-import { IonContent, IonPage, useIonRouter } from '@ionic/react';
-import { useEffect } from 'react';
-import { Preferences } from '@capacitor/preferences';
+import { IonContent, IonPage } from '@ionic/react';
+import { useLayoutEffect } from 'react';
 
-import useUserStore from '../stores/user';
 import MyPage from '../pages/my-page/MyPage';
+import useLogin from '../hooks/useLogin';
 
 const ProfileTab = () => {
-  const router = useIonRouter();
+  const { checkLogin } = useLogin();
 
-  const { user } = useUserStore((state) => state);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const token = await Preferences.get({ key: 'accessToken' });
-
-      if (!token || !user.id) {
-        router.push('/login', 'forward', 'replace');
-        return;
-      }
-    })();
-  }, [user.id, router]);
+    checkLogin();
+  }, [checkLogin]);
 
   return (
     <IonPage>

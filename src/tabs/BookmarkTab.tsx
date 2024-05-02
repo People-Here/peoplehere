@@ -1,27 +1,18 @@
-import { IonContent, IonIcon, IonPage, IonText, IonToolbar, useIonRouter } from '@ionic/react';
-import { Preferences } from '@capacitor/preferences';
-import { useEffect } from 'react';
+import { IonContent, IonIcon, IonPage, IonText, IonToolbar } from '@ionic/react';
+import { useLayoutEffect } from 'react';
 
 import MessageIcon from '../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
-import useUserStore from '../stores/user';
+import useLogin from '../hooks/useLogin';
 
 const BookmarkTab = () => {
-  const router = useIonRouter();
-  const user = useUserStore((state) => state.user);
+  const { checkLogin } = useLogin();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const token = await Preferences.get({ key: 'accessToken' });
-
-      if (!token.value || token.value === 'undefined' || user.id === '0') {
-        router.push('/login', 'forward', 'replace');
-        return;
-      }
-    })();
-  }, []);
+    checkLogin();
+  }, [checkLogin]);
 
   return (
     <IonPage>

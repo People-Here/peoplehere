@@ -1,3 +1,5 @@
+import { Preferences } from '@capacitor/preferences';
+
 import { typedDelete, typedPost } from '.';
 
 export const signUp = async (body: SignInRequest) => {
@@ -13,7 +15,13 @@ export const postAlarmAgreement = async (consent: boolean) => {
 };
 
 export const deleteAccount = async (userId: string) => {
-  const response = await typedDelete(`/account/${userId}`);
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedDelete(`/account/${userId}`, {
+    headers: {
+      Authorization: value,
+    },
+  });
 
   return response;
 };

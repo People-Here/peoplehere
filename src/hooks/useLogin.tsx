@@ -37,17 +37,18 @@ const useLogin = () => {
     router.push('/login', 'forward', 'replace');
   };
 
-  const isLoggedIn = async () => {
+  const checkLogin = async () => {
     const { value } = await Preferences.get({ key: 'accessToken' });
 
     if (user.id === '0' || !value || value === 'undefined') {
+      router.push('/login', 'forward', 'replace');
       return false;
     }
 
     return true;
   };
 
-  return { requestLogin, requestLogout, isLoggedIn };
+  return { requestLogin, requestLogout, checkLogin };
 };
 
 export default useLogin;

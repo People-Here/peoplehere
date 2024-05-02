@@ -7,7 +7,7 @@ import {
   IonText,
   useIonRouter,
 } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 import Header from '../../components/Header';
@@ -29,7 +29,9 @@ import SimpleInputModal from '../../modals/SimpleInputModal';
 import ShowAge from '../../modals/ShowAge';
 import SelectLanguages from '../../modals/SelectLanguages';
 import useProfileStore from '../../stores/user';
+import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
+import SearchPlace from '../../modals/SearchPlace';
 
 import type { Language } from '../../modals/SelectLanguages';
 
@@ -49,28 +51,31 @@ const EditProfile = () => {
   const [age, setAge] = useState('');
   const [showAge, setShowAge] = useState(false);
   const [location, setLocation] = useState('');
+  const [placeId, setPlaceId] = useState('');
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const response = await getUserProfile(userId, 'KR');
 
-      setImage(response.data.profileImageUrl);
-      setIntroduce(response.data.introduce);
-      setLanguages(
-        response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
-      );
-      setFavorite(response.data.favorite ?? '');
-      setHobby(response.data.hobby ?? '');
-      setPet(response.data.pet ?? '');
-      setJob(response.data.job ?? '');
-      setSchool(response.data.school ?? '');
-      setFirstName(response.data.firstName);
-      setAge(response.data.birthDate);
+      if (response.status === 200) {
+        setImage(response.data.profileImageUrl);
+        setIntroduce(response.data.introduce);
+        // setLanguages(
+        //   response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
+        // );
+        setFavorite(response.data.favorite ?? '');
+        setHobby(response.data.hobby ?? '');
+        setPet(response.data.pet ?? '');
+        setJob(response.data.job ?? '');
+        setSchool(response.data.school ?? '');
+        setFirstName(response.data.firstName);
+        setAge(response.data.birthDate);
+      }
     })();
-  }, []);
+  }, [userId]);
 
   const listItems = [
     {
@@ -90,7 +95,7 @@ const EditProfile = () => {
     {
       iconSrc: DoubleHeartIcon,
       title: '좋아하는 것',
-      value: favorite,
+      value: favorite ?? '',
       modalId: 'favorite-modal',
       required: false,
     },
@@ -103,7 +108,13 @@ const EditProfile = () => {
       modalId: 'age-modal',
       required: false,
     },
-    { iconSrc: LocationIcon, title: '거주지', value: location, required: false },
+    {
+      iconSrc: LocationIcon,
+      title: '거주지',
+      value: location,
+      modalId: 'search-place',
+      required: false,
+    },
     { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
     {
       iconSrc: SchoolIcon,
@@ -132,7 +143,7 @@ const EditProfile = () => {
     formData.append('showBirth', String(showAge));
     formData.append('job', job);
     formData.append('school', school);
-    formData.append('placeId', '');
+    formData.append('placeId', placeId);
 
     try {
       await updateUserProfile(formData);
@@ -236,6 +247,13 @@ const EditProfile = () => {
         setValue={setSchool}
       />
       <ShowAge trigger="age-modal" age="90년대생" setShowAge={setShowAge} />
+      <SearchPlace
+        trigger="search-place"
+        onClickItem={(item) => {
+          setLocation(item.title);
+          setPlaceId(item.id);
+        }}
+      />
     </IonPage>
   );
 };
@@ -270,7 +288,12 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
   return (
     <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative overflow-hidden">
       {image ? (
-        <IonImg src={image} className="object-cover w-full h-full" onClick={selectPhoto} />
+        <IonImg
+          src={image}
+          className="object-cover w-full h-full"
+          onClick={selectPhoto}
+          onIonError={(e) => (e.target.src = DefaultUserImage)}
+        />
       ) : (
         <>
           <div className="absolute top-4 right-4">
