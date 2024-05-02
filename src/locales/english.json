@@ -34,7 +34,8 @@
     "retry": "Try again",
     "continue": "Continue",
     "save": "Save",
-    "search": "Search"
+    "search": "Search",
+    "preview": "Preview & Theme"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
@@ -83,5 +84,15 @@
       "agree": "Yes, notify me",
       "skip": "Skip"
     }
+  },
+  "newTour": {
+    "header": "Where are we going to meet?",
+    "search": "Add a place",
+    "addPictures": "Add some related photos",
+    "detail": "What are we going to do here?",
+    "translate": "Recommend to write in English.",
+    "title": "Short and witty title",
+    "description": "Share the idea of activities you would like to do with other people.",
+    "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate."
   }
 }

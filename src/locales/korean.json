@@ -34,7 +34,8 @@
     "retry": "다시 입력",
     "continue": "계속",
     "save": "저장",
-    "search": "검색"
+    "search": "검색",
+    "preview": "미리보기"
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
@@ -83,5 +84,15 @@
       "agree": "네, 알림을 받을게요",
       "skip": "나중에 설정하기"
     }
+  },
+  "newTour": {
+    "header": "우리 어디서 만날까?",
+    "search": "장소 등록",
+    "addPictures": "관련 사진을 추가하세요",
+    "detail": "여기서 같이 뭐하면 좋을까?",
+    "translate": "한글로 작성할 경우 자동으로 영문 번역될 수 있어요.",
+    "title": "짧고 재치있는 한 줄 제목",
+    "description": "함께 하고 싶은 활동에 대해 얘기해 보세요.",
+    "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요."
   }
 }

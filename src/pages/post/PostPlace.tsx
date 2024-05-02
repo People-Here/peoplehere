@@ -2,6 +2,7 @@ import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -16,6 +17,8 @@ import usePostPlaceStore from '../../stores/place';
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
 const Post = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
 
   const user = useUserStore((state) => state.user);
@@ -87,7 +90,7 @@ const Post = () => {
       <Header type="close" />
 
       <div className="flex flex-col items-center px-4">
-        <IonText className="mb-4 font-headline2 text-gray7">외국인과 어디서 만날까?</IonText>
+        <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
 
         {place.id ? (
           <PlaceItem id={place.id} text={place.title} description={place.address} />
@@ -97,7 +100,7 @@ const Post = () => {
             className="w-full py-5 flex items-center justify-center gap-1.5 bg-orange5 rounded-3xl mb-3"
           >
             <IonIcon className="svg-lg" src={PlusCircleWhiteIcon} />
-            <IonText className="text-white font-heading">장소 등록</IonText>
+            <IonText className="text-white font-heading">{t('newTour.search')}</IonText>
           </button>
         )}
 
@@ -108,17 +111,15 @@ const Post = () => {
         )}
 
         <div className="mt-[3.25rem] flex flex-col items-center gap-1 mb-5">
-          <IonText className="font-headline2 text-gray7">여기서 같이 뭐하면 좋을까?</IonText>
-          <IonText className="font-caption2 text-gray6">
-            한글로 작성할 경우 자동으로 영문 번역될 수 있어요.
-          </IonText>
+          <IonText className="font-headline2 text-gray7">{t('newTour.detail')}</IonText>
+          <IonText className="font-caption2 text-gray6">{t('newTour.translate')}</IonText>
         </div>
 
         <div className="flex flex-col w-full gap-3">
           <div className="p-3.5 border-[1.5px] border-gray2 rounded-xl">
             <input
               className="w-full h-full bg-white outline-none font-body1 text-gray8"
-              placeholder="짧고 재치있는 한 줄 제목"
+              placeholder={t('newTour.title')}
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
@@ -126,7 +127,7 @@ const Post = () => {
           <div className="h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5">
             <textarea
               className="w-full h-full bg-white outline-none resize-none font-body1 text-gray8"
-              placeholder="함께 하고 싶은 활동에 대해 얘기해 보세요."
+              placeholder={t('newTour.description')}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
             />
@@ -135,8 +136,11 @@ const Post = () => {
       </div>
 
       <Footer>
-        <button className="w-full button-primary button-lg" onClick={uploadPost}>
-          미리보기
+        <button
+          className="w-full text-white button-primary button-lg font-subheading1"
+          onClick={uploadPost}
+        >
+          {t('common.preview')}
         </button>
       </Footer>
 
@@ -150,6 +154,8 @@ type ImageProps = {
   setImages: (images: string[]) => void;
 };
 const UploadImages = ({ images, setImages }: ImageProps) => {
+  const { t } = useTranslation();
+
   const selectPhotosFromGallery = async () => {
     const selectedImages = await Camera.pickImages({
       limit: 12,
@@ -168,7 +174,7 @@ const UploadImages = ({ images, setImages }: ImageProps) => {
         <IonIcon src={CameraIcon} className="svg-md" />
         <IonText className="font-body1 text-gray6">{images.length} / 12</IonText>
       </div>
-      <IonText className="font-body1 text-gray5.5">관련 사진을 추가하세요</IonText>
+      <IonText className="font-body1 text-gray5.5">{t('newTour.addPictures')}</IonText>
     </div>
   );
 };
@@ -197,6 +203,8 @@ const PlaceItem = ({ text, description }: Place) => {
 };
 
 const ImageList = ({ images, setImages }: ImageProps) => {
+  const { t } = useTranslation();
+
   const selectPhotosFromGallery = async () => {
     const selectedImages = await Camera.pickImages({
       limit: 12 - images.length,
@@ -212,9 +220,7 @@ const ImageList = ({ images, setImages }: ImageProps) => {
   return (
     <div className="p-4 flex flex-col gap-3 border-[1.5px] border-gray2 rounded-3xl w-full">
       <div className="flex items-center justify-between">
-        <IonText className="font-caption2 text-gray5.5">
-          저작권법 위반 시 임의로 삭제될 수 있어요.
-        </IonText>
+        <IonText className="font-caption2 text-gray5.5">{t('newTour.policyWarning')}</IonText>
 
         <div
           className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full"
