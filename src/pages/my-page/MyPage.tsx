@@ -1,6 +1,7 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -14,6 +15,7 @@ import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
 
 const MyPage = () => {
+  const { t } = useTranslation();
   const router = useIonRouter();
 
   const region = useSignInStore((state) => state.region);
@@ -39,7 +41,7 @@ const MyPage = () => {
     <>
       {/* header */}
       <IonToolbar className="px-4 h-14">
-        <p className="font-headline3 text-gray8">마이페이지</p>
+        <p className="font-headline3 text-gray8">{t('mypage.title')}</p>
 
         <IonButtons slot="end">
           <IonIcon src={SettingIcon} className="svg-lg" onClick={() => router.push('/settings')} />
@@ -82,6 +84,8 @@ type UserInfoProps = {
   name: string;
 };
 const UserInfo = ({ image, name }: UserInfoProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
@@ -94,7 +98,7 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
 
         <div>
           <p className="font-headline3 text-gray7">{name}</p>
-          <p className="font-body1 text-gray6">프로필 완성하기</p>
+          <p className="font-body1 text-gray6">{t('mypage.completeProfile')}</p>
         </div>
       </div>
 
@@ -149,14 +153,14 @@ const TourInfo = ({ image, title, placeName, district, available }: TourInfoProp
 };
 
 const NoPlace = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center gap-6 mt-20">
-      <p className="text-center whitespace-pre-wrap font-body1 text-gray5">
-        {'장소를 올리고\n사람들과 약속을 잡아 보세요!'}
-      </p>
+      <p className="text-center whitespace-pre-wrap font-body1 text-gray5">{t('mypage.noPlace')}</p>
       <button className="flex items-center gap-2 px-3 button-sub button-lg w-fit h-11">
         <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-        <p className="font-body1 text-orange5">장소 올리기</p>
+        <p className="font-body1 text-orange5">{t('newTour.post')}</p>
       </button>
     </div>
   );

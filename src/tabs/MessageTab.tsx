@@ -1,10 +1,12 @@
 import { IonContent, IonImg, IonPage, IonToolbar } from '@ionic/react';
 import { useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import useLogin from '../hooks/useLogin';
 
 const MessageTab = () => {
+  const { t } = useTranslation();
+
   const { checkLogin } = useLogin();
 
   useLayoutEffect(() => {
@@ -16,14 +18,14 @@ const MessageTab = () => {
     <IonPage>
       <IonContent fullscreen>
         <IonToolbar className="px-4 bg-white h-14">
-          <p className="pl-0 font-headline3 text-gray8">쪽지</p>
+          <p className="pl-0 font-headline3 text-gray8">{t('message.title')}</p>
         </IonToolbar>
 
-        {/* <div className="flex flex-col gap-1.5 items-center justify-center w-full h-full text-center">
-          <p className="text-black font-headline2">아직 주고 받은 쪽지가 없어요</p>
-          <p className="font-body1 text-gray5">만나고 싶은 사람에게 쪽지를 보내 보세요!</p>
-        </div> */}
-        <div className="px-4 pb-16">
+        <div className="flex flex-col gap-1.5 items-center justify-center w-full h-full text-center">
+          <p className="text-black font-headline2">{t('message.noMessage')}</p>
+          <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
+        </div>
+        {/* <div className="px-4 pb-16">
           <Link to={'/message/123123'}>
             <ChatListItem
               imageUrl="https://picsum.photos/seed/picsum/100/200"
@@ -98,7 +100,7 @@ const MessageTab = () => {
             lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
             placeName="서울숲 1티어 맛집"
           />
-        </div>
+        </div> */}
       </IonContent>
     </IonPage>
   );
