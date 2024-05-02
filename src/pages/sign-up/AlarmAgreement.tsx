@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 import { IonContent, IonIcon, IonPage, IonText, createAnimation, useIonRouter } from '@ionic/react';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BellIcon from '../../assets/svgs/bell.svg';
 import { postAlarmAgreement } from '../../api/sign-up';
@@ -9,6 +10,8 @@ import { postAlarmAgreement } from '../../api/sign-up';
 import type { Animation } from '@ionic/react';
 
 const AlarmAgreement = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
 
   const iconRef = useRef<HTMLIonIconElement>(null);
@@ -69,18 +72,20 @@ const AlarmAgreement = () => {
               }}
             />
 
-            <IonText className="font-headline2 text-black mb-1.5">알림을 받으시겠어요?</IonText>
+            <IonText className="font-headline2 text-black mb-1.5">
+              {t('signup.alarm.title')}
+            </IonText>
             <IonText className="whitespace-pre-line font-body1 text-gray5">
-              {'새로운 쪽지, 다가오는 약속 등\n중요한 소식을 놓치지 마세요.'}
+              {t('signup.alarm.description')}
             </IonText>
           </div>
 
           <div className="flex flex-col items-center w-full gap-4">
             <button className="w-full button-primary button-lg" onClick={agreeAlram}>
-              네, 알림을 받을게요
+              {t('signup.alarm.agree')}
             </button>
             <IonText className="font-body1 text-gray6" onClick={disagreeAlarm}>
-              나중에 설정하기
+              {t('signup.alarm.skip')}
             </IonText>
           </div>
         </div>

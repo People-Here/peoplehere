@@ -3,6 +3,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { useLayoutEffect } from 'react';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
+import { useTranslation } from 'react-i18next';
 
 import NavigationBar from './components/NavigationBar';
 
@@ -27,28 +28,25 @@ import './theme/variables.css';
 import './theme/tailwind.css';
 import './theme/global.css';
 
+import './i18n';
+
 setupIonicReact();
 
 const App = () => {
+  const { i18n } = useTranslation();
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      // const lang = await Preferences.get('language');
-      // if (lang) return;
-
-      // const response = await getAllLanguages();
-
       const id = await Device.getId();
       const userLang = await Device.getLanguageCode();
 
-      if (userLang.value === 'ko') {
-        userLang.value = 'ko-KR';
-      }
-
       await Preferences.set({ key: 'DeviceId', value: id.identifier });
       await Preferences.set({ key: 'language', value: userLang.value });
+
+      await i18n.changeLanguage(userLang.value);
     })();
-  }, []);
+  }, [i18n]);
 
   return (
     <IonApp>

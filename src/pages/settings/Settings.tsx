@@ -55,12 +55,17 @@ const Settings = () => {
 
         <Footer>
           {isLogin ? (
-            <button className="w-full mb-4 button-gray button-lg" onClick={requestLogout}>
+            <button
+              className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
+              onClick={requestLogout}
+            >
               로그아웃
             </button>
           ) : (
             <Link to="/login">
-              <button className="w-full mb-4 button-sub button-lg">로그인</button>
+              <button className="w-full mb-4 button-sub button-lg font-subheading1 text-orange5">
+                로그인
+              </button>
             </Link>
           )}
 
@@ -81,7 +86,7 @@ const Settings = () => {
               계정 삭제
             </p>
           ) : (
-            <Link to="/sign-in/email">
+            <Link to="/sign-up/email">
               <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
             </Link>
           )}
@@ -96,8 +101,15 @@ const Settings = () => {
           buttons={[
             {
               text: '계정 삭제',
-              onClick: () =>
-                deleteAccount(id).then(() => router.push('/login', 'forward', 'replace')),
+              onClick: async () => {
+                try {
+                  await deleteAccount(id);
+                  await requestLogout();
+                  router.push('/login', 'forward', 'replace');
+                } catch (error) {
+                  console.error('delete account error:', error);
+                }
+              },
             },
             {
               text: '취소',

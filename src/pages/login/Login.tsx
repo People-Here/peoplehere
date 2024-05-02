@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import LabelInput from '../../components/LabelInput';
 import PasswordValidator from '../../components/PasswordValidator';
@@ -11,6 +12,8 @@ import useLogin from '../../hooks/useLogin';
 import Alert from '../../components/Alert';
 
 const Login = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const { requestLogin } = useLogin();
 
@@ -27,7 +30,7 @@ const Login = () => {
 
   const tryLogin = async () => {
     if (!isEmailValid) {
-      setErrorMessage('유효한 이메일 형식이 아닙니다.');
+      setErrorMessage(t('error.invalidEmail'));
       return;
     }
 
@@ -51,12 +54,12 @@ const Login = () => {
             PeopleHere
           </h1>
           <p className="mt-4 mb-12 text-center whitespace-pre-wrap font-body1 text-gray6">
-            {'여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요.'}
+            {t('app.description')}
           </p>
 
           <div className="flex flex-col w-full gap-2 mb-4">
             <LabelInput
-              label="이메일"
+              label={t('common.email')}
               type="email"
               inputMode="email"
               value={email}
@@ -64,7 +67,6 @@ const Login = () => {
               errorText={errorMessage}
             />
             <PasswordInput value={password} onChange={setPassword} />
-
             <PasswordValidator password={password} />
           </div>
 
@@ -74,29 +76,29 @@ const Login = () => {
               disabled={!email.length || !isPasswordValid}
               onClick={tryLogin}
             >
-              로그인
+              {t('common.login')}
             </button>
             <button
               className="button-primary button-lg"
               onClick={() => {
-                router.push('/sign-in/email');
+                router.push('/sign-up/email');
               }}
             >
-              회원가입
+              {t('common.signup')}
             </button>
           </div>
 
           <Link to="/reset-password/check-email">
-            <IonText className="font-caption2 text-gray5.5">비밀번호 재설정</IonText>
+            <IonText className="font-caption2 text-gray5.5">{t('password.reset')}</IonText>
           </Link>
         </div>
 
         <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
         <Alert
           trigger="error-alert"
-          title={'이메일 또는 비밀번호를\n잘못 입력하셨습니다.'}
-          buttons={[{ text: '다시 입력' }]}
-          bottomText="비밀번호 재설정"
+          title={t('error.invalidAccount')}
+          buttons={[{ text: t('common.retry') }]}
+          bottomText={t('password.reset')}
           onClickBottomText={() => router.push('/reset-password/check-email')}
         />
       </IonContent>

@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "home": "Explore",
+    "bookmark": "Saved list",
+    "message": "Message",
+    "mypage": "My page"
+  },
+  "searchBar": {
+    "title": "Where to meet?",
+    "noResults": "No results found."
+  },
+  "search": {
+    "placeholder": "Places, regions, address",
+    "recent": "Recent"
+  },
+  "tour": {
+    "available": "Talk to me",
+    "unavailable": "Unavailable",
+    "detail": "What are we going to do here?"
+  },
+  "region": {
+    "welcome": "Hello :)\nWhere are you from?",
+    "selectRegion": "Choose your country",
+    "placeholder": "Enter your country"
+  },
+  "app": {
+    "description": "Meet people here,\ntravel the living life of here"
+  },
+  "common": {
+    "confirm": "Done",
+    "email": "Email",
+    "password": "Password",
+    "login": "Log in",
+    "signup": "Sign up",
+    "retry": "Try again",
+    "continue": "Continue",
+    "save": "Save",
+    "search": "Search",
+    "preview": "Preview & Theme",
+    "availableLanguages": "Speaks"
+  },
+  "error": {
+    "invalidAccount": "Incorrect email or password",
+    "invalidEmail": "Invalid email format.",
+    "alreadyInUse": "Email already in use."
+  },
+  "password": {
+    "reset": "Reset password",
+    "length": "At least 8 characters",
+    "format": "At least 1 symbol or number"
+  },
+  "signup": {
+    "email": {
+      "title": "Choose an email to use as an  account ID"
+    },
+    "verify": {
+      "send": "Send code",
+      "resend": "Resend",
+      "placeholder": "Enter 6-digit code"
+    },
+    "password": {
+      "title": "Set your account password"
+    },
+    "info": {
+      "title": "Almost done!\nPlease enter your details",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "birthDay": "Birthday (YYYY/MM/DD)",
+      "ageLimit": "To sign up, you need to be at least 18.",
+      "gender": "Gender",
+      "selectGender": "Choose your gender",
+      "showAgeTitle": "Show your age to public",
+      "showAge": "Show to public?",
+      "selectBirthDay": "Select your birthday"
+    },
+    "policy": {
+      "title": "Terms and conditions",
+      "agree": "Agree and sign up",
+      "marketingAgreement1": "I will receive marketing emails. (optional)",
+      "marketingAgreement2": "You can opt out at any time in your account settings.",
+      "confirmText": "By selecting Agree and sign up, I agree to Peoplehere's Terms of service."
+    },
+    "alarm": {
+      "title": "Turn on notifications?",
+      "description": "Don't miss new messages.",
+      "agree": "Yes, notify me",
+      "skip": "Skip"
+    }
+  },
+  "newTour": {
+    "header": "Where are we going to meet?",
+    "search": "Add a place",
+    "addPictures": "Add some related photos",
+    "detail": "What are we going to do here?",
+    "translate": "Recommend to write in English.",
+    "title": "Short and witty title",
+    "description": "Share the idea of activities you would like to do with other people.",
+    "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate.",
+    "selectTheme": "Select a theme",
+    "post": "Post my place"
+  }
+}

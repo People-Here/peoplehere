@@ -1,10 +1,12 @@
 import { Preferences } from '@capacitor/preferences';
+import JSONbigint from 'json-bigint';
 
 import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
-  const { value } = await Preferences.get({ key: 'accessToken' });
-  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`);
+  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
+    transformResponse: [(data: string) => JSONbigint.parse(data)],
+  });
   return response;
 };
 
@@ -20,7 +22,7 @@ export const updateUserProfile = async (body: FormData) => {
 };
 
 export type ProfileResponse = {
-  id: bigint;
+  id: string;
   profileImageUrl: string;
   introduce: string;
   languages: string[];

@@ -24,6 +24,7 @@ import DogIcon from '../../assets/svgs/dog.svg';
 import DoubleHeartIcon from '../../assets/svgs/double-heart.svg';
 import LanguageIcon from '../../assets/svgs/language.svg';
 import useSignInStore from '../../stores/signIn';
+import DefaultUserImage from '../../assets/images/default-user.png';
 
 const Profile = () => {
   const router = useIonRouter();
@@ -54,15 +55,11 @@ const Profile = () => {
         {/* header */}
         <IonToolbar className="px-4 h-14">
           <IonButtons slot="start">
-            <IonIcon
-              src={ArrowLeftIcon}
-              className="svg-lg"
-              onClick={() => router.push('/', 'forward', 'replace')}
-            />
+            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
 
           <IonTitle class="ion-text-center" className="font-headline3 text-gray8">
-            Rachel
+            {user.firstName}
           </IonTitle>
 
           <IonButtons slot="end">
@@ -76,13 +73,14 @@ const Profile = () => {
 
         {/* image area */}
         <IonImg
-          src="https://s3-alpha-sig.figma.com/img/afc3/d55f/e5c36a14de64294a4d95d39178303c7d?Expires=1714953600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=j9CGsVO2L6EII5CnPTIwk6zZBbfmvQMTnKAFdrk0eg5dD415tsQa4PH5FxNjkD6H3ABhvoRgdkIyu07LdR9T8nHWN64UCqIhUyA8cUdpqWKV2P6RUhkDkk5ZhPiV4L3GgVANg-Pdp7Xb3CFll7lTriGdiB8jfOjLjQlLK8yKxjj3TI8ZP6j~nTy~4GRLNtsBzwAEGZM4NPoQeuI8Caf6aysRGT~fA2PBGqv0dqAxWwYFkf1tR3tU4vBPjGl1NT~LeeGUNyufmEK2sT-dsYmGLGsYnqMbmVvfjVTywZgoK257oSWXZOwO17XUbpeY1-rZWgaEpGWVb0JNDXdEYQq0Vg__"
+          src={user.profileImageUrl}
           className="object-cover w-full h-[20.5rem]"
+          onIonError={(e) => (e.target.src = DefaultUserImage)}
         />
 
         {/* content area */}
-        <div className="px-4 mt-6 pb-28">
-          <p className="mb-3 font-headline1 text-orange6">Rachel 님의 소개</p>
+        <div className="px-4 pb-12 mt-6">
+          <p className="mb-3 font-headline1 text-orange6">{user.firstName} 님의 소개</p>
           <div className="p-4 mb-3 bg-gray1 rounded-xl">
             <IonText className="whitespace-pre-wrap font-body1 text-gray7">
               {

@@ -11,6 +11,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
 import { searchPlace, type SearchPlaceResponse } from '../api/search';
@@ -30,6 +31,8 @@ type Props = {
 };
 
 const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
+  const { t } = useTranslation();
+
   const region = useSignInStore((state) => state.region);
 
   // eslint-disable-next-line no-undef
@@ -72,7 +75,7 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
 
           {search.length === 0 ? (
             <div className="mt-5">
-              <IonText className="font-body1 text-gray6 mb-2.5">최근 검색 내역</IonText>
+              <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
               {/* TODO: 최근 검색 내역 백엔드 나오면 추가 필요 */}
             </div>
@@ -108,11 +111,13 @@ type SearchBarProps = {
 };
 
 const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
+  const { t } = useTranslation();
+
   return (
     <form className="flex items-center w-full gap-2" onSubmit={onSearch}>
       <div className="border border-gray3 rounded-lg bg-gray1.5 px-4 flex w-full items-center">
         <IonInput
-          placeholder="지역명, 장소명, 주소 검색"
+          placeholder={t('search.placeholder')}
           className="h-full font-body1 text-gray8"
           clearInput
           value={search}
@@ -121,7 +126,7 @@ const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
       </div>
 
       <button type="submit" className="px-3 button-primary button-md shrink-0">
-        검색
+        {t('common.search')}
       </button>
     </form>
   );

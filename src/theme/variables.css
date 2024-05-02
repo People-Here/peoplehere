@@ -237,6 +237,21 @@ http://ionicframework.com/docs/theming/ */
   } */
 }
 
+/* @font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'SUITE Variable';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../assets/fonts/SUITE-Variable.woff2') format('woff2-variations');
+} */
+
 html {
   /* For more information on dynamic font scaling, visit the documentation: 
   https://ionicframework.com/docs/layout/dynamic-font-scaling */

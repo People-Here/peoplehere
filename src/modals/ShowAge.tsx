@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IonLabel, IonText } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import ModalContainer from '.';
 import Checkbox from '../components/Checkbox';
@@ -12,12 +13,14 @@ type Props = {
 };
 
 const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
+  const { t } = useTranslation();
+
   const [show, setShow] = useState(false);
 
   return (
     <ModalContainer
-      title="출생연도 공개 여부를 선택하세요"
-      buttonText="저장"
+      title={t('signup.info.showAgeTitle')}
+      buttonText={t('common.save')}
       initialBreakpoint={0.35}
       breakpoints={[0, 0.35, 0.5]}
       onClickButton={() => setShowAge(show)}
@@ -31,7 +34,9 @@ const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
         <Checkbox
           checked={show}
           onChange={setShow}
-          label={<IonLabel className="font-body1 text-gray5.5">출생연도를 공개할까요?</IonLabel>}
+          label={
+            <IonLabel className="font-body1 text-gray5.5">{t('signup.info.showAge')}</IonLabel>
+          }
         />
       </div>
     </ModalContainer>
