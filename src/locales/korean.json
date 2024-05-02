@@ -98,5 +98,15 @@
     "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요.",
     "selectTheme": "스킨 색상 선택",
     "post": "장소 올리기"
+  },
+  "mypage": {
+    "title": "마이페이지",
+    "completeProfile": "프로필 완성하기",
+    "noPlace": "장소를 올리고\n사람들과 약속을 잡아 보세요!"
+  },
+  "message": {
+    "title": "쪽지",
+    "noMessage": "아직 주고 받은 쪽지가 없어요",
+    "writeFirstMessage": "만나고 싶은 사람에게 쪽지를 보내 보세요!"
   }
 }
