@@ -1,5 +1,6 @@
 import { IonIcon, IonInput, IonItem } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import EyeClosedIcon from '../assets/svgs/eye-closed.svg';
 import EyeOpenIcon from '../assets/svgs/eye-open.svg';
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const PasswordInput = ({ value, onChange }: Props) => {
+  const { t } = useTranslation();
+
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -24,7 +27,7 @@ const PasswordInput = ({ value, onChange }: Props) => {
     >
       <IonInput
         className="p-0 font-body1 text-gray8"
-        label="비밀번호"
+        label={t('common.password')}
         labelPlacement="floating"
         value={value}
         onIonInput={(e) => onChange(e.target.value as string)}

@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "home": "둘러보기",
+    "bookmark": "관심 목록",
+    "message": "쪽지",
+    "mypage": "마이페이지"
+  },
+  "searchBar": {
+    "title": "어디서 만날까요?",
+    "noResults": "검색 결과가 없어요."
+  },
+  "search": {
+    "placeholder": "지역명, 장소명, 주소 검색",
+    "recent": "최근 검색 내역"
+  },
+  "tour": {
+    "available": "말 걸 수 있음",
+    "unavailable": "쪽지 마감",
+    "detail": "우리 여기서 같이 뭐할까?"
+  },
+  "region": {
+    "welcome": "반가워요 :)\n어느 나라에서 오셨나요?",
+    "selectRegion": "출신 국가를 선택하세요",
+    "placeholder": "국가 이름"
+  },
+  "app": {
+    "description": "여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요."
+  },
+  "common": {
+    "confirm": "확인",
+    "email": "이메일",
+    "password": "비밀번호",
+    "login": "로그인",
+    "signup": "회원가입",
+    "retry": "다시 입력",
+    "continue": "계속",
+    "save": "저장",
+    "search": "검색",
+    "preview": "미리보기",
+    "availableLanguages": "구사언어"
+  },
+  "error": {
+    "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
+    "invalidEmail": "유효한 이메일 형식이 아닙니다.",
+    "alreadyInUse": "이미 사용 중인 이메일입니다."
+  },
+  "password": {
+    "reset": "비밀번호 재설정",
+    "length": "8자리 이상",
+    "format": "기호나 숫자를 1자 이상 포함"
+  },
+  "signup": {
+    "email": {
+      "title": "아이디로 사용할\n이메일을 설정해 주세요"
+    },
+    "verify": {
+      "send": "인증코드 발송",
+      "resend": "재발송",
+      "placeholder": "인증번호 입력"
+    },
+    "password": {
+      "title": "비밀번호를\n설정해 주세요"
+    },
+    "info": {
+      "title": "마지막으로\n회원가입을 위한 정보를 알려주세요",
+      "firstName": "이름 (예: 길동)",
+      "lastName": "성 (예: 홍)",
+      "birthDay": "생년월일(YYYY/MM/DD)",
+      "ageLimit": "피플히어에 가입하려면 만 18세 이상이어야 해요.",
+      "gender": "성별",
+      "selectGender": "성별을 선택하세요",
+      "showAgeTitle": "출생연도 공개 여부를 선택하세요",
+      "showAge": "출생연도를 공개할까요?",
+      "selectBirthDay": "생년월일을 입력해주세요"
+    },
+    "policy": {
+      "title": "약관동의",
+      "agree": "회원가입 완료",
+      "marketingAgreement1": "마케팅 이메일을 수신하겠습니다. (선택)",
+      "marketingAgreement2": "설정에서 언제든지 수신을 거부할 수 있습니다.",
+      "confirmText": "'동의 및 완료'를 클릭함으로써 피플히어의 서비스 약관, 위치기반서비스 이용 약관, 개인정보처리방침에 동의합니다."
+    },
+    "alarm": {
+      "title": "알림을 받으시겠어요?",
+      "description": "새로운 쪽지, 다가오는 약속 등\n중요한 소식을 놓치지 마세요.",
+      "agree": "네, 알림을 받을게요",
+      "skip": "나중에 설정하기"
+    }
+  },
+  "newTour": {
+    "header": "우리 어디서 만날까?",
+    "search": "장소 등록",
+    "addPictures": "관련 사진을 추가하세요",
+    "detail": "여기서 같이 뭐하면 좋을까?",
+    "translate": "한글로 작성할 경우 자동으로 영문 번역될 수 있어요.",
+    "title": "짧고 재치있는 한 줄 제목",
+    "description": "함께 하고 싶은 활동에 대해 얘기해 보세요.",
+    "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요.",
+    "selectTheme": "스킨 색상 선택",
+    "post": "장소 올리기"
+  }
+}

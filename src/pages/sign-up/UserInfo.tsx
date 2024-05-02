@@ -1,5 +1,6 @@
 import { IonContent, IonText, useIonRouter } from '@ionic/react';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import Footer from '../../layouts/Footer';
@@ -16,6 +17,8 @@ import { formatDataToString } from '../../utils/date';
 import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const { phoneNumber, email, password, region, clearSignInInfo } = useSignInStore(
     (state) => state,
@@ -52,7 +55,7 @@ const UserInfo = () => {
 
     if (response.status === 200) {
       clearSignInInfo();
-      router.push('/sign-in/alarm');
+      router.push('/sign-up/alarm');
       return;
     }
 
@@ -66,30 +69,36 @@ const UserInfo = () => {
       <div className="px-4 mt-5">
         <ProgressDots total={3} current={3} />
         <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-          {'마지막으로\n회원가입을 위한 정보를 알려주세요'}
+          {t('signup.info.title')}
         </h1>
 
         <div className="flex flex-col gap-2 mt-5 mb-9">
-          <LabelInput label="이름 (예: 길동)" value={firstName} onChange={setFirstName} />
-          <LabelInput label="성 (예: 홍)" value={lastName} onChange={setLastName} />
+          <LabelInput
+            label={t('signup.info.firstName')}
+            value={firstName}
+            onChange={setFirstName}
+          />
+          <LabelInput label={t('signup.info.lastName')} value={lastName} onChange={setLastName} />
         </div>
 
         <div className="flex flex-col gap-2 mb-9">
           <SelectInput
             id="date-modal"
-            label="생년월일(YYYY/MM/DD)"
+            label={t('signup.info.birthDay')}
             value={birth.split('T')[0].replaceAll('-', '/')}
           />
-          <IonText className="pl-1 font-caption2 text-gray6">
-            피플히어에 가입하려면 만 18세 이상이어야 해요.
-          </IonText>
+          <IonText className="pl-1 font-caption2 text-gray6">{t('signup.info.ageLimit')}</IonText>
         </div>
 
-        <SelectInput id="gender-modal" label="성별" value={GENDER[gender as keyof typeof GENDER]} />
+        <SelectInput
+          id="gender-modal"
+          label={t('signup.info.gender')}
+          value={GENDER[gender as keyof typeof GENDER]}
+        />
 
         <Footer>
           <button id="policy-modal" className="w-full button-primary button-lg">
-            계속
+            {t('common.continue')}
           </button>
         </Footer>
       </div>

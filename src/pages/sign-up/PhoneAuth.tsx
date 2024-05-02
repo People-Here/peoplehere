@@ -78,7 +78,7 @@ const PhoneAuth = () => {
         <Alert
           trigger="phone-alert"
           title="전화번호 인증이 어려운 상황인가요?"
-          buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-in/email') }]}
+          buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-up/email') }]}
         />
       </IonContent>
     </IonPage>

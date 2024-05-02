@@ -1,10 +1,9 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { Fragment, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import SearchIcon from '../../assets/svgs/search.svg';
-import MessageIcon from '../../assets/svgs/message-line-color.svg';
-import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import EmptyListIcon from '../../assets/svgs/empty-result.svg';
@@ -12,10 +11,13 @@ import useSignInStore from '../../stores/signIn';
 import { getTourList, searchTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
 import LogoRunning from '../../components/LogoRunning';
+import StatusChip from '../../components/StatusChip';
 
 import type { Place, Tour, User } from '../../api/tour';
 
 const Home = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const location = useLocation();
 
@@ -61,7 +63,7 @@ const Home = () => {
             <div className="flex flex-col items-center gap-8">
               <IonIcon icon={EmptyListIcon} className="w-[67px] h-[53px]" />
 
-              <IonText className="font-headline3 text-gray5.5">검색 결과가 없어요.</IonText>
+              <IonText className="font-headline3 text-gray5.5">{t('searchBar.noResults')}</IonText>
             </div>
           </div>
         ) : (
@@ -91,32 +93,20 @@ const Home = () => {
 };
 
 const SearchBar = () => {
+  const { t } = useTranslation();
+
   const { region } = useSignInStore((state) => state);
 
   return (
     <div id="search-modal" className="w-full">
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
-          <IonText className="font-headline3 text-gray7">어디서 만날까요?</IonText>
+          <IonText className="font-headline3 text-gray7">{t(`searchBar.title`)}</IonText>
           <IonText className="font-caption2 text-gray5">{region.koreanName}</IonText>
         </div>
 
         <IonIcon icon={SearchIcon} className="svg-lg" />
       </div>
-    </div>
-  );
-};
-
-const StatusChip = ({ available }: { available?: boolean }) => {
-  return available ? (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-orange1 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-orange5">말 걸 수 있음</IonText>
-      <IonIcon icon={MessageIcon} className="svg-sm" />
-    </div>
-  ) : (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-gray1.5 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-gray6">쪽지 마감</IonText>
-      <IonIcon icon={MessageBlockedIcon} className="svg-sm" />
     </div>
   );
 };

@@ -7,11 +7,11 @@ import PostTab from './tabs/PostTab';
 import Message from './tabs/MessageTab';
 import ProfileTab from './tabs/ProfileTab';
 import Login from './pages/login/Login';
-import PhoneAuth from './pages/sign-in/PhoneAuth';
-import EmailAuth from './pages/sign-in/EmailAuth';
-import SetPassword from './pages/sign-in/SetPassword';
-import UserInfo from './pages/sign-in/UserInfo';
-import AlarmAgreement from './pages/sign-in/AlarmAgreement';
+import PhoneAuth from './pages/sign-up/PhoneAuth';
+import EmailAuth from './pages/sign-up/EmailAuth';
+import SetPassword from './pages/sign-up/SetPassword';
+import UserInfo from './pages/sign-up/UserInfo';
+import AlarmAgreement from './pages/sign-up/AlarmAgreement';
 import CheckEmail from './pages/login/CheckEmail';
 import ResetPassword from './pages/login/ResetPassword';
 import EditProfile from './pages/profile/EditProfile';
@@ -62,19 +62,19 @@ const Router = () => {
         <CheckEmail />
       </Route>
 
-      <Route path="/sign-in/phone">
+      <Route path="/sign-up/phone">
         <PhoneAuth />
       </Route>
-      <Route path="/sign-in/email">
+      <Route path="/sign-up/email">
         <EmailAuth />
       </Route>
-      <Route path="/sign-in/password">
+      <Route path="/sign-up/password">
         <SetPassword />
       </Route>
-      <Route path="/sign-in/info">
+      <Route path="/sign-up/info">
         <UserInfo />
       </Route>
-      <Route path="/sign-in/alarm">
+      <Route path="/sign-up/alarm">
         <AlarmAgreement />
       </Route>
 

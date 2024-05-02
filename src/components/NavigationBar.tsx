@@ -1,6 +1,7 @@
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import HomeIcon from '../assets/svgs/home.svg';
 import HomeLineIcon from '../assets/svgs/home-line.svg';
@@ -16,6 +17,8 @@ import Router from '../Router';
 const whiteList = ['home', 'bookmark', 'message', 'profile'];
 
 const NavigationBar = () => {
+  const { t } = useTranslation();
+
   const [currentTab, setCurrentTab] = useState('home');
   const location = useLocation();
 
@@ -49,7 +52,7 @@ const NavigationBar = () => {
           <IonLabel
             className={`font-caption3 ${currentTab === 'home' ? 'text-orange5' : 'text-gray6'}`}
           >
-            둘러보기
+            {t('nav.home')}
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="bookmark" href="/bookmark">
@@ -61,7 +64,7 @@ const NavigationBar = () => {
           <IonLabel
             className={`font-caption3 ${currentTab === 'bookmark' ? 'text-orange5' : 'text-gray6'}`}
           >
-            관심 목록
+            {t('nav.bookmark')}
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="post" href="/post">
@@ -76,7 +79,7 @@ const NavigationBar = () => {
           <IonLabel
             className={`font-caption3 ${currentTab === 'message' ? 'text-orange5' : 'text-gray6'}`}
           >
-            쪽지
+            {t('nav.message')}
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="profile" href="/profile">
@@ -88,7 +91,7 @@ const NavigationBar = () => {
           <IonLabel
             className={`font-caption3 ${currentTab === 'profile' ? 'text-orange5' : 'text-gray6'}`}
           >
-            마이페이지
+            {t('nav.mypage')}
           </IonLabel>
         </IonTabButton>
       </IonTabBar>

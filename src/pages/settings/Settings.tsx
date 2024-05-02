@@ -81,7 +81,7 @@ const Settings = () => {
               계정 삭제
             </p>
           ) : (
-            <Link to="/sign-in/email">
+            <Link to="/sign-up/email">
               <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
             </Link>
           )}

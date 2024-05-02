@@ -11,6 +11,7 @@ import {
 } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -19,8 +20,11 @@ import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour';
 import LogoRunning from '../../components/LogoRunning';
+import i18next from '../../i18n';
 
 const TourDetail = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const location = useLocation();
 
@@ -32,7 +36,7 @@ const TourDetail = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getTourDetail(tourId, 'ORIGIN');
+      const response = await getTourDetail(tourId, 'KR');
 
       if (response.status === 200) {
         setTourDetail(response.data);
@@ -81,7 +85,7 @@ const TourDetail = () => {
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
-              <p className="font-body1 text-gray2">구사언어</p>
+              <p className="font-body1 text-gray2">{t('common.availableLanguages')}</p>
               <Divider />
               <p className="font-body1 text-gray2">{tourDetail.userInfo.languages}</p>
             </div>
@@ -109,7 +113,7 @@ const TourDetail = () => {
             />
 
             <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
-              <p className="font-headline3 text-gray1">우리 여기서 같이 뭐할까?</p>
+              <p className="font-headline3 text-gray1">{t('tour.detail')}</p>
               <p className="font-body2 text-gray2">{tourDetail.description}</p>
             </div>
           </div>
@@ -123,7 +127,7 @@ const TourDetail = () => {
               </div>
 
               <button className="w-full text-white button-primary button-lg bg-orange6 font-subheading1">
-                Rachel 님에게 쪽지하기
+                {i18next.resolvedLanguage === 'ko' ? 'Rachel 님에게 쪽지하기' : 'Message Rachel'}
               </button>
             </div>
           </IonToolbar>

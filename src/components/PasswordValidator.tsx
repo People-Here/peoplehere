@@ -1,5 +1,6 @@
 import { IonIcon, IonText } from '@ionic/react';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import CheckGrayIcon from '../assets/svgs/check-gray.svg';
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const PasswordValidator = ({ password }: Props) => {
+  const { t } = useTranslation();
+
   const moreThan8 = PASSWORD_VALIDATION.moreThan8.test(password);
   const hasSpecialCharOrNumber = PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(password);
 
@@ -20,7 +23,7 @@ const PasswordValidator = ({ password }: Props) => {
         <IonText
           className={moreThan8 ? 'text-orange5 font-caption2' : 'text-gray5.5 font-caption2'}
         >
-          8자리 이상
+          {t('password.length')}
         </IonText>
       </div>
       <div className="flex items-center gap-1">
@@ -30,7 +33,7 @@ const PasswordValidator = ({ password }: Props) => {
             hasSpecialCharOrNumber ? 'text-orange5 font-caption2' : 'text-gray5.5 font-caption2'
           }
         >
-          기호나 숫자를 1자 이상 포함
+          {t('password.format')}
         </IonText>
       </div>
     </div>
