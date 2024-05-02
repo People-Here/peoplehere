@@ -9,7 +9,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -21,6 +21,8 @@ import usePostPlaceStore from '../../stores/place';
 import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
+import { imageToFile } from '../../utils/image';
+import { postTour } from '../../api/tour';
 
 import type { ProfileResponse } from '../../api/profile';
 
@@ -46,6 +48,26 @@ const Preview = () => {
       }
     })();
   }, [user.id]);
+
+  const uploadPost = async () => {
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+
+    const formData = new FormData();
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('theme', 'black');
+    imageBlobs.forEach((blob) => {
+      formData.append('images', blob);
+    });
+
+    try {
+      await postTour(formData);
+      router.push('/');
+    } catch (error) {
+      console.error('failed with uploading post', error);
+    }
+  };
 
   const themeColors = {
     black: 'bg-gray8',
@@ -107,7 +129,7 @@ const Preview = () => {
           </div>
         </div>
 
-        <SelectTheme currentTheme={theme} setTheme={setTheme} />
+        <SelectTheme currentTheme={theme} setTheme={setTheme} onClick={uploadPost} />
       </IonContent>
     </IonPage>
   );
@@ -173,8 +195,9 @@ const themes = {
 type ThemeProps = {
   currentTheme: string;
   setTheme: (theme: string) => void;
+  onClick: () => void;
 };
-const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
+const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
   const { t } = useTranslation();
 
   const [expand, setExpand] = useState(true);
@@ -198,7 +221,7 @@ const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
         {expand && (
           <div className="flex gap-[1.125rem]">
             {Object.keys(themes).map((theme) => (
-              <>
+              <Fragment key={theme}>
                 {currentTheme === theme ? (
                   <div className="border-2 rounded-full border-orange5">
                     <div className={themes[theme as keyof typeof themes]} />
@@ -210,12 +233,15 @@ const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
                     onClick={() => setTheme(theme)}
                   />
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         )}
 
-        <button className="w-full text-white bg-orange5 button-lg font-subheading1">
+        <button
+          className="w-full text-white bg-orange5 button-lg font-subheading1"
+          onClick={onClick}
+        >
           {t('newTour.post')}
         </button>
       </div>
