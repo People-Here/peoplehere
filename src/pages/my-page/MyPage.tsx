@@ -1,6 +1,7 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -158,13 +159,13 @@ const NoPlace = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center gap-6 mt-20">
+    <Link to="/post" className="flex flex-col items-center gap-6 mt-20">
       <p className="text-center whitespace-pre-wrap font-body1 text-gray5">{t('mypage.noPlace')}</p>
       <button className="flex items-center gap-2 px-3 button-sub button-lg w-fit h-11">
         <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
         <p className="font-body1 text-orange5">{t('newTour.post')}</p>
       </button>
-    </div>
+    </Link>
   );
 };
 
