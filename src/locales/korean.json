@@ -35,7 +35,8 @@
     "continue": "계속",
     "save": "저장",
     "search": "검색",
-    "preview": "미리보기"
+    "preview": "미리보기",
+    "availableLanguages": "구사언어"
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
@@ -93,6 +94,8 @@
     "translate": "한글로 작성할 경우 자동으로 영문 번역될 수 있어요.",
     "title": "짧고 재치있는 한 줄 제목",
     "description": "함께 하고 싶은 활동에 대해 얘기해 보세요.",
-    "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요."
+    "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요.",
+    "selectTheme": "스킨 색상 선택",
+    "post": "장소 올리기"
   }
 }

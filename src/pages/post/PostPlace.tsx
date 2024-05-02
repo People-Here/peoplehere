@@ -223,7 +223,7 @@ const ImageList = ({ images, setImages }: ImageProps) => {
         <IonText className="font-caption2 text-gray5.5">{t('newTour.policyWarning')}</IonText>
 
         <div
-          className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full"
+          className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full shrink-0"
           onClick={selectPhotosFromGallery}
         >
           <IonIcon className="svg-md" src={CameraIcon} />

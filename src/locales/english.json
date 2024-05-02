@@ -35,7 +35,8 @@
     "continue": "Continue",
     "save": "Save",
     "search": "Search",
-    "preview": "Preview & Theme"
+    "preview": "Preview & Theme",
+    "availableLanguages": "Speaks"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
@@ -93,6 +94,8 @@
     "translate": "Recommend to write in English.",
     "title": "Short and witty title",
     "description": "Share the idea of activities you would like to do with other people.",
-    "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate."
+    "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate.",
+    "selectTheme": "Select a theme",
+    "post": "Post my place"
   }
 }
