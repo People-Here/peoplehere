@@ -1,9 +1,12 @@
 import { Preferences } from '@capacitor/preferences';
 
 import { typedGet, typedPut } from '.';
+import { parseBigint } from '../utils/parse';
 
 export const getUserProfile = async (userId: string, region: string) => {
-  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`);
+  const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
+    transformResponse: [(data: string) => parseBigint(data)],
+  });
   return response;
 };
 
@@ -19,7 +22,7 @@ export const updateUserProfile = async (body: FormData) => {
 };
 
 export type ProfileResponse = {
-  id: bigint;
+  id: string;
   profileImageUrl: string;
   introduce: string;
   languages: string[];

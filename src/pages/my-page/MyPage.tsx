@@ -1,5 +1,6 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -8,10 +9,31 @@ import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import PlusCircleOrangeIcon from '../../assets/svgs/plus-circle-orange.svg';
 import useUserStore from '../../stores/user';
+import { getUserProfile } from '../../api/profile';
+import useSignInStore from '../../stores/signIn';
+import DefaultUserImage from '../../assets/images/default-user.png';
 
 const MyPage = () => {
   const router = useIonRouter();
-  const user = useUserStore((state) => state.user);
+
+  const region = useSignInStore((state) => state.region);
+  const { user, setUser } = useUserStore((state) => state);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const response = await getUserProfile(user.id, region.countryCode);
+
+      if (response.status === 200) {
+        setUser({
+          id: response.data.id,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          profileImageUrl: response.data.profileImageUrl,
+        });
+      }
+    })();
+  }, [user.id]);
 
   return (
     <>
@@ -26,7 +48,7 @@ const MyPage = () => {
 
       <div className="px-4 mt-6">
         <Link to={`/profile/${user.id}`}>
-          <UserInfo image="https://picsum.photos/seed/picsum/200/300" name="레이첼" />
+          <UserInfo image={user.profileImageUrl} name={user.firstName} />
         </Link>
 
         <div className="flex flex-col gap-4 mt-10">
@@ -63,7 +85,11 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
   return (
     <div className="flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
-        <IonImg src={image} className="object-cover overflow-hidden rounded-full w-14 h-14" />
+        <IonImg
+          src={image}
+          className="object-cover overflow-hidden rounded-full w-14 h-14"
+          onIonError={(e) => (e.target.src = DefaultUserImage)}
+        />
 
         <div>
           <p className="font-headline3 text-gray7">{name}</p>
