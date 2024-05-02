@@ -33,7 +33,7 @@ const MyPage = () => {
         });
       }
     })();
-  }, [user.id]);
+  }, []);
 
   return (
     <>
@@ -87,6 +87,7 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
       <div className="flex items-center gap-4">
         <IonImg
           src={image}
+          alt="user profile image"
           className="object-cover overflow-hidden rounded-full w-14 h-14"
           onIonError={(e) => (e.target.src = DefaultUserImage)}
         />
