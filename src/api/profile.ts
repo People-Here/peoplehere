@@ -3,7 +3,6 @@ import { Preferences } from '@capacitor/preferences';
 import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
-  const { value } = await Preferences.get({ key: 'accessToken' });
   const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`);
   return response;
 };

@@ -20,7 +20,7 @@ const EmailAuth = () => {
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showAuthCodeInput, setShowAuthCodeInput] = useState(true);
+  const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
 
   const checkEmailExist = async () => {
     setErrorMessage('');
