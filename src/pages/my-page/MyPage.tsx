@@ -26,8 +26,6 @@ const MyPage = () => {
       const response = await getUserProfile(user.id, region.countryCode);
 
       if (response.status === 200) {
-        console.log('id', response.data.id);
-
         setUser({
           id: response.data.id.toString(),
           firstName: response.data.firstName,

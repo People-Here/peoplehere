@@ -43,7 +43,7 @@ const Router = () => {
       <Route exact path="/message">
         <Message />
       </Route>
-      <Route exact path="/profile">
+      <Route path="/profile">
         <ProfileTab />
       </Route>
 
