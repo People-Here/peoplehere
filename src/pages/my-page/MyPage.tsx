@@ -29,7 +29,7 @@ const MyPage = () => {
         console.log('id', response.data.id);
 
         setUser({
-          id: response.data.id,
+          id: response.data.id.toString(),
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           profileImageUrl: response.data.profileImageUrl,

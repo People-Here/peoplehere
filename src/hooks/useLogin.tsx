@@ -16,7 +16,7 @@ const useLogin = () => {
       await Preferences.set({ key: 'refreshToken', value: response.data.refreshToken });
 
       setUser({
-        id: response.data.id,
+        id: response.data.id.toString(),
         profileImageUrl: '',
         firstName: '',
         lastName: '',

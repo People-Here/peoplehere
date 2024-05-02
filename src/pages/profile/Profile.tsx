@@ -58,7 +58,7 @@ const Profile = () => {
         setUserInfo(response.data);
       }
     })();
-  }, [location.pathname, user.id]);
+  }, []);
 
   const handleClickIcon = () => {
     if (isMe) {
