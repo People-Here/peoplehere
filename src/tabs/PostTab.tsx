@@ -1,23 +1,16 @@
-import { IonContent, IonPage, useIonRouter } from '@ionic/react';
-import { useEffect } from 'react';
-import { Preferences } from '@capacitor/preferences';
+import { IonContent, IonPage } from '@ionic/react';
+import { useLayoutEffect } from 'react';
 
 import PostPlace from '../pages/post/PostPlace';
+import useLogin from '../hooks/useLogin';
 
 const PostTab = () => {
-  const router = useIonRouter();
+  const { checkLogin } = useLogin();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const token = await Preferences.get({ key: 'accessToken' });
-
-      if (!token) {
-        router.push('/login', 'forward', 'replace');
-        return;
-      }
-    })();
-  }, []);
+    checkLogin();
+  }, [checkLogin]);
 
   return (
     <IonPage>
