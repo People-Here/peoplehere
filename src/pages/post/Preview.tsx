@@ -101,7 +101,7 @@ const Preview = () => {
             <PlaceInfo image={images[0]} title={place.title} address={place.address} />
 
             <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
-              <p className="font-headline3 text-gray1">{t('newTour.detail')}</p>
+              <p className="font-headline3 text-gray1">{t('tour.detail')}</p>
               <p className="font-body2 text-gray2">{description}</p>
             </div>
           </div>

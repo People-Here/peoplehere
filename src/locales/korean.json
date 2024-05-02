@@ -15,7 +15,8 @@
   },
   "tour": {
     "available": "말 걸 수 있음",
-    "unavailable": "쪽지 마감"
+    "unavailable": "쪽지 마감",
+    "detail": "우리 여기서 같이 뭐할까?"
   },
   "region": {
     "welcome": "반가워요 :)\n어느 나라에서 오셨나요?",

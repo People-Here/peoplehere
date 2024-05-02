@@ -15,7 +15,8 @@
   },
   "tour": {
     "available": "Talk to me",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "detail": "What are we going to do here?"
   },
   "region": {
     "welcome": "Hello :)\nWhere are you from?",
