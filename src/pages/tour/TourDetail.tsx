@@ -87,7 +87,7 @@ const TourDetail = () => {
             <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
               <p className="font-body1 text-gray2">{t('common.availableLanguages')}</p>
               <Divider />
-              <p className="font-body1 text-gray2">{tourDetail.userInfo.languages}</p>
+              <p className="font-body1 text-gray2">{tourDetail.userInfo.languages.join(', ')}</p>
             </div>
 
             <p className="leading-6 text-center text-white font-body1">
