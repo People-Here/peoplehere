@@ -105,13 +105,6 @@ const TourDetail = () => {
             <ImageCarousel
               images={tourDetail.placeInfo.imageUrlList.map((image) => image.imageUrl)}
             />
-            {/* <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
-              <IonImg
-                src={tourDetail.placeInfo.imageUrlList[0].imageUrl}
-                alt="place image"
-                className="object-cover w-full h-full"
-              />
-            </div> */}
 
             <PlaceInfo
               image={tourDetail.placeInfo.imageUrlList[0].imageUrl}

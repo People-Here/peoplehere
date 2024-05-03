@@ -112,7 +112,7 @@ const Profile = () => {
 
         {/* content area */}
         <div className="px-4 pb-12 mt-6">
-          <p className="mb-3 font-headline1 text-orange6">{user.firstName} 님의 소개</p>
+          <p className="mb-3 font-headline1 text-orange6">{userInfo.firstName} 님의 소개</p>
           <div className="p-4 mb-3 bg-gray1 rounded-xl">
             <IonText className="whitespace-pre-wrap font-body1 text-gray7">
               {userInfo.introduce ?? '자기소개가 아직 없습니다.'}
