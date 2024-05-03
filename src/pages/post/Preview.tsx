@@ -77,7 +77,7 @@ const Preview = () => {
         await Preferences.set({ key: 'accessToken', value: tokens.data });
 
         await postTour(formData);
-        router.push('/');
+        router.push('/', 'root', 'replace');
       }
     }
   };
@@ -129,9 +129,10 @@ const Preview = () => {
           <div className="px-4 pb-40">
             <p className="mb-4 text-center font-headline1 text-gray1">{title}</p>
 
-            <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
+            {/* <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
               <IonImg src={images[0]} alt="place image" className="object-cover w-full h-full" />
-            </div>
+            </div> */}
+            <ImageCarousel images={images} />
 
             <PlaceInfo image={images[0]} title={place.title} address={place.address} />
 
@@ -259,6 +260,41 @@ const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
         </button>
       </div>
     </IonFooter>
+  );
+};
+
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [current, setCurrent] = useState(0);
+
+  return (
+    <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
+      <div className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory">
+        {/* image carousel */}
+        {images.map((image) => (
+          <IonImg
+            key={image}
+            src={image}
+            className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
+          />
+        ))}
+      </div>
+
+      {/* gradient */}
+      <div
+        className="absolute bottom-0 left-0 right-0 w-full opacity-70 h-[3.375rem] rounded-b-[20px]"
+        style={{ background: 'linear-gradient(0deg, #1B1D1F 0%, rgba(27, 29, 31, 0.00) 100%)' }}
+      />
+
+      {/* slide indicator */}
+      <div
+        className="absolute bottom-4 right-2.5 px-2.5 py-1 rounded-2xl flex items-center gap-1"
+        style={{ background: 'rgba(27, 29, 31, 0.80)' }}
+      >
+        <p className="font-caption1 text-gray1">{current + 1}</p>
+        <p className="font-caption1 text-gray1">|</p>
+        <p className="font-caption1 text-gray5">12</p>
+      </div>
+    </div>
   );
 };
 

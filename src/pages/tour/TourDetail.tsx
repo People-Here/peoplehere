@@ -196,8 +196,8 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   const [current, setCurrent] = useState(0);
 
   return (
-    <div className="relative w-full h-[16.25rem] overflow-hidden mb-5">
-      <div className="w-full h-full rounded-[20px] border-[0.5px] border-gray6 shrink-0 overflow-x-scroll flex snap-x snap-mandatory">
+    <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
+      <div className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory">
         {/* image carousel */}
         {images.map((image) => (
           <IonImg
