@@ -215,6 +215,7 @@ const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
   const { t } = useTranslation();
 
   const [expand, setExpand] = useState(true);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <IonFooter
@@ -254,7 +255,11 @@ const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
 
         <button
           className="w-full text-white bg-orange5 button-lg font-subheading1"
-          onClick={onClick}
+          onClick={() => {
+            onClick();
+            setButtonClicked(true);
+          }}
+          disabled={buttonClicked}
         >
           {t('newTour.post')}
         </button>
