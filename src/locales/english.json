@@ -37,7 +37,8 @@
     "save": "Save",
     "search": "Search",
     "preview": "Preview & Theme",
-    "availableLanguages": "Speaks"
+    "availableLanguages": "Speaks",
+    "refresh": "Refresh"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",

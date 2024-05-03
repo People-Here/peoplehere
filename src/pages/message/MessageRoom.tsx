@@ -8,6 +8,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -15,6 +16,7 @@ import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
 import LanguageIcon from '../../assets/svgs/language.svg';
+import useUserStore from '../../stores/user';
 
 type Message = {
   type: 'send' | 'receive';
@@ -41,7 +43,11 @@ const messages: Message[] = [
 ];
 
 const MessageRoom = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
+
+  const user = useUserStore((state) => state.user);
 
   return (
     <IonPage>
@@ -51,11 +57,11 @@ const MessageRoom = () => {
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
-          <p className="pl-1.5 font-headline3 text-gray8">Rachel</p>
+          <p className="pl-1.5 font-headline3 text-gray8">{user.firstName}</p>
 
           <IonButtons slot="end">
             <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
-              새로고침
+              {t('common.refresh')}
             </span>
           </IonButtons>
         </IonToolbar>
