@@ -57,7 +57,7 @@ const Home = () => {
     <div className="px-4 mt-3">
       <SearchBar />
 
-      <div className="flex flex-col mt-6 gap-7">
+      <div className="flex flex-col pb-20 mt-6 gap-7">
         {list.length === 0 ? (
           <div className="mt-60">
             <div className="flex flex-col items-center gap-8">
