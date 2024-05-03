@@ -11,14 +11,16 @@ export const getTourList = async (region: string, lang: string) => {
 };
 
 export const getTourListByUser = async (region: string, lang: string, userId: string) => {
-  const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}/${userId}`, {
+  const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}/account/${userId}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
   });
   return response;
 };
 
 export const getTourDetail = async (tourId: string, region: string) => {
-  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/ORIGIN`);
+  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/ORIGIN`, {
+    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+  });
   return response;
 };
 

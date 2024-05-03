@@ -12,6 +12,7 @@ import {
 import { useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -69,12 +70,15 @@ const TourDetail = () => {
           </IonButtons>
         </IonToolbar>
 
-        <div className="flex justify-center w-full mt-6 mb-12">
+        <Link
+          className="flex justify-center w-full mt-6 mb-12"
+          to={`/profile/${tourDetail.userInfo.id.toString()}`}
+        >
           <UserImage
-            src="https://picsum.photos/seed/picsum/200/300"
+            src={tourDetail.userInfo.profileImageUrl}
             name={tourDetail.userInfo.firstName}
           />
-        </div>
+        </Link>
 
         <div
           className={`relative ${themeColors[(tourDetail.theme as keyof typeof themeColors) ?? 'black']}`}
@@ -146,7 +150,7 @@ type ImageProps = {
 };
 const UserImage = ({ src, name }: ImageProps) => {
   return (
-    <div className="overflow-hidden rounded-xl w-[100px] h-full relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
+    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
       <IonImg className="w-[100px] h-full object-cover" src={src} alt="user profile" />
 
       <div
