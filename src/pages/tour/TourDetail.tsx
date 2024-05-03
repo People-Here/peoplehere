@@ -127,7 +127,9 @@ const TourDetail = () => {
               </div>
 
               <button className="w-full text-white button-primary button-lg bg-orange6 font-subheading1">
-                {i18next.resolvedLanguage === 'ko' ? 'Rachel 님에게 쪽지하기' : 'Message Rachel'}
+                {i18next.resolvedLanguage === 'ko'
+                  ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
+                  : `Message ${tourDetail.userInfo.firstName}`}
               </button>
             </div>
           </IonToolbar>
