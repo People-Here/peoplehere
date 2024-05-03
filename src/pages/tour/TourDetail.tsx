@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   IonButtons,
   IonContent,
@@ -23,6 +24,54 @@ import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour
 import LogoRunning from '../../components/LogoRunning';
 import i18next from '../../i18n';
 
+type ThemeColor = 'black' | 'pink' | 'yellow';
+type Theme = Record<ThemeColor, object>;
+
+const themeColors: any = {
+  black: {
+    background: 'bg-gray8',
+    cardBackground: 'bg-gray7',
+    footer: 'bg-gray8',
+    button: 'bg-orange6',
+    buttonText: 'text-white',
+    buttonBorder: 'border-gray6',
+    language: 'text-gray2',
+    content: 'text-gray3',
+    title: 'text-gray2',
+    cardTitle: 'text-gray1',
+    cardAddress: 'text-gray5',
+    cardContent: 'text-gray4',
+  },
+  pink: {
+    background: 'bg-[#3f272d]',
+    cardBackground: 'bg-[#F6C5D1]',
+    footer: 'bg-[#F095AB]',
+    button: 'bg-white',
+    buttonText: 'text-gray6',
+    buttonBorder: 'border-white',
+    language: 'text-white',
+    content: 'text-gray8',
+    title: 'text-[#4F353B]',
+    cardTitle: 'text-gray8',
+    cardAddress: 'text-gray6',
+    cardContent: 'text-gray7',
+  },
+  yellow: {
+    background: 'bg-[#FAE09F]',
+    cardBackground: 'bg-[#FFEBB6]',
+    footer: 'bg-[#FCCF5D]',
+    button: 'bg-white',
+    buttonText: 'text-gray6',
+    buttonBorder: 'border-white',
+    language: 'text-[#4A2C1B]',
+    content: 'text-gray8',
+    title: 'text-[#4F353B]',
+    cardTitle: 'text-gray8',
+    cardAddress: 'text-gray6',
+    cardContent: 'text-gray7',
+  },
+};
+
 const TourDetail = () => {
   const { t } = useTranslation();
 
@@ -44,12 +93,6 @@ const TourDetail = () => {
       }
     })();
   }, [location.pathname]);
-
-  const themeColors = {
-    black: 'bg-gray8',
-    pink: 'bg-[#F4B7C6]',
-    yellow: 'bg-[#FAE09F]',
-  };
 
   if (!tourDetail) {
     return <LogoRunning />;
@@ -80,27 +123,35 @@ const TourDetail = () => {
           />
         </Link>
 
-        <div
-          className={`relative ${themeColors[(tourDetail.theme as keyof typeof themeColors) ?? 'black']}`}
-        >
+        <div className={`relative ${themeColors[tourDetail.theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[(tourDetail.theme as keyof typeof themeColors) ?? 'black']} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} -top-28 -left-[7.1875rem] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
-            <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
-              <p className="font-body1 text-gray2">{t('common.availableLanguages')}</p>
+            <div
+              className={`flex items-center ${themeColors[tourDetail.theme].footer} rounded py-0.5 px-1.5 w-fit`}
+            >
+              <p className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
+                {t('common.availableLanguages')}
+              </p>
               <Divider />
-              <p className="font-body1 text-gray2">{tourDetail.userInfo.languages.join(', ')}</p>
+              <p className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
+                {tourDetail.userInfo.languages.join(', ')}
+              </p>
             </div>
 
-            <p className="leading-6 text-center text-white font-body1">
+            <p
+              className={`leading-6 text-center ${themeColors[tourDetail.theme].content} font-body1`}
+            >
               {tourDetail.userInfo.introduce}
             </p>
           </div>
 
           <div className="px-4 pb-32">
-            <p className="mb-4 text-center font-headline1 text-gray1">{tourDetail.title}</p>
+            <p className={`mb-4 text-center font-headline1 ${themeColors[tourDetail.theme].title}`}>
+              {tourDetail.title}
+            </p>
 
             <ImageCarousel
               images={tourDetail.placeInfo.imageUrlList.map((image) => image.imageUrl)}
@@ -110,23 +161,37 @@ const TourDetail = () => {
               image={tourDetail.placeInfo.imageUrlList[0].imageUrl}
               title={tourDetail.placeInfo.name}
               address={tourDetail.placeInfo.address}
+              theme={tourDetail.theme}
             />
 
-            <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
-              <p className="font-headline3 text-gray1">{t('tour.detail')}</p>
-              <p className="font-body2 text-gray2">{tourDetail.description}</p>
+            <div
+              className={`p-4 flex flex-col gap-2.5 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
+            >
+              <p className={`font-headline3 ${themeColors[tourDetail.theme].cardTitle}`}>
+                {t('tour.detail')}
+              </p>
+              <p className={`font-body2 ${themeColors[tourDetail.theme].cardContent}`}>
+                {tourDetail.description}
+              </p>
             </div>
           </div>
         </div>
 
-        <IonFooter class="ion-no-border" className="fixed bottom-0 left-0 right-0 bg-gray8">
+        <IonFooter
+          class="ion-no-border"
+          className={`fixed bottom-0 left-0 right-0 ${themeColors[tourDetail.theme].footer}`}
+        >
           <IonToolbar className="p-4">
             <div className="flex gap-3">
-              <div className="flex items-center justify-center border border-gray6 bg-gray7 rounded-xl w-14 h-[3.25rem] shrink-0">
+              <div
+                className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].button} rounded-xl w-14 h-[3.25rem] shrink-0`}
+              >
                 <IonIcon src={HeartLineRedIcon} className="svg-lg" />
               </div>
 
-              <button className="w-full text-white button-primary button-lg bg-orange6 font-subheading1">
+              <button
+                className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1`}
+              >
                 {i18next.resolvedLanguage === 'ko'
                   ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
                   : `Message ${tourDetail.userInfo.firstName}`}
@@ -169,10 +234,13 @@ type PlaceInfoProps = {
   image: string;
   title: string;
   address: string;
+  theme: string;
 };
-const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
+const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
   return (
-    <div className="flex items-center justify-between p-4 bg-gray7 rounded-xl">
+    <div
+      className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
+    >
       <div className="flex items-center gap-3">
         <IonImg
           src={image}
@@ -181,8 +249,8 @@ const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
         />
 
         <div className="flex flex-col gap-0.5">
-          <p className="text-white font-subheading2">{title}</p>
-          <p className="font-caption2 text-gray5">{address}</p>
+          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
         </div>
       </div>
 
@@ -202,7 +270,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
           <IonImg
             key={image}
             src={image}
-            className="object-cover w-full h-full rounded-[20px] overflow-hidden shrink-0 snap-center"
+            className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
           />
         ))}
       </div>
@@ -220,7 +288,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
       >
         <p className="font-caption1 text-gray1">{current + 1}</p>
         <p className="font-caption1 text-gray1">|</p>
-        <p className="font-caption1 text-gray5">12</p>
+        <p className="font-caption1 text-gray5">{images.length}</p>
       </div>
     </div>
   );
