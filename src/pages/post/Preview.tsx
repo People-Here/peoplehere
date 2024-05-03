@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   IonButtons,
   IonContent,
@@ -29,6 +30,51 @@ import { getNewToken } from '../../api/login';
 import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
 
+const themeColors: any = {
+  black: {
+    background: 'bg-gray8',
+    cardBackground: 'bg-gray7',
+    footer: 'bg-gray8',
+    button: 'bg-orange6',
+    buttonText: 'text-white',
+    buttonBorder: 'border-gray6',
+    language: 'text-gray2',
+    content: 'text-gray3',
+    title: 'text-gray2',
+    cardTitle: 'text-gray1',
+    cardAddress: 'text-gray5',
+    cardContent: 'text-gray4',
+  },
+  pink: {
+    background: 'bg-[#F4B7C6]',
+    cardBackground: 'bg-[#F6C5D1]',
+    footer: 'bg-[#F095AB]',
+    button: 'bg-white',
+    buttonText: 'text-gray6',
+    buttonBorder: 'border-white',
+    language: 'text-white',
+    content: 'text-gray8',
+    title: 'text-[#4F353B]',
+    cardTitle: 'text-gray8',
+    cardAddress: 'text-gray6',
+    cardContent: 'text-gray7',
+  },
+  yellow: {
+    background: 'bg-[#FAE09F]',
+    cardBackground: 'bg-[#FFEBB6]',
+    footer: 'bg-[#FCCF5D]',
+    button: 'bg-white',
+    buttonText: 'text-gray6',
+    buttonBorder: 'border-white',
+    language: 'text-[#4A2C1B]',
+    content: 'text-gray8',
+    title: 'text-[#4F353B]',
+    cardTitle: 'text-gray8',
+    cardAddress: 'text-gray6',
+    cardContent: 'text-gray7',
+  },
+};
+
 const Preview = () => {
   const { t } = useTranslation();
 
@@ -36,6 +82,7 @@ const Preview = () => {
   const { place, title, description, images } = usePostPlaceStore((state) => state);
   const user = useUserStore((state) => state.user);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [theme, setTheme] = useState('black');
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
 
@@ -82,12 +129,6 @@ const Preview = () => {
     }
   };
 
-  const themeColors = {
-    black: 'bg-gray8',
-    pink: 'bg-[#F4B7C6]',
-    yellow: 'bg-[#FAE09F]',
-  };
-
   if (!userInfo) {
     return <LogoRunning />;
   }
@@ -108,37 +149,49 @@ const Preview = () => {
         </IonToolbar>
 
         <div className="flex justify-center w-full mt-6 mb-12">
-          <UserImage src="https://picsum.photos/seed/picsum/200/300" name={user.firstName} />
+          <UserImage src={userInfo.profileImageUrl} name={userInfo.firstName} />
         </div>
 
-        <div className={`relative pb-20 ${themeColors[theme as keyof typeof themeColors]}`}>
+        <div className={`relative pb-20 ${themeColors[theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[theme as keyof typeof themeColors]} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[theme].background} -top-28 -left-[7.1875rem] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
-            <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
-              <p className="font-body1 text-gray2">{t('common.availableLanguages')}</p>
+            <div
+              className={`flex items-center ${themeColors[theme].footer} rounded py-0.5 px-1.5 w-fit`}
+            >
+              <p className={`font-body1 ${themeColors[theme].language}`}>
+                {t('common.availableLanguages')}
+              </p>
               <Divider />
-              <p className="font-body1 text-gray2">{userInfo.languages.join(', ')}</p>
+              <p className={`font-body1 ${themeColors[theme].language}`}>
+                {userInfo.languages.join(', ')}
+              </p>
             </div>
 
-            <p className="leading-6 text-center text-white font-body1">{userInfo.introduce}</p>
+            <p className={`leading-6 text-center ${themeColors[theme].content} font-body1`}>
+              {userInfo.introduce}
+            </p>
           </div>
 
           <div className="px-4 pb-40">
-            <p className="mb-4 text-center font-headline1 text-gray1">{title}</p>
+            <p className={`mb-4 text-center font-headline1 ${themeColors[theme].title}`}>{title}</p>
 
-            {/* <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
-              <IonImg src={images[0]} alt="place image" className="object-cover w-full h-full" />
-            </div> */}
             <ImageCarousel images={images} />
 
-            <PlaceInfo image={images[0]} title={place.title} address={place.address} />
+            <PlaceInfo
+              image={images[0]}
+              title={place.title}
+              address={place.address}
+              theme={theme}
+            />
 
-            <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
-              <p className="font-headline3 text-gray1">{t('tour.detail')}</p>
-              <p className="font-body2 text-gray2">{description}</p>
+            <div
+              className={`p-4 flex flex-col gap-2.5 ${themeColors[theme].cardBackground} rounded-xl mt-2`}
+            >
+              <p className={`font-headline3 ${themeColors[theme].cardTitle}`}>{t('tour.detail')}</p>
+              <p className={`font-body2 ${themeColors[theme].cardContent}`}>{description}</p>
             </div>
           </div>
         </div>
@@ -179,10 +232,13 @@ type PlaceInfoProps = {
   image: string;
   title: string;
   address: string;
+  theme: string;
 };
-const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
+const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
   return (
-    <div className="flex items-center justify-between p-4 bg-gray7 rounded-xl">
+    <div
+      className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
+    >
       <div className="flex items-center gap-3">
         <IonImg
           src={image}
@@ -191,8 +247,8 @@ const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
         />
 
         <div className="flex flex-col gap-0.5">
-          <p className="text-white font-subheading2">{title}</p>
-          <p className="font-caption2 text-gray5">{address}</p>
+          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
         </div>
       </div>
 

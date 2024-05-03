@@ -24,9 +24,6 @@ import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour
 import LogoRunning from '../../components/LogoRunning';
 import i18next from '../../i18n';
 
-type ThemeColor = 'black' | 'pink' | 'yellow';
-type Theme = Record<ThemeColor, object>;
-
 const themeColors: any = {
   black: {
     background: 'bg-gray8',
@@ -43,7 +40,7 @@ const themeColors: any = {
     cardContent: 'text-gray4',
   },
   pink: {
-    background: 'bg-[#3f272d]',
+    background: 'bg-[#F4B7C6]',
     cardBackground: 'bg-[#F6C5D1]',
     footer: 'bg-[#F095AB]',
     button: 'bg-white',
