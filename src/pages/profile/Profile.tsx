@@ -161,9 +161,9 @@ type IntroduceItemProps = {
 const IntroduceItem = ({ icon, title, value }: IntroduceItemProps) => {
   return (
     <div className="flex items-center">
-      <IonIcon icon={iconMapper[icon]} className="svg-md mr-1.5" />
+      <IonIcon icon={iconMapper[icon]} className="svg-md mr-1.5 shrink-0" />
 
-      <p className="font-body1 text-gray6">{title}</p>
+      <p className="font-body1 text-gray6 whitespace-nowrap">{title}</p>
       <Divider />
       <p className="font-body1 text-gray6">{value}</p>
     </div>
