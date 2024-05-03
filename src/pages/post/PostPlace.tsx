@@ -64,25 +64,6 @@ const Post = () => {
     storeImages(images);
 
     router.push('/post/preview');
-
-    // const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
-
-    // const formData = new FormData();
-    // formData.append('placeId', place.id);
-    // formData.append('title', title);
-    // formData.append('description', description);
-    // formData.append('theme', 'black');
-
-    // imageBlobs.forEach((blob) => {
-    //   formData.append('images', blob);
-    // });
-
-    // try {
-    //   await postTour(formData);
-    //   router.push('/');
-    // } catch (error) {
-    //   console.error('failed with uploading post', error);
-    // }
   };
 
   return (

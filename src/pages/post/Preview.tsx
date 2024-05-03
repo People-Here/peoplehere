@@ -11,6 +11,7 @@ import {
 } from '@ionic/react';
 import { Fragment, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -23,7 +24,9 @@ import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
 import { imageToFile } from '../../utils/image';
 import { postTour } from '../../api/tour';
+import { getNewToken } from '../../api/login';
 
+import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
 
 const Preview = () => {
@@ -56,7 +59,7 @@ const Preview = () => {
     formData.append('placeId', place.id);
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('theme', 'black');
+    formData.append('theme', theme);
     imageBlobs.forEach((blob) => {
       formData.append('images', blob);
     });
@@ -66,6 +69,16 @@ const Preview = () => {
       router.push('/');
     } catch (error) {
       console.error('failed with uploading post', error);
+
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        const tokens = await getNewToken();
+        await Preferences.set({ key: 'accessToken', value: tokens.data });
+
+        await postTour(formData);
+        router.push('/');
+      }
     }
   };
 
