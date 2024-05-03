@@ -1,6 +1,6 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchIcon from '../../assets/svgs/search.svg';
@@ -24,6 +24,8 @@ const Home = () => {
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const region = useSignInStore((state) => state.region);
+
   useLayoutEffect(() => {
     setLoading(true);
 
@@ -38,7 +40,7 @@ const Home = () => {
           setList(data.tourList);
         }
       } else {
-        const { data, status } = await getTourList();
+        const { data, status } = await getTourList(region.countryCode.toUpperCase(), 'ORIGIN');
 
         if (status === 200) {
           setList(data.tourList);
