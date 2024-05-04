@@ -23,51 +23,7 @@ import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour';
 import LogoRunning from '../../components/LogoRunning';
 import i18next from '../../i18n';
-
-const themeColors: any = {
-  black: {
-    background: 'bg-gray8',
-    cardBackground: 'bg-gray7',
-    footer: 'bg-gray8',
-    button: 'bg-orange6',
-    buttonText: 'text-white',
-    buttonBorder: 'border-gray6',
-    language: 'text-gray2',
-    content: 'text-gray3',
-    title: 'text-gray2',
-    cardTitle: 'text-gray1',
-    cardAddress: 'text-gray5',
-    cardContent: 'text-gray4',
-  },
-  pink: {
-    background: 'bg-[#F4B7C6]',
-    cardBackground: 'bg-[#F6C5D1]',
-    footer: 'bg-[#F095AB]',
-    button: 'bg-white',
-    buttonText: 'text-gray6',
-    buttonBorder: 'border-white',
-    language: 'text-white',
-    content: 'text-gray8',
-    title: 'text-[#4F353B]',
-    cardTitle: 'text-gray8',
-    cardAddress: 'text-gray6',
-    cardContent: 'text-gray7',
-  },
-  yellow: {
-    background: 'bg-[#FAE09F]',
-    cardBackground: 'bg-[#FFEBB6]',
-    footer: 'bg-[#FCCF5D]',
-    button: 'bg-white',
-    buttonText: 'text-gray6',
-    buttonBorder: 'border-white',
-    language: 'text-[#4A2C1B]',
-    content: 'text-gray8',
-    title: 'text-[#4F353B]',
-    cardTitle: 'text-gray8',
-    cardAddress: 'text-gray6',
-    cardContent: 'text-gray7',
-  },
-};
+import { themeColors } from '../../constants/theme';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -181,7 +137,7 @@ const TourDetail = () => {
           <IonToolbar className="p-4">
             <div className="flex gap-3">
               <div
-                className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].button} rounded-xl w-14 h-[3.25rem] shrink-0`}
+                className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
               >
                 <IonIcon src={HeartLineRedIcon} className="svg-lg" />
               </div>

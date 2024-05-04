@@ -26,54 +26,10 @@ import LogoRunning from '../../components/LogoRunning';
 import { imageToFile } from '../../utils/image';
 import { postTour } from '../../api/tour';
 import { getNewToken } from '../../api/login';
+import { themeColors } from '../../constants/theme';
 
 import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
-
-const themeColors: any = {
-  black: {
-    background: 'bg-gray8',
-    cardBackground: 'bg-gray7',
-    footer: 'bg-gray8',
-    button: 'bg-orange6',
-    buttonText: 'text-white',
-    buttonBorder: 'border-gray6',
-    language: 'text-gray2',
-    content: 'text-gray3',
-    title: 'text-gray2',
-    cardTitle: 'text-gray1',
-    cardAddress: 'text-gray5',
-    cardContent: 'text-gray4',
-  },
-  pink: {
-    background: 'bg-[#F4B7C6]',
-    cardBackground: 'bg-[#F6C5D1]',
-    footer: 'bg-[#F095AB]',
-    button: 'bg-white',
-    buttonText: 'text-gray6',
-    buttonBorder: 'border-white',
-    language: 'text-white',
-    content: 'text-gray8',
-    title: 'text-[#4F353B]',
-    cardTitle: 'text-gray8',
-    cardAddress: 'text-gray6',
-    cardContent: 'text-gray7',
-  },
-  yellow: {
-    background: 'bg-[#FAE09F]',
-    cardBackground: 'bg-[#FFEBB6]',
-    footer: 'bg-[#FCCF5D]',
-    button: 'bg-white',
-    buttonText: 'text-gray6',
-    buttonBorder: 'border-white',
-    language: 'text-[#4A2C1B]',
-    content: 'text-gray8',
-    title: 'text-[#4F353B]',
-    cardTitle: 'text-gray8',
-    cardAddress: 'text-gray6',
-    cardContent: 'text-gray7',
-  },
-};
 
 const Preview = () => {
   const { t } = useTranslation();
