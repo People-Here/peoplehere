@@ -4,8 +4,13 @@ import JSONbig from 'json-bigint';
 import { typedGet, typedPost } from '.';
 
 export const getTourList = async (region: string, lang: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    headers: {
+      Authorization: value,
+    },
   });
   return response;
 };
