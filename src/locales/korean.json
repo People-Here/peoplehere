@@ -38,7 +38,8 @@
     "search": "검색",
     "preview": "미리보기",
     "availableLanguages": "구사언어",
-    "refresh": "새로고침"
+    "refresh": "새로고침",
+    "select": "선택"
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
