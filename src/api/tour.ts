@@ -41,6 +41,14 @@ export const postTour = async (body: FormData) => {
   return response;
 };
 
+export const likeTour = async (tourId: string) => {
+  const response = await typedPost('/tours/like', {
+    id: tourId,
+  });
+
+  return response;
+};
+
 type TourListResponse = {
   tourList: Tour[];
 };

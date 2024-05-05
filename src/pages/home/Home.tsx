@@ -8,10 +8,11 @@ import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import EmptyListIcon from '../../assets/svgs/empty-result.svg';
 import useSignInStore from '../../stores/signIn';
-import { getTourList, searchTour } from '../../api/tour';
+import { getTourList, likeTour, searchTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
 import LogoRunning from '../../components/LogoRunning';
 import StatusChip from '../../components/StatusChip';
+import useLogin from '../../hooks/useLogin';
 
 import type { Place, Tour, User } from '../../api/tour';
 
@@ -124,6 +125,18 @@ const TourItem = ({
   place,
   user,
 }: Omit<Tour, 'placeInfo' | 'userInfo'> & TourItemProps) => {
+  const { checkLogin } = useLogin();
+
+  const onClickLike = async (id: string) => {
+    if (!checkLogin()) return;
+
+    try {
+      await likeTour(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="-mr-4">
       {/* title area */}
@@ -133,7 +146,11 @@ const TourItem = ({
         <div className="pl-1 flex flex-col gap-0.5">
           <div className="flex items-center justify-between">
             <IonText className="font-headline3 text-gray8">{title}</IonText>
-            <IonIcon icon={like ? HeartFilledIcon : HeartLineRedIcon} className="svg-lg" />
+            <IonIcon
+              icon={like ? HeartFilledIcon : HeartLineRedIcon}
+              className="svg-lg"
+              onClick={() => onClickLike(place.id)}
+            />
           </div>
 
           <div className="flex items-center">
