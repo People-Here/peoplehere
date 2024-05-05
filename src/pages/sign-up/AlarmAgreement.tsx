@@ -5,14 +5,28 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import BellIcon from '../../assets/svgs/bell.svg';
-import { postAlarmAgreement } from '../../api/sign-up';
+import { signUp } from '../../api/sign-up';
+import useSignInStore from '../../stores/signIn';
+import { formatDataToString } from '../../utils/date';
 
+import type { SignInRequest } from '../../api/sign-up';
 import type { Animation } from '@ionic/react';
 
 const AlarmAgreement = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
+  const {
+    firstName,
+    lastName,
+    birthDate,
+    email,
+    gender,
+    password,
+    region,
+    phoneNumber,
+    policyConsent,
+  } = useSignInStore((state) => state);
 
   const iconRef = useRef<HTMLIonIconElement>(null);
   const animation = useRef<Animation | null>(null);
@@ -40,18 +54,38 @@ const AlarmAgreement = () => {
     animation.current?.play();
   }, [animation]);
 
-  const agreeAlram = async () => {
+  const generateSignInData = (alarm: boolean): SignInRequest => {
+    return {
+      firstName,
+      lastName,
+      birthDate: formatDataToString(birthDate),
+      email,
+      gender,
+      password,
+      region: region.countryCode,
+      phoneNumber,
+      privacyConsent: policyConsent.privacy,
+      marketingConsent: policyConsent.marketing,
+      alarmConsent: alarm,
+    };
+  };
+
+  const agreeAlarm = async () => {
     try {
-      await postAlarmAgreement(true);
+      const requestData = generateSignInData(true);
+      await signUp(requestData);
+
       router.push('/login', 'forward', 'replace');
     } catch (error) {
       console.error('Failed to post alarm agreement with error:', error);
     }
   };
 
-  const disagreeAlarm = () => {
+  const disagreeAlarm = async () => {
     try {
-      // await postAlarmAgreement(false);
+      const requestData = generateSignInData(false);
+      await signUp(requestData);
+
       router.push('/login', 'forward', 'replace');
     } catch (error) {
       console.error('Failed to post alarm agreement with error:', error);
@@ -81,7 +115,7 @@ const AlarmAgreement = () => {
           </div>
 
           <div className="flex flex-col items-center w-full gap-4">
-            <button className="w-full button-primary button-lg" onClick={agreeAlram}>
+            <button className="w-full button-primary button-lg" onClick={agreeAlarm}>
               {t('signup.alarm.agree')}
             </button>
             <IonText className="font-body1 text-gray6" onClick={disagreeAlarm}>

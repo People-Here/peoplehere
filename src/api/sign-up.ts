@@ -37,4 +37,5 @@ export type SignInRequest = {
   phoneNumber: string;
   privacyConsent: boolean;
   marketingConsent: boolean;
+  alarmConsent: boolean;
 };

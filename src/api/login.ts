@@ -18,7 +18,7 @@ export const getNewToken = async () => {
   const accessToken = await Preferences.get({ key: 'accessToken' });
   const refreshToken = await Preferences.get({ key: 'refreshToken' });
 
-  const response = await typedPost<GetNewTokenResponse>('/account/token', {
+  const response = await typedPost<string>('/account/token', {
     accessToken: accessToken.value,
     refreshToken: refreshToken.value,
   });
@@ -34,8 +34,4 @@ type LoginResponse = {
   accessToken: string;
   refreshToken: string;
   id: string;
-};
-
-type GetNewTokenResponse = {
-  accessToken: string;
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   IonButtons,
   IonContent,
@@ -9,8 +10,9 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -21,7 +23,12 @@ import usePostPlaceStore from '../../stores/place';
 import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
+import { imageToFile } from '../../utils/image';
+import { postTour } from '../../api/tour';
+import { getNewToken } from '../../api/login';
+import { themeColors } from '../../constants/theme';
 
+import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
 
 const Preview = () => {
@@ -31,6 +38,7 @@ const Preview = () => {
   const { place, title, description, images } = usePostPlaceStore((state) => state);
   const user = useUserStore((state) => state.user);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [theme, setTheme] = useState('black');
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
 
@@ -47,10 +55,34 @@ const Preview = () => {
     })();
   }, [user.id]);
 
-  const themeColors = {
-    black: 'bg-gray8',
-    pink: 'bg-[#F4B7C6]',
-    yellow: 'bg-[#FAE09F]',
+  const uploadPost = async () => {
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+
+    const formData = new FormData();
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('theme', theme);
+    imageBlobs.forEach((blob) => {
+      formData.append('images', blob);
+    });
+
+    try {
+      await postTour(formData);
+      router.push('/');
+    } catch (error) {
+      console.error('failed with uploading post', error);
+
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        const tokens = await getNewToken();
+        await Preferences.set({ key: 'accessToken', value: tokens.data });
+
+        await postTour(formData);
+        router.push('/', 'root', 'replace');
+      }
+    }
   };
 
   if (!userInfo) {
@@ -73,41 +105,54 @@ const Preview = () => {
         </IonToolbar>
 
         <div className="flex justify-center w-full mt-6 mb-12">
-          <UserImage src="https://picsum.photos/seed/picsum/200/300" name={user.firstName} />
+          <UserImage src={userInfo.profileImageUrl} name={userInfo.firstName} />
         </div>
 
-        <div className={`relative pb-20 ${themeColors[theme as keyof typeof themeColors]}`}>
+        <div className={`relative pb-20 ${themeColors[theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[theme as keyof typeof themeColors]} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[theme].background} -top-28 -left-[7.1875rem] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
-            <div className="flex items-center bg-gray7 rounded py-0.5 px-1.5 w-fit">
-              <p className="font-body1 text-gray2">{t('common.availableLanguages')}</p>
+            <div
+              className={`flex items-center ${themeColors[theme].footer} rounded py-0.5 px-1.5 w-fit`}
+            >
+              <p className={`font-body1 ${themeColors[theme].language}`}>
+                {t('common.availableLanguages')}
+              </p>
               <Divider />
-              <p className="font-body1 text-gray2">{userInfo.languages.join(', ')}</p>
+              <p className={`font-body1 ${themeColors[theme].language}`}>
+                {userInfo.languages.join(', ')}
+              </p>
             </div>
 
-            <p className="leading-6 text-center text-white font-body1">{userInfo.introduce}</p>
+            <p className={`leading-6 text-center ${themeColors[theme].content} font-body1`}>
+              {userInfo.introduce}
+            </p>
           </div>
 
           <div className="px-4 pb-40">
-            <p className="mb-4 text-center font-headline1 text-gray1">{title}</p>
+            <p className={`mb-4 text-center font-headline1 ${themeColors[theme].title}`}>{title}</p>
 
-            <div className="w-full h-[16.25rem] rounded-[20px] border-[0.5px] border-gray5.5 overflow-hidden mb-5">
-              <IonImg src={images[0]} alt="place image" className="object-cover w-full h-full" />
-            </div>
+            <ImageCarousel images={images} />
 
-            <PlaceInfo image={images[0]} title={place.title} address={place.address} />
+            <PlaceInfo
+              image={images[0]}
+              title={place.title}
+              address={place.address}
+              theme={theme}
+            />
 
-            <div className="p-4 flex flex-col gap-2.5 bg-gray7 rounded-xl mt-2">
-              <p className="font-headline3 text-gray1">{t('tour.detail')}</p>
-              <p className="font-body2 text-gray2">{description}</p>
+            <div
+              className={`p-4 flex flex-col gap-2.5 ${themeColors[theme].cardBackground} rounded-xl mt-2`}
+            >
+              <p className={`font-headline3 ${themeColors[theme].cardTitle}`}>{t('tour.detail')}</p>
+              <p className={`font-body2 ${themeColors[theme].cardContent}`}>{description}</p>
             </div>
           </div>
         </div>
 
-        <SelectTheme currentTheme={theme} setTheme={setTheme} />
+        <SelectTheme currentTheme={theme} setTheme={setTheme} onClick={uploadPost} />
       </IonContent>
     </IonPage>
   );
@@ -143,10 +188,13 @@ type PlaceInfoProps = {
   image: string;
   title: string;
   address: string;
+  theme: string;
 };
-const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
+const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
   return (
-    <div className="flex items-center justify-between p-4 bg-gray7 rounded-xl">
+    <div
+      className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
+    >
       <div className="flex items-center gap-3">
         <IonImg
           src={image}
@@ -155,8 +203,8 @@ const PlaceInfo = ({ image, title, address }: PlaceInfoProps) => {
         />
 
         <div className="flex flex-col gap-0.5">
-          <p className="text-white font-subheading2">{title}</p>
-          <p className="font-caption2 text-gray5">{address}</p>
+          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
         </div>
       </div>
 
@@ -173,11 +221,13 @@ const themes = {
 type ThemeProps = {
   currentTheme: string;
   setTheme: (theme: string) => void;
+  onClick: () => void;
 };
-const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
+const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
   const { t } = useTranslation();
 
   const [expand, setExpand] = useState(true);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <IonFooter
@@ -198,7 +248,7 @@ const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
         {expand && (
           <div className="flex gap-[1.125rem]">
             {Object.keys(themes).map((theme) => (
-              <>
+              <Fragment key={theme}>
                 {currentTheme === theme ? (
                   <div className="border-2 rounded-full border-orange5">
                     <div className={themes[theme as keyof typeof themes]} />
@@ -210,16 +260,58 @@ const SelectTheme = ({ currentTheme, setTheme }: ThemeProps) => {
                     onClick={() => setTheme(theme)}
                   />
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         )}
 
-        <button className="w-full text-white bg-orange5 button-lg font-subheading1">
+        <button
+          className="w-full text-white bg-orange5 button-lg font-subheading1"
+          onClick={() => {
+            onClick();
+            setButtonClicked(true);
+          }}
+          disabled={buttonClicked}
+        >
           {t('newTour.post')}
         </button>
       </div>
     </IonFooter>
+  );
+};
+
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [current, setCurrent] = useState(0);
+
+  return (
+    <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
+      <div className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory">
+        {/* image carousel */}
+        {images.map((image) => (
+          <IonImg
+            key={image}
+            src={image}
+            className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
+          />
+        ))}
+      </div>
+
+      {/* gradient */}
+      <div
+        className="absolute bottom-0 left-0 right-0 w-full opacity-70 h-[3.375rem] rounded-b-[20px]"
+        style={{ background: 'linear-gradient(0deg, #1B1D1F 0%, rgba(27, 29, 31, 0.00) 100%)' }}
+      />
+
+      {/* slide indicator */}
+      <div
+        className="absolute bottom-4 right-2.5 px-2.5 py-1 rounded-2xl flex items-center gap-1"
+        style={{ background: 'rgba(27, 29, 31, 0.80)' }}
+      >
+        <p className="font-caption1 text-gray1">{current + 1}</p>
+        <p className="font-caption1 text-gray1">|</p>
+        <p className="font-caption1 text-gray5">12</p>
+      </div>
+    </div>
   );
 };
 

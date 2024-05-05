@@ -37,7 +37,8 @@
     "save": "Save",
     "search": "Search",
     "preview": "Preview & Theme",
-    "availableLanguages": "Speaks"
+    "availableLanguages": "Speaks",
+    "refresh": "Refresh"
   },
   "error": {
     "invalidAccount": "Incorrect email or password",
@@ -98,5 +99,15 @@
     "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate.",
     "selectTheme": "Select a theme",
     "post": "Post my place"
+  },
+  "mypage": {
+    "title": "My page",
+    "completeProfile": "Complete your profile",
+    "noPlace": "Post your place\nand meet friends!"
+  },
+  "message": {
+    "title": "Message",
+    "noMessage": "Message box is empty",
+    "writeFirstMessage": "Start a message and hang out with friends!"
   }
 }

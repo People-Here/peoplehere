@@ -16,7 +16,7 @@ const useLogin = () => {
       await Preferences.set({ key: 'refreshToken', value: response.data.refreshToken });
 
       setUser({
-        id: response.data.id,
+        id: response.data.id.toString(),
         profileImageUrl: '',
         firstName: '',
         lastName: '',
@@ -34,7 +34,7 @@ const useLogin = () => {
 
     setUser({ id: '0', profileImageUrl: '', firstName: '', lastName: '' });
 
-    router.push('/login', 'forward', 'replace');
+    router.push('/', 'root', 'replace');
   };
 
   const checkLogin = async () => {

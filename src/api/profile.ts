@@ -1,11 +1,11 @@
 import { Preferences } from '@capacitor/preferences';
-import JSONbigint from 'json-bigint';
+import JSONbig from 'json-bigint';
 
 import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
   const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
-    transformResponse: [(data: string) => JSONbigint.parse(data)],
+    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
   });
   return response;
 };

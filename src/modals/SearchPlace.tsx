@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
-import { searchPlace, type SearchPlaceResponse } from '../api/search';
+import { enrollPlace, searchPlace, type SearchPlaceResponse } from '../api/search';
 import useSignInStore from '../stores/signIn';
 
 import type { FormEvent } from 'react';
@@ -57,6 +57,16 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
     }
   };
 
+  const onClick = async (item: PlaceItem) => {
+    try {
+      await enrollPlace({ placeId: item.id, region: region.countryCode.toUpperCase() });
+      onClickItem(item);
+      await modalRef.current?.dismiss();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <IonModal ref={modalRef} {...rest}>
       <IonContent fullscreen>
@@ -91,9 +101,8 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
                   };
                 })}
                 onClickItem={(item) => {
-                  onClickItem && onClickItem(item);
                   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                  modalRef.current?.dismiss();
+                  onClick(item);
                 }}
               />
             </div>
