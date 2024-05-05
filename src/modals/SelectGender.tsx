@@ -15,7 +15,7 @@ type Props = {
 };
 
 const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [selectedGender, setSelectedGender] = useState('');
   const [genders, setGenders] = useState<string[]>([]);
@@ -48,7 +48,7 @@ const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
                 gender === selectedGender ? 'font-body1 text-orange5' : 'font-body1 text-gray8'
               }
             >
-              {GENDER[gender as keyof typeof GENDER]}
+              {i18n.resolvedLanguage === 'ko' ? GENDER[gender as keyof typeof GENDER] : gender}
             </IonText>
             {gender === selectedGender && <IonIcon className="svg-md" slot="end" src={CheckIcon} />}
           </IonItem>
