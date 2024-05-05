@@ -11,7 +11,7 @@ import type { Region } from '../api/constants';
 import type { ModalProps } from '.';
 
 const SelectRegion = (props: ModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
@@ -106,7 +106,9 @@ const SelectRegion = (props: ModalProps) => {
             <IonItem key={region.countryCode}>
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
-                  <p className="font-body1 text-orange6">{region.koreanName}</p>
+                  <p className="font-body1 text-orange6">
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                  </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
