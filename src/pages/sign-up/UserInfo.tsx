@@ -11,18 +11,20 @@ import DatePicker from '../../modals/DatePicker';
 import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
 import useSignInStore from '../../stores/signIn';
-import { signUp, type SignInRequest } from '../../api/sign-up';
 import Toast from '../../toasts/Toast';
-import { formatDataToString } from '../../utils/date';
 import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
-  const { phoneNumber, email, password, region, clearSignInInfo } = useSignInStore(
-    (state) => state,
-  );
+  const {
+    setFirstName: storeFirstName,
+    setLastName: storeLastName,
+    setBirthDate: storeBirthDate,
+    setGender: storeGender,
+    setPolicyConsent: storePolicyConsent,
+  } = useSignInStore((state) => state);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -33,33 +35,14 @@ const UserInfo = () => {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const generateSignInData = (): SignInRequest => {
-    return {
-      firstName,
-      lastName,
-      birthDate: formatDataToString(birth),
-      email,
-      gender,
-      password,
-      region: region.countryCode,
-      phoneNumber,
-      privacyConsent: true,
-      marketingConsent: marketingChecked,
-    };
-  };
+  const onClickNext = () => {
+    storeFirstName(firstName);
+    storeLastName(lastName);
+    storeBirthDate(birth);
+    storeGender(gender as 'MALE' | 'FEMALE' | 'OTHER');
+    storePolicyConsent({ privacy: true, marketing: marketingChecked });
 
-  const userSignUp = async () => {
-    const signInData = generateSignInData();
-
-    const response = await signUp(signInData);
-
-    if (response.status === 200) {
-      clearSignInInfo();
-      router.push('/sign-up/alarm');
-      return;
-    }
-
-    buttonRef.current?.click();
+    router.push('/sign-up/alarm');
   };
 
   return (
@@ -108,7 +91,7 @@ const UserInfo = () => {
       <SelectGender trigger="gender-modal" setGender={setGender} />
       <PolicyAgreement
         trigger="policy-modal"
-        onClickButton={userSignUp}
+        onClickButton={onClickNext}
         marketingChecked={marketingChecked}
         setMarketingChecked={setMarketingChecked}
       />

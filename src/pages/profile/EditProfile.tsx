@@ -44,7 +44,7 @@ const EditProfile = () => {
   const [firstName, setFirstName] = useState('');
   const [image, setImage] = useState('');
   const [introduce, setIntroduce] = useState('');
-  const [languages, setLanguages] = useState<Language[]>([]); // Language type is defined in SelectLanguages.tsx
+  const [languages, setLanguages] = useState<Language[]>([]);
   const [favorite, setFavorite] = useState('');
   const [hobby, setHobby] = useState('');
   const [pet, setPet] = useState('');
@@ -63,9 +63,9 @@ const EditProfile = () => {
       if (response.status === 200) {
         setImage(response.data.profileImageUrl);
         setIntroduce(response.data.introduce);
-        // setLanguages(
-        //   response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
-        // );
+        setLanguages(
+          response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
+        );
         setFavorite(response.data.favorite ?? '');
         setHobby(response.data.hobby ?? '');
         setPet(response.data.pet ?? '');
@@ -126,6 +126,11 @@ const EditProfile = () => {
   ];
 
   const saveProfile = async () => {
+    if (!image || !introduce || !languages.length) {
+      console.error('Required fields are missing');
+      return;
+    }
+
     const imageBlob = await fetch(image).then((res) => res.blob());
 
     const formData = new FormData();

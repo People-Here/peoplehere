@@ -1,6 +1,6 @@
 import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchIcon from '../../assets/svgs/search.svg';
@@ -8,10 +8,11 @@ import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import EmptyListIcon from '../../assets/svgs/empty-result.svg';
 import useSignInStore from '../../stores/signIn';
-import { getTourList, searchTour } from '../../api/tour';
+import { getTourList, likeTour, searchTour } from '../../api/tour';
 import SearchPlace from '../../modals/SearchPlace';
 import LogoRunning from '../../components/LogoRunning';
 import StatusChip from '../../components/StatusChip';
+import useLogin from '../../hooks/useLogin';
 
 import type { Place, Tour, User } from '../../api/tour';
 
@@ -23,6 +24,8 @@ const Home = () => {
 
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const region = useSignInStore((state) => state.region);
 
   useLayoutEffect(() => {
     setLoading(true);
@@ -38,7 +41,7 @@ const Home = () => {
           setList(data.tourList);
         }
       } else {
-        const { data, status } = await getTourList();
+        const { data, status } = await getTourList(region.countryCode.toUpperCase(), 'ORIGIN');
 
         if (status === 200) {
           setList(data.tourList);
@@ -57,7 +60,7 @@ const Home = () => {
     <div className="px-4 mt-3">
       <SearchBar />
 
-      <div className="flex flex-col mt-6 gap-7">
+      <div className="flex flex-col pb-20 mt-6 gap-7">
         {list.length === 0 ? (
           <div className="mt-60">
             <div className="flex flex-col items-center gap-8">
@@ -77,6 +80,7 @@ const Home = () => {
                   like={tour.like}
                   place={tour.placeInfo}
                   user={tour.userInfo}
+                  setList={setList}
                 />
               </Link>
             ))}
@@ -114,14 +118,32 @@ const SearchBar = () => {
 type TourItemProps = {
   place: Place;
   user: User;
+  setList: (list: Tour[]) => void;
 };
 
 const TourItem = ({
+  id,
   title,
   like,
   place,
   user,
+  setList,
 }: Omit<Tour, 'placeInfo' | 'userInfo'> & TourItemProps) => {
+  const { checkLogin } = useLogin();
+
+  const onClickLike = async (id: string) => {
+    if (!checkLogin()) return;
+
+    try {
+      await likeTour(id);
+      const response = await getTourList('KR', 'ORIGIN');
+
+      setList(response.data.tourList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="-mr-4">
       {/* title area */}
@@ -131,7 +153,14 @@ const TourItem = ({
         <div className="pl-1 flex flex-col gap-0.5">
           <div className="flex items-center justify-between">
             <IonText className="font-headline3 text-gray8">{title}</IonText>
-            <IonIcon icon={like ? HeartFilledIcon : HeartLineRedIcon} className="svg-lg" />
+            <IonIcon
+              icon={like ? HeartFilledIcon : HeartLineRedIcon}
+              className="svg-lg"
+              onClick={async (e) => {
+                e.preventDefault();
+                await onClickLike(id);
+              }}
+            />
           </div>
 
           <div className="flex items-center">

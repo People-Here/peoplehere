@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+
 type State = {
   email: string;
   firstName: string;
@@ -8,7 +10,7 @@ type State = {
   phoneNumber: string;
   password: string;
   birthDate: string;
-  gender: 'MALE' | 'FEMALE' | 'OTHER';
+  gender: Gender;
   policyConsent: {
     privacy: boolean;
     marketing: boolean;
@@ -27,6 +29,10 @@ type Action = {
   setPassword: (password: string) => void;
   setUserInfo: (info: Omit<State, 'email' | 'phoneNumber'>) => void;
   setPolicyConsent: (consent: State['policyConsent']) => void;
+  setFirstName: (firstName: string) => void;
+  setLastName: (lastName: string) => void;
+  setBirthDate: (birthDate: string) => void;
+  setGender: (gender: Gender) => void;
   setRegion: (region: State['region']) => void;
   resetRegion: () => void;
 
@@ -61,6 +67,10 @@ const useSignInStore = create(
         set((prev) => ({ ...prev, ...info })),
       setPolicyConsent: (consent: State['policyConsent']) =>
         set(() => ({ policyConsent: consent })),
+      setFirstName: (firstName: string) => set(() => ({ firstName })),
+      setLastName: (lastName: string) => set(() => ({ lastName })),
+      setBirthDate: (birthDate: string) => set(() => ({ birthDate })),
+      setGender: (gender: Gender) => set(() => ({ gender })),
       setRegion: (region: State['region']) => set(() => ({ region })),
       resetRegion: () =>
         set(() => ({
