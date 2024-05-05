@@ -1,5 +1,5 @@
 import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -21,10 +21,20 @@ const MyPage = () => {
   const region = useSignInStore((state) => state.region);
   const { user, setUser } = useUserStore((state) => state);
 
+  const [needProfileInfo, setNeedProfileInfo] = useState(false);
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const response = await getUserProfile(user.id, region.countryCode);
+
+      if (
+        !response.data.introduce ||
+        !response.data.profileImageUrl ||
+        !response.data.languages.length
+      ) {
+        setNeedProfileInfo(true);
+      }
 
       if (response.status === 200) {
         setUser({
@@ -35,7 +45,7 @@ const MyPage = () => {
         });
       }
     })();
-  }, []);
+  }, [setUser, user.id, region.countryCode]);
 
   return (
     <>
@@ -49,7 +59,7 @@ const MyPage = () => {
       </IonToolbar>
 
       <div className="px-4 mt-6">
-        <UserInfo image={user.profileImageUrl} name={user.firstName} />
+        <UserInfo image={user.profileImageUrl} name={user.firstName} needEdit={needProfileInfo} />
 
         <div className="flex flex-col gap-4 mt-10">
           <NoPlace />
@@ -80,8 +90,9 @@ const MyPage = () => {
 type UserInfoProps = {
   image: string;
   name: string;
+  needEdit: boolean;
 };
-const UserInfo = ({ image, name }: UserInfoProps) => {
+const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
   const { t } = useTranslation();
   const router = useIonRouter();
 
@@ -101,7 +112,9 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
 
         <div>
           <p className="font-headline3 text-gray7">{name}</p>
-          <p className="font-body1 text-gray6">{t('mypage.completeProfile')}</p>
+          <p className="font-body1 text-gray6">
+            {needEdit ? t('mypage.completeProfile') : t('mypage.seeProfile')}
+          </p>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import ModalContainer from '.';
 import colors from '../theme/colors';
@@ -17,6 +18,8 @@ type Props = {
 };
 
 const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
+  const { t, i18n } = useTranslation();
+
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
   const [selected, setSelected] = useState<Language[]>([]);
@@ -32,7 +35,7 @@ const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
   return (
     <ModalContainer
       title="구사 언어를 모두 선택하세요"
-      buttonText="선택"
+      buttonText={t('common.select')}
       initialBreakpoint={0.87}
       breakpoints={[0, 0.87, 0.95]}
       onWillDismiss={() => setLanguages(selected)}
@@ -57,7 +60,9 @@ const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
                     '--border-width': 0,
                   }}
                 >
-                  <IonText className="font-body1 text-gray5.5">{language.koreanName}</IonText>
+                  <IonText className="font-body1 text-gray5.5">
+                    {i18n.resolvedLanguage === 'ko' ? language.koreanName : language.englishName}
+                  </IonText>
                 </IonCheckbox>
               </div>
             </div>

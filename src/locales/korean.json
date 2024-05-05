@@ -38,7 +38,8 @@
     "search": "검색",
     "preview": "미리보기",
     "availableLanguages": "구사언어",
-    "refresh": "새로고침"
+    "refresh": "새로고침",
+    "select": "선택"
   },
   "error": {
     "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
@@ -103,6 +104,7 @@
   "mypage": {
     "title": "마이페이지",
     "completeProfile": "프로필 완성하기",
+    "seeProfile": "프로필 보기",
     "noPlace": "장소를 올리고\n사람들과 약속을 잡아 보세요!"
   },
   "message": {
