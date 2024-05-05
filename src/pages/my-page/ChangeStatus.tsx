@@ -16,6 +16,7 @@ import useSignInStore from '../../stores/signIn';
 import LogoRunning from '../../components/LogoRunning';
 import TrashcanIcon from '../../assets/svgs/trashcan.svg';
 import Footer from '../../layouts/Footer';
+import Alert from '../../components/Alert';
 
 import type { TourDetail } from '../../api/tour';
 
@@ -61,7 +62,7 @@ const ChangeStatus = () => {
           </IonTitle>
 
           <IonButtons slot="end">
-            <IonIcon src={TrashcanIcon} className="svg-lg" />
+            <IonIcon id="delete-tour-alert" src={TrashcanIcon} className="svg-lg" />
           </IonButtons>
         </IonToolbar>
 
@@ -109,6 +110,23 @@ const ChangeStatus = () => {
             저장
           </button>
         </Footer>
+
+        <Alert
+          trigger="delete-tour-alert"
+          title="장소를 삭제할까요?"
+          subTitle={
+            '해당 장소와 관련된 모든 약속 정보가\n함께 영구적으로 삭제됩니다!\n그래도 계속하시겠어요?'
+          }
+          buttons={[
+            {
+              text: '계속',
+              onClick: () => console.log('delete'),
+            },
+            {
+              text: '취소',
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   );
