@@ -42,9 +42,19 @@ export const postTour = async (body: FormData) => {
 };
 
 export const likeTour = async (tourId: string) => {
-  const response = await typedPost('/tours/like', {
-    id: tourId,
-  });
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost(
+    '/tours/like',
+    {
+      id: tourId,
+    },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
 
   return response;
 };

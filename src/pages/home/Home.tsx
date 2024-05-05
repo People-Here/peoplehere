@@ -80,6 +80,7 @@ const Home = () => {
                   like={tour.like}
                   place={tour.placeInfo}
                   user={tour.userInfo}
+                  setList={setList}
                 />
               </Link>
             ))}
@@ -117,13 +118,16 @@ const SearchBar = () => {
 type TourItemProps = {
   place: Place;
   user: User;
+  setList: (list: Tour[]) => void;
 };
 
 const TourItem = ({
+  id,
   title,
   like,
   place,
   user,
+  setList,
 }: Omit<Tour, 'placeInfo' | 'userInfo'> & TourItemProps) => {
   const { checkLogin } = useLogin();
 
@@ -132,6 +136,9 @@ const TourItem = ({
 
     try {
       await likeTour(id);
+      const response = await getTourList('KR', 'ORIGIN');
+
+      setList(response.data.tourList);
     } catch (error) {
       console.error(error);
     }
@@ -149,7 +156,10 @@ const TourItem = ({
             <IonIcon
               icon={like ? HeartFilledIcon : HeartLineRedIcon}
               className="svg-lg"
-              onClick={() => onClickLike(place.id)}
+              onClick={async (e) => {
+                e.preventDefault();
+                await onClickLike(id);
+              }}
             />
           </div>
 

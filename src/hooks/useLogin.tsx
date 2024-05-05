@@ -34,7 +34,7 @@ const useLogin = () => {
 
     setUser({ id: '0', profileImageUrl: '', firstName: '', lastName: '' });
 
-    router.push('/login', 'forward', 'replace');
+    router.push('/', 'root', 'replace');
   };
 
   const checkLogin = async () => {
