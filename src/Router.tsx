@@ -27,6 +27,7 @@ import ChangeEmail from './pages/settings/ChangeEmail';
 import ManageAlerts from './pages/settings/ManageAlerts';
 import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
+import ChangeStatus from './pages/my-page/ChangeStatus';
 
 const Router = () => {
   return (
@@ -37,7 +38,7 @@ const Router = () => {
       <Route exact path="/bookmark">
         <BookmarkTab />
       </Route>
-      <Route path="/post">
+      <Route path="/post/:id">
         <PostTab />
       </Route>
       <Route exact path="/message">
@@ -45,6 +46,9 @@ const Router = () => {
       </Route>
       <Route exact path="/profile">
         <ProfileTab />
+      </Route>
+      <Route path="/change-status/:id">
+        <ChangeStatus />
       </Route>
 
       <Route path="/region">

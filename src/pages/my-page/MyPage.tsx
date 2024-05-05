@@ -1,4 +1,12 @@
-import { IonButtons, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
+import {
+  IonActionSheet,
+  IonButtons,
+  IonIcon,
+  IonImg,
+  IonText,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -13,6 +21,9 @@ import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
 import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
+import { getTourListByUser } from '../../api/tour';
+
+import type { Tour } from '../../api/tour';
 
 const MyPage = () => {
   const { t } = useTranslation();
@@ -22,11 +33,17 @@ const MyPage = () => {
   const { user, setUser } = useUserStore((state) => state);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
+  const [tourList, setTourList] = useState<Tour[]>([]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const response = await getUserProfile(user.id, region.countryCode);
+      const tourListResponse = await getTourListByUser(
+        region.countryCode.toUpperCase(),
+        'KOREAN',
+        response.data.id.toString(),
+      );
 
       if (
         !response.data.introduce ||
@@ -43,6 +60,10 @@ const MyPage = () => {
           lastName: response.data.lastName,
           profileImageUrl: response.data.profileImageUrl,
         });
+      }
+
+      if (tourListResponse.status === 200) {
+        setTourList(tourListResponse.data.tourList);
       }
     })();
   }, [setUser, user.id, region.countryCode]);
@@ -62,25 +83,22 @@ const MyPage = () => {
         <UserInfo image={user.profileImageUrl} name={user.firstName} needEdit={needProfileInfo} />
 
         <div className="flex flex-col gap-4 mt-10">
-          <NoPlace />
-          {/* <TourInfo
-            image="https://picsum.photos/seed/picsum/200/300"
-            title="홍대에서 만나는 디자인과 예술"
-            placeName="건국대학교"
-            district="광진구"
-            available
-          />
-          <TourInfo
-            image="https://picsum.photos/seed/picsum/200/300"
-            title="홍대에서 만나는 디자인과 예술"
-            placeName="건국대학교"
-            district="광진구"
-          /> */}
-
-          {/* <div className="flex items-center justify-center gap-1 p-3">
-            <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-            <p className="font-body1 text-orange6">장소 올리기</p>
-          </div> */}
+          {tourList.length > 0 ? (
+            tourList.map((tour) => (
+              <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
+                <TourInfo
+                  id={tour.id.toString()}
+                  image={tour.placeInfo.imageUrlList[0].imageUrl}
+                  title={tour.title}
+                  placeName={tour.placeInfo.name}
+                  district={tour.placeInfo.district}
+                  available={true}
+                />
+              </Link>
+            ))
+          ) : (
+            <NoPlace />
+          )}
         </div>
       </div>
     </>
@@ -124,16 +142,24 @@ const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
 };
 
 type TourInfoProps = {
+  id: string;
   image: string;
   title: string;
   placeName: string;
   district: string;
   available?: boolean;
 };
-const TourInfo = ({ image, title, placeName, district, available }: TourInfoProps) => {
+const TourInfo = ({ id, image, title, placeName, district, available }: TourInfoProps) => {
+  const router = useIonRouter();
+
   return (
     <div className="relative flex gap-3 p-3 bg-white border rounded-xl border-gray2">
-      <IonIcon icon={ThreeDotsIcon} className="absolute top-3 right-3 svg-md" />
+      <IonIcon
+        id="edit-tour-sheet"
+        icon={ThreeDotsIcon}
+        className="absolute top-3 right-3 svg-md"
+        onClick={(e) => e.preventDefault()}
+      />
 
       <IonImg
         src={image}
@@ -164,6 +190,31 @@ const TourInfo = ({ image, title, placeName, district, available }: TourInfoProp
           </p>
         </div>
       </div>
+
+      <IonActionSheet
+        trigger="edit-tour-sheet"
+        buttons={[
+          {
+            text: '수정하기',
+            handler: () => {
+              router.push(`/post/${id}`);
+            },
+          },
+          {
+            text: '상태 변경하기',
+            handler: () => {
+              router.push(`/change-status/${id}`);
+            },
+          },
+          {
+            text: '취소',
+            role: 'cancel',
+            data: {
+              action: 'cancel',
+            },
+          },
+        ]}
+      />
     </div>
   );
 };
