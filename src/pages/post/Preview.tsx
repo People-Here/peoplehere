@@ -71,8 +71,6 @@ const Preview = () => {
       await postTour(formData);
       router.push('/');
     } catch (error) {
-      console.error('failed with uploading post', error);
-
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
@@ -80,7 +78,7 @@ const Preview = () => {
         await Preferences.set({ key: 'accessToken', value: tokens.data });
 
         await postTour(formData);
-        router.push('/', 'root', 'replace');
+        router.push('/', 'forward', 'replace');
       }
     }
   };
@@ -309,7 +307,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
       >
         <p className="font-caption1 text-gray1">{current + 1}</p>
         <p className="font-caption1 text-gray1">|</p>
-        <p className="font-caption1 text-gray5">12</p>
+        <p className="font-caption1 text-gray5">{images.length}</p>
       </div>
     </div>
   );
