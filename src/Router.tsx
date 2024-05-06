@@ -27,6 +27,8 @@ import ChangeEmail from './pages/settings/ChangeEmail';
 import ManageAlerts from './pages/settings/ManageAlerts';
 import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
+import ChangeStatus from './pages/my-page/ChangeStatus';
+import DeleteReason from './pages/my-page/DeleteReason';
 
 const Router = () => {
   return (
@@ -37,7 +39,7 @@ const Router = () => {
       <Route exact path="/bookmark">
         <BookmarkTab />
       </Route>
-      <Route path="/post">
+      <Route path="/post*">
         <PostTab />
       </Route>
       <Route exact path="/message">
@@ -83,6 +85,13 @@ const Router = () => {
       </Route>
       <Route path="/profile/edit">
         <EditProfile />
+      </Route>
+
+      <Route path="/change-status/:id">
+        <ChangeStatus />
+      </Route>
+      <Route path="/delete-reason/:id">
+        <DeleteReason />
       </Route>
 
       <Route path="/message/:id">

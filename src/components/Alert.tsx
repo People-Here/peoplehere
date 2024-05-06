@@ -42,7 +42,11 @@ const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomTex
           <IonText className="text-center whitespace-pre-line font-subheading1 text-gray8">
             {title}
           </IonText>
-          {subTitle ? <IonText className="font-body2 text-gray6">{subTitle}</IonText> : null}
+          {subTitle ? (
+            <IonText className="text-center whitespace-pre-line font-body2 text-gray6">
+              {subTitle}
+            </IonText>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-3">
