@@ -10,11 +10,11 @@ const ManageAlerts = () => {
         <Header type="back" title="알림" />
 
         <div className="px-4">
-          <ListItem
+          {/* <ListItem
             title="약속 관련 알림"
             content="다가오는 약속에 대한 리마인더, 약속 취소, 일정 변경 등 약속과 관련된 알림을 받습니다."
             onOff={true}
-          />
+          /> */}
           <ListItem
             title="새로운 쪽지 알림"
             content="다른 사용자가 보낸 쪽지에 대한 알림을 받습니다."
