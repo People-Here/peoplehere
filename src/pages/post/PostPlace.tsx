@@ -191,12 +191,10 @@ interface Place {
   description: string;
 }
 const PlaceItem = ({ text, description }: Place) => {
-  const router = useIonRouter();
-
   return (
     <div
+      id="search-modal"
       className="px-4 py-2.5 border-[1.5px] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3"
-      onClick={() => router.push('/search')}
     >
       <div className="flex flex-col">
         <IonText className="font-subheading1 text-orange6">{text}</IonText>
