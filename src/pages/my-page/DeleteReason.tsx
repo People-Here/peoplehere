@@ -1,10 +1,14 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
+import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import Footer from '../../layouts/Footer';
 import { deleteTour } from '../../api/tour';
+import { getNewToken } from '../../api/login';
+
+import type { AxiosError } from 'axios';
 
 const DeleteReason = () => {
   const router = useIonRouter();
@@ -18,6 +22,15 @@ const DeleteReason = () => {
       await deleteTour(tourId);
       router.push('/my-page', 'forward', 'replace');
     } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        const response = await getNewToken();
+        await Preferences.set({ key: 'accessToken', value: response.data });
+
+        await deleteTour(tourId);
+        router.push('/my-page', 'forward', 'replace');
+      }
       console.error('fail to delete tour', error);
     }
   };
