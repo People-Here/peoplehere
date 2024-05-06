@@ -28,6 +28,7 @@ import ManageAlerts from './pages/settings/ManageAlerts';
 import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
 import ChangeStatus from './pages/my-page/ChangeStatus';
+import DeleteReason from './pages/my-page/DeleteReason';
 
 const Router = () => {
   return (
@@ -46,9 +47,6 @@ const Router = () => {
       </Route>
       <Route exact path="/profile">
         <ProfileTab />
-      </Route>
-      <Route path="/change-status/:id">
-        <ChangeStatus />
       </Route>
 
       <Route path="/region">
@@ -87,6 +85,13 @@ const Router = () => {
       </Route>
       <Route path="/profile/edit">
         <EditProfile />
+      </Route>
+
+      <Route path="/change-status/:id">
+        <ChangeStatus />
+      </Route>
+      <Route path="/delete-reason/:id">
+        <DeleteReason />
       </Route>
 
       <Route path="/message/:id">

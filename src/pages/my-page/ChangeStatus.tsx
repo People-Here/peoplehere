@@ -114,13 +114,11 @@ const ChangeStatus = () => {
         <Alert
           trigger="delete-tour-alert"
           title="장소를 삭제할까요?"
-          subTitle={
-            '해당 장소와 관련된 모든 약속 정보가\n함께 영구적으로 삭제됩니다!\n그래도 계속하시겠어요?'
-          }
+          subTitle={'삭제한 장소는 다시 복구할 수 없어요.'}
           buttons={[
             {
               text: '계속',
-              onClick: () => console.log('delete'),
+              onClick: () => router.push(`/delete-reason/${tourId}`),
             },
             {
               text: '취소',
