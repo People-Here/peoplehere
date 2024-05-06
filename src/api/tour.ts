@@ -100,7 +100,7 @@ export type TourDetail = {
   title: string;
   description: string;
   placeInfo: {
-    id: string;
+    id: bigint;
     name: string;
     imageUrlList: { imageUrl: string }[];
     address: string;
