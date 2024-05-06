@@ -21,14 +21,23 @@ const EmailAuth = () => {
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState('');
 
   const checkEmailExist = async () => {
     setErrorMessage('');
 
     try {
       await checkEmail(emailInput);
-      setShowAuthCodeInput(true);
-      await sendEmailCode(emailInput);
+      try {
+        await sendEmailCode(emailInput);
+        setShowAuthCodeInput(true);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 403) {
+          setErrorMessage('하루 이메일 전송 횟수를 초과했어요. 내일 다시 시도해주세요.');
+        }
+      }
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -45,9 +54,11 @@ const EmailAuth = () => {
   const confirmAuthCode = async () => {
     const response = await verifyEmailCode(emailInput, authCode);
 
-    if (response.status === 200) {
+    if (response.data === true) {
       setEmail(emailInput);
       router.push('/sign-up/password');
+    } else {
+      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
     }
   };
 
@@ -88,12 +99,13 @@ const EmailAuth = () => {
           </div>
 
           {showAuthCodeInput && (
-            <div className="flex items-center gap-2 mt-3 animate-fade-down">
+            <div className="flex gap-2 mt-3 animate-fade-down">
               <LabelInput
                 label={t('signup.verify.placeholder')}
                 inputMode="numeric"
                 value={authCode}
                 onChange={setAuthCode}
+                errorText={authErrorMessage}
               />
 
               <button
