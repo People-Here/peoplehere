@@ -152,7 +152,7 @@ const EditProfile = () => {
 
     try {
       await updateUserProfile(formData);
-      router.push(`/profile/${userId}`, 'forward', 'replace');
+      router.push(`/profile/${userId}`);
     } catch (error) {
       console.error('Failed to update user profile:', error);
     }
