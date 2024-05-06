@@ -84,18 +84,25 @@ const MyPage = () => {
 
         <div className="flex flex-col gap-4 mt-10">
           {tourList.length > 0 ? (
-            tourList.map((tour) => (
-              <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
-                <TourInfo
-                  id={tour.id.toString()}
-                  image={tour.placeInfo.imageUrlList[0].imageUrl}
-                  title={tour.title}
-                  placeName={tour.placeInfo.name}
-                  district={tour.placeInfo.district}
-                  available={true}
-                />
+            <>
+              {tourList.map((tour) => (
+                <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
+                  <TourInfo
+                    id={tour.id.toString()}
+                    image={tour.placeInfo.imageUrlList[0].imageUrl}
+                    title={tour.title}
+                    placeName={tour.placeInfo.name}
+                    district={tour.placeInfo.district}
+                    available={true}
+                  />
+                </Link>
+              ))}
+
+              <Link to="/post" className="flex items-center justify-center gap-1 p-3">
+                <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
+                <p className="font-body1 text-orange6">장소 올리기</p>
               </Link>
-            ))
+            </>
           ) : (
             <NoPlace />
           )}
@@ -186,7 +193,8 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
         <div className="mt-1">
           <p className="font-headline3 text-gray8">{title}</p>
           <p className="font-body1 text-gray6">
-            {placeName} | {district}
+            {placeName}
+            <span className="font-body2 text-gray6"> | {district}</span>
           </p>
         </div>
       </div>
