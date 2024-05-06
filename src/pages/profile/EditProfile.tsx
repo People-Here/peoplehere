@@ -58,6 +58,10 @@ const EditProfile = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      if (!userId) {
+        return;
+      }
+
       const response = await getUserProfile(userId, 'KR');
 
       if (response.status === 200) {
@@ -104,7 +108,7 @@ const EditProfile = () => {
     {
       iconSrc: CakeIcon,
       title: '나이',
-      value: age[2] + '0년대생',
+      value: age ? age[2] + '0년대생' : '',
       modalId: 'age-modal',
       required: false,
     },
