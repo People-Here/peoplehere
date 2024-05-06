@@ -39,7 +39,7 @@ const Router = () => {
       <Route exact path="/bookmark">
         <BookmarkTab />
       </Route>
-      <Route path="/post/:id">
+      <Route path="/post*">
         <PostTab />
       </Route>
       <Route exact path="/message">

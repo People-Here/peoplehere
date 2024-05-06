@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -13,6 +14,8 @@ import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
 import SearchPlace from '../../modals/SearchPlace';
 import useUserStore from '../../stores/user';
 import usePostPlaceStore from '../../stores/place';
+import { getTourDetail } from '../../api/tour';
+import useSignInStore from '../../stores/signIn';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
@@ -20,8 +23,12 @@ const Post = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
+  const location = useLocation();
+
+  const tourId = location.pathname.split('/').at(-1) ?? '';
 
   const user = useUserStore((state) => state.user);
+  const region = useSignInStore((state) => state.region);
   const {
     setPlace: storePlace,
     setTitle: storeTitle,
@@ -50,7 +57,25 @@ const Post = () => {
         await Camera.requestPermissions();
       }
     })();
-  }, []);
+  }, [user.id, router]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      if (!isNaN(Number(tourId))) {
+        const response = await getTourDetail(tourId, region.countryCode.toUpperCase());
+
+        setPlace({
+          id: response.data.placeInfo.id.toString(),
+          title: response.data.placeInfo.name,
+          address: response.data.placeInfo.address,
+        });
+        setTitle(response.data.title);
+        setDescription(response.data.description);
+        setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
+      }
+    })();
+  }, [tourId, region.countryCode]);
 
   const uploadPost = () => {
     if (!place.id || !images.length || !title || !description) {
