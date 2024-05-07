@@ -61,25 +61,23 @@ const EditProfile = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      if (!userId) {
-        return;
-      }
+      if (userId) {
+        const response = await getUserProfile(userId, 'KR');
 
-      const response = await getUserProfile(userId, 'KR');
-
-      if (response.status === 200) {
-        setImage(response.data.profileImageUrl);
-        setIntroduce(response.data.introduce);
-        setLanguages(
-          response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
-        );
-        setFavorite(response.data.favorite ?? '');
-        setHobby(response.data.hobby ?? '');
-        setPet(response.data.pet ?? '');
-        setJob(response.data.job ?? '');
-        setSchool(response.data.school ?? '');
-        setFirstName(response.data.firstName);
-        setAge(response.data.birthDate);
+        if (response.status === 200) {
+          setImage(response.data.profileImageUrl);
+          setIntroduce(response.data.introduce);
+          setLanguages(
+            response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
+          );
+          setFavorite(response.data.favorite ?? '');
+          setHobby(response.data.hobby ?? '');
+          setPet(response.data.pet ?? '');
+          setJob(response.data.job ?? '');
+          setSchool(response.data.school ?? '');
+          setFirstName(response.data.firstName);
+          setAge(response.data.birthDate);
+        }
       }
     })();
   }, [userId]);
