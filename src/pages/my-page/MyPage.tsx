@@ -126,7 +126,13 @@ const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
   return (
     <div
       className="flex items-center justify-between px-4"
-      onClick={() => router.push(`/profile/${user.id}`)}
+      onClick={() => {
+        if (needEdit) {
+          router.push('/edit-profile');
+        } else {
+          router.push(`/profile/${user.id}`);
+        }
+      }}
     >
       <div className="flex items-center gap-4">
         <IonImg
