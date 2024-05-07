@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -32,8 +33,10 @@ import useProfileStore from '../../stores/user';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
 import SearchPlace from '../../modals/SearchPlace';
+import { getNewToken } from '../../api/login';
 
 import type { Language } from '../../modals/SelectLanguages';
+import type { AxiosError } from 'axios';
 
 const EditProfile = () => {
   const router = useIonRouter();
@@ -135,7 +138,7 @@ const EditProfile = () => {
       return;
     }
 
-    const imageBlob = await fetch(image).then((res) => res.blob());
+    const imageBlob = await fetch(image, { mode: 'no-cors' }).then((res) => res.blob());
 
     const formData = new FormData();
     formData.append('id', userId);
@@ -158,6 +161,16 @@ const EditProfile = () => {
       await updateUserProfile(formData);
       router.push(`/profile/${userId}`);
     } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        const token = await getNewToken();
+        await Preferences.set({ key: 'accessToken', value: token.data });
+
+        await updateUserProfile(formData);
+        router.push(`/profile/${userId}`);
+      }
+
       console.error('Failed to update user profile:', error);
     }
   };
@@ -210,7 +223,11 @@ const EditProfile = () => {
         </div>
 
         <Footer>
-          <button className="w-full button-primary button-lg" onClick={saveProfile}>
+          <button
+            className="w-full button-primary button-lg"
+            onClick={saveProfile}
+            disabled={!image || !introduce || !region.countryCode || languages.length === 0}
+          >
             완료
           </button>
         </Footer>
