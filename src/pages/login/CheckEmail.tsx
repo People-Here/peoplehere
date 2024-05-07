@@ -18,8 +18,16 @@ const CheckEmail = () => {
   const checkEmail = async () => {
     try {
       await checkEmailExist(emailInput);
-      setShowAuthCodeInput(true);
-      await sendEmailCode(emailInput);
+      try {
+        await sendEmailCode(emailInput);
+        setShowAuthCodeInput(true);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 403) {
+          setErrorMessage('하루 이메일 전송 횟수를 초과했어요. 내일 다시 시도해주세요.');
+        }
+      }
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -27,8 +35,8 @@ const CheckEmail = () => {
         setErrorMessage('이메일 형식이 유효하지 않아요.');
       }
 
-      if (errorInstance.response?.status === 409) {
-        setErrorMessage('이미 가입한 이메일이에요.');
+      if (errorInstance.response?.status === 404) {
+        setErrorMessage('가입되지 않은 이메일입니다.');
       }
     }
   };
@@ -49,7 +57,7 @@ const CheckEmail = () => {
         <div className="px-4 mt-5">
           <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
 
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex gap-2 mt-2">
             <LabelInput
               label="이메일"
               type="email"
