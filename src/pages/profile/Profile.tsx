@@ -74,7 +74,7 @@ const Profile = () => {
 
   const handleClickIcon = () => {
     if (isMe) {
-      router.push('/profile/edit');
+      router.push('/edit-profile');
     }
   };
 

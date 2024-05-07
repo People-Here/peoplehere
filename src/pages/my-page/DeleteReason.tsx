@@ -20,7 +20,7 @@ const DeleteReason = () => {
   const onDeleteTour = async (tourId: string) => {
     try {
       await deleteTour(tourId);
-      router.push('/my-page', 'forward', 'replace');
+      router.push('/profile');
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -29,7 +29,7 @@ const DeleteReason = () => {
         await Preferences.set({ key: 'accessToken', value: response.data });
 
         await deleteTour(tourId);
-        router.push('/my-page', 'forward', 'replace');
+        router.push('/profile');
       }
       console.error('fail to delete tour', error);
     }
