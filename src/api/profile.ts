@@ -21,6 +21,38 @@ export const updateUserProfile = async (body: FormData) => {
   return response;
 };
 
+export const updateUserName = async (firstName: string, lastName: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPut(
+    '/account/name',
+    { firstName, lastName },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
+
+  return response;
+};
+
+export const updateUserEmail = async (email: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPut(
+    '/account/email',
+    { email },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
+
+  return response;
+};
+
 export type ProfileResponse = {
   id: string;
   profileImageUrl: string;

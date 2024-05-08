@@ -1,12 +1,14 @@
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import Footer from '../../layouts/Footer';
 import useUserStore from '../../stores/user';
+import { updateUserName } from '../../api/profile';
 
 const ChangeName = () => {
+  const router = useIonRouter();
   const user = useUserStore((state) => state.user);
 
   const [firstName, setFirstName] = useState('');
@@ -19,6 +21,15 @@ const ChangeName = () => {
     setLastName(user.lastName);
   }, [user]);
 
+  const updateName = async () => {
+    try {
+      await updateUserName(firstName, lastName);
+      router.goBack();
+    } catch (error) {
+      console.error('fail to update name', error);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -30,7 +41,9 @@ const ChangeName = () => {
         </div>
 
         <Footer>
-          <button className="w-full button-primary button-lg">저장</button>
+          <button className="w-full button-primary button-lg" onClick={updateName}>
+            저장
+          </button>
         </Footer>
       </IonContent>
     </IonPage>
