@@ -10,7 +10,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Preferences } from '@capacitor/preferences';
 
@@ -279,11 +279,40 @@ const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
 };
 
 const ImageCarousel = ({ images }: { images: string[] }) => {
-  const [current, setCurrent] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll('ion-img');
+    const slidesArray = Array.from(slides);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // eslint-disable-next-line no-undef
+            setCurrentIndex(slidesArray.indexOf(entry.target as HTMLIonImgElement));
+          }
+        });
+      },
+      { root: carousel, threshold: 0.5 },
+    );
+    slides.forEach((slide) => observer.observe(slide));
+
+    return () => slides.forEach((slide) => observer.unobserve(slide));
+  }, []);
 
   return (
     <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
-      <div className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory">
+      <div
+        ref={carouselRef}
+        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+      >
         {/* image carousel */}
         {images.map((image) => (
           <IonImg
@@ -305,7 +334,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         className="absolute bottom-4 right-2.5 px-2.5 py-1 rounded-2xl flex items-center gap-1"
         style={{ background: 'rgba(27, 29, 31, 0.80)' }}
       >
-        <p className="font-caption1 text-gray1">{current + 1}</p>
+        <p className="font-caption1 text-gray1">{currentIndex + 1}</p>
         <p className="font-caption1 text-gray1">|</p>
         <p className="font-caption1 text-gray5">{images.length}</p>
       </div>
