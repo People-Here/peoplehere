@@ -1,13 +1,23 @@
 import { IonContent, IonPage } from '@ionic/react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import Footer from '../../layouts/Footer';
+import useUserStore from '../../stores/user';
 
 const ChangeName = () => {
+  const user = useUserStore((state) => state.user);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  useLayoutEffect(() => {
+    if (!user) return;
+
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+  }, [user]);
 
   return (
     <IonPage>
