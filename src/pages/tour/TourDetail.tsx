@@ -198,7 +198,7 @@ const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
         <IonImg
           src={image}
           alt={`place-${title}`}
-          className="object-cover overflow-hidden rounded-lg w-11 h-11"
+          className="object-cover overflow-hidden rounded-lg w-11 h-11 shrink-0"
         />
 
         <div className="flex flex-col gap-0.5">
@@ -207,7 +207,7 @@ const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
         </div>
       </div>
 
-      <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem]" />
+      <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
     </div>
   );
 };
