@@ -2,9 +2,12 @@ import { IonContent, IonIcon, IonPage, useIonRouter } from '@ionic/react';
 
 import Header from '../../components/Header';
 import PencilWithCircleIcon from '../../assets/svgs/pencil-with-circle.svg';
+import useUserStore from '../../stores/user';
 
 const Informations = () => {
   const router = useIonRouter();
+
+  const user = useUserStore((state) => state.user);
 
   return (
     <IonPage>
@@ -15,7 +18,9 @@ const Informations = () => {
           <div className="flex items-center justify-between w-full py-4 border-b border-gray1.5">
             <div>
               <p className="mb-1 font-subheading2 text-gray7">이름</p>
-              <p className="font-body2 text-gray6">김 민주</p>
+              <p className="font-body2 text-gray6">
+                {user.firstName} {user.lastName}
+              </p>
             </div>
 
             <IonIcon
@@ -28,7 +33,7 @@ const Informations = () => {
           <div className="flex items-center justify-between w-full py-4 border-b border-gray1.5">
             <div>
               <p className="mb-1 font-subheading2 text-gray7">이메일</p>
-              <p className="font-body2 text-gray6">p********e@team.com</p>
+              <p className="font-body2 text-gray6">{user.email}</p>
             </div>
 
             <IonIcon
@@ -49,26 +54,6 @@ const Informations = () => {
         </div>
       </IonContent>
     </IonPage>
-  );
-};
-
-type MenuItemProps = {
-  title: string;
-  value: string;
-  routeTo: string;
-};
-const MenuItem = ({ title, value, routeTo }: MenuItemProps) => {
-  return (
-    <div className="flex items-center justify-between w-full">
-      <div>
-        <p className="font-subheading2 text-gray7">{title}</p>
-        <p className="font-body2 text-gray6">{value}</p>
-      </div>
-
-      <div>
-        <IonIcon icon={PencilWithCircleIcon} className="svg-lg" />
-      </div>
-    </div>
   );
 };
 

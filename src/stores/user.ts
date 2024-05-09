@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware';
 type State = {
   user: {
     id: string;
+    email: string;
     profileImageUrl: string;
     firstName: string;
     lastName: string;
@@ -19,6 +20,7 @@ const useUserStore = create(
     (set) => ({
       user: {
         id: '0',
+        email: '',
         profileImageUrl: '',
         firstName: '',
         lastName: '',

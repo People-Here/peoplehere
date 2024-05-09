@@ -1,15 +1,18 @@
-import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
+import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useRef, useState } from 'react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
-import { checkEmailExist, sendEmailCode, verifyEmailCode } from '../../api/verification';
+import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
 import Toast from '../../toasts/Toast';
+import { updateUserEmail } from '../../api/profile';
+import useLogin from '../../hooks/useLogin';
 
 import type { AxiosError } from 'axios';
 
+
 const ChangeEmail = () => {
-  const router = useIonRouter();
+  const { requestLogout } = useLogin();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -18,9 +21,9 @@ const ChangeEmail = () => {
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authCode, setAuthCode] = useState('');
 
-  const checkEmail = async () => {
+  const checkEmailValid = async () => {
     try {
-      await checkEmailExist(email);
+      await checkEmail(email);
       setShowAuthCodeInput(true);
       await sendEmailCode(email);
     } catch (error) {
@@ -40,8 +43,17 @@ const ChangeEmail = () => {
     const response = await verifyEmailCode(email, authCode);
 
     if (response.status === 200) {
-      // TODO: email 수정 api
+      await changeEmail();
+    }
+  };
+
+  const changeEmail = async () => {
+    try {
+      await updateUserEmail(email);
       buttonRef.current?.click();
+      await requestLogout();
+    } catch (error) {
+      console.error('fail to update email', error);
     }
   };
 
@@ -72,7 +84,7 @@ const ChangeEmail = () => {
                   : 'px-3 button-primary button-lg w-[100px] shrink-0'
               }
               disabled={!email.length}
-              onClick={checkEmail}
+              onClick={checkEmailValid}
             >
               <IonText className="font-body1">
                 {showAuthCodeInput ? '재발송' : '인증코드 발송'}
