@@ -55,6 +55,7 @@ export const updateUserEmail = async (email: string) => {
 
 export type ProfileResponse = {
   id: string;
+  email: string;
   profileImageUrl: string;
   introduce: string;
   languages: string[];

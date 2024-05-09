@@ -56,6 +56,7 @@ const MyPage = () => {
       if (response.status === 200) {
         setUser({
           id: response.data.id.toString(),
+          email: response.data.email,
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           profileImageUrl: response.data.profileImageUrl,
