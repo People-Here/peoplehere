@@ -15,6 +15,9 @@ import DeleteUser from '../../modals/DeleteUser';
 import Alert from '../../components/Alert';
 import { deleteAccount } from '../../api/sign-up';
 import useLogin from '../../hooks/useLogin';
+import { getNewToken } from '../../api/login';
+
+import type { AxiosError } from 'axios';
 
 const Settings = () => {
   const router = useIonRouter();
@@ -107,6 +110,15 @@ const Settings = () => {
                   await requestLogout();
                   router.push('/login', 'forward', 'replace');
                 } catch (error) {
+                  const errorInstance = error as AxiosError;
+
+                  if (errorInstance.response?.status === 401) {
+                    await getNewToken();
+                    await deleteAccount(id);
+                    await requestLogout();
+                    router.push('/login', 'forward', 'replace');
+                  }
+
                   console.error('delete account error:', error);
                 }
               },

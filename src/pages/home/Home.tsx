@@ -155,7 +155,7 @@ const TourItem = ({
             <IonText className="font-headline3 text-gray8">{title}</IonText>
             <IonIcon
               icon={like ? HeartFilledIcon : HeartLineRedIcon}
-              className="svg-lg"
+              className="svg-lg shrink-0"
               onClick={async (e) => {
                 e.preventDefault();
                 await onClickLike(id);
@@ -165,7 +165,7 @@ const TourItem = ({
 
           <div className="flex items-center">
             <IonText className="font-caption1 text-gray6">{place.name}</IonText>
-            <Divider />
+            {place.district && <Divider />}
             <IonText className="font-caption2 text-gray6">{place.district}</IonText>
           </div>
         </div>

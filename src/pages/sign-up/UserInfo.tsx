@@ -36,6 +36,11 @@ const UserInfo = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const onClickNext = () => {
+    if (Number(birth.slice(0, 4)) > new Date().getFullYear() - 18) {
+      console.error('18세 미만은 가입할 수 없습니다.');
+      return;
+    }
+
     storeFirstName(firstName);
     storeLastName(lastName);
     storeBirthDate(birth);
