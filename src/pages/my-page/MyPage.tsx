@@ -79,7 +79,7 @@ const MyPage = () => {
         </IonButtons>
       </IonToolbar>
 
-      <div className="px-4 mt-6">
+      <div className="px-4 pb-20 mt-6">
         <UserInfo image={user.profileImageUrl} name={user.firstName} needEdit={needProfileInfo} />
 
         <div className="flex flex-col gap-4 mt-10">
