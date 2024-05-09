@@ -40,20 +40,24 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
 
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     if (!search) {
       setSearchResult([]);
+      setShowResult(false);
     }
   }, [search]);
 
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
 
-    const { data } = await searchPlace({ name: search, region: region.countryCode });
-
-    if (data.status === 'OK') {
+    try {
+      const { data } = await searchPlace({ name: search, region: region.countryCode });
+      setShowResult(true);
       setSearchResult(data.predictions);
+    } catch (error) {
+      console.error('search error', error);
     }
   };
 
@@ -83,7 +87,7 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
         <div className="px-4 mt-2.5">
           <SearchBar search={search} setSearch={setSearch} onSearch={onSearch} />
 
-          {search.length === 0 ? (
+          {!showResult ? (
             <div className="mt-5">
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
@@ -92,19 +96,23 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
           ) : (
             <div className="mt-2.5">
               {/* 검색 결과 */}
-              <SearchList
-                list={searchResult.map((item) => {
-                  return {
-                    id: item.placeId,
-                    title: item.structuredFormatting.mainText,
-                    address: item.description,
-                  };
-                })}
-                onClickItem={(item) => {
-                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                  onClick(item);
-                }}
-              />
+              {searchResult.length === 0 ? (
+                <NoResult keyword={search} />
+              ) : (
+                <SearchList
+                  list={searchResult.map((item) => {
+                    return {
+                      id: item.placeId,
+                      title: item.structuredFormatting.mainText,
+                      address: item.description,
+                    };
+                  })}
+                  onClickItem={(item) => {
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    onClick(item);
+                  }}
+                />
+              )}
             </div>
           )}
         </div>
@@ -163,6 +171,14 @@ const SearchList = ({ list, onClickItem }: SearchListProps) => {
         </IonItem>
       ))}
     </IonList>
+  );
+};
+
+const NoResult = ({ keyword }: { keyword: string }) => {
+  return (
+    <div className="flex items-center justify-center w-full mt-44">
+      <IonText className="font-headline3 text-gray5.5 whitespace-pre-line">{`'${keyword}'를 찾을 수 없습니다.\n검색어를 바르게 입력했는지 확인하세요.`}</IonText>
+    </div>
   );
 };
 
