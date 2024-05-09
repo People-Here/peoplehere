@@ -155,7 +155,7 @@ const TourItem = ({
             <IonText className="font-headline3 text-gray8">{title}</IonText>
             <IonIcon
               icon={like ? HeartFilledIcon : HeartLineRedIcon}
-              className="svg-lg"
+              className="svg-lg shrink-0"
               onClick={async (e) => {
                 e.preventDefault();
                 await onClickLike(id);
