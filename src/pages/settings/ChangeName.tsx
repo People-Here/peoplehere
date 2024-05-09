@@ -9,7 +9,7 @@ import { updateUserName } from '../../api/profile';
 
 const ChangeName = () => {
   const router = useIonRouter();
-  const user = useUserStore((state) => state.user);
+  const { user, setUser } = useUserStore((state) => state);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -24,6 +24,7 @@ const ChangeName = () => {
   const updateName = async () => {
     try {
       await updateUserName(firstName, lastName);
+      setUser({ ...user, firstName, lastName });
       router.goBack();
     } catch (error) {
       console.error('fail to update name', error);

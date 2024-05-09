@@ -1,37 +1,15 @@
 import { IonContent, IonIcon, IonPage, useIonRouter } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import PencilWithCircleIcon from '../../assets/svgs/pencil-with-circle.svg';
 import useUserStore from '../../stores/user';
-import { getUserProfile } from '../../api/profile';
 import useSignInStore from '../../stores/signIn';
-import LogoRunning from '../../components/LogoRunning';
-
-import type { ProfileResponse } from '../../api/profile';
 
 const Informations = () => {
   const router = useIonRouter();
 
   const user = useUserStore((state) => state.user);
-  const { region, email } = useSignInStore((state) => state);
-
-  const [userInfo, setUserInfo] = useState<ProfileResponse>();
-
-  useLayoutEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const response = await getUserProfile(user.id, region.countryCode.toUpperCase());
-
-      if (response.status === 200) {
-        setUserInfo(response.data);
-      }
-    })();
-  }, [user.id, region.countryCode]);
-
-  if (!userInfo) {
-    return <LogoRunning />;
-  }
+  const { email } = useSignInStore((state) => state);
 
   return (
     <IonPage>
@@ -43,7 +21,7 @@ const Informations = () => {
             <div>
               <p className="mb-1 font-subheading2 text-gray7">이름</p>
               <p className="font-body2 text-gray6">
-                {userInfo.firstName} {userInfo.lastName}
+                {user.firstName} {user.lastName}
               </p>
             </div>
 
