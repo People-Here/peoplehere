@@ -165,7 +165,7 @@ const TourItem = ({
 
           <div className="flex items-center">
             <IonText className="font-caption1 text-gray6">{place.name}</IonText>
-            <Divider />
+            {place.district && <Divider />}
             <IonText className="font-caption2 text-gray6">{place.district}</IonText>
           </div>
         </div>
