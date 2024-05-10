@@ -45,6 +45,7 @@ export const postTour = async (body: FormData) => {
     withCredentials: true,
     headers: {
       Authorization: value,
+      'Content-Type': 'multipart/form-data',
     },
   });
   return response;
