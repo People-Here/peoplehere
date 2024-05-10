@@ -10,13 +10,17 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
-import { enrollPlace, searchPlace, type SearchPlaceResponse } from '../api/search';
+import { enrollPlace, getSearchHistory, searchPlace } from '../api/search';
 import useSignInStore from '../stores/signIn';
+import { getNewToken } from '../api/login';
 
+import type { AxiosError } from 'axios';
+import type { SearchPlaceResponse, SearchHistory } from '../api/search';
 import type { FormEvent } from 'react';
 import type { ModalProps } from '.';
 
@@ -39,8 +43,29 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   const [search, setSearch] = useState('');
+  const [history, setHistory] = useState<SearchHistory['places']>([]);
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
   const [showResult, setShowResult] = useState(false);
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      try {
+        const response = await getSearchHistory();
+        setHistory(response.data.places);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 401) {
+          const token = await getNewToken();
+          await Preferences.set({ key: 'accessToken', value: token.data });
+
+          const response = await getSearchHistory();
+          setHistory(response.data.places);
+        }
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!search) {
@@ -92,6 +117,16 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
               {/* TODO: 최근 검색 내역 백엔드 나오면 추가 필요 */}
+              <SearchList
+                list={history.map((item) => {
+                  return {
+                    id: item.placeId,
+                    title: item.name,
+                    address: item.address,
+                  };
+                })}
+                onClickItem={(item) => onClick(item)}
+              />
             </div>
           ) : (
             <div className="mt-2.5">
@@ -126,7 +161,6 @@ type SearchBarProps = {
   setSearch: (value: string) => void;
   onSearch: (event: FormEvent) => void;
 };
-
 const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
   const { t } = useTranslation();
 
