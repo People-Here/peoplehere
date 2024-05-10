@@ -1,3 +1,5 @@
+import { Preferences } from '@capacitor/preferences';
+
 import { typedGet, typedPost } from '.';
 
 export const searchPlace = async (params: SearchPlaceRequest) => {
@@ -6,7 +8,25 @@ export const searchPlace = async (params: SearchPlaceRequest) => {
 };
 
 export const enrollPlace = async (body: EnrollPlaceRequest) => {
-  const response = await typedPost<EnrollPlaceResponse>('/places', body);
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost<EnrollPlaceResponse>('/places', body, {
+    headers: {
+      Authorization: value,
+    },
+  });
+  return response;
+};
+
+export const getSearchHistory = async () => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedGet<SearchHistory>('/places/search-history', {
+    headers: {
+      Authorization: value,
+    },
+  });
+
   return response;
 };
 
@@ -24,6 +44,14 @@ export type SearchPlaceResponse = {
     description: string;
   }>;
   status: string;
+};
+
+export type SearchHistory = {
+  places: {
+    placeId: string;
+    name: string;
+    address: string;
+  }[];
 };
 
 type EnrollPlaceRequest = {
