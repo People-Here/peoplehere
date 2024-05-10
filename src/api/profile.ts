@@ -16,6 +16,7 @@ export const updateUserProfile = async (body: FormData) => {
   const response = await typedPut('/user', body, {
     headers: {
       Authorization: `${value}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
   return response;
