@@ -35,7 +35,11 @@ const Home = () => {
       if (location.search) {
         const keyword = location.search.split('=')[1];
 
-        const { data, status } = await searchTour(keyword, 'ORIGIN');
+        const { data, status } = await searchTour(
+          keyword,
+          region.countryCode.toUpperCase(),
+          'ORIGIN',
+        );
 
         if (status === 200) {
           setList(data.tourList);
@@ -50,7 +54,7 @@ const Home = () => {
 
       setLoading(false);
     })();
-  }, [location.search]);
+  }, [location.search, region.countryCode]);
 
   if (loading) {
     return <LogoRunning />;

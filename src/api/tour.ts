@@ -29,8 +29,12 @@ export const getTourDetail = async (tourId: string, region: string) => {
   return response;
 };
 
-export const searchTour = async (keyword: string, langCode: string) => {
-  const response = await typedPost<TourListResponse>('/tours/search', { keyword, langCode });
+export const searchTour = async (keyword: string, region: string, langCode: string) => {
+  const response = await typedPost<TourListResponse>('/tours/search', {
+    keyword,
+    region,
+    langCode,
+  });
   return response;
 };
 
