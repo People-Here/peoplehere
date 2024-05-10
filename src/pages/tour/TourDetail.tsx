@@ -143,7 +143,7 @@ const TourDetail = () => {
               </div>
 
               <button
-                className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1`}
+                className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
               >
                 {i18next.resolvedLanguage === 'ko'
                   ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
