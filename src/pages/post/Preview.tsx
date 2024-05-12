@@ -41,6 +41,7 @@ const Preview = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [theme, setTheme] = useState('black');
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
     if (!user.id) return;
@@ -56,6 +57,8 @@ const Preview = () => {
   }, [user.id]);
 
   const uploadPost = async () => {
+    setIsLoading(true);
+
     const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
 
     const formData = new FormData();
@@ -80,6 +83,8 @@ const Preview = () => {
         await postTour(formData);
         router.push('/', 'forward', 'replace');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -150,7 +155,12 @@ const Preview = () => {
           </div>
         </div>
 
-        <SelectTheme currentTheme={theme} setTheme={setTheme} onClick={uploadPost} />
+        <SelectTheme
+          currentTheme={theme}
+          setTheme={setTheme}
+          onClick={uploadPost}
+          buttonDisable={isLoading}
+        />
       </IonContent>
     </IonPage>
   );
@@ -220,12 +230,12 @@ type ThemeProps = {
   currentTheme: string;
   setTheme: (theme: string) => void;
   onClick: () => void;
+  buttonDisable: boolean;
 };
-const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
+const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemeProps) => {
   const { t } = useTranslation();
 
   const [expand, setExpand] = useState(true);
-  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <IonFooter
@@ -264,14 +274,11 @@ const SelectTheme = ({ currentTheme, setTheme, onClick }: ThemeProps) => {
         )}
 
         <button
-          className="w-full text-white bg-orange5 button-lg font-subheading1"
-          onClick={() => {
-            onClick();
-            setButtonClicked(true);
-          }}
-          disabled={buttonClicked}
+          className="w-full text-white bg-orange5 button-lg font-subheading1 disabled:bg-gray5"
+          onClick={onClick}
+          disabled={buttonDisable}
         >
-          {t('newTour.post')}
+          {buttonDisable ? 'loading...' : t('newTour.post')}
         </button>
       </div>
     </IonFooter>

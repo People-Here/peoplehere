@@ -102,7 +102,7 @@ const Router = () => {
         <Preview />
       </Route>
 
-      <Route path="/settings">
+      <Route exact path="/settings">
         <Settings />
       </Route>
       <Route path="/settings/informations">
