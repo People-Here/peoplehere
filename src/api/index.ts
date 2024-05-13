@@ -5,10 +5,8 @@ import type { AxiosRequestConfig } from 'axios';
 const apiInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
   withCredentials: false,
+  timeout: 60000,
 });
-
-// config
-apiInstance.defaults.timeout = 5000;
 
 // interceptors
 // apiInstance.interceptors.request.use(
