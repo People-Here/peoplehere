@@ -201,7 +201,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
           <p className="font-headline3 text-gray8">{title}</p>
           <p className="font-body1 text-gray6">
             {placeName}
-            <span className="font-body2 text-gray6"> | {district}</span>
+            {district && <span className="font-body2 text-gray6"> | {district}</span>}
           </p>
         </div>
       </div>

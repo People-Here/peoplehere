@@ -88,7 +88,7 @@ const Post = () => {
     storeDescription(description);
     storeImages(images);
 
-    router.push('/post/preview');
+    router.push('/preview-post');
   };
 
   return (
