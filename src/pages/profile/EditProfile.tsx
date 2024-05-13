@@ -158,7 +158,7 @@ const EditProfile = () => {
 
     try {
       await updateUserProfile(formData);
-      router.push(`/profile/${userId}`);
+      router.goBack();
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -167,7 +167,7 @@ const EditProfile = () => {
         await Preferences.set({ key: 'accessToken', value: token.data });
 
         await updateUserProfile(formData);
-        router.push(`/profile/${userId}`);
+        router.goBack();
       }
 
       console.error('Failed to update user profile:', error);

@@ -72,7 +72,7 @@ const Preview = () => {
 
     try {
       await postTour(formData);
-      router.push('/');
+      router.push('/', 'root', 'replace');
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -81,7 +81,7 @@ const Preview = () => {
         await Preferences.set({ key: 'accessToken', value: tokens.data });
 
         await postTour(formData);
-        router.push('/', 'forward', 'replace');
+        router.push('/', 'root', 'replace');
       }
     } finally {
       setIsLoading(false);

@@ -166,13 +166,17 @@ type TourInfoProps = {
 const TourInfo = ({ id, image, title, placeName, district, available }: TourInfoProps) => {
   const router = useIonRouter();
 
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+
   return (
     <div className="relative flex gap-3 p-3 bg-white border rounded-xl border-gray2">
       <IonIcon
-        id="edit-tour-sheet"
         icon={ThreeDotsIcon}
         className="absolute top-3 right-3 svg-md"
-        onClick={(e) => e.preventDefault()}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsActionSheetOpen(true);
+        }}
       />
 
       <IonImg
@@ -201,13 +205,14 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
           <p className="font-headline3 text-gray8">{title}</p>
           <p className="font-body1 text-gray6">
             {placeName}
-            <span className="font-body2 text-gray6"> | {district}</span>
+            {district && <span className="font-body2 text-gray6"> | {district}</span>}
           </p>
         </div>
       </div>
 
       <IonActionSheet
-        trigger="edit-tour-sheet"
+        isOpen={isActionSheetOpen}
+        onDidDismiss={() => setIsActionSheetOpen(false)}
         buttons={[
           {
             text: '수정하기',
