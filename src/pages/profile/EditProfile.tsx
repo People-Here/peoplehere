@@ -137,10 +137,11 @@ const EditProfile = () => {
     }
 
     const imageBlob = await fetch(image, { mode: 'no-cors' }).then((res) => res.blob());
+    const blobObject = new Blob([imageBlob], { type: 'application/json' });
 
     const formData = new FormData();
     formData.append('id', userId);
-    formData.append('profileImage', imageBlob);
+    formData.append('profileImage', blobObject);
     formData.append('introduce', introduce);
     formData.append('region', region.countryCode);
     languages.forEach((lang) => {
