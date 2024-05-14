@@ -1,11 +1,17 @@
 import { IonContent, IonImg, IonPage, IonToolbar, useIonRouter } from '@ionic/react';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import useLogin from '../hooks/useLogin';
 import { getUserProfile } from '../api/profile';
 import useUserStore from '../stores/user';
 import useSignInStore from '../stores/signIn';
+import { getNewToken } from '../api/login';
+import { getMessageRooms } from '../api/message';
+
+import type { AxiosError } from 'axios';
+import type { MessageRoom } from '../api/message';
 
 const MessageTab = () => {
   const { t } = useTranslation();
@@ -15,6 +21,8 @@ const MessageTab = () => {
   const { checkLogin } = useLogin();
   const user = useUserStore((state) => state.user);
   const region = useSignInStore((state) => state.region);
+
+  const [messages, setMessages] = useState<MessageRoom[]>([]);
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -36,6 +44,25 @@ const MessageTab = () => {
     })();
   }, [checkLogin, router, user.id, region.countryCode]);
 
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      try {
+        const response = await getMessageRooms();
+        setMessages(response.data.tourRoomList);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 401) {
+          await getNewToken();
+
+          const response = await getMessageRooms();
+          setMessages(response.data.tourRoomList);
+        }
+      }
+    })();
+  }, []);
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -43,10 +70,26 @@ const MessageTab = () => {
           <p className="pl-0 font-headline3 text-gray8">{t('message.title')}</p>
         </IonToolbar>
 
-        <div className="flex flex-col gap-1.5 items-center justify-center w-full h-full text-center">
-          <p className="text-black font-headline2">{t('message.noMessage')}</p>
-          <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
-        </div>
+        {messages.length === 0 ? (
+          <div className="flex flex-col gap-1.5 items-center justify-center w-full h-full text-center">
+            <p className="text-black font-headline2">{t('message.noMessage')}</p>
+            <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
+          </div>
+        ) : (
+          <div className="px-4 pb-16">
+            {messages.map((message) => (
+              <Link key={message.id} to={`/message/${message.id}`}>
+                <ChatListItem
+                  imageUrl={message.guestInfo.profileImageUrl}
+                  name={message.guestInfo.firstName}
+                  date={'2024-04-28 19:00'}
+                  lastMessage={message.lastMessage}
+                  placeName={message.title}
+                />
+              </Link>
+            ))}
+          </div>
+        )}
         {/* <div className="px-4 pb-16">
           <Link to={'/message/123123'}>
             <ChatListItem

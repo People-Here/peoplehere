@@ -38,8 +38,6 @@ const TourDetail = () => {
   const [tourId, setTourId] = useState('');
   const [tourDetail, setTourDetail] = useState<TourDetailType>();
 
-  console.log('same', user.id, tourDetail?.userInfo.id);
-
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
