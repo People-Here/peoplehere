@@ -59,8 +59,8 @@ const Settings = () => {
         <Footer>
           {isLogin ? (
             <button
+              id="logout-alert"
               className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
-              onClick={requestLogout}
             >
               로그아웃
             </button>
@@ -125,6 +125,20 @@ const Settings = () => {
             },
             {
               text: '취소',
+            },
+          ]}
+        />
+
+        <Alert
+          trigger="logout-alert"
+          title="로그아웃 하시겠어요?"
+          buttons={[
+            {
+              text: '취소',
+            },
+            {
+              text: '로그아웃',
+              onClick: requestLogout,
             },
           ]}
         />
