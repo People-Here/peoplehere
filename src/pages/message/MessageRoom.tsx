@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLayoutEffect, useState } from 'react';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -17,30 +18,28 @@ import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
 import LanguageIcon from '../../assets/svgs/language.svg';
 import useUserStore from '../../stores/user';
+import { getMessageRooms, type MessageRoom as MessageRoomType } from '../../api/message';
+import { getNewToken } from '../../api/login';
 
-type Message = {
-  type: 'send' | 'receive';
-  message: string;
-  time: string;
-};
+import type { AxiosError } from 'axios';
 
-const messages: Message[] = [
-  {
-    type: 'receive',
-    message: '안녕하세요 ㅎㅎ 혹시 언제 시간 괜찮으세요?',
-    time: '24/01/24 22:46',
-  },
-  {
-    type: 'send',
-    message: '안녕하세요~\n저는 이번주 일요일 3시가 좋아요.\n예지나님은요??',
-    time: '24/01/24 22:48',
-  },
-  {
-    type: 'receive',
-    message: '일요일 3시면 괜찮아요! 어디에서 만나면 될까요?',
-    time: '24/01/24 23:20',
-  },
-];
+// const messages: Message[] = [
+//   {
+//     type: 'receive',
+//     message: '안녕하세요 ㅎㅎ 혹시 언제 시간 괜찮으세요?',
+//     time: '24/01/24 22:46',
+//   },
+//   {
+//     type: 'send',
+//     message: '안녕하세요~\n저는 이번주 일요일 3시가 좋아요.\n예지나님은요??',
+//     time: '24/01/24 22:48',
+//   },
+//   {
+//     type: 'receive',
+//     message: '일요일 3시면 괜찮아요! 어디에서 만나면 될까요?',
+//     time: '24/01/24 23:20',
+//   },
+// ];
 
 const MessageRoom = () => {
   const { t } = useTranslation();
@@ -48,6 +47,27 @@ const MessageRoom = () => {
   const router = useIonRouter();
 
   const user = useUserStore((state) => state.user);
+
+  const [messages, setMessages] = useState<MessageRoomType[]>([]);
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      try {
+        const response = await getMessageRooms();
+        setMessages(response.data.tourRoomList);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 401) {
+          await getNewToken();
+
+          const response = await getMessageRooms();
+          setMessages(response.data.tourRoomList);
+        }
+      }
+    })();
+  }, []);
 
   return (
     <IonPage>
@@ -73,17 +93,17 @@ const MessageRoom = () => {
           tourId="13132323"
         />
 
-        <div className="px-4">
+        {/* <div className="px-4">
           {messages.length === 0 ? (
             <NoChatChip userName="예지나" />
           ) : (
             <div className="flex flex-col gap-8 mt-4">
               {messages.map((msg) => (
-                <Chat key={msg.message} {...msg} />
+                <Chat key={msg.lastMessage} {...msg} />
               ))}
             </div>
           )}
-        </div>
+        </div> */}
 
         <Footer>
           <div className="flex items-center gap-3">
@@ -96,7 +116,7 @@ const MessageRoom = () => {
             </button>
           </div>
         </Footer>
-        <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
+        <SendMessage trigger="send-message-modal" tourId="1" receiverId="1" />
       </IonContent>
     </IonPage>
   );

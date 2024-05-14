@@ -4,18 +4,53 @@ import { IonButtons, IonContent, IonIcon, IonModal, IonTitle, IonToolbar } from 
 import CloseIcon from '../assets/svgs/close.svg';
 import Footer from '../layouts/Footer';
 import Alert from '../components/Alert';
+import { postMessage } from '../api/message';
+import { getNewToken } from '../api/login';
 
+import type { AxiosError } from 'axios';
 import type { ModalProps } from '.';
 
 type Props = {
-  sendMessage: () => void;
+  tourId: string;
+  receiverId: string;
 };
 
-const SendMessage = ({ sendMessage, ...rest }: Props & ModalProps) => {
+const SendMessage = ({ tourId, receiverId, ...rest }: Props & ModalProps) => {
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   const [input, setInput] = useState('');
+
+  const sendMessage = async () => {
+    try {
+      await postMessage({
+        tourId,
+        receiverId,
+        message: input,
+      });
+      await modalRef.current?.dismiss();
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        await getNewToken();
+        await postMessage({
+          tourId,
+          receiverId,
+          message: input,
+        });
+        await modalRef.current?.dismiss();
+      }
+
+      if (errorInstance.response?.status === 404) {
+        console.error('유효하지 않은 요청입니다.', error);
+      }
+
+      if (errorInstance.response?.status === 500) {
+        console.error('server error', error);
+      }
+    }
+  };
 
   return (
     <>
@@ -60,6 +95,7 @@ const SendMessage = ({ sendMessage, ...rest }: Props & ModalProps) => {
             },
             {
               text: '전송',
+              onClick: sendMessage,
             },
           ]}
         />

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
+  IonActionSheet,
   IonButtons,
   IonContent,
   IonFooter,
@@ -24,6 +25,9 @@ import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour
 import LogoRunning from '../../components/LogoRunning';
 import i18next from '../../i18n';
 import { themeColors } from '../../constants/theme';
+import SendMessage from '../../modals/SendMessage';
+import useUserStore from '../../stores/user';
+import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -31,11 +35,18 @@ const TourDetail = () => {
   const router = useIonRouter();
   const location = useLocation();
 
+  const user = useUserStore((state) => state.user);
+
+  const [tourId, setTourId] = useState('');
   const [tourDetail, setTourDetail] = useState<TourDetailType>();
+
+  const [isMine, setIsMine] = useState(false);
 
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
+
+    setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -46,6 +57,14 @@ const TourDetail = () => {
       }
     })();
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!tourDetail) return;
+
+    if (user.id === tourDetail?.userInfo.id.toString()) {
+      setIsMine(true);
+    }
+  }, [tourDetail, user.id]);
 
   if (!tourDetail) {
     return <LogoRunning />;
@@ -139,11 +158,13 @@ const TourDetail = () => {
               <div
                 className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
               >
-                <IonIcon src={HeartLineRedIcon} className="svg-lg" />
+                <IonIcon src={isMine ? ThreeDotGrayIcon : HeartLineRedIcon} className="svg-lg" />
               </div>
 
               <button
+                id={isMine ? 'change-status-sheet' : 'send-message-modal'}
                 className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                disabled={tourDetail.userInfo.id.toString() === user.id}
               >
                 {i18next.resolvedLanguage === 'ko'
                   ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
@@ -152,6 +173,31 @@ const TourDetail = () => {
             </div>
           </IonToolbar>
         </IonFooter>
+
+        <SendMessage
+          trigger="send-message-modal"
+          tourId={tourId}
+          receiverId={tourDetail.userInfo.id.toString()}
+        />
+
+        <IonActionSheet
+          trigger="change-status-sheet"
+          buttons={[
+            {
+              text: '상태 변경하기',
+              handler: () => {
+                router.push(`/post/${tourId}`);
+              },
+            },
+            {
+              text: '취소',
+              role: 'cancel',
+              data: {
+                action: 'cancel',
+              },
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   );
