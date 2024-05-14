@@ -96,7 +96,7 @@ const MessageRoom = () => {
             </button>
           </div>
         </Footer>
-        <SendMessage trigger="send-message-modal" sendMessage={() => {}} />
+        <SendMessage trigger="send-message-modal" tourId="1" receiverId="1" />
       </IonContent>
     </IonPage>
   );

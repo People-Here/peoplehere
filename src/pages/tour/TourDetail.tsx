@@ -24,6 +24,8 @@ import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour
 import LogoRunning from '../../components/LogoRunning';
 import i18next from '../../i18n';
 import { themeColors } from '../../constants/theme';
+import SendMessage from '../../modals/SendMessage';
+import useUserStore from '../../stores/user';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -31,11 +33,18 @@ const TourDetail = () => {
   const router = useIonRouter();
   const location = useLocation();
 
+  const user = useUserStore((state) => state.user);
+
+  const [tourId, setTourId] = useState('');
   const [tourDetail, setTourDetail] = useState<TourDetailType>();
+
+  console.log('same', user.id, tourDetail?.userInfo.id);
 
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
+
+    setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -143,7 +152,9 @@ const TourDetail = () => {
               </div>
 
               <button
+                id="send-message-modal"
                 className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                disabled={tourDetail.userInfo.id.toString() === user.id}
               >
                 {i18next.resolvedLanguage === 'ko'
                   ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
@@ -152,6 +163,12 @@ const TourDetail = () => {
             </div>
           </IonToolbar>
         </IonFooter>
+
+        <SendMessage
+          trigger="send-message-modal"
+          tourId={tourId}
+          receiverId={tourDetail.userInfo.id.toString()}
+        />
       </IonContent>
     </IonPage>
   );
