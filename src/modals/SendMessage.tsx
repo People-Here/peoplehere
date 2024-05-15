@@ -6,6 +6,7 @@ import Footer from '../layouts/Footer';
 import Alert from '../components/Alert';
 import { postMessage } from '../api/message';
 import { getNewToken } from '../api/login';
+import useLogin from '../hooks/useLogin';
 
 import type { AxiosError } from 'axios';
 import type { ModalProps } from '.';
@@ -16,12 +17,17 @@ type Props = {
 };
 
 const SendMessage = ({ tourId, receiverId, ...rest }: Props & ModalProps) => {
+  const { checkLogin } = useLogin();
+
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   const [input, setInput] = useState('');
 
   const sendMessage = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) return;
+
     try {
       await postMessage({
         tourId,
