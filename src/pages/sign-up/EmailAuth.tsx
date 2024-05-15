@@ -22,9 +22,12 @@ const EmailAuth = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkEmailExist = async () => {
     setErrorMessage('');
+
+    setIsLoading(true);
 
     try {
       await checkEmail(emailInput);
@@ -48,6 +51,8 @@ const EmailAuth = () => {
       if (errorInstance.response?.status === 409) {
         setErrorMessage(t('error.alreadyInUse'));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,11 +94,15 @@ const EmailAuth = () => {
                   ? 'button-sub button-lg shrink-0 w-[100px]'
                   : 'px-3 button-primary button-lg shrink-0 w-[100px]'
               }
-              disabled={!EMAIL_VALIDATION.test(emailInput)}
+              disabled={!EMAIL_VALIDATION.test(emailInput) || isLoading}
               onClick={checkEmailExist}
             >
               <IonText className="font-body1">
-                {showAuthCodeInput ? t('signup.verify.resend') : t('signup.verify.send')}
+                {showAuthCodeInput
+                  ? t('signup.verify.resend')
+                  : isLoading
+                    ? t('signup.email.sending')
+                    : t('signup.verify.send')}
               </IonText>
             </button>
           </div>
