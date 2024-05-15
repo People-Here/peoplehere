@@ -30,6 +30,7 @@ const UserInfo = () => {
   const [lastName, setLastName] = useState('');
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
+  const [ageError, setAgeError] = useState('');
 
   const [marketingChecked, setMarketingChecked] = useState(false);
 
@@ -37,7 +38,7 @@ const UserInfo = () => {
 
   const onClickNext = () => {
     if (Number(birth.slice(0, 4)) > new Date().getFullYear() - 18) {
-      console.error('18세 미만은 가입할 수 없습니다.');
+      setAgeError('만 18세 이상이어야 회원으로 가입할 수 있어요.');
       return;
     }
 
@@ -69,12 +70,13 @@ const UserInfo = () => {
           <LabelInput label={t('signup.info.lastName')} value={lastName} onChange={setLastName} />
         </div>
 
-        <div className="flex flex-col gap-2 mb-9">
+        <div className="flex flex-col gap-2 mb-9" onClick={() => setAgeError('')}>
           <SelectInput
             id="date-modal"
             label={t('signup.info.birthDay')}
             value={birth.split('T')[0].replaceAll('-', '/')}
           />
+          {ageError && <IonText className="pl-1 font-caption2 text-red3">{ageError}</IonText>}
           <IonText className="pl-1 font-caption2 text-gray6">{t('signup.info.ageLimit')}</IonText>
         </div>
 

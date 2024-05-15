@@ -39,7 +39,7 @@ const MessageTab = () => {
         !profileInfo.data.profileImageUrl ||
         !profileInfo.data.languages.length
       ) {
-        router.push('/edit-profile');
+        router.push('/edit-profile', 'forward', 'replace');
       }
     })();
   }, [checkLogin, router, user.id, region.countryCode]);

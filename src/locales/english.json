@@ -53,7 +53,8 @@
   },
   "signup": {
     "email": {
-      "title": "Choose an email to use as an  account ID"
+      "title": "Choose an email to use as an  account ID",
+      "sending": "Sending..."
     },
     "verify": {
       "send": "Send code",
