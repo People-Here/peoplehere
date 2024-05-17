@@ -22,6 +22,18 @@ export const getTourListByUser = async (region: string, lang: string, userId: st
   return response;
 };
 
+export const getBookmarkList = async (region: string, lang: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedGet<BookmarkTourListResponse>(`/tours/like/${region}/${lang}`, {
+    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    headers: {
+      Authorization: value,
+    },
+  });
+  return response;
+};
+
 export const getTourDetail = async (tourId: string, region: string) => {
   const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/ORIGIN`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
@@ -84,6 +96,10 @@ type TourListResponse = {
   tourList: Tour[];
 };
 
+type BookmarkTourListResponse = {
+  tourList: BookmarkedTour[];
+};
+
 export type Tour = {
   id: string;
   title: string;
@@ -91,6 +107,30 @@ export type Tour = {
   like: boolean;
   placeInfo: Place;
   userInfo: User;
+};
+
+export type BookmarkedTour = {
+  id: string;
+  title: string;
+  description: string;
+  like: boolean;
+  theme: string;
+  placeInfo: {
+    name: string;
+    isDefaultImage: boolean;
+    imageUrlList: string[];
+    district: string;
+    id: string;
+  };
+  userInfo: {
+    id: bigint;
+    firstName: string;
+    lastName: string;
+    profileImageUrl: string;
+    languages: string[];
+    introduce: string;
+    directMessageStatus: boolean;
+  };
 };
 
 export type TourDetail = {

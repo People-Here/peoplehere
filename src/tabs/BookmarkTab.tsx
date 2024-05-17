@@ -1,18 +1,49 @@
 import { IonContent, IonIcon, IonPage, IonText, IonToolbar } from '@ionic/react';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import MessageIcon from '../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
+import { getBookmarkList } from '../api/tour';
+import useSignInStore from '../stores/signIn';
+import { getNewToken } from '../api/login';
+
+import type { BookmarkedTour } from '../api/tour';
+import type { AxiosError } from 'axios';
 
 const BookmarkTab = () => {
   const { checkLogin } = useLogin();
 
+  const region = useSignInStore((state) => state.region);
+
+  const [list, setList] = useState<BookmarkedTour[]>([]);
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkLogin();
-  }, [checkLogin]);
+    (async () => {
+      const isLoggedIn = await checkLogin();
+      if (!isLoggedIn) {
+        return;
+      }
+
+      try {
+        const response = await getBookmarkList(region.countryCode.toUpperCase(), 'KOREAN');
+        setList(response.data.tourList);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+
+        if (errorInstance.response?.status === 401) {
+          await getNewToken();
+
+          const response = await getBookmarkList(region.countryCode.toUpperCase(), 'KOREAN');
+          setList(response.data.tourList);
+        }
+
+        console.error('fail to get bookmark list', error);
+      }
+    })();
+  }, []);
 
   return (
     <IonPage>
@@ -23,9 +54,29 @@ const BookmarkTab = () => {
         </IonToolbar>
 
         {/* body */}
-        <div className="flex items-center justify-center h-full -mt-14">
-          <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
-        </div>
+        {list.length === 0 ? (
+          <div className="flex items-center justify-center h-full -mt-14">
+            <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3 px-4 mt-[1.625rem]">
+            {list.map((item) => (
+              <ListItem
+                key={item.id}
+                title={item.title}
+                placeName={item.placeInfo.name}
+                district={item.placeInfo.district}
+                images={item.placeInfo.imageUrlList}
+                available={item.userInfo.directMessageStatus}
+                user={{
+                  id: item.userInfo.id.toString(),
+                  name: item.userInfo.firstName,
+                  imageUrl: item.userInfo.profileImageUrl,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );
