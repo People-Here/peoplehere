@@ -1,4 +1,11 @@
-import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
+import {
+  IonIcon,
+  IonImg,
+  IonRefresher,
+  IonRefresherContent,
+  IonText,
+  useIonRouter,
+} from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +21,7 @@ import LogoRunning from '../../components/LogoRunning';
 import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
 
+import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
 
 const Home = () => {
@@ -56,6 +64,30 @@ const Home = () => {
     })();
   }, [location.search, region.countryCode]);
 
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    if (location.search) {
+      const keyword = location.search.split('=')[1];
+
+      const { data, status } = await searchTour(
+        keyword,
+        region.countryCode.toUpperCase(),
+        'ORIGIN',
+      );
+
+      if (status === 200) {
+        setList(data.tourList);
+      }
+    } else {
+      const { data, status } = await getTourList(region.countryCode.toUpperCase(), 'ORIGIN');
+
+      if (status === 200) {
+        setList(data.tourList);
+      }
+    }
+
+    event.detail.complete();
+  };
+
   if (loading) {
     return <LogoRunning />;
   }
@@ -64,6 +96,9 @@ const Home = () => {
     <div className="px-4 mt-3">
       <SearchBar />
 
+      <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+        <IonRefresherContent />
+      </IonRefresher>
       <div className="flex flex-col pb-20 mt-6 gap-7">
         {list.length === 0 ? (
           <div className="mt-60">
