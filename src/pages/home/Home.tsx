@@ -177,7 +177,7 @@ const TourItem = ({
 
       {/* content area */}
       {place.imageUrlList?.length === 1 ? (
-        <div className="flex gap-2 h-[140px]">
+        <div className="flex gap-2 h-[140px] pr-4">
           <UserImage {...user} />
           <SingleImage image={place.imageUrlList[0].imageUrl} />
         </div>
