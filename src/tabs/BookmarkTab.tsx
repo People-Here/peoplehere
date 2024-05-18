@@ -1,4 +1,4 @@
-import { IonContent, IonIcon, IonPage, IonText, IonToolbar } from '@ionic/react';
+import { IonContent, IonIcon, IonImg, IonPage, IonText, IonToolbar } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 
 import MessageIcon from '../assets/svgs/message-line-color.svg';
@@ -9,7 +9,7 @@ import { getBookmarkList } from '../api/tour';
 import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 
-import type { BookmarkedTour } from '../api/tour';
+import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
 
 const BookmarkTab = () => {
@@ -66,7 +66,7 @@ const BookmarkTab = () => {
                 title={item.title}
                 placeName={item.placeInfo.name}
                 district={item.placeInfo.district}
-                images={item.placeInfo.imageUrlList}
+                images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
                 available={item.userInfo.directMessageStatus}
                 user={{
                   id: item.userInfo.id.toString(),
@@ -100,7 +100,7 @@ const ListItem = ({ title, placeName, district, images, available, user }: ListI
       <div className="-mr-4">
         {/* title area */}
         <div className="flex flex-col gap-1.5 mb-3 pr-4">
-          <StatusChip available />
+          <StatusChip available={available} />
 
           <div className="pl-1 flex flex-col gap-0.5">
             <div className="flex items-center justify-between">
@@ -110,13 +110,24 @@ const ListItem = ({ title, placeName, district, images, available, user }: ListI
 
             <div className="flex items-center">
               <IonText className="font-caption1 text-gray6">{placeName}</IonText>
-              <Divider />
+              {district && <Divider />}
               <IonText className="font-caption2 text-gray6">{district}</IonText>
             </div>
           </div>
         </div>
 
         {/* content area */}
+        {images.length === 1 ? (
+          <div className="flex gap-2 h-[140px] pr-4">
+            <UserImage firstName={user.name} profileImageUrl={user.imageUrl} />
+            <SingleImage image={images[0]} />
+          </div>
+        ) : (
+          <div className="flex gap-2 h-[140px] w-full overflow-x-scroll pr-4">
+            <UserImage firstName={user.name} profileImageUrl={user.imageUrl} />
+            <Images images={images} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -138,6 +149,45 @@ const StatusChip = ({ available }: { available?: boolean }) => {
 
 const Divider = () => {
   return <div className="w-[1px] bg-gray6 h-3 mx-1.5" />;
+};
+
+const UserImage = ({ firstName, profileImageUrl }: Pick<User, 'firstName' | 'profileImageUrl'>) => {
+  return (
+    <div className="overflow-hidden rounded-xl w-[100px] h-full relative flex justify-center shrink-0">
+      <IonImg className="w-[100px] h-full object-cover" src={profileImageUrl} alt="user profile" />
+
+      <div
+        className="h-[72px] absolute bottom-0 left-0 right-0"
+        style={{
+          background: 'linear-gradient(180deg, rgba(27, 29, 31, 0.00) 0%, #1B1D1F 100%)',
+        }}
+      ></div>
+      <IonText className="absolute overflow-hidden text-sm font-bold leading-6 tracking-tight bottom-3 font-suite text-gray2 text-ellipsis">
+        {firstName}
+      </IonText>
+    </div>
+  );
+};
+
+const SingleImage = ({ image }: { image: string }) => {
+  return (
+    <IonImg className="object-cover w-full overflow-hidden rounded-xl" src={image} alt="place" />
+  );
+};
+
+const Images = ({ images }: { images: string[] }) => {
+  return (
+    <div className="flex gap-2 w-max">
+      {images.map((image, index) => (
+        <IonImg
+          key={index}
+          src={image}
+          alt={`place-${index}`}
+          className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl"
+        />
+      ))}
+    </div>
+  );
 };
 
 export default BookmarkTab;

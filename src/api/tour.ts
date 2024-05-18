@@ -118,7 +118,7 @@ export type BookmarkedTour = {
   placeInfo: {
     name: string;
     isDefaultImage: boolean;
-    imageUrlList: string[];
+    imageUrlList: { imageUrl: string }[];
     district: string;
     id: string;
   };
