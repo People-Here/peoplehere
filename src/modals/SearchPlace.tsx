@@ -10,7 +10,7 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Preferences } from '@capacitor/preferences';
 
@@ -47,32 +47,29 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
   const [searchResult, setSearchResult] = useState<SearchPlaceResponse['predictions']>([]);
   const [showResult, setShowResult] = useState(false);
 
-  useLayoutEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      try {
-        const response = await getSearchHistory();
-        setHistory(response.data.places);
-      } catch (error) {
-        const errorInstance = error as AxiosError;
-
-        if (errorInstance.response?.status === 401) {
-          const token = await getNewToken();
-          await Preferences.set({ key: 'accessToken', value: token.data });
-
-          const response = await getSearchHistory();
-          setHistory(response.data.places);
-        }
-      }
-    })();
-  }, []);
-
   useEffect(() => {
     if (!search) {
       setSearchResult([]);
       setShowResult(false);
     }
   }, [search]);
+
+  const getHistory = async () => {
+    try {
+      const response = await getSearchHistory();
+      setHistory(response.data.places);
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        const token = await getNewToken();
+        await Preferences.set({ key: 'accessToken', value: token.data });
+
+        const response = await getSearchHistory();
+        setHistory(response.data.places);
+      }
+    }
+  };
 
   const onSearch = async (e: FormEvent) => {
     e.preventDefault();
@@ -97,7 +94,12 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
   };
 
   return (
-    <IonModal ref={modalRef} {...rest}>
+    <IonModal
+      ref={modalRef}
+      {...rest}
+      onDidDismiss={() => setSearch('')}
+      onWillPresent={getHistory}
+    >
       <IonContent fullscreen>
         <IonToolbar className="px-4 h-14">
           <IonButtons slot="start">
