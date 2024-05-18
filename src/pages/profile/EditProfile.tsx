@@ -34,6 +34,7 @@ import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
 import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
+import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
@@ -316,12 +317,15 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
   return (
     <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative overflow-hidden">
       {image ? (
-        <IonImg
-          src={image}
-          className="object-cover w-full h-full"
-          onClick={selectPhoto}
-          onIonError={(e) => (e.target.src = DefaultUserImage)}
-        />
+        <>
+          <IonImg
+            src={image}
+            className="object-cover w-full h-full"
+            onClick={selectPhoto}
+            onIonError={(e) => (e.target.src = DefaultUserImage)}
+          />
+          <IonIcon icon={EditIcon} className="absolute w-8 h-8 right-4 top-4" />
+        </>
       ) : (
         <>
           <div className="absolute top-4 right-4">
