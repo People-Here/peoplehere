@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -8,14 +9,21 @@ import { checkEmailExist, sendEmailCode, verifyEmailCode } from '../../api/verif
 import type { AxiosError } from 'axios';
 
 const CheckEmail = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
 
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkEmail = async () => {
+    setErrorMessage('');
+    setIsLoading(true);
+
     try {
       await checkEmailExist(emailInput);
       try {
@@ -32,20 +40,24 @@ const CheckEmail = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 400) {
-        setErrorMessage('이메일 형식이 유효하지 않아요.');
+        setErrorMessage(t('error.invalidEmail'));
       }
 
       if (errorInstance.response?.status === 404) {
         setErrorMessage('가입되지 않은 이메일입니다.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const confirmAuthCode = async () => {
     const response = await verifyEmailCode(emailInput, authCode);
 
-    if (response.status === 200) {
+    if (response.data === true) {
       router.push('/reset-password');
+    } else {
+      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
     }
   };
 
@@ -59,7 +71,7 @@ const CheckEmail = () => {
 
           <div className="flex gap-2 mt-2">
             <LabelInput
-              label="이메일"
+              label={t('common.email')}
               type="email"
               inputMode="email"
               value={emailInput}
@@ -73,11 +85,15 @@ const CheckEmail = () => {
                   ? 'px-3 button-sub button-lg w-[100px] shrink-0'
                   : 'px-3 button-primary button-lg w-[100px] shrink-0'
               }
-              disabled={!emailInput.length}
+              disabled={!emailInput.length || isLoading}
               onClick={checkEmail}
             >
               <IonText className="font-body1">
-                {showAuthCodeInput ? '재발송' : '인증코드 발송'}
+                {showAuthCodeInput
+                  ? t('signup.verify.resend')
+                  : isLoading
+                    ? t('signup.email.sending')
+                    : t('signup.verify.send')}
               </IonText>
             </button>
           </div>
@@ -85,7 +101,7 @@ const CheckEmail = () => {
           {showAuthCodeInput && (
             <div className="flex items-center gap-2 mt-3 animate-fade-down">
               <LabelInput
-                label="인증번호 입력"
+                label={t('signup.verify.placeholder')}
                 inputMode="numeric"
                 value={authCode}
                 onChange={setAuthCode}
@@ -96,7 +112,7 @@ const CheckEmail = () => {
                 disabled={!authCode.length}
                 onClick={confirmAuthCode}
               >
-                <IonText className="font-body1">확인</IonText>
+                <IonText className="font-body1">{t('common.confirm')}</IonText>
               </button>
             </div>
           )}
