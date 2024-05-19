@@ -73,7 +73,7 @@ const MyPage = () => {
     <>
       {/* header */}
       <IonToolbar className="px-4 h-14">
-        <p className="font-headline3 text-gray8">{t('mypage.title')}</p>
+        <p className="font-headline1 text-gray8">{t('mypage.title')}</p>
 
         <IonButtons slot="end">
           <IonIcon src={SettingIcon} className="svg-lg" onClick={() => router.push('/settings')} />

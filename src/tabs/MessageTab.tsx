@@ -67,7 +67,7 @@ const MessageTab = () => {
     <IonPage>
       <IonContent fullscreen>
         <IonToolbar className="px-4 bg-white h-14">
-          <p className="pl-0 font-headline3 text-gray8">{t('message.title')}</p>
+          <p className="pl-0 text-gray8 font-headline1">{t('message.title')}</p>
         </IonToolbar>
 
         {messages.length === 0 ? (
