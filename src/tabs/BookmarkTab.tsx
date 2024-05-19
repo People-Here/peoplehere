@@ -66,7 +66,7 @@ const BookmarkTab = () => {
                 title={item.title}
                 placeName={item.placeInfo.name}
                 district={item.placeInfo.district}
-                images={item.placeInfo.imageUrlList.map((image) => image.imageUrl as string)}
+                images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
                 available={item.userInfo.directMessageStatus}
                 user={{
                   id: item.userInfo.id.toString(),
@@ -117,17 +117,10 @@ const ListItem = ({ title, placeName, district, images, available, user }: ListI
         </div>
 
         {/* content area */}
-        {images.length === 1 ? (
-          <div className="flex gap-2 h-[140px] pr-4">
-            <UserImage firstName={user.name} profileImageUrl={user.imageUrl} />
-            <SingleImage image={images[0]} />
-          </div>
-        ) : (
-          <div className="flex gap-2 h-[140px] w-full overflow-x-scroll pr-4">
-            <UserImage firstName={user.name} profileImageUrl={user.imageUrl} />
-            <Images images={images} />
-          </div>
-        )}
+        <div className="flex gap-2 h-[140px] pr-4">
+          <UserImage firstName={user.name} profileImageUrl={user.imageUrl} />
+          <SingleImage image={images[0]} />
+        </div>
       </div>
     </div>
   );

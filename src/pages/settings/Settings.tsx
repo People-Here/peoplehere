@@ -16,6 +16,7 @@ import Alert from '../../components/Alert';
 import { deleteAccount } from '../../api/sign-up';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
+import LanguageIcon from '../../assets/svgs/language.svg';
 
 import type { AxiosError } from 'axios';
 
@@ -52,6 +53,7 @@ const Settings = () => {
 
           <div className="mt-4">
             <MenuItem title="개인정보" icon={UserIcon} routeTo="/settings/informations" />
+            <MenuItem title="번역" icon={LanguageIcon} routeTo="/settings/translate" />
             <MenuItem title="알림" icon={BellIcon} routeTo="/settings/alert" />
             <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="/settings/support" />
             <MenuItem title="법률" icon={PaperIcon} routeTo="/settings/policy" />

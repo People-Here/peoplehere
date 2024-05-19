@@ -69,11 +69,20 @@ const SelectRegion = (props: ModalProps) => {
   }, [searchText, regions, filterCountries]);
 
   const onClickRegion = (event: any) => {
+    if (selectedRegion.countryCode) {
+      setSelectedRegion({
+        countryCode: '',
+        dialCode: 0,
+        englishName: '',
+        koreanName: '',
+      });
+      return;
+    }
+
     const targetRegion = regions.find(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       (region) => region.koreanName === event.target.innerText,
     );
-
     if (!targetRegion) return;
 
     setSelectedRegion(targetRegion);

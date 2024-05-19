@@ -29,6 +29,7 @@ import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
 import ChangeStatus from './pages/my-page/ChangeStatus';
 import DeleteReason from './pages/my-page/DeleteReason';
+import Translate from './pages/settings/Translate';
 
 const Router = () => {
   return (
@@ -116,6 +117,9 @@ const Router = () => {
       </Route>
       <Route path="/settings/informations/email">
         <ChangeEmail />
+      </Route>
+      <Route path="/settings/translate">
+        <Translate />
       </Route>
       <Route path="/settings/alert">
         <ManageAlerts />
