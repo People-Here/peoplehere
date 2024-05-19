@@ -79,93 +79,27 @@ const MessageTab = () => {
           <div className="px-4 pb-16">
             {messages.map((message) => (
               <Link key={message.id} to={`/message/${message.id}`}>
-                <ChatListItem
-                  imageUrl={message.guestInfo.profileImageUrl}
-                  name={message.guestInfo.firstName}
-                  date={'2024-04-28 19:00'}
-                  lastMessage={message.lastMessage}
-                  placeName={message.title}
-                />
+                {message.guestInfo.id.toString() === user.id ? (
+                  <ChatListItem
+                    imageUrl={message.ownerInfo.profileImageUrl}
+                    name={message.ownerInfo.firstName}
+                    date={'2024-04-28 19:00'}
+                    lastMessage={message.lastMessage}
+                    placeName={message.title}
+                  />
+                ) : (
+                  <ChatListItem
+                    imageUrl={message.guestInfo.profileImageUrl}
+                    name={message.guestInfo.firstName}
+                    date={'2024-04-28 19:00'}
+                    lastMessage={message.lastMessage}
+                    placeName={message.title}
+                  />
+                )}
               </Link>
             ))}
           </div>
         )}
-        {/* <div className="px-4 pb-16">
-          <Link to={'/message/123123'}>
-            <ChatListItem
-              imageUrl="https://picsum.photos/seed/picsum/100/200"
-              name="예지나"
-              hasSchedule
-              date="2024-04-28 19:00"
-              lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-              placeName="서울숲 1티어 맛집"
-            />
-          </Link>
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-          <ChatListItem
-            imageUrl="https://picsum.photos/seed/picsum/100/200"
-            name="예지나"
-            hasSchedule
-            date="2024-04-28 19:00"
-            lastMessage="그럼 우리 어대역 근처에서 만나면 된다는 말씀이신가요?"
-            placeName="서울숲 1티어 맛집"
-          />
-        </div> */}
       </IonContent>
     </IonPage>
   );

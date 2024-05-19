@@ -45,6 +45,8 @@ export type MessageRoom = {
     id: bigint;
     firstName: string;
     lastName: string;
+    introduce: string;
+    profileImageUrl: string;
     directMessageStatus: boolean;
   };
 };
