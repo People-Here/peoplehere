@@ -7,14 +7,25 @@ type Button = {
 };
 
 type Props = {
-  trigger: string;
+  trigger?: string;
+  isOpen?: boolean;
   title: string;
   subTitle?: string;
   buttons: Button[];
   bottomText?: string;
   onClickBottomText?: () => void;
+  onDismiss?: () => void;
 };
-const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomText }: Props) => {
+const Alert = ({
+  trigger,
+  isOpen,
+  title,
+  subTitle,
+  buttons,
+  bottomText,
+  onClickBottomText,
+  onDismiss,
+}: Props) => {
   // eslint-disable-next-line no-undef
   const alertRef = useRef<HTMLIonModalElement>(null);
 
@@ -27,6 +38,8 @@ const Alert = ({ trigger, title, subTitle, buttons, bottomText, onClickBottomTex
     <IonModal
       ref={alertRef}
       trigger={trigger}
+      isOpen={isOpen}
+      onWillDismiss={onDismiss}
       style={{
         '--backdrop-opacity': '0.6',
         '--width': 'fit-content',

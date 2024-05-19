@@ -28,6 +28,8 @@ const Settings = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [isLogin, setIsLogin] = useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -59,8 +61,8 @@ const Settings = () => {
         <Footer>
           {isLogin ? (
             <button
-              id="logout-alert"
               className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
+              onClick={() => setOpenLogoutModal(true)}
             >
               로그아웃
             </button>
@@ -85,7 +87,10 @@ const Settings = () => {
           </div>
 
           {isLogin ? (
-            <p id="delete-modal" className="text-center underline font-caption1 text-gray5.5">
+            <p
+              className="text-center underline font-caption1 text-gray5.5"
+              onClick={() => setOpenDeleteModal(true)}
+            >
               계정 삭제
             </p>
           ) : (
@@ -97,9 +102,8 @@ const Settings = () => {
 
         <DeleteUser trigger="delete-modal" onDidDismiss={() => buttonRef.current?.click()} />
 
-        <button id="delete-confirm-alert" className="hidden" ref={buttonRef} />
         <Alert
-          trigger="delete-confirm-alert"
+          isOpen={openDeleteModal}
           title="정말로 계정을 삭제할까요?"
           buttons={[
             {
@@ -127,10 +131,13 @@ const Settings = () => {
               text: '취소',
             },
           ]}
+          onDismiss={() => {
+            setOpenDeleteModal(false);
+          }}
         />
 
         <Alert
-          trigger="logout-alert"
+          isOpen={openLogoutModal}
           title="로그아웃 하시겠어요?"
           buttons={[
             {
@@ -141,6 +148,7 @@ const Settings = () => {
               onClick: requestLogout,
             },
           ]}
+          onDismiss={() => setOpenLogoutModal(false)}
         />
       </IonContent>
     </IonPage>
