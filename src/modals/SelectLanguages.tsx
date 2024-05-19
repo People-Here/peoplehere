@@ -25,8 +25,6 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Pro
 
   const [selected, setSelected] = useState<Language[]>([]);
 
-  console.log('here', selected);
-
   const onClickLanguage = (language: Language) => {
     if (selected.includes(language)) {
       setSelected(selected.filter((lang) => lang.lang !== language.lang));
