@@ -9,7 +9,6 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -172,8 +171,7 @@ const EditProfile = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const token = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: token.data });
+        await getNewToken();
 
         await updateUserProfile(formData);
         router.goBack();

@@ -33,7 +33,7 @@ const BookmarkTab = () => {
       } catch (error) {
         const errorInstance = error as AxiosError;
 
-        if (errorInstance.response?.status === 401) {
+        if (errorInstance.response?.status === 403) {
           await getNewToken();
 
           const response = await getBookmarkList(region.countryCode.toUpperCase(), 'KOREAN');
@@ -165,21 +165,6 @@ const UserImage = ({ firstName, profileImageUrl }: Pick<User, 'firstName' | 'pro
 const SingleImage = ({ image }: { image: string }) => {
   return (
     <IonImg className="object-cover w-full overflow-hidden rounded-xl" src={image} alt="place" />
-  );
-};
-
-const Images = ({ images }: { images: string[] }) => {
-  return (
-    <div className="flex gap-2 w-max">
-      {images.map((image, index) => (
-        <IonImg
-          key={index}
-          src={image}
-          alt={`place-${index}`}
-          className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl"
-        />
-      ))}
-    </div>
   );
 };
 

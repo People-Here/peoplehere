@@ -20,6 +20,8 @@ const SelectRegion = (props: ModalProps) => {
   const [regions, setRegions] = useState<Region[]>([]);
   const [filteredRegions, setFilteredRegions] = useState<Region[]>([]);
 
+  console.log('filter', filteredRegions);
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -116,7 +118,7 @@ const SelectRegion = (props: ModalProps) => {
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="font-body1 text-orange6">
-                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                    {i18n.language[0] === 'ko' ? region.koreanName : region.englishName}
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>

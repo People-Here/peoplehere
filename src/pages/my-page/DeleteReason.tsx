@@ -1,7 +1,6 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
-import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import Footer from '../../layouts/Footer';
@@ -25,8 +24,7 @@ const DeleteReason = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const response = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: response.data });
+        await getNewToken();
 
         await deleteTour(tourId);
         router.push('/profile');

@@ -12,7 +12,6 @@ import {
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
 import { enrollPlace, getSearchHistory, searchPlace } from '../api/search';
@@ -62,8 +61,7 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const token = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: token.data });
+        await getNewToken();
 
         const response = await getSearchHistory();
         setHistory(response.data.places);

@@ -12,7 +12,6 @@ import {
 } from '@ionic/react';
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -77,8 +76,7 @@ const Preview = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const tokens = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: tokens.data });
+        await getNewToken();
 
         await postTour(formData);
         router.push('/', 'root', 'replace');
