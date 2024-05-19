@@ -46,6 +46,7 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
   const [lang, setLang] = useState('KOREAN');
   const [placeList, setPlaceList] = useState<Tour[]>([]);
+  const [currentRegion, setCurrentRegion] = useState(region.countryCode);
 
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
@@ -59,12 +60,8 @@ const Profile = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getUserProfile(userId, region.countryCode);
-      const placeListResponse = await getTourListByUser(
-        region.countryCode.toUpperCase(),
-        lang,
-        userId,
-      );
+      const response = await getUserProfile(userId, currentRegion);
+      const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
 
       if (response.status === 200) {
         setUserInfo(response.data);
@@ -88,6 +85,8 @@ const Profile = () => {
       router.push('/edit-profile');
     }
   };
+
+  const handleClickTranslate = async () => {};
 
   if (!userInfo) {
     return <LogoRunning />;
