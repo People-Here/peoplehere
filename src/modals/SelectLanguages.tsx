@@ -14,15 +14,18 @@ export type Language = {
 };
 
 type Props = {
+  languages: Language[];
   setLanguages: (languages: Language[]) => void;
 };
 
-const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
+const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Props) => {
   const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
   const [selected, setSelected] = useState<Language[]>([]);
+
+  console.log('here', selected);
 
   const onClickLanguage = (language: Language) => {
     if (selected.includes(language)) {
@@ -39,6 +42,7 @@ const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
       initialBreakpoint={0.87}
       breakpoints={[0, 0.87, 0.95]}
       onWillDismiss={() => setLanguages(selected)}
+      onWillPresent={() => setSelected(languages)}
       {...props}
     >
       <section
@@ -51,7 +55,7 @@ const SelectLanguages = ({ setLanguages, ...props }: ModalProps & Props) => {
                 <IonCheckbox
                   class="ion-no-margin"
                   justify="space-between"
-                  checked={selected.includes(language)}
+                  checked={selected.map((lang) => lang.lang).includes(language.lang)}
                   onIonChange={() => onClickLanguage(language)}
                   style={{
                     '--size': '18px',
