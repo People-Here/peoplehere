@@ -1,10 +1,28 @@
 import { IonContent, IonPage } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 
 const Translate = () => {
   const [isOn, setIsOn] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const { value } = await Preferences.get({ key: 'autoTranslate' });
+
+      if (value === 'true') {
+        setIsOn(true);
+      }
+    })();
+  }, []);
+
+  const onSwitch = async () => {
+    await Preferences.set({ key: 'autoTranslate', value: isOn ? 'false' : 'true' });
+
+    setIsOn((prev) => !prev);
+  };
 
   return (
     <IonPage>
@@ -20,7 +38,7 @@ const Translate = () => {
               </p>
             </div>
 
-            <Switch onOff={isOn} onChange={() => setIsOn((prev) => !prev)} />
+            <Switch onOff={isOn} onChange={onSwitch} />
           </div>
         </div>
       </IonContent>
