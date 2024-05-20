@@ -140,6 +140,7 @@ const Home = () => {
 
 const SearchBar = () => {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const { region } = useSignInStore((state) => state);
 
@@ -148,7 +149,9 @@ const SearchBar = () => {
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
           <IonText className="font-headline3 text-gray7">{t(`searchBar.title`)}</IonText>
-          <IonText className="font-caption2 text-gray5">{region.koreanName}</IonText>
+          <IonText className="font-caption2 text-gray5">
+            {location.search ? location.search.split('=')[1] : region.koreanName}
+          </IonText>
         </div>
 
         <IonIcon icon={SearchIcon} className="svg-lg" />
