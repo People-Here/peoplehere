@@ -88,7 +88,7 @@ const TourDetail = () => {
 
         <Link
           className="flex justify-center w-full mt-6 mb-12"
-          to={`/profile/${tourDetail.userInfo.id.toString()}`}
+          to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
         >
           <UserImage
             src={tourDetail.userInfo.profileImageUrl}

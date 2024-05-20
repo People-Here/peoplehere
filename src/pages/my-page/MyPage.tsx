@@ -131,7 +131,7 @@ const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
         if (needEdit) {
           router.push('/edit-profile');
         } else {
-          router.push(`/profile/${user.id}`);
+          router.push(`/detail-profile/${user.id}`);
         }
       }}
     >
