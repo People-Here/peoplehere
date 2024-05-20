@@ -16,18 +16,18 @@ import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
 import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
-import LanguageIcon from '../../assets/svgs/language.svg';
 import useUserStore from '../../stores/user';
 import { getMessages } from '../../api/message';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
 import LogoRunning from '../../components/LogoRunning';
 import { formatDateTimeToString } from '../../utils/date';
+import { findKoreanLanguageName } from '../../utils/find';
 
 import type { Message } from '../../api/message';
 
 const MessageRoom = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const location = useLocation();
@@ -95,7 +95,11 @@ const MessageRoom = () => {
 
         <ChatInfo
           imageUrl={userInfo.profileImageUrl}
-          languages={['한국어', '영어']}
+          languages={
+            i18n.resolvedLanguage === 'ko'
+              ? userInfo.languages.map((lang) => findKoreanLanguageName(lang))
+              : userInfo.languages
+          }
           title={messages.title}
           tourId={messages.tourId.toString()}
         />
@@ -107,7 +111,7 @@ const MessageRoom = () => {
             <div className="flex flex-col gap-8 mt-4">
               {messages.messageList.map((message) => (
                 <Chat
-                  key={message.createdAt.toString()}
+                  key={message.messageId}
                   type={
                     message.receiverId.toString() === userInfo.id.toString() ? 'send' : 'receive'
                   }
@@ -203,7 +207,7 @@ const Chat = ({ type, message, time }: ChatProps) => {
 
         <div className="flex items-center justify-between">
           <p className="font-caption2 text-gray5.5">{time}</p>
-          <IonIcon src={LanguageIcon} className="svg-md" />
+          {/* <IonIcon src={LanguageIcon} className="svg-md" /> */}
         </div>
       </div>
     </div>

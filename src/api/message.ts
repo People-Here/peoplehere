@@ -41,6 +41,22 @@ export const postMessage = async (body: SendMessageRequest) => {
   return response;
 };
 
+export const translateMessage = async (content: string, language: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost<TranslateResult>(
+    '/tours/message/translate',
+    { content, language },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
+
+  return response;
+};
+
 export type MessageRoom = {
   id: bigint;
   tourId: bigint;
@@ -85,6 +101,7 @@ export type Message = {
     introduce: string;
     profileImageUrl: string;
     directMessageStatus: boolean;
+    languages: string[];
   };
   guestInfo: {
     id: bigint;
@@ -93,11 +110,18 @@ export type Message = {
     introduce: string;
     profileImageUrl: string;
     directMessageStatus: boolean;
+    languages: string[];
   };
   messageList: {
     senderId: bigint;
     receiverId: bigint;
+    messageId: bigint;
     message: string;
-    createdAt: Date;
+    createdAt: string;
   }[];
+};
+
+type TranslateResult = {
+  content: string;
+  language: string;
 };
