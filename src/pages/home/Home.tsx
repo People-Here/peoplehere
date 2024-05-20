@@ -9,7 +9,6 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Preferences } from '@capacitor/preferences';
 
 import SearchIcon from '../../assets/svgs/search.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
@@ -22,6 +21,7 @@ import LogoRunning from '../../components/LogoRunning';
 import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
@@ -42,35 +42,25 @@ const Home = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const lang = await Preferences.get({ key: 'language' });
+      const lang = await getTranslateLanguage();
 
       if (location.search) {
         const keyword = location.search.split('=')[1];
 
-        const { data, status } = await searchTour(
-          keyword,
-          region.countryCode.toUpperCase(),
-          lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
-        );
+        const { data, status } = await searchTour(keyword, region.countryCode.toUpperCase(), lang);
 
         if (status === 200) {
           setList(data.tourList);
         }
       } else {
         try {
-          const response = await getTourList(
-            region.countryCode.toUpperCase(),
-            lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
-          );
+          const response = await getTourList(region.countryCode.toUpperCase(), lang);
 
           setList(response.data.tourList);
         } catch (error) {
           await getNewToken();
 
-          const { data } = await getTourList(
-            region.countryCode.toUpperCase(),
-            lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
-          );
+          const { data } = await getTourList(region.countryCode.toUpperCase(), lang);
           setList(data.tourList);
         }
       }
@@ -80,25 +70,18 @@ const Home = () => {
   }, [location.search, region.countryCode]);
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    const lang = await Preferences.get({ key: 'language' });
+    const lang = await getTranslateLanguage();
 
     if (location.search) {
       const keyword = location.search.split('=')[1];
 
-      const { data, status } = await searchTour(
-        keyword,
-        region.countryCode.toUpperCase(),
-        lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
-      );
+      const { data, status } = await searchTour(keyword, region.countryCode.toUpperCase(), lang);
 
       if (status === 200) {
         setList(data.tourList);
       }
     } else {
-      const { data, status } = await getTourList(
-        region.countryCode.toUpperCase(),
-        lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
-      );
+      const { data, status } = await getTourList(region.countryCode.toUpperCase(), lang);
 
       if (status === 200) {
         setList(data.tourList);

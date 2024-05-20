@@ -80,13 +80,46 @@ const Profile = () => {
     })();
   }, []);
 
-  const handleClickIcon = () => {
+  const handleClickIcon = async () => {
     if (isMe) {
       router.push('/edit-profile');
+    } else {
+      await handleClickTranslate();
     }
   };
 
-  const handleClickTranslate = async () => {};
+  const handleClickTranslate = async () => {
+    const userId = location.pathname.split('/').at(-1);
+    if (!userId) {
+      return;
+    }
+
+    if (currentRegion === 'KR') {
+      setCurrentRegion('EN');
+      const response = await getUserProfile(userId, 'US');
+
+      setUserInfo(response.data);
+
+      if (i18n.resolvedLanguage === 'ko') {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+        });
+      }
+    } else {
+      setCurrentRegion('KR');
+      const response = await getUserProfile(userId, 'KR');
+
+      setUserInfo(response.data);
+
+      if (i18n.resolvedLanguage === 'ko') {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+        });
+      }
+    }
+  };
 
   if (!userInfo) {
     return <LogoRunning />;
