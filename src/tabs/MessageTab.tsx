@@ -42,7 +42,7 @@ const MessageTab = () => {
         router.push('/edit-profile', 'forward', 'replace');
       }
     })();
-  }, [checkLogin, router, user.id, region.countryCode]);
+  }, []);
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -78,7 +78,7 @@ const MessageTab = () => {
         ) : (
           <div className="px-4 pb-16">
             {messages.map((message) => (
-              <Link key={message.id} to={`/message/${message.id}`}>
+              <Link key={message.id} to={`/room-message/${message.id}`}>
                 {message.guestInfo.id.toString() === user.id ? (
                   <ChatListItem
                     imageUrl={message.ownerInfo.profileImageUrl}

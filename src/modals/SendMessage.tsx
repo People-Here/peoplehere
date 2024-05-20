@@ -56,6 +56,8 @@ const SendMessage = ({ tourId, receiverId, ...rest }: Props & ModalProps) => {
       if (errorInstance.response?.status === 500) {
         console.error('server error', error);
       }
+    } finally {
+      setInput('');
     }
   };
 

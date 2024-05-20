@@ -7,7 +7,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
 
@@ -18,56 +18,63 @@ import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
 import LanguageIcon from '../../assets/svgs/language.svg';
 import useUserStore from '../../stores/user';
-import { getMessageRooms, type MessageRoom as MessageRoomType } from '../../api/message';
+import { getMessages } from '../../api/message';
 import { getNewToken } from '../../api/login';
+import { getTranslateLanguage } from '../../utils/translate';
+import LogoRunning from '../../components/LogoRunning';
+import { formatDateTimeToString } from '../../utils/date';
 
-import type { AxiosError } from 'axios';
-
-// const messages: Message[] = [
-//   {
-//     type: 'receive',
-//     message: '안녕하세요 ㅎㅎ 혹시 언제 시간 괜찮으세요?',
-//     time: '24/01/24 22:46',
-//   },
-//   {
-//     type: 'send',
-//     message: '안녕하세요~\n저는 이번주 일요일 3시가 좋아요.\n예지나님은요??',
-//     time: '24/01/24 22:48',
-//   },
-//   {
-//     type: 'receive',
-//     message: '일요일 3시면 괜찮아요! 어디에서 만나면 될까요?',
-//     time: '24/01/24 23:20',
-//   },
-// ];
+import type { Message } from '../../api/message';
 
 const MessageRoom = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
+  const location = useLocation();
 
   const user = useUserStore((state) => state.user);
 
-  const [messages, setMessages] = useState<MessageRoomType[]>([]);
+  const [messages, setMessages] = useState<Message>();
+  const [userInfo, setUserInfo] = useState<Message['guestInfo']>();
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      try {
-        const response = await getMessageRooms();
-        setMessages(response.data.tourRoomList);
-      } catch (error) {
-        const errorInstance = error as AxiosError;
-
-        if (errorInstance.response?.status === 401) {
-          await getNewToken();
-
-          const response = await getMessageRooms();
-          setMessages(response.data.tourRoomList);
-        }
-      }
-    })();
+    getMessageList();
   }, []);
+
+  const getMessageList = async () => {
+    const tourId = location.pathname.split('/').at(-1);
+
+    if (!tourId) return;
+
+    const lang = await getTranslateLanguage();
+
+    try {
+      const response = await getMessages(tourId, lang);
+      setMessages(response.data);
+
+      setUserInfo(
+        response.data.guestInfo.id.toString() === user.id
+          ? response.data.ownerInfo
+          : response.data.guestInfo,
+      );
+    } catch (error) {
+      await getNewToken();
+
+      const response = await getMessages(tourId, lang);
+      setMessages(response.data);
+
+      setUserInfo(
+        response.data.guestInfo.id.toString() === user.id
+          ? response.data.ownerInfo
+          : response.data.guestInfo,
+      );
+
+      console.error('fail to get messages', error);
+    }
+  };
+
+  if (!messages || !userInfo) return <LogoRunning />;
 
   return (
     <IonPage>
@@ -77,7 +84,7 @@ const MessageRoom = () => {
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
-          <p className="pl-1.5 font-headline3 text-gray8">{user.firstName}</p>
+          <p className="pl-1.5 font-headline3 text-gray8">{userInfo.firstName}</p>
 
           <IonButtons slot="end">
             <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
@@ -87,23 +94,30 @@ const MessageRoom = () => {
         </IonToolbar>
 
         <ChatInfo
-          imageUrl="https://picsum.photos/seed/picsum/100/200"
+          imageUrl={userInfo.profileImageUrl}
           languages={['한국어', '영어']}
-          title="홍대 소품샵 둘러보기"
-          tourId="13132323"
+          title={messages.title}
+          tourId={messages.tourId.toString()}
         />
 
-        {/* <div className="px-4">
-          {messages.length === 0 ? (
-            <NoChatChip userName="예지나" />
+        <div className="px-4">
+          {messages.messageList.length === 0 ? (
+            <NoChatChip userName={userInfo.firstName} />
           ) : (
             <div className="flex flex-col gap-8 mt-4">
-              {messages.map((msg) => (
-                <Chat key={msg.lastMessage} {...msg} />
+              {messages.messageList.map((message) => (
+                <Chat
+                  key={message.createdAt.toString()}
+                  type={
+                    message.receiverId.toString() === userInfo.id.toString() ? 'send' : 'receive'
+                  }
+                  message={message.message}
+                  time={formatDateTimeToString(String(message.createdAt))}
+                />
               ))}
             </div>
           )}
-        </div> */}
+        </div>
 
         <Footer>
           <div className="flex items-center gap-3">
@@ -116,7 +130,12 @@ const MessageRoom = () => {
             </button>
           </div>
         </Footer>
-        <SendMessage trigger="send-message-modal" tourId="1" receiverId="1" />
+        <SendMessage
+          trigger="send-message-modal"
+          tourId={messages.tourId.toString()}
+          receiverId={userInfo.id.toString()}
+          onWillDismiss={getMessageList}
+        />
       </IonContent>
     </IonPage>
   );

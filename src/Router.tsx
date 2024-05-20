@@ -95,7 +95,7 @@ const Router = () => {
         <DeleteReason />
       </Route>
 
-      <Route path="/message/:id">
+      <Route path="/room-message/:id">
         <MessageRoom />
       </Route>
 
