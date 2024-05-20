@@ -107,6 +107,7 @@ const Settings = () => {
         <Alert
           isOpen={openDeleteModal}
           title="정말로 계정을 삭제할까요?"
+          subTitle="개인정보 보호 방침에 따라 회원님의 계정은 30일 간 비활성화 후 영구 삭제될 예정이며, 비활성화 중 로그인을 시도하면 삭제 요청을 철회하고 계정을 복구할 수 있습니다."
           buttons={[
             {
               text: '계정 삭제',

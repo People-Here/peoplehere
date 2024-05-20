@@ -199,6 +199,12 @@ const TourItem = ({
 
       setList(response.data.tourList);
     } catch (error) {
+      await getNewToken();
+      await likeTour(id);
+      const response = await getTourList('KR', 'ORIGIN');
+
+      setList(response.data.tourList);
+
       console.error(error);
     }
   };

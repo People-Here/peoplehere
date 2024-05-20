@@ -60,7 +60,7 @@ const BookmarkTab = () => {
             <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3 px-4 mt-[1.625rem]">
+          <div className="flex flex-col gap-3 px-4 mt-[1.625rem] pb-20">
             {list.map((item) => (
               <ListItem
                 key={item.id}
