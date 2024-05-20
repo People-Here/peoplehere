@@ -29,6 +29,7 @@ import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
+import FullPageMap from '../../modals/FullPageMap';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -88,7 +89,7 @@ const TourDetail = () => {
 
         <Link
           className="flex justify-center w-full mt-6 mb-12"
-          to={`/profile/${tourDetail.userInfo.id.toString()}`}
+          to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
         >
           <UserImage
             src={tourDetail.userInfo.profileImageUrl}
@@ -175,6 +176,15 @@ const TourDetail = () => {
           </IonToolbar>
         </IonFooter>
 
+        <FullPageMap
+          trigger="place-map-modal"
+          lat={37.5409582}
+          lng={127.0684686}
+          title={tourDetail.placeInfo.name}
+          address={tourDetail.placeInfo.address}
+          thumbnail={tourDetail.placeInfo.imageUrlList[0].imageUrl}
+        />
+
         <SendMessage
           trigger="send-message-modal"
           tourId={tourId}
@@ -239,6 +249,7 @@ type PlaceInfoProps = {
 const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
   return (
     <div
+      id="place-map-modal"
       className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">

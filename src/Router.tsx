@@ -40,7 +40,7 @@ const Router = () => {
       <Route exact path="/bookmark">
         <BookmarkTab />
       </Route>
-      <Route exact path="/post">
+      <Route path="/post">
         <PostTab />
       </Route>
       <Route exact path="/message">
@@ -48,6 +48,9 @@ const Router = () => {
       </Route>
       <Route exact path="/profile">
         <ProfileTab />
+      </Route>
+      <Route exact path="/detail-profile/:id">
+        <Profile />
       </Route>
 
       <Route path="/region">
@@ -81,9 +84,6 @@ const Router = () => {
         <AlarmAgreement />
       </Route>
 
-      <Route path="/profile/:id">
-        <Profile />
-      </Route>
       <Route path="/edit-profile">
         <EditProfile />
       </Route>
@@ -95,7 +95,7 @@ const Router = () => {
         <DeleteReason />
       </Route>
 
-      <Route path="/message/:id">
+      <Route path="/room-message/:id">
         <MessageRoom />
       </Route>
 

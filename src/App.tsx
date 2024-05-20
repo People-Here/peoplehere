@@ -45,6 +45,12 @@ const App = () => {
       await Preferences.set({ key: 'language', value: userLang.value });
 
       await i18n.changeLanguage(userLang.value);
+
+      if (userLang.value === 'ko') {
+        await Preferences.set({ key: 'autoTranslate', value: 'false' });
+      } else {
+        await Preferences.set({ key: 'autoTranslate', value: 'true' });
+      }
     })();
   }, [i18n]);
 

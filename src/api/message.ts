@@ -16,6 +16,19 @@ export const getMessageRooms = async () => {
   return response;
 };
 
+export const getMessages = async (tourId: string, langCode: string) => {
+  const { value: token } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedGet<Message>(`/tours/messages/${tourId}/${langCode}`, {
+    headers: {
+      Authorization: token,
+    },
+    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+  });
+
+  return response;
+};
+
 export const postMessage = async (body: SendMessageRequest) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
@@ -24,6 +37,22 @@ export const postMessage = async (body: SendMessageRequest) => {
       Authorization: value,
     },
   });
+
+  return response;
+};
+
+export const translateMessage = async (content: string, language: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost<TranslateResult>(
+    '/tours/message/translate',
+    { content, language },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
 
   return response;
 };
@@ -59,4 +88,40 @@ type SendMessageRequest = {
   tourId: string;
   receiverId: string;
   message: string;
+};
+
+export type Message = {
+  tourId: bigint;
+  tourRoomId: bigint;
+  title: string;
+  ownerInfo: {
+    id: bigint;
+    firstName: string;
+    lastName: string;
+    introduce: string;
+    profileImageUrl: string;
+    directMessageStatus: boolean;
+    languages: string[];
+  };
+  guestInfo: {
+    id: bigint;
+    firstName: string;
+    lastName: string;
+    introduce: string;
+    profileImageUrl: string;
+    directMessageStatus: boolean;
+    languages: string[];
+  };
+  messageList: {
+    senderId: bigint;
+    receiverId: bigint;
+    messageId: bigint;
+    message: string;
+    createdAt: string;
+  }[];
+};
+
+type TranslateResult = {
+  content: string;
+  language: string;
 };
