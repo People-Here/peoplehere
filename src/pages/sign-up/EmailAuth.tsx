@@ -26,7 +26,6 @@ const EmailAuth = () => {
 
   const checkEmailExist = async () => {
     setErrorMessage('');
-
     setIsLoading(true);
 
     try {

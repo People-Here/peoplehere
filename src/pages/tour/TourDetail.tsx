@@ -28,6 +28,7 @@ import { themeColors } from '../../constants/theme';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
+import FullImage from '../../modals/FullImage';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -102,15 +103,15 @@ const TourDetail = () => {
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div
-              className={`flex items-center ${themeColors[tourDetail.theme].footer} rounded py-0.5 px-1.5 w-fit`}
+              className={`flex items-center ${themeColors[tourDetail.theme].languageBackground} rounded py-0.5 px-1.5 w-fit`}
             >
-              <p className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
+              <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {t('common.availableLanguages')}
-              </p>
+              </IonText>
               <Divider />
-              <p className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
+              <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {tourDetail.userInfo.languages.join(', ')}
-              </p>
+              </IonText>
             </div>
 
             <p
@@ -210,7 +211,7 @@ type ImageProps = {
 const UserImage = ({ src, name }: ImageProps) => {
   return (
     <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
-      <IonImg className="w-[100px] h-full object-cover" src={src} alt="user profile" />
+      <IonImg className="object-cover w-full h-full" src={src} alt="user profile" />
 
       <div
         className="h-[72px] absolute bottom-0 left-0 right-0"
@@ -262,13 +263,14 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showFullImage, setShowFullImage] = useState(false);
 
   useEffect(() => {
     const carousel = carouselRef.current;
 
     if (!carousel) return;
 
-    const slides = carousel.querySelectorAll('ion-img');
+    const slides = carousel.querySelectorAll('img');
     const slidesArray = Array.from(slides);
 
     const observer = new IntersectionObserver(
@@ -276,7 +278,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // eslint-disable-next-line no-undef
-            setCurrentIndex(slidesArray.indexOf(entry.target as HTMLIonImgElement));
+            setCurrentIndex(slidesArray.indexOf(entry.target as HTMLImageElement));
           }
         });
       },
@@ -288,37 +290,45 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   }, []);
 
   return (
-    <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
+    <>
       <div
-        ref={carouselRef}
-        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+        className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6"
+        onClick={() => setShowFullImage(true)}
       >
-        {/* image carousel */}
-        {images.map((image) => (
-          <IonImg
-            key={image}
-            src={image}
-            className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
-          />
-        ))}
+        <div
+          ref={carouselRef}
+          className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+        >
+          {/* image carousel */}
+          {images.map((image) => (
+            <img
+              key={image}
+              src={image}
+              className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
+              alt={`place image`}
+            />
+          ))}
+        </div>
+
+        {/* gradient */}
+        <div
+          className="absolute bottom-0 left-0 right-0 w-full opacity-70 h-[3.375rem]"
+          style={{ background: 'linear-gradient(0deg, #1B1D1F 0%, rgba(27, 29, 31, 0.00) 100%)' }}
+        />
+
+        {/* slide indicator */}
+        <div
+          className="absolute bottom-4 right-2.5 px-2.5 py-1 rounded-2xl flex items-center gap-1"
+          style={{ background: 'rgba(27, 29, 31, 0.80)' }}
+        >
+          <p className="font-caption1 text-gray1">{currentIndex + 1}</p>
+          <p className="font-caption1 text-gray1">|</p>
+          <p className="font-caption1 text-gray5">{images.length}</p>
+        </div>
       </div>
 
-      {/* gradient */}
-      <div
-        className="absolute bottom-0 left-0 right-0 w-full opacity-70 h-[3.375rem]"
-        style={{ background: 'linear-gradient(0deg, #1B1D1F 0%, rgba(27, 29, 31, 0.00) 100%)' }}
-      />
-
-      {/* slide indicator */}
-      <div
-        className="absolute bottom-4 right-2.5 px-2.5 py-1 rounded-2xl flex items-center gap-1"
-        style={{ background: 'rgba(27, 29, 31, 0.80)' }}
-      >
-        <p className="font-caption1 text-gray1">{currentIndex + 1}</p>
-        <p className="font-caption1 text-gray1">|</p>
-        <p className="font-caption1 text-gray5">{images.length}</p>
-      </div>
-    </div>
+      {showFullImage && <FullImage images={images} setShow={setShowFullImage} />}
+    </>
   );
 };
 

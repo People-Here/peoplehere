@@ -9,6 +9,7 @@ type Props = {
   title: string;
   placeholder: string;
   maxLength: number;
+  value: string;
   setValue: (value: string) => void;
 };
 
@@ -16,6 +17,7 @@ const SimpleInputModal = ({
   title,
   placeholder,
   maxLength,
+  value,
   setValue,
   ...props
 }: Props & ModalProps) => {
@@ -28,6 +30,7 @@ const SimpleInputModal = ({
       initialBreakpoint={0.3}
       breakpoints={[0, 0.3, 0.5]}
       onClickButton={() => setValue(input)}
+      onWillPresent={() => setInput(value)}
       {...props}
     >
       <div className="flex flex-col gap-1.5 items-end mb-4 mt-3">

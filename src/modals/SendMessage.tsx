@@ -40,6 +40,7 @@ const SendMessage = ({ tourId, receiverId, ...rest }: Props & ModalProps) => {
 
       if (errorInstance.response?.status === 401) {
         await getNewToken();
+
         await postMessage({
           tourId,
           receiverId,

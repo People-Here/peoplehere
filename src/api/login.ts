@@ -22,7 +22,8 @@ export const getNewToken = async () => {
     accessToken: accessToken.value,
     refreshToken: refreshToken.value,
   });
-  return response;
+
+  await Preferences.set({ key: 'accessToken', value: response.data });
 };
 
 type LoginRequest = {

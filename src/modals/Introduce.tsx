@@ -6,10 +6,11 @@ import ModalContainer from '.';
 import type { ModalProps } from '.';
 
 type Props = {
+  introduce: string;
   setIntroduce: (value: string) => void;
 };
 
-const Introduce = ({ setIntroduce, ...rest }: ModalProps & Props) => {
+const Introduce = ({ introduce, setIntroduce, ...rest }: ModalProps & Props) => {
   const [input, setInput] = useState('');
 
   return (
@@ -19,6 +20,7 @@ const Introduce = ({ setIntroduce, ...rest }: ModalProps & Props) => {
       initialBreakpoint={0.9}
       breakpoints={[0, 0.45, 0.9]}
       onWillDismiss={() => setIntroduce(input)}
+      onWillPresent={() => setInput(introduce)}
       {...rest}
     >
       <div className="flex flex-col gap-1.5 items-end mb-5">

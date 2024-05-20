@@ -12,7 +12,6 @@ import {
 } from '@ionic/react';
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -77,8 +76,7 @@ const Preview = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const tokens = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: tokens.data });
+        await getNewToken();
 
         await postTour(formData);
         router.push('/', 'root', 'replace');
@@ -172,8 +170,8 @@ type ImageProps = {
 };
 const UserImage = ({ src, name }: ImageProps) => {
   return (
-    <div className="overflow-hidden rounded-xl w-[100px] h-full relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
-      <IonImg className="w-[100px] h-full object-cover" src={src} alt="user profile" />
+    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
+      <IonImg className="object-cover w-full h-full" src={src} alt="user profile" />
 
       <div
         className="h-[72px] absolute bottom-0 left-0 right-0"

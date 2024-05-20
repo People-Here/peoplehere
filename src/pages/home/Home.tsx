@@ -1,7 +1,15 @@
-import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
+import {
+  IonIcon,
+  IonImg,
+  IonRefresher,
+  IonRefresherContent,
+  IonText,
+  useIonRouter,
+} from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Preferences } from '@capacitor/preferences';
 
 import SearchIcon from '../../assets/svgs/search.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
@@ -13,7 +21,9 @@ import SearchPlace from '../../modals/SearchPlace';
 import LogoRunning from '../../components/LogoRunning';
 import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
+import { getNewToken } from '../../api/login';
 
+import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
 
 const Home = () => {
@@ -32,22 +42,35 @@ const Home = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const lang = await Preferences.get({ key: 'language' });
+
       if (location.search) {
         const keyword = location.search.split('=')[1];
 
         const { data, status } = await searchTour(
           keyword,
           region.countryCode.toUpperCase(),
-          'ORIGIN',
+          lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
         );
 
         if (status === 200) {
           setList(data.tourList);
         }
       } else {
-        const { data, status } = await getTourList(region.countryCode.toUpperCase(), 'ORIGIN');
+        try {
+          const response = await getTourList(
+            region.countryCode.toUpperCase(),
+            lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
+          );
 
-        if (status === 200) {
+          setList(response.data.tourList);
+        } catch (error) {
+          await getNewToken();
+
+          const { data } = await getTourList(
+            region.countryCode.toUpperCase(),
+            lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
+          );
           setList(data.tourList);
         }
       }
@@ -55,6 +78,35 @@ const Home = () => {
       setLoading(false);
     })();
   }, [location.search, region.countryCode]);
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    const lang = await Preferences.get({ key: 'language' });
+
+    if (location.search) {
+      const keyword = location.search.split('=')[1];
+
+      const { data, status } = await searchTour(
+        keyword,
+        region.countryCode.toUpperCase(),
+        lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
+      );
+
+      if (status === 200) {
+        setList(data.tourList);
+      }
+    } else {
+      const { data, status } = await getTourList(
+        region.countryCode.toUpperCase(),
+        lang.value === 'ko' ? 'KOREAN' : 'ENGLISH',
+      );
+
+      if (status === 200) {
+        setList(data.tourList);
+      }
+    }
+
+    event.detail.complete();
+  };
 
   if (loading) {
     return <LogoRunning />;
@@ -64,6 +116,9 @@ const Home = () => {
     <div className="px-4 mt-3">
       <SearchBar />
 
+      <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+        <IonRefresherContent />
+      </IonRefresher>
       <div className="flex flex-col pb-20 mt-6 gap-7">
         {list.length === 0 ? (
           <div className="mt-60">
@@ -144,6 +199,12 @@ const TourItem = ({
 
       setList(response.data.tourList);
     } catch (error) {
+      await getNewToken();
+      await likeTour(id);
+      const response = await getTourList('KR', 'ORIGIN');
+
+      setList(response.data.tourList);
+
       console.error(error);
     }
   };
@@ -177,7 +238,7 @@ const TourItem = ({
 
       {/* content area */}
       {place.imageUrlList?.length === 1 ? (
-        <div className="flex gap-2 h-[140px]">
+        <div className="flex gap-2 h-[140px] pr-4">
           <UserImage {...user} />
           <SingleImage image={place.imageUrlList[0].imageUrl} />
         </div>

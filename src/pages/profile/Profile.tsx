@@ -11,6 +11,7 @@ import {
 } from '@ionic/react';
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -28,10 +29,13 @@ import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
 import { getTourListByUser, type Tour } from '../../api/tour';
+import { findKoreanLanguageName } from '../../utils/find';
 
 import type { ProfileResponse } from '../../api/profile';
 
 const Profile = () => {
+  const { i18n } = useTranslation();
+
   const router = useIonRouter();
   const location = useLocation();
 
@@ -42,6 +46,7 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
   const [lang, setLang] = useState('KOREAN');
   const [placeList, setPlaceList] = useState<Tour[]>([]);
+  const [currentRegion, setCurrentRegion] = useState(region.countryCode);
 
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
@@ -55,15 +60,18 @@ const Profile = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getUserProfile(userId, region.countryCode);
-      const placeListResponse = await getTourListByUser(
-        region.countryCode.toUpperCase(),
-        lang,
-        userId,
-      );
+      const response = await getUserProfile(userId, currentRegion);
+      const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
 
       if (response.status === 200) {
         setUserInfo(response.data);
+
+        if (i18n.resolvedLanguage === 'ko') {
+          setUserInfo({
+            ...response.data,
+            languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+          });
+        }
       }
 
       if (placeListResponse.status === 200) {
@@ -77,6 +85,8 @@ const Profile = () => {
       router.push('/edit-profile');
     }
   };
+
+  const handleClickTranslate = async () => {};
 
   if (!userInfo) {
     return <LogoRunning />;

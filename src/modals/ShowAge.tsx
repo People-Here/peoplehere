@@ -9,10 +9,11 @@ import type { ModalProps } from '.';
 
 type Props = {
   age: string;
+  showAge: boolean;
   setShowAge: (value: boolean) => void;
 };
 
-const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
+const ShowAge = ({ age, showAge, setShowAge, ...props }: ModalProps & Props) => {
   const { t } = useTranslation();
 
   const [show, setShow] = useState(false);
@@ -24,6 +25,7 @@ const ShowAge = ({ age, setShowAge, ...props }: ModalProps & Props) => {
       initialBreakpoint={0.35}
       breakpoints={[0, 0.35, 0.5]}
       onClickButton={() => setShowAge(show)}
+      onWillPresent={() => setShow(showAge)}
       {...props}
     >
       <div className="px-4 py-2.5 w-full rounded-lg bg-gray1.5 mt-4">

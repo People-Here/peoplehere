@@ -9,7 +9,6 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -34,6 +33,8 @@ import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
 import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
+import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
+import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
@@ -68,7 +69,11 @@ const EditProfile = () => {
           setImage(response.data.profileImageUrl);
           setIntroduce(response.data.introduce);
           setLanguages(
-            response.data.languages.map((lang) => ({ koreanName: lang, englishName: lang, lang })),
+            response.data.languages.map((lang) => ({
+              koreanName: findKoreanLanguageName(lang),
+              englishName: lang,
+              lang: findLanguageCode(lang),
+            })),
           );
           setFavorite(response.data.favorite ?? '');
           setHobby(response.data.hobby ?? '');
@@ -166,8 +171,7 @@ const EditProfile = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 401) {
-        const token = await getNewToken();
-        await Preferences.set({ key: 'accessToken', value: token.data });
+        await getNewToken();
 
         await updateUserProfile(formData);
         router.goBack();
@@ -236,14 +240,15 @@ const EditProfile = () => {
       </IonContent>
 
       {/* modals */}
-      <Introduce trigger="introduce-modal" setIntroduce={setIntroduce} />
+      <Introduce trigger="introduce-modal" introduce={introduce} setIntroduce={setIntroduce} />
       <SelectRegion trigger="region-modal" />
-      <SelectLanguages trigger="language-modal" setLanguages={setLanguages} />
+      <SelectLanguages trigger="language-modal" languages={languages} setLanguages={setLanguages} />
       <SimpleInputModal
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"
         placeholder="예: 샤워하면서 춤추기, 호밀빵"
         maxLength={20}
+        value={favorite}
         setValue={setFavorite}
       />
       <SimpleInputModal
@@ -251,6 +256,7 @@ const EditProfile = () => {
         title="어떤 취미를 가지고 있나요?"
         placeholder="예: 배드민턴, 요리"
         maxLength={20}
+        value={hobby}
         setValue={setHobby}
       />
       <SimpleInputModal
@@ -258,6 +264,7 @@ const EditProfile = () => {
         title="같이 사는 반려동물이 있나요?"
         placeholder="예: 하얀 말티즈 밍키와 샐리"
         maxLength={20}
+        value={pet}
         setValue={setPet}
       />
       <SimpleInputModal
@@ -265,6 +272,7 @@ const EditProfile = () => {
         title="어떤 일을 하시나요?"
         placeholder="직업 또는 인생의 목표"
         maxLength={20}
+        value={job}
         setValue={setJob}
       />
       <SimpleInputModal
@@ -272,9 +280,10 @@ const EditProfile = () => {
         title="어떤 학교를 졸업했나요?"
         placeholder="홈스쿨링, 고등학교, 직업학교 등 출신학교"
         maxLength={20}
+        value={school}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age="90년대생" setShowAge={setShowAge} />
+      <ShowAge trigger="age-modal" age="90년대생" showAge={showAge} setShowAge={setShowAge} />
       <SearchPlace
         trigger="search-place"
         onClickItem={(item) => {
@@ -316,12 +325,15 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
   return (
     <div className="bg-gray1 w-full h-[20.5rem] flex items-center justify-center relative overflow-hidden">
       {image ? (
-        <IonImg
-          src={image}
-          className="object-cover w-full h-full"
-          onClick={selectPhoto}
-          onIonError={(e) => (e.target.src = DefaultUserImage)}
-        />
+        <>
+          <IonImg
+            src={image}
+            className="object-cover w-full h-full"
+            onClick={selectPhoto}
+            onIonError={(e) => (e.target.src = DefaultUserImage)}
+          />
+          <IonIcon icon={EditIcon} className="absolute w-8 h-8 right-4 top-4" />
+        </>
       ) : (
         <>
           <div className="absolute top-4 right-4">

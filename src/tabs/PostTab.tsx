@@ -32,7 +32,7 @@ const PostTab = () => {
         router.push('/edit-profile');
       }
     })();
-  }, [checkLogin, router, user.id, region.countryCode]);
+  }, []);
 
   return (
     <IonPage>

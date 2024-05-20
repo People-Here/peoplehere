@@ -16,6 +16,7 @@ import Alert from '../../components/Alert';
 import { deleteAccount } from '../../api/sign-up';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
+import LanguageIcon from '../../assets/svgs/language.svg';
 
 import type { AxiosError } from 'axios';
 
@@ -28,6 +29,8 @@ const Settings = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [isLogin, setIsLogin] = useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -50,6 +53,7 @@ const Settings = () => {
 
           <div className="mt-4">
             <MenuItem title="개인정보" icon={UserIcon} routeTo="/settings/informations" />
+            <MenuItem title="번역" icon={LanguageIcon} routeTo="/settings/translate" />
             <MenuItem title="알림" icon={BellIcon} routeTo="/settings/alert" />
             <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="/settings/support" />
             <MenuItem title="법률" icon={PaperIcon} routeTo="/settings/policy" />
@@ -59,8 +63,8 @@ const Settings = () => {
         <Footer>
           {isLogin ? (
             <button
-              id="logout-alert"
               className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
+              onClick={() => setOpenLogoutModal(true)}
             >
               로그아웃
             </button>
@@ -85,7 +89,10 @@ const Settings = () => {
           </div>
 
           {isLogin ? (
-            <p id="delete-modal" className="text-center underline font-caption1 text-gray5.5">
+            <p
+              className="text-center underline font-caption1 text-gray5.5"
+              onClick={() => setOpenDeleteModal(true)}
+            >
               계정 삭제
             </p>
           ) : (
@@ -97,10 +104,10 @@ const Settings = () => {
 
         <DeleteUser trigger="delete-modal" onDidDismiss={() => buttonRef.current?.click()} />
 
-        <button id="delete-confirm-alert" className="hidden" ref={buttonRef} />
         <Alert
-          trigger="delete-confirm-alert"
+          isOpen={openDeleteModal}
           title="정말로 계정을 삭제할까요?"
+          subTitle="개인정보 보호 방침에 따라 회원님의 계정은 30일 간 비활성화 후 영구 삭제될 예정이며, 비활성화 중 로그인을 시도하면 삭제 요청을 철회하고 계정을 복구할 수 있습니다."
           buttons={[
             {
               text: '계정 삭제',
@@ -127,10 +134,13 @@ const Settings = () => {
               text: '취소',
             },
           ]}
+          onDismiss={() => {
+            setOpenDeleteModal(false);
+          }}
         />
 
         <Alert
-          trigger="logout-alert"
+          isOpen={openLogoutModal}
           title="로그아웃 하시겠어요?"
           buttons={[
             {
@@ -141,6 +151,7 @@ const Settings = () => {
               onClick: requestLogout,
             },
           ]}
+          onDismiss={() => setOpenLogoutModal(false)}
         />
       </IonContent>
     </IonPage>
