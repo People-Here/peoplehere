@@ -89,7 +89,9 @@ const Login = () => {
           </div>
 
           <Link to="/reset-password/check-email">
-            <IonText className="font-caption2 text-gray5.5">{t('password.reset')}</IonText>
+            <IonText className="font-caption2 text-gray5.5 underline">
+              {t('password.reset')}
+            </IonText>
           </Link>
         </div>
 
