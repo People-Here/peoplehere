@@ -22,12 +22,12 @@ export const verifyEmailCode = async (email: string, code: string) => {
 };
 
 export const sendPhoneCode = async (region: string, phone: string) => {
-  const response = await typedPost('/account/phone/verification', { region, phone });
+  const response = await typedPost('/account/phone/verification', { region, phoneNumber: phone });
   return response;
 };
 
-export const verifyPhoneCode = async (phone: string, code: string) => {
-  const response = await typedPost('/account/phone/verify', { phone, code });
+export const verifyPhoneCode = async (phone: string, code: string, region: string) => {
+  const response = await typedPost('/account/phone/verify', { phoneNumber: phone, code, region });
   return response;
 };
 

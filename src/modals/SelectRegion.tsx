@@ -20,8 +20,6 @@ const SelectRegion = (props: ModalProps) => {
   const [regions, setRegions] = useState<Region[]>([]);
   const [filteredRegions, setFilteredRegions] = useState<Region[]>([]);
 
-  console.log('filter', filteredRegions);
-
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {

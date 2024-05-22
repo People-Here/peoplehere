@@ -81,7 +81,7 @@ const Login = () => {
             <button
               className="button-primary button-lg"
               onClick={() => {
-                router.push('/sign-up/email');
+                router.push('/sign-up/phone');
               }}
             >
               {t('common.signup')}

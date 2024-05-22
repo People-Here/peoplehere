@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -7,14 +8,45 @@ import SelectInput from '../../components/SelectInput';
 import SelectRegion from '../../modals/SelectRegion';
 import Alert from '../../components/Alert';
 import useSignInStore from '../../stores/signIn';
+import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 
 const PhoneAuth = () => {
-  const router = useIonRouter();
-  const { region } = useSignInStore((state) => state);
+  const { t } = useTranslation();
 
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const router = useIonRouter();
+  const { region, setPhoneNumber } = useSignInStore((state) => state);
+
+  const [phoneNumberInput, setPhoneNumberInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [showCodeInput, setShowCodeInput] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [authErrorMessage, setAuthErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sendAuthCode = async () => {
+    setErrorMessage('');
+    setIsLoading(true);
+
+    try {
+      await sendPhoneCode(region.countryCode, phoneNumberInput);
+      setShowCodeInput(true);
+    } catch (error) {
+      console.error('fail to send phone code', error);
+    }
+  };
+
+  const confirmAuthCode = async () => {
+    setAuthErrorMessage('');
+
+    const response = await verifyPhoneCode(phoneNumberInput, authCode, region.countryCode);
+
+    if (response.data) {
+      setPhoneNumber(phoneNumberInput);
+      router.push('/sign-up/email');
+    } else {
+      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
+    }
+  };
 
   return (
     <IonPage>
@@ -33,16 +65,26 @@ const PhoneAuth = () => {
               label="전화번호"
               type="tel"
               inputMode="tel"
-              value={phoneNumber}
-              onChange={setPhoneNumber}
+              value={phoneNumberInput}
+              onChange={setPhoneNumberInput}
             />
 
             <button
-              className="px-3 button-primary button-lg shrink-0"
-              disabled={!phoneNumber.length}
-              onClick={() => setShowCodeInput(true)}
+              className={
+                showCodeInput
+                  ? 'button-sub button-lg shrink-0 w-[100px]'
+                  : 'px-3 button-primary button-lg shrink-0 w-[100px]'
+              }
+              disabled={!phoneNumberInput.length || isLoading}
+              onClick={sendAuthCode}
             >
-              <IonText className="text-white font-body1">인증코드 발송</IonText>
+              <IonText className="font-body1">
+                {showCodeInput
+                  ? t('signup.verify.resend')
+                  : isLoading
+                    ? t('signup.email.sending')
+                    : t('signup.verify.send')}
+              </IonText>
             </button>
           </div>
 
@@ -52,11 +94,11 @@ const PhoneAuth = () => {
 
           {showCodeInput ? (
             <div className="mt-[2.875rem] animate-fade-down">
-              <IonText className="pl-1 font-body2 text-gray6">남은 시간 3:00</IonText>
+              {/* <IonText className="pl-1 font-body2 text-gray6">남은 시간 3:00</IonText> */}
 
               <div className="flex items-center gap-2 mt-2">
                 <LabelInput
-                  label="인증번호 입력"
+                  label={t('signup.verify.placeholder')}
                   inputMode="numeric"
                   value={authCode}
                   onChange={setAuthCode}
@@ -65,10 +107,15 @@ const PhoneAuth = () => {
                 <button
                   className="px-3 w-[6.25rem] button-primary button-lg shrink-0"
                   disabled={!authCode.length}
+                  onClick={confirmAuthCode}
                 >
-                  <IonText className="text-white font-body1">확인</IonText>
+                  <IonText className="text-white font-body1">{t('common.confirm')}</IonText>
                 </button>
               </div>
+
+              {authErrorMessage && (
+                <IonText className="font-caption2 text-red3">{authErrorMessage}</IonText>
+              )}
             </div>
           ) : null}
         </div>
