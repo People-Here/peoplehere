@@ -44,6 +44,7 @@ const Alert = ({
         '--backdrop-opacity': '0.6',
         '--width': 'fit-content',
         '--min-width': '17rem',
+        '--max-width': '75%',
         '--height': 'fit-content',
         '--min-height': '8.25rem',
         '--border-radius': '16px',

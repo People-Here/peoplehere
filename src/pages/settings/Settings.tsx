@@ -1,4 +1,12 @@
-import { IonContent, IonIcon, IonPage, IonText, useIonRouter } from '@ionic/react';
+import {
+  IonContent,
+  IonFooter,
+  IonIcon,
+  IonPage,
+  IonText,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
@@ -9,7 +17,6 @@ import BellIcon from '../../assets/svgs/bell.svg';
 import CustomerSupportIcon from '../../assets/svgs/customer-support.svg';
 import PaperIcon from '../../assets/svgs/paper.svg';
 import LogoBlackIcon from '../../assets/svgs/logo-black.svg';
-import Footer from '../../layouts/Footer';
 import useUserStore from '../../stores/user';
 import DeleteUser from '../../modals/DeleteUser';
 import Alert from '../../components/Alert';
@@ -60,47 +67,49 @@ const Settings = () => {
           </div>
         </div>
 
-        <Footer>
-          {isLogin ? (
-            <button
-              className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
-              onClick={() => setOpenLogoutModal(true)}
-            >
-              로그아웃
-            </button>
-          ) : (
-            <Link to="/login">
-              <button className="w-full mb-4 button-sub button-lg font-subheading1 text-orange5">
-                로그인
+        <IonFooter class="ion-no-border" className="fixed bottom-0 left-0 right-0 bg-white">
+          <IonToolbar className="px-4 py-7">
+            {isLogin ? (
+              <button
+                className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
+                onClick={() => setOpenLogoutModal(true)}
+              >
+                로그아웃
               </button>
-            </Link>
-          )}
+            ) : (
+              <Link to="/login">
+                <button className="w-full mb-4 button-sub button-lg font-subheading1 text-orange5">
+                  로그인
+                </button>
+              </Link>
+            )}
 
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <IonIcon src={LogoBlackIcon} className="svg-md" />
-            <p className="font-suite text-base font-extrabold leading-[1.625rem] -tracking-[0.0125rem]">
-              PeopleHere
-            </p>
-          </div>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <IonIcon src={LogoBlackIcon} className="svg-md" />
+              <p className="font-suite text-base font-extrabold leading-[1.625rem] -tracking-[0.0125rem]">
+                PeopleHere
+              </p>
+            </div>
 
-          <div className="flex flex-col items-center mb-2">
-            <p className="font-caption2 text-gray5.5">버전 1.0</p>
-            <p className="font-caption2 text-gray5.5">전 세계의 모든 우정을 담아.</p>
-          </div>
+            <div className="flex flex-col items-center mb-2">
+              <p className="font-caption2 text-gray5.5">버전 1.0</p>
+              <p className="font-caption2 text-gray5.5">전 세계의 모든 우정을 담아.</p>
+            </div>
 
-          {isLogin ? (
-            <p
-              className="text-center underline font-caption1 text-gray5.5"
-              onClick={() => setOpenDeleteModal(true)}
-            >
-              계정 삭제
-            </p>
-          ) : (
-            <Link to="/sign-up/email">
-              <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
-            </Link>
-          )}
-        </Footer>
+            {isLogin ? (
+              <p
+                className="text-center underline font-caption1 text-gray5.5"
+                onClick={() => setOpenDeleteModal(true)}
+              >
+                계정 삭제
+              </p>
+            ) : (
+              <Link to="/sign-up/email">
+                <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
+              </Link>
+            )}
+          </IonToolbar>
+        </IonFooter>
 
         <DeleteUser trigger="delete-modal" onDidDismiss={() => buttonRef.current?.click()} />
 
