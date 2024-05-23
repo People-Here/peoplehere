@@ -30,6 +30,7 @@ import useUserStore from '../../stores/user';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
 import FullPageMap from '../../modals/FullPageMap';
+import MapIcon from '../../assets/svgs/map.svg';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -132,7 +133,6 @@ const TourDetail = () => {
             />
 
             <PlaceInfo
-              image={tourDetail.placeInfo.imageUrlList[0].imageUrl}
               title={tourDetail.placeInfo.name}
               address={tourDetail.placeInfo.address}
               theme={tourDetail.theme}
@@ -241,23 +241,18 @@ const Divider = () => {
 };
 
 type PlaceInfoProps = {
-  image: string;
   title: string;
   address: string;
   theme: string;
 };
-const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
+const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
   return (
     <div
       id="place-map-modal"
-      className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
+      className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">
-        <IonImg
-          src={image}
-          alt={`place-${title}`}
-          className="object-cover overflow-hidden rounded-lg w-11 h-11 shrink-0"
-        />
+        <IonIcon src={MapIcon} className="svg-xl shrink-0" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
