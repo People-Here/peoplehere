@@ -97,9 +97,9 @@ const TourDetail = () => {
           />
         </Link>
 
-        <div className={`relative ${themeColors[tourDetail.theme].background}`}>
+        <div className={`${themeColors[tourDetail.theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} mx-auto top-40 -left-[calc(18.75rem-50%)] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">

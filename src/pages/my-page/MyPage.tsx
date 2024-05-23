@@ -90,7 +90,11 @@ const MyPage = () => {
                 <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
                   <TourInfo
                     id={tour.id.toString()}
-                    image={tour.placeInfo.imageUrlList?.[0].imageUrl ?? ''}
+                    image={
+                      tour.placeInfo.imageUrlList.length > 0
+                        ? tour.placeInfo.imageUrlList[0].imageUrl
+                        : ''
+                    }
                     title={tour.title}
                     placeName={tour.placeInfo.name}
                     district={tour.placeInfo.district}
