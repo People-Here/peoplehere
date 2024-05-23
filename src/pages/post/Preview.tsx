@@ -316,7 +316,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
     <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
       <div
         ref={carouselRef}
-        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory no-scrollbar"
       >
         {/* image carousel */}
         {images.map((image) => (

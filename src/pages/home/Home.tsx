@@ -229,7 +229,7 @@ const TourItem = ({
           <SingleImage image={place.imageUrlList[0].imageUrl} />
         </div>
       ) : (
-        <div className="flex gap-2 h-[140px] w-full overflow-x-scroll pr-4">
+        <div className="flex gap-2 h-[140px] w-full overflow-x-scroll pr-4 no-scrollbar">
           <UserImage {...user} />
           <Images images={place.imageUrlList.map((el) => el.imageUrl) ?? []} />
         </div>
