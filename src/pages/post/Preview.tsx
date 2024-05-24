@@ -34,7 +34,9 @@ const Preview = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
-  const { place, title, description, images } = usePostPlaceStore((state) => state);
+  const { place, title, description, images, fetchImages, setFetchImages } = usePostPlaceStore(
+    (state) => state,
+  );
   const user = useUserStore((state) => state.user);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -58,16 +60,19 @@ const Preview = () => {
   const uploadPost = async () => {
     setIsLoading(true);
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
-
     const formData = new FormData();
+
+    if (fetchImages) {
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+      imageBlobs.forEach((blob) => {
+        formData.append('images', blob);
+      });
+    }
+
     formData.append('placeId', place.id);
     formData.append('title', title);
     formData.append('description', description);
     formData.append('theme', theme);
-    imageBlobs.forEach((blob) => {
-      formData.append('images', blob);
-    });
 
     try {
       await postTour(formData);
@@ -83,6 +88,7 @@ const Preview = () => {
       }
     } finally {
       setIsLoading(false);
+      setFetchImages(true);
     }
   };
 

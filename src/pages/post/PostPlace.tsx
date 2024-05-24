@@ -34,6 +34,7 @@ const Post = () => {
     setTitle: storeTitle,
     setDescription: storeDescription,
     setImages: storeImages,
+    setFetchImages,
   } = usePostPlaceStore((state) => state);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
@@ -57,12 +58,13 @@ const Post = () => {
         await Camera.requestPermissions();
       }
     })();
-  }, [user.id, router]);
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       if (!isNaN(Number(tourId))) {
+        setFetchImages(false);
         const response = await getTourDetail(tourId, region.countryCode.toUpperCase());
 
         setPlace({
@@ -75,7 +77,7 @@ const Post = () => {
         setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
       }
     })();
-  }, [tourId, region.countryCode]);
+  }, []);
 
   const uploadPost = () => {
     if (!place.id || !images.length || !title || !description) {
@@ -111,9 +113,9 @@ const Post = () => {
         )}
 
         {images.length ? (
-          <ImageList images={images} setImages={setImages} />
+          <ImageList images={images} setImages={setImages} setFetchImages={setFetchImages} />
         ) : (
-          <UploadImages images={images} setImages={setImages} />
+          <UploadImages images={images} setImages={setImages} setFetchImages={setFetchImages} />
         )}
 
         <div className="mt-[3.25rem] flex flex-col items-center gap-1 mb-5">
@@ -158,6 +160,7 @@ const Post = () => {
 type ImageProps = {
   images: string[];
   setImages: (images: string[]) => void;
+  setFetchImages: (fetchImages: boolean) => void;
 };
 const UploadImages = ({ images, setImages }: ImageProps) => {
   const { t } = useTranslation();
@@ -206,7 +209,7 @@ const PlaceItem = ({ text, description }: Place) => {
   );
 };
 
-const ImageList = ({ images, setImages }: ImageProps) => {
+const ImageList = ({ images, setImages, setFetchImages }: ImageProps) => {
   const { t } = useTranslation();
 
   const selectPhotosFromGallery = async () => {
@@ -215,10 +218,12 @@ const ImageList = ({ images, setImages }: ImageProps) => {
     });
 
     setImages(selectedImages.photos.map((photo) => photo.webPath));
+    setFetchImages(true);
   };
 
   const removeImage = (image: string) => {
     setImages(images.filter((img) => img !== image));
+    setFetchImages(true);
   };
 
   return (
