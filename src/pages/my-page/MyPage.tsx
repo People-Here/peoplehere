@@ -185,7 +185,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
 
       <IonImg
         src={image}
-        className="w-[4.5rem] h-[4.5rem] object-cover rounded-xl overflow-hidden"
+        className="w-[4.5rem] h-[4.5rem] shrink-0 object-cover rounded-xl overflow-hidden"
       />
 
       <div>
