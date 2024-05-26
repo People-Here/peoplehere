@@ -11,11 +11,11 @@ import CameraIcon from '../../assets/svgs/camera.svg';
 import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
-import SearchPlace from '../../modals/SearchPlace';
 import useUserStore from '../../stores/user';
 import usePostPlaceStore from '../../stores/place';
 import { getTourDetail } from '../../api/tour';
 import useSignInStore from '../../stores/signIn';
+import SearchPlace from '../../modals/SearchPlace';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 

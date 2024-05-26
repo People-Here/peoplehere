@@ -106,9 +106,11 @@ const Preview = () => {
       });
     }
 
+    formData.append('id', tourId);
     formData.append('placeId', place.id);
     formData.append('title', title);
     formData.append('description', description);
+    formData.append('isDefaultImage', 'false')
     formData.append('theme', theme);
 
     try {
