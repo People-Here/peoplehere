@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import JSONbig from 'json-bigint';
 
-import { typedDelete, typedGet, typedPost } from '.';
+import { typedDelete, typedGet, typedPost, typedPut } from '.';
 
 export const getTourList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
@@ -60,6 +60,18 @@ export const postTour = async (body: FormData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response;
+};
+
+export const editTour = async (body: FormData) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPut('/tours', body, {
+    headers: {
+      Authorization: value,
+    },
+  });
+
   return response;
 };
 

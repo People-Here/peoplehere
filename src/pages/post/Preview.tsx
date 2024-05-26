@@ -12,6 +12,7 @@ import {
 } from '@ionic/react';
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -23,7 +24,7 @@ import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
 import { imageToFile } from '../../utils/image';
-import { postTour } from '../../api/tour';
+import { editTour, postTour } from '../../api/tour';
 import { getNewToken } from '../../api/login';
 import { themeColors } from '../../constants/theme';
 
@@ -34,6 +35,10 @@ const Preview = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
+  const location = useLocation();
+
+  const tourId = location.pathname.split('/').at(-1) ?? '';
+
   const { place, title, description, images, fetchImages, setFetchImages } = usePostPlaceStore(
     (state) => state,
   );
@@ -62,6 +67,38 @@ const Preview = () => {
 
     const formData = new FormData();
 
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+    imageBlobs.forEach((blob) => {
+      formData.append('images', blob);
+    });
+
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('theme', theme);
+
+    try {
+      await postTour(formData);
+      router.push('/', 'root');
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        await getNewToken();
+
+        await postTour(formData);
+        router.push('/', 'root');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const editPost = async () => {
+    setIsLoading(true);
+
+    const formData = new FormData();
+
     if (fetchImages) {
       const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
       imageBlobs.forEach((blob) => {
@@ -75,17 +112,10 @@ const Preview = () => {
     formData.append('theme', theme);
 
     try {
-      await postTour(formData);
-      router.push('/', 'root', 'replace');
+      await editTour(formData);
+      router.push('/', 'root');
     } catch (error) {
-      const errorInstance = error as AxiosError;
-
-      if (errorInstance.response?.status === 401) {
-        await getNewToken();
-
-        await postTour(formData);
-        router.push('/', 'root', 'replace');
-      }
+      console.error('fail to edit post', error);
     } finally {
       setIsLoading(false);
       setFetchImages(true);
@@ -162,7 +192,7 @@ const Preview = () => {
         <SelectTheme
           currentTheme={theme}
           setTheme={setTheme}
-          onClick={uploadPost}
+          onClick={tourId ? editPost : uploadPost}
           buttonDisable={isLoading}
         />
       </IonContent>

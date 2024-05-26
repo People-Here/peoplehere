@@ -90,7 +90,7 @@ const Post = () => {
     storeDescription(description);
     storeImages(images);
 
-    router.push('/preview-post');
+    tourId ? router.push(`/preview-post/${tourId}`) : router.push('/preview-post');
   };
 
   return (
