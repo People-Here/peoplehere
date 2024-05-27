@@ -13,3 +13,10 @@ export const formatDateTimeToString = (datetime: string) => {
 
   return `${year.slice(2, 4)}/${month}/${day} ${hour}:${minute}`;
 };
+
+export const secondToMinuteSecond = (seconds: number) => {
+  const minute = Math.floor(seconds / 60);
+  const second = (seconds % 60).toString().padStart(2, '0');
+
+  return `${minute}:${second}`;
+};

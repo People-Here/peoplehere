@@ -1,5 +1,5 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
@@ -9,6 +9,7 @@ import SelectRegion from '../../modals/SelectRegion';
 import Alert from '../../components/Alert';
 import useSignInStore from '../../stores/signIn';
 import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
+import { secondToMinuteSecond } from '../../utils/date';
 
 const PhoneAuth = () => {
   const { t } = useTranslation();
@@ -23,6 +24,18 @@ const PhoneAuth = () => {
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  useEffect(() => {
+    if (!timeLeft) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+
   const sendAuthCode = async () => {
     setErrorMessage('');
     setIsLoading(true);
@@ -30,8 +43,11 @@ const PhoneAuth = () => {
     try {
       await sendPhoneCode(region.countryCode, phoneNumberInput);
       setShowCodeInput(true);
+      setTimeLeft(180);
     } catch (error) {
       console.error('fail to send phone code', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,7 +91,7 @@ const PhoneAuth = () => {
                   ? 'button-sub button-lg shrink-0 w-[100px]'
                   : 'px-3 button-primary button-lg shrink-0 w-[100px]'
               }
-              disabled={!phoneNumberInput.length || isLoading}
+              disabled={isLoading}
               onClick={sendAuthCode}
             >
               <IonText className="font-body1">
@@ -94,7 +110,7 @@ const PhoneAuth = () => {
 
           {showCodeInput ? (
             <div className="mt-[2.875rem] animate-fade-down">
-              {/* <IonText className="pl-1 font-body2 text-gray6">남은 시간 3:00</IonText> */}
+              <Timer timeLeft={timeLeft} />
 
               <div className="flex items-center gap-2 mt-2">
                 <LabelInput
@@ -106,7 +122,7 @@ const PhoneAuth = () => {
 
                 <button
                   className="px-3 w-[6.25rem] button-primary button-lg shrink-0"
-                  disabled={!authCode.length}
+                  disabled={authCode.length !== 6 || timeLeft === 0}
                   onClick={confirmAuthCode}
                 >
                   <IonText className="text-white font-body1">{t('common.confirm')}</IonText>
@@ -131,5 +147,17 @@ const PhoneAuth = () => {
     </IonPage>
   );
 };
+
+type TimerProps = {
+  timeLeft: number;
+};
+const Timer = memo(({ timeLeft }: TimerProps) => {
+  return (
+    <IonText className="pl-1 font-body2 text-gray6">
+      남은 시간 {secondToMinuteSecond(timeLeft)}
+    </IonText>
+  );
+});
+Timer.displayName = 'Timer';
 
 export default PhoneAuth;
