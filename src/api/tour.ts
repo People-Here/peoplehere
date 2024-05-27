@@ -42,11 +42,15 @@ export const getTourDetail = async (tourId: string, region: string) => {
 };
 
 export const searchTour = async (keyword: string, region: string, langCode: string) => {
-  const response = await typedPost<TourListResponse>('/tours/search', {
-    keyword,
-    region,
-    langCode,
-  });
+  const response = await typedPost<TourListResponse>(
+    '/tours/search',
+    {
+      keyword,
+      region,
+      langCode,
+    },
+    { transformResponse: [(data: string) => JSONbig.parse(data) as JSON] },
+  );
   return response;
 };
 

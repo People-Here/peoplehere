@@ -45,7 +45,8 @@ const Home = () => {
       const lang = await getTranslateLanguage();
 
       if (location.search) {
-        const keyword = location.search.split('=')[1];
+        const params = new URLSearchParams(location.search);
+        const keyword = params.get('search') ?? '';
 
         const { data, status } = await searchTour(keyword, region.countryCode.toUpperCase(), lang);
 
@@ -144,13 +145,16 @@ const SearchBar = () => {
 
   const { region } = useSignInStore((state) => state);
 
+  const params = new URLSearchParams(location.search);
+  const keyword = params.get('search');
+
   return (
     <div id="search-modal" className="w-full">
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
           <IonText className="font-headline3 text-gray7">{t(`searchBar.title`)}</IonText>
           <IonText className="font-caption2 text-gray5">
-            {location.search ? location.search.split('=')[1] : region.koreanName}
+            {location.search ? keyword : region.koreanName}
           </IonText>
         </div>
 
