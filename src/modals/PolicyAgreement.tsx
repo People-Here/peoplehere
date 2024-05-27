@@ -1,5 +1,6 @@
 import { IonCheckbox } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import colors from '../theme/colors';
 import ModalContainer from '.';
@@ -18,7 +19,7 @@ const PolicyAgreement = ({
   onClickButton,
   ...rest
 }: Props & ModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <ModalContainer
@@ -50,7 +51,44 @@ const PolicyAgreement = ({
       </div>
 
       <div className="px-3 py-2.5 rounded bg-gray1 mt-7 mb-3">
-        <p className="font-caption2 text-gray6">{t('signup.policy.confirmText')}</p>
+        {i18n.resolvedLanguage === 'ko' ? (
+          <p className="font-caption2 text-gray6">
+            {"'동의 및 완료'를 클릭함으로써 피플히어의 "}
+            <Link to="/settings/policy/privacy" className="font-medium underline">
+              서비스 약관
+            </Link>
+            ,{' '}
+            <Link
+              to={{
+                pathname:
+                  'https://juiceisworking.notion.site/f19ce16564ef4f1980e5aa9c777c5572?pvs=4',
+              }}
+              target="_blank"
+              className="font-medium underline"
+            >
+              개인정보처리방침
+            </Link>
+            에 동의합니다.
+          </p>
+        ) : (
+          <p className="font-caption2 text-gray6">
+            {"By selecting Agree and sign up, I agree to Peoplehere's "}
+            <Link to="/settings/policy/privacy" className="font-medium underline">
+              Terms of service.
+            </Link>
+            ,{' '}
+            <Link
+              to={{
+                pathname:
+                  'https://juiceisworking.notion.site/f19ce16564ef4f1980e5aa9c777c5572?pvs=4',
+              }}
+              target="_blank"
+              className="font-medium underline"
+            >
+              개인정보처리방침
+            </Link>
+          </p>
+        )}
       </div>
     </ModalContainer>
   );
