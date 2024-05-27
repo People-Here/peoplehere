@@ -5,7 +5,8 @@ import { useRef, type ComponentProps, type PropsWithChildren } from 'react';
 import CloseIcon from '../assets/svgs/close.svg';
 
 export type ModalProps = {
-  trigger: string;
+  trigger?: string;
+  isOpen?: boolean;
   onClickButton?: () => void;
   onWillDismiss?: () => void;
   onDidDismiss?: () => void;
@@ -18,6 +19,7 @@ type Props = {
 
 const ModalContainer = ({
   trigger,
+  isOpen,
   title,
   buttonText,
   onClickButton,
@@ -28,7 +30,7 @@ const ModalContainer = ({
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   return (
-    <IonModal ref={modalRef} trigger={trigger} {...rest}>
+    <IonModal ref={modalRef} trigger={trigger} isOpen={isOpen} {...rest}>
       <div className={'relative p-4 pt-10 mb-28'}>
         <IonIcon
           className="absolute svg-lg stroke-gray7 top-4 right-4"

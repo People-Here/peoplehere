@@ -20,10 +20,9 @@ import type { AxiosError } from 'axios';
 type Props = {
   tourId: string;
   title: string;
-  isOpen?: boolean;
 };
 
-const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & Partial<ModalProps>) => {
+const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) => {
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 

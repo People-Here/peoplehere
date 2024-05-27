@@ -3,7 +3,7 @@ import { IonIcon, IonInput, IonItem } from '@ionic/react';
 import ArrowDownIcon from '../assets/svgs/arrow-down.svg';
 
 type Props = {
-  id: string;
+  id?: string;
   label: string;
   value: string;
 };
