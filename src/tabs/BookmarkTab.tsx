@@ -1,13 +1,15 @@
 import { IonContent, IonIcon, IonImg, IonPage, IonText, IonToolbar } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import MessageIcon from '../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
-import { getBookmarkList } from '../api/tour';
+import { getBookmarkList, likeTour } from '../api/tour';
 import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
+import { getTranslateLanguage } from '../utils/translate';
 
 import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
@@ -22,13 +24,15 @@ const BookmarkTab = () => {
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const lang = await getTranslateLanguage();
+
       const isLoggedIn = await checkLogin();
       if (!isLoggedIn) {
         return;
       }
 
       try {
-        const response = await getBookmarkList(region.countryCode.toUpperCase(), 'KOREAN');
+        const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
 
         setList(response.data.tourList);
       } catch (error) {
@@ -37,7 +41,7 @@ const BookmarkTab = () => {
         if (errorInstance.status === 403) {
           await getNewToken();
 
-          const response = await getBookmarkList(region.countryCode.toUpperCase(), 'KOREAN');
+          const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
           setList(response.data.tourList);
         }
 
@@ -45,6 +49,23 @@ const BookmarkTab = () => {
       }
     })();
   }, []);
+
+  const removeFromBookmark = async (tourId: string) => {
+    const lang = await getTranslateLanguage();
+
+    try {
+      await likeTour(tourId);
+      const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
+      setList(response.data.tourList);
+    } catch (error) {
+      await getNewToken();
+      await likeTour(tourId);
+      const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
+      setList(response.data.tourList);
+
+      console.error('fail to remove from bookmark', error);
+    }
+  };
 
   return (
     <IonPage>
@@ -62,19 +83,21 @@ const BookmarkTab = () => {
         ) : (
           <div className="flex flex-col gap-3 px-4 mt-[1.625rem] pb-20">
             {list.map((item) => (
-              <ListItem
-                key={item.id}
-                title={item.title}
-                placeName={item.placeInfo.name}
-                district={item.placeInfo.district}
-                images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
-                available={item.userInfo.directMessageStatus}
-                user={{
-                  id: item.userInfo.id.toString(),
-                  name: item.userInfo.firstName,
-                  imageUrl: item.userInfo.profileImageUrl,
-                }}
-              />
+              <Link key={item.id} to={`/tour/${item.id}`}>
+                <ListItem
+                  title={item.title}
+                  placeName={item.placeInfo.name}
+                  district={item.placeInfo.district}
+                  images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+                  available={item.userInfo.directMessageStatus}
+                  user={{
+                    id: item.userInfo.id.toString(),
+                    name: item.userInfo.firstName,
+                    imageUrl: item.userInfo.profileImageUrl,
+                  }}
+                  onClickIcon={() => removeFromBookmark(item.id)}
+                />
+              </Link>
             ))}
           </div>
         )}
@@ -94,8 +117,17 @@ type ListItemProps = {
     name: string;
     imageUrl: string;
   };
+  onClickIcon: () => void;
 };
-const ListItem = ({ title, placeName, district, images, available, user }: ListItemProps) => {
+const ListItem = ({
+  title,
+  placeName,
+  district,
+  images,
+  available,
+  user,
+  onClickIcon,
+}: ListItemProps) => {
   return (
     <div className="flex flex-col gap-3 p-3 border border-gray2 rounded-2xl">
       <div className="-mr-4">
@@ -106,7 +138,14 @@ const ListItem = ({ title, placeName, district, images, available, user }: ListI
           <div className="pl-1 flex flex-col gap-0.5">
             <div className="flex items-center justify-between">
               <IonText className="font-headline3 text-gray8">{title}</IonText>
-              <IonIcon icon={HeartFilledIcon} className="svg-lg" />
+              <IonIcon
+                icon={HeartFilledIcon}
+                className="svg-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClickIcon();
+                }}
+              />
             </div>
 
             <div className="flex items-center">
