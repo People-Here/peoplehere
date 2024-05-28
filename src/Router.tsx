@@ -29,6 +29,7 @@ import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
 import ChangeStatus from './pages/my-page/ChangeStatus';
 import Translate from './pages/settings/Translate';
+import ChangePhone from './pages/settings/ChangePhone';
 
 const Router = () => {
   return (
@@ -113,6 +114,9 @@ const Router = () => {
       </Route>
       <Route path="/settings/informations/email">
         <ChangeEmail />
+      </Route>
+      <Route path="/settings/informations/phone">
+        <ChangePhone />
       </Route>
       <Route path="/settings/translate">
         <Translate />

@@ -28,6 +28,7 @@ const CheckEmail = () => {
       await checkEmailExist(emailInput);
       try {
         await sendEmailCode(emailInput);
+        setAuthCode('');
         setShowAuthCodeInput(true);
       } catch (error) {
         const errorInstance = error as AxiosError;

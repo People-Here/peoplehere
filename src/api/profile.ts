@@ -4,8 +4,13 @@ import JSONbig from 'json-bigint';
 import { typedGet, typedPut } from '.';
 
 export const getUserProfile = async (userId: string, region: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
   const response = await typedGet<ProfileResponse>(`/user/${userId}/${region}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    headers: {
+      Authorization: `${value}`,
+    },
   });
   return response;
 };
@@ -64,6 +69,7 @@ export type ProfileResponse = {
   firstName: string;
   lastName: string;
   birthDate: string;
+  phoneNumber: string;
   favorite?: string;
   hobby?: string;
   pet?: string;

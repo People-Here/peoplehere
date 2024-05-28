@@ -60,6 +60,7 @@ const MyPage = () => {
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           profileImageUrl: response.data.profileImageUrl,
+          phoneNumber: response.data.phoneNumber,
         });
       }
 

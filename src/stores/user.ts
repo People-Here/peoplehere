@@ -8,6 +8,7 @@ type State = {
     profileImageUrl: string;
     firstName: string;
     lastName: string;
+    phoneNumber: string;
   };
 };
 
@@ -24,6 +25,7 @@ const useUserStore = create(
         profileImageUrl: '',
         firstName: '',
         lastName: '',
+        phoneNumber: '',
       },
 
       setUser: (user) => set(() => ({ user })),
