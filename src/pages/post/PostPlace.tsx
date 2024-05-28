@@ -147,6 +147,7 @@ const Post = () => {
         <button
           className="w-full text-white button-primary button-lg font-subheading1"
           onClick={uploadPost}
+          disabled={!place.id || !images.length || !title || !description}
         >
           {t('common.preview')}
         </button>

@@ -12,6 +12,7 @@ import {
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -30,6 +31,8 @@ import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
 import { getTourListByUser, type Tour } from '../../api/tour';
 import { findKoreanLanguageName } from '../../utils/find';
+import MessageIcon from '../../assets/svgs/message-line-color.svg';
+import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 
 import type { ProfileResponse } from '../../api/profile';
 
@@ -61,7 +64,13 @@ const Profile = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const response = await getUserProfile(userId, currentRegion);
-      const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
+
+      if (isMe) {
+        const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
+        if (placeListResponse.status === 200) {
+          setPlaceList(placeListResponse.data.tourList);
+        }
+      }
 
       if (response.status === 200) {
         setUserInfo(response.data);
@@ -72,10 +81,6 @@ const Profile = () => {
             languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
           });
         }
-      }
-
-      if (placeListResponse.status === 200) {
-        setPlaceList(placeListResponse.data.tourList);
       }
     })();
   }, []);
@@ -190,6 +195,40 @@ const Profile = () => {
               <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
             )}
           </div>
+
+          {/* 유저가 만든 장소 */}
+          {!isMe && (
+            <>
+              <p className="mt-8 mb-3 font-headline1 text-orange6">
+                {userInfo.firstName} 님의 장소
+              </p>
+
+              <div className="flex flex-col gap-4">
+                {placeList.length > 0 ? (
+                  <>
+                    {placeList.map((place) => (
+                      <Link key={place.id} to={`/tour/${place.id.toString()}`}>
+                        <TourInfo
+                          id={place.id.toString()}
+                          image={
+                            place.placeInfo.imageUrlList.length > 0
+                              ? place.placeInfo.imageUrlList[0].imageUrl
+                              : ''
+                          }
+                          title={place.title}
+                          placeName={place.placeInfo.name}
+                          district={place.placeInfo.district}
+                          available={true}
+                        />
+                      </Link>
+                    ))}
+                  </>
+                ) : (
+                  <NoPlace />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </IonContent>
     </IonPage>
@@ -210,6 +249,61 @@ const IntroduceItem = ({ icon, title, value }: IntroduceItemProps) => {
       <Divider />
       <p className="font-body1 text-gray6">{value}</p>
     </div>
+  );
+};
+
+type TourInfoProps = {
+  id: string;
+  image: string;
+  title: string;
+  placeName: string;
+  district: string;
+  available?: boolean;
+};
+const TourInfo = ({ image, title, placeName, district, available }: TourInfoProps) => {
+  return (
+    <div className="relative flex gap-3 p-3 bg-white border rounded-xl border-gray2">
+      <IonImg
+        src={image}
+        className="w-[4.5rem] h-[4.5rem] shrink-0 object-cover rounded-xl overflow-hidden"
+      />
+
+      <div>
+        {available ? (
+          <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-orange1 rounded-lg w-fit">
+            <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-orange5">
+              쪽지 받기
+            </IonText>
+            <IonIcon icon={MessageIcon} className="svg-xs" />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-gray1.5 rounded-lg w-fit">
+            <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-gray6">
+              쪽지 마감
+            </IonText>
+            <IonIcon icon={MessageBlockedIcon} className="svg-xs" />
+          </div>
+        )}
+
+        <div className="mt-1">
+          <p className="font-headline3 text-gray8">{title}</p>
+          <p className="font-body1 text-gray6">
+            {placeName}
+            {district && <span className="font-body2 text-gray6"> | {district}</span>}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const NoPlace = () => {
+  return (
+    <Link to="/post" className="flex flex-col items-center gap-6 mt-3 py-9">
+      <p className="text-center whitespace-pre-wrap font-headline3 text-gray5.5">
+        아직 장소가 없어요.
+      </p>
+    </Link>
   );
 };
 
