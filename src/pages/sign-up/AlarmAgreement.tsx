@@ -8,6 +8,7 @@ import BellIcon from '../../assets/svgs/bell.svg';
 import { signUp } from '../../api/sign-up';
 import useSignInStore from '../../stores/signIn';
 import { formatDataToString } from '../../utils/date';
+import useLogin from '../../hooks/useLogin';
 
 import type { SignInRequest } from '../../api/sign-up';
 import type { Animation } from '@ionic/react';
@@ -27,6 +28,8 @@ const AlarmAgreement = () => {
     phoneNumber,
     policyConsent,
   } = useSignInStore((state) => state);
+
+  const { requestLogin } = useLogin();
 
   const iconRef = useRef<HTMLIonIconElement>(null);
   const animation = useRef<Animation | null>(null);
@@ -70,23 +73,13 @@ const AlarmAgreement = () => {
     };
   };
 
-  const agreeAlarm = async () => {
+  const agreeAlarm = async (agree: boolean) => {
     try {
-      const requestData = generateSignInData(true);
+      const requestData = generateSignInData(agree);
       await signUp(requestData);
 
-      router.push('/login', 'forward', 'replace');
-    } catch (error) {
-      console.error('Failed to post alarm agreement with error:', error);
-    }
-  };
-
-  const disagreeAlarm = async () => {
-    try {
-      const requestData = generateSignInData(false);
-      await signUp(requestData);
-
-      router.push('/login', 'forward', 'replace');
+      await requestLogin(email, password);
+      router.push('/', 'root');
     } catch (error) {
       console.error('Failed to post alarm agreement with error:', error);
     }
@@ -115,10 +108,10 @@ const AlarmAgreement = () => {
           </div>
 
           <div className="flex flex-col items-center w-full gap-4">
-            <button className="w-full button-primary button-lg" onClick={agreeAlarm}>
+            <button className="w-full button-primary button-lg" onClick={() => agreeAlarm(true)}>
               {t('signup.alarm.agree')}
             </button>
-            <IonText className="font-body1 text-gray6" onClick={disagreeAlarm}>
+            <IonText className="font-body1 text-gray6" onClick={() => agreeAlarm(false)}>
               {t('signup.alarm.skip')}
             </IonText>
           </div>
