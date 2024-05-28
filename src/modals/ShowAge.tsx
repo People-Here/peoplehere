@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import ModalContainer from '.';
 import Checkbox from '../components/Checkbox';
+import { roundAge } from '../utils/mask';
 
 import type { ModalProps } from '.';
 
@@ -29,7 +30,7 @@ const ShowAge = ({ age, showAge, setShowAge, ...props }: ModalProps & Props) => 
       {...props}
     >
       <div className="px-4 py-2.5 w-full rounded-lg bg-gray1.5 mt-4">
-        <IonText className="font-body1 text-gray8">{age}</IonText>
+        <IonText className="font-body1 text-gray8">{roundAge(age)}</IonText>
       </div>
 
       <div className="px-1 mt-8 mb-3">
