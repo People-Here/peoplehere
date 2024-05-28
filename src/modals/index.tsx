@@ -15,6 +15,7 @@ export type ModalProps = {
 type Props = {
   title: string;
   buttonText: string;
+  buttonDisabled?: boolean;
 };
 
 const ModalContainer = ({
@@ -22,6 +23,7 @@ const ModalContainer = ({
   isOpen,
   title,
   buttonText,
+  buttonDisabled,
   onClickButton,
   children,
   ...rest
@@ -44,6 +46,7 @@ const ModalContainer = ({
 
         <button
           className="w-full button-primary button-lg"
+          disabled={buttonDisabled}
           onClick={async () => {
             onClickButton && onClickButton();
             await modalRef.current?.dismiss();
