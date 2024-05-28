@@ -110,7 +110,7 @@ const Preview = () => {
     formData.append('placeId', place.id);
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('isDefaultImage', 'false')
+    formData.append('isDefaultImage', 'false');
     formData.append('theme', theme);
 
     try {
@@ -261,6 +261,8 @@ const themes = {
   black: 'w-[3.75rem] h-[3.75rem] rounded-full bg-gray8',
   pink: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#F4B7C6]',
   yellow: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#FAE09F]',
+  blue: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#B7E2F4]',
+  green: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#E2FA9F]',
 };
 type ThemeProps = {
   currentTheme: string;
@@ -290,22 +292,24 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
         </div>
 
         {expand && (
-          <div className="flex gap-[1.125rem]">
-            {Object.keys(themes).map((theme) => (
-              <Fragment key={theme}>
-                {currentTheme === theme ? (
-                  <div className="border-2 rounded-full border-orange5">
-                    <div className={themes[theme as keyof typeof themes]} />
-                  </div>
-                ) : (
-                  <div
-                    key={theme}
-                    className={themes[theme as keyof typeof themes]}
-                    onClick={() => setTheme(theme)}
-                  />
-                )}
-              </Fragment>
-            ))}
+          <div className="w-full overflow-x-scroll">
+            <div className="w-fit flex gap-[1.125rem]">
+              {Object.keys(themes).map((theme) => (
+                <Fragment key={theme}>
+                  {currentTheme === theme ? (
+                    <div className="border-2 rounded-full border-orange5">
+                      <div className={themes[theme as keyof typeof themes]} />
+                    </div>
+                  ) : (
+                    <div
+                      key={theme}
+                      className={themes[theme as keyof typeof themes]}
+                      onClick={() => setTheme(theme)}
+                    />
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         )}
 
