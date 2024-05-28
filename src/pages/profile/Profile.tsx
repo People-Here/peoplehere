@@ -65,7 +65,7 @@ const Profile = () => {
     (async () => {
       const response = await getUserProfile(userId, currentRegion);
 
-      if (isMe) {
+      if (userId !== user.id) {
         const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
         if (placeListResponse.status === 200) {
           setPlaceList(placeListResponse.data.tourList);
