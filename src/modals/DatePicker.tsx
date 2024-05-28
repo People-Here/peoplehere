@@ -33,6 +33,10 @@ const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
         onIonChange={(event) => {
           setSelectedDate(event.detail.value as string);
         }}
+        style={{
+          '--background': '#fff',
+          '--background-rgb': '255, 255, 255',
+        }}
       />
     </ModalContainer>
   );
