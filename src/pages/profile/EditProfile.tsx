@@ -82,6 +82,7 @@ const EditProfile = () => {
           setSchool(response.data.school ?? '');
           setFirstName(response.data.firstName);
           setAge(response.data.birthDate);
+          setShowAge(response.data.showBirth);
         }
       }
     })();
@@ -283,7 +284,7 @@ const EditProfile = () => {
         value={school}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age="90년대생" showAge={showAge} setShowAge={setShowAge} />
+      <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
       <SearchPlace
         trigger="search-place"
         onClickItem={(item) => {
