@@ -21,6 +21,7 @@ const useLogin = () => {
         profileImageUrl: '',
         firstName: '',
         lastName: '',
+        phoneNumber: '',
       });
 
       return;
@@ -33,7 +34,14 @@ const useLogin = () => {
     await Preferences.remove({ key: 'accessToken' });
     await Preferences.remove({ key: 'refreshToken' });
 
-    setUser({ id: '0', email: '', profileImageUrl: '', firstName: '', lastName: '' });
+    setUser({
+      id: '0',
+      email: '',
+      profileImageUrl: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+    });
 
     router.push('/', 'root', 'replace');
   };

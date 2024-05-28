@@ -32,6 +32,7 @@ import FullImage from '../../modals/FullImage';
 import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
 import { getNewToken } from '../../api/login';
+import useLogin from '../../hooks/useLogin';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ const TourDetail = () => {
   const location = useLocation();
 
   const user = useUserStore((state) => state.user);
+  const { checkLogin } = useLogin();
 
   const [tourId, setTourId] = useState('');
   const [tourDetail, setTourDetail] = useState<TourDetailType>();
@@ -190,8 +192,13 @@ const TourDetail = () => {
                 </button>
               ) : (
                 <button
-                  id="send-message-modal"
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                  onClick={() => {
+                    const isLoggedIn = checkLogin();
+                    if (!isLoggedIn) return;
+
+                    setOpenMessageModal(true);
+                  }}
                 >
                   {i18next.resolvedLanguage === 'ko'
                     ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
@@ -212,9 +219,10 @@ const TourDetail = () => {
         />
 
         <SendMessage
-          trigger="send-message-modal"
+          isOpen={openMessageModal}
           tourId={tourId}
           receiverId={tourDetail.userInfo.id.toString()}
+          onDidDismiss={() => setOpenMessageModal(false)}
         />
 
         <IonActionSheet
