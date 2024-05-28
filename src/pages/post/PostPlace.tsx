@@ -65,7 +65,7 @@ const Post = () => {
     (async () => {
       if (!isNaN(Number(tourId))) {
         setFetchImages(false);
-        const response = await getTourDetail(tourId, region.countryCode.toUpperCase());
+        const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
 
         setPlace({
           id: response.data.placeInfo.id.toString(),

@@ -33,6 +33,8 @@ import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
 import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
+import useSignInStore from '../../stores/signIn';
+import { getTranslateLanguage } from '../../utils/translate';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -41,6 +43,7 @@ const TourDetail = () => {
   const location = useLocation();
 
   const user = useUserStore((state) => state.user);
+  const region = useSignInStore((state) => state.region);
   const { checkLogin } = useLogin();
 
   const [tourId, setTourId] = useState('');
@@ -50,6 +53,10 @@ const TourDetail = () => {
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
 
+  const [currentLanguage, setCurrentLanguage] = useState(
+    region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
+  );
+
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
@@ -58,7 +65,8 @@ const TourDetail = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getTourDetail(tourId, 'KR');
+      const lang = await getTranslateLanguage();
+      const response = await getTourDetail(tourId, region.countryCode, lang);
 
       if (response.status === 200) {
         setTourDetail(response.data);
@@ -81,11 +89,19 @@ const TourDetail = () => {
       await getNewToken();
       await likeTour(tourId);
 
-      const response = await getTourDetail(tourId, 'KR');
+      const response = await getTourDetail(tourId, region.countryCode, currentLanguage);
       setTourDetail(response.data);
 
       console.error('Failed to like tour', error);
     }
+  };
+
+  const onClickTranslate = async () => {
+    const translatedLang = currentLanguage === 'KOREAN' ? 'ENGLISH' : 'KOREAN';
+
+    const response = await getTourDetail(tourId, region.countryCode, translatedLang);
+    setTourDetail(response.data);
+    setCurrentLanguage(translatedLang);
   };
 
   if (!tourDetail) {
@@ -102,7 +118,7 @@ const TourDetail = () => {
           </IonButtons>
 
           <IonButtons slot="end" className="flex items-center gap-3">
-            <IonIcon src={LanguagueIcon} className="svg-lg" />
+            <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
             <IonIcon src={ShareIcon} className="svg-lg" />
           </IonButtons>
         </IonToolbar>
