@@ -1,5 +1,5 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
@@ -19,6 +19,12 @@ const CheckEmail = () => {
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!errorMessage || !emailInput) return;
+
+    setErrorMessage('');
+  }, [emailInput]);
 
   const checkEmail = async () => {
     setErrorMessage('');

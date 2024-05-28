@@ -27,7 +27,7 @@ const LabelInput = ({
   return (
     <div className="w-full">
       <IonItem
-        className="w-full h-full"
+        className="w-full h-fit"
         lines="none"
         style={{
           '--background': '#F4F5F7',

@@ -15,7 +15,7 @@ import Toast from '../../toasts/Toast';
 import { GENDER } from '../../constants/gender';
 
 const UserInfo = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const {
@@ -108,7 +108,9 @@ const UserInfo = () => {
           <div className="animate-fade-down" onClick={() => setOpenGenderModal(true)}>
             <SelectInput
               label={t('signup.info.gender')}
-              value={GENDER[gender as keyof typeof GENDER]}
+              value={
+                i18n.resolvedLanguage === 'ko' ? GENDER[gender as keyof typeof GENDER] : gender
+              }
             />
           </div>
         )}
