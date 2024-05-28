@@ -17,6 +17,7 @@ import LogoRunning from '../../components/LogoRunning';
 import TrashcanIcon from '../../assets/svgs/trashcan.svg';
 import Footer from '../../layouts/Footer';
 import Alert from '../../components/Alert';
+import DeleteReason from '../../modals/DeleteReason';
 
 import type { TourDetail } from '../../api/tour';
 
@@ -29,6 +30,7 @@ const ChangeStatus = () => {
 
   const [tourInfo, setTourInfo] = useState<TourDetail>();
   const [active, setActive] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     if (!tourId) {
@@ -118,12 +120,19 @@ const ChangeStatus = () => {
           buttons={[
             {
               text: '계속',
-              onClick: () => router.push(`/delete-reason/${tourId}`),
+              onClick: () => setOpenDeleteModal(true),
             },
             {
               text: '취소',
             },
           ]}
+        />
+
+        <DeleteReason
+          tourId={tourId ?? ''}
+          title={tourInfo.title}
+          isOpen={openDeleteModal}
+          onDidDismiss={() => setOpenDeleteModal(false)}
         />
       </IonContent>
     </IonPage>

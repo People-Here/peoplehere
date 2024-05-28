@@ -1,5 +1,5 @@
 import { IonContent, IonText, useIonRouter } from '@ionic/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
@@ -32,13 +32,30 @@ const UserInfo = () => {
   const [gender, setGender] = useState('');
   const [ageError, setAgeError] = useState('');
 
+  const [showBirthInput, setShowBirthInput] = useState(false);
+  const [showGenderInput, setShowGenderInput] = useState(false);
+
+  const [openBirthModal, setOpenBirthModal] = useState(false);
+  const [openGenderModal, setOpenGenderModal] = useState(false);
+
   const [marketingChecked, setMarketingChecked] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (firstName && lastName) {
+      setShowBirthInput(true);
+    }
+  }, [firstName, lastName]);
+
   const onClickNext = () => {
     if (Number(birth.slice(0, 4)) > new Date().getFullYear() - 18) {
       setAgeError('만 18세 이상이어야 회원으로 가입할 수 있어요.');
+      return;
+    }
+
+    if (!firstName || !lastName || !birth || !gender) {
+      console.error('회원가입 정보를 모두 입력해주세요.');
       return;
     }
 
@@ -70,32 +87,53 @@ const UserInfo = () => {
           <LabelInput label={t('signup.info.lastName')} value={lastName} onChange={setLastName} />
         </div>
 
-        <div className="flex flex-col gap-2 mb-9" onClick={() => setAgeError('')}>
-          <SelectInput
-            id="date-modal"
-            label={t('signup.info.birthDay')}
-            value={birth.split('T')[0].replaceAll('-', '/')}
-          />
-          {ageError && <IonText className="pl-1 font-caption2 text-red3">{ageError}</IonText>}
-          <IonText className="pl-1 font-caption2 text-gray6">{t('signup.info.ageLimit')}</IonText>
-        </div>
+        {showBirthInput && (
+          <div
+            className="flex flex-col gap-2 mb-9 animate-fade-down"
+            onClick={() => {
+              setOpenBirthModal(true);
+              setAgeError('');
+            }}
+          >
+            <SelectInput
+              label={t('signup.info.birthDay')}
+              value={birth.split('T')[0].replaceAll('-', '/')}
+            />
+            {ageError && <IonText className="pl-1 font-caption2 text-red3">{ageError}</IonText>}
+            <IonText className="pl-1 font-caption2 text-gray6">{t('signup.info.ageLimit')}</IonText>
+          </div>
+        )}
 
-        <SelectInput
-          id="gender-modal"
-          label={t('signup.info.gender')}
-          value={GENDER[gender as keyof typeof GENDER]}
-        />
+        {showBirthInput && showGenderInput && (
+          <div className="animate-fade-down" onClick={() => setOpenGenderModal(true)}>
+            <SelectInput
+              label={t('signup.info.gender')}
+              value={GENDER[gender as keyof typeof GENDER]}
+            />
+          </div>
+        )}
 
         <Footer>
-          <button id="policy-modal" className="w-full button-primary button-lg">
+          <button
+            id="policy-modal"
+            className="w-full button-primary button-lg"
+            disabled={!firstName || !lastName || !birth || !gender}
+          >
             {t('common.continue')}
           </button>
         </Footer>
       </div>
 
       {/* Modals */}
-      <DatePicker trigger="date-modal" setDate={setBirth} />
-      <SelectGender trigger="gender-modal" setGender={setGender} />
+      <DatePicker
+        isOpen={openBirthModal}
+        setDate={setBirth}
+        onDidDismiss={() => {
+          setOpenBirthModal(false);
+          birth && setShowGenderInput(true);
+        }}
+      />
+      <SelectGender isOpen={openGenderModal} setGender={setGender} />
       <PolicyAgreement
         trigger="policy-modal"
         onClickButton={onClickNext}

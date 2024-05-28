@@ -1,23 +1,25 @@
-import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
-import { memo, useEffect, useState } from 'react';
+import { useIonRouter, IonPage, IonContent, IonText } from '@ionic/react';
+import { useState, useEffect, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
+import Alert from '../../components/Alert';
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import SelectInput from '../../components/SelectInput';
 import SelectRegion from '../../modals/SelectRegion';
-import Alert from '../../components/Alert';
 import useSignInStore from '../../stores/signIn';
-import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 import { secondToMinuteSecond } from '../../utils/date';
+import useUserStore from '../../stores/user';
 
-const PhoneAuth = () => {
+const ChangePhone = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
-  const { region, setPhoneNumber } = useSignInStore((state) => state);
+  const region = useSignInStore((state) => state.region);
+  const { user, setUser } = useUserStore((state) => state);
 
-  const [phoneNumberInput, setPhoneNumberInput] = useState('');
+  const [phoneNumberInput, setPhoneNumberInput] = useState(user.phoneNumber);
   const [authCode, setAuthCode] = useState('');
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -58,8 +60,8 @@ const PhoneAuth = () => {
     const response = await verifyPhoneCode(phoneNumberInput, authCode, region.countryCode);
 
     if (response.data) {
-      setPhoneNumber(phoneNumberInput);
-      router.push('/sign-up/email');
+      setUser({ ...user, phoneNumber: phoneNumberInput });
+      router.goBack();
     } else {
       setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
     }
@@ -104,10 +106,6 @@ const PhoneAuth = () => {
               </IonText>
             </button>
           </div>
-
-          <IonText id="phone-alert" className="pl-1 underline font-body1 text-gray5">
-            전화번호 인증이 불가한가요?
-          </IonText>
 
           {showCodeInput ? (
             <div className="mt-[2.875rem] animate-fade-down">
@@ -161,4 +159,4 @@ const Timer = memo(({ timeLeft }: TimerProps) => {
 });
 Timer.displayName = 'Timer';
 
-export default PhoneAuth;
+export default ChangePhone;

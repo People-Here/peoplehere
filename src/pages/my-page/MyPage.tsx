@@ -60,6 +60,7 @@ const MyPage = () => {
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           profileImageUrl: response.data.profileImageUrl,
+          phoneNumber: response.data.phoneNumber,
         });
       }
 
@@ -90,7 +91,11 @@ const MyPage = () => {
                 <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
                   <TourInfo
                     id={tour.id.toString()}
-                    image={tour.placeInfo.imageUrlList?.[0].imageUrl ?? ''}
+                    image={
+                      tour.placeInfo.imageUrlList.length > 0
+                        ? tour.placeInfo.imageUrlList[0].imageUrl
+                        : ''
+                    }
                     title={tour.title}
                     placeName={tour.placeInfo.name}
                     district={tour.placeInfo.district}
@@ -181,7 +186,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
 
       <IonImg
         src={image}
-        className="w-[4.5rem] h-[4.5rem] object-cover rounded-xl overflow-hidden"
+        className="w-[4.5rem] h-[4.5rem] shrink-0 object-cover rounded-xl overflow-hidden"
       />
 
       <div>

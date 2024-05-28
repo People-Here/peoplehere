@@ -15,9 +15,16 @@ const PasswordInput = ({ value, onChange }: Props) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const scrollToBottom = async () => {
+    // eslint-disable-next-line no-undef
+    const content = document.querySelector('ion-content');
+
+    await content?.scrollToBottom(300);
+  };
+
   return (
     <IonItem
-      className="h-[54px]"
+      className="w-full h-full"
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',
@@ -26,11 +33,12 @@ const PasswordInput = ({ value, onChange }: Props) => {
       lines="none"
     >
       <IonInput
-        className="p-0 font-body1 text-gray8"
+        className="p-0 font-body1 text-gray8 -mb-0.5"
         label={t('common.password')}
         labelPlacement="floating"
         value={value}
         onIonInput={(e) => onChange(e.target.value as string)}
+        onIonFocus={scrollToBottom}
         type={showPassword ? 'text' : 'password'}
         style={{
           '--highlight-color-focused': '#9FA4A9',

@@ -28,8 +28,8 @@ import ManageAlerts from './pages/settings/ManageAlerts';
 import Support from './pages/settings/Support';
 import TourDetail from './pages/tour/TourDetail';
 import ChangeStatus from './pages/my-page/ChangeStatus';
-import DeleteReason from './pages/my-page/DeleteReason';
 import Translate from './pages/settings/Translate';
+import ChangePhone from './pages/settings/ChangePhone';
 
 const Router = () => {
   return (
@@ -91,9 +91,6 @@ const Router = () => {
       <Route path="/change-status/:id">
         <ChangeStatus />
       </Route>
-      <Route path="/delete-reason/:id">
-        <DeleteReason />
-      </Route>
 
       <Route path="/room-message/:id">
         <MessageRoom />
@@ -117,6 +114,9 @@ const Router = () => {
       </Route>
       <Route path="/settings/informations/email">
         <ChangeEmail />
+      </Route>
+      <Route path="/settings/informations/phone">
+        <ChangePhone />
       </Route>
       <Route path="/settings/translate">
         <Translate />

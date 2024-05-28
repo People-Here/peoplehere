@@ -12,6 +12,7 @@ import {
 } from '@ionic/react';
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -23,7 +24,7 @@ import useUserStore from '../../stores/user';
 import { getUserProfile } from '../../api/profile';
 import LogoRunning from '../../components/LogoRunning';
 import { imageToFile } from '../../utils/image';
-import { postTour } from '../../api/tour';
+import { editTour, postTour } from '../../api/tour';
 import { getNewToken } from '../../api/login';
 import { themeColors } from '../../constants/theme';
 
@@ -34,7 +35,13 @@ const Preview = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
-  const { place, title, description, images } = usePostPlaceStore((state) => state);
+  const location = useLocation();
+
+  const tourId = location.pathname.split('/').at(-1) ?? '';
+
+  const { place, title, description, images, fetchImages, setFetchImages } = usePostPlaceStore(
+    (state) => state,
+  );
   const user = useUserStore((state) => state.user);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -58,20 +65,21 @@ const Preview = () => {
   const uploadPost = async () => {
     setIsLoading(true);
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
-
     const formData = new FormData();
-    formData.append('placeId', place.id);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('theme', theme);
+
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
     imageBlobs.forEach((blob) => {
       formData.append('images', blob);
     });
 
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('theme', theme);
+
     try {
       await postTour(formData);
-      router.push('/', 'root', 'replace');
+      router.push('/', 'root');
     } catch (error) {
       const errorInstance = error as AxiosError;
 
@@ -79,10 +87,40 @@ const Preview = () => {
         await getNewToken();
 
         await postTour(formData);
-        router.push('/', 'root', 'replace');
+        router.push('/', 'root');
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const editPost = async () => {
+    setIsLoading(true);
+
+    const formData = new FormData();
+
+    if (fetchImages) {
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+      imageBlobs.forEach((blob) => {
+        formData.append('images', blob);
+      });
+    }
+
+    formData.append('id', tourId);
+    formData.append('placeId', place.id);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('isDefaultImage', 'false');
+    formData.append('theme', theme);
+
+    try {
+      await editTour(formData);
+      router.push('/', 'root');
+    } catch (error) {
+      console.error('fail to edit post', error);
+    } finally {
+      setIsLoading(false);
+      setFetchImages(true);
     }
   };
 
@@ -156,7 +194,7 @@ const Preview = () => {
         <SelectTheme
           currentTheme={theme}
           setTheme={setTheme}
-          onClick={uploadPost}
+          onClick={tourId ? editPost : uploadPost}
           buttonDisable={isLoading}
         />
       </IonContent>
@@ -223,6 +261,8 @@ const themes = {
   black: 'w-[3.75rem] h-[3.75rem] rounded-full bg-gray8',
   pink: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#F4B7C6]',
   yellow: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#FAE09F]',
+  blue: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#B7E2F4]',
+  green: 'w-[3.75rem] h-[3.75rem] rounded-full bg-[#E2FA9F]',
 };
 type ThemeProps = {
   currentTheme: string;
@@ -252,22 +292,24 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
         </div>
 
         {expand && (
-          <div className="flex gap-[1.125rem]">
-            {Object.keys(themes).map((theme) => (
-              <Fragment key={theme}>
-                {currentTheme === theme ? (
-                  <div className="border-2 rounded-full border-orange5">
-                    <div className={themes[theme as keyof typeof themes]} />
-                  </div>
-                ) : (
-                  <div
-                    key={theme}
-                    className={themes[theme as keyof typeof themes]}
-                    onClick={() => setTheme(theme)}
-                  />
-                )}
-              </Fragment>
-            ))}
+          <div className="w-full overflow-x-scroll">
+            <div className="w-fit flex gap-[1.125rem]">
+              {Object.keys(themes).map((theme) => (
+                <Fragment key={theme}>
+                  {currentTheme === theme ? (
+                    <div className="border-2 rounded-full border-orange5">
+                      <div className={themes[theme as keyof typeof themes]} />
+                    </div>
+                  ) : (
+                    <div
+                      key={theme}
+                      className={themes[theme as keyof typeof themes]}
+                      onClick={() => setTheme(theme)}
+                    />
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         )}
 
@@ -316,7 +358,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
     <div className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6">
       <div
         ref={carouselRef}
-        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+        className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory no-scrollbar"
       >
         {/* image carousel */}
         {images.map((image) => (

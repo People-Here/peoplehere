@@ -1,18 +1,32 @@
-import { IonContent, IonPage, useIonRouter } from '@ionic/react';
-import { useState } from 'react';
-import { useLocation } from 'react-router';
+import {
+  IonButtons,
+  IonContent,
+  IonIcon,
+  IonModal,
+  IonTitle,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
+import { useRef, useState } from 'react';
 
-import Header from '../../components/Header';
-import Footer from '../../layouts/Footer';
-import { deleteTour } from '../../api/tour';
-import { getNewToken } from '../../api/login';
+import Footer from '../layouts/Footer';
+import { getNewToken } from '../api/login';
+import { deleteTour } from '../api/tour';
+import CloseIcon from '../assets/svgs/close.svg';
 
+import type { ModalProps } from '.';
 import type { AxiosError } from 'axios';
 
-const DeleteReason = () => {
+type Props = {
+  tourId: string;
+  title: string;
+};
+
+const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) => {
+  // eslint-disable-next-line no-undef
+  const modalRef = useRef<HTMLIonModalElement>(null);
+
   const router = useIonRouter();
-  const location = useLocation();
-  const tourId = location.pathname.split('/').at(-1) ?? '';
 
   const [input, setInput] = useState('');
 
@@ -34,9 +48,21 @@ const DeleteReason = () => {
   };
 
   return (
-    <IonPage>
+    <IonModal ref={modalRef} isOpen={isOpen} {...rest}>
       <IonContent fullscreen>
-        <Header type="close" title="홍대에서 만나는 디자인과 예술" />
+        <IonToolbar className="px-4 h-14">
+          <IonButtons slot="start">
+            <IonIcon
+              src={CloseIcon}
+              className="svg-lg"
+              onClick={() => modalRef.current?.dismiss()}
+            />
+          </IonButtons>
+
+          <IonTitle class="ion-text-center" className="font-headline3 text-gray8">
+            {title}
+          </IonTitle>
+        </IonToolbar>
 
         <div className="px-4">
           <p className="mt-5 font-headline1 text-gray8">삭제하시는 이유를 알려주세요</p>
@@ -46,16 +72,16 @@ const DeleteReason = () => {
               className="px-4 py-2.5 rounded-lg bg-gray1.5 border border-gray3 min-h-[8.75rem] font-body1 text-gray8 resize-none w-full"
               value={input}
               onChange={(e) => setInput(e.currentTarget.value)}
-              maxLength={30}
+              maxLength={500}
             />
 
-            <p className="font-caption2 text-gray5">{input.length}/30</p>
+            <p className="font-caption2 text-gray5">{input.length}/500</p>
           </div>
         </div>
 
         <Footer>
           <button
-            className="w-full text-white button-primary button-lg font-subheading1"
+            className="w-full mb-4 text-white button-primary button-lg font-subheading1"
             disabled={input.length <= 0}
             onClick={() => onDeleteTour(tourId)}
           >
@@ -63,7 +89,7 @@ const DeleteReason = () => {
           </button>
         </Footer>
       </IonContent>
-    </IonPage>
+    </IonModal>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import JSONbig from 'json-bigint';
 
-import { typedDelete, typedGet, typedPost } from '.';
+import { typedDelete, typedGet, typedPost, typedPut } from '.';
 
 export const getTourList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
@@ -42,11 +42,15 @@ export const getTourDetail = async (tourId: string, region: string) => {
 };
 
 export const searchTour = async (keyword: string, region: string, langCode: string) => {
-  const response = await typedPost<TourListResponse>('/tours/search', {
-    keyword,
-    region,
-    langCode,
-  });
+  const response = await typedPost<TourListResponse>(
+    '/tours/search',
+    {
+      keyword,
+      region,
+      langCode,
+    },
+    { transformResponse: [(data: string) => JSONbig.parse(data) as JSON] },
+  );
   return response;
 };
 
@@ -60,6 +64,18 @@ export const postTour = async (body: FormData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response;
+};
+
+export const editTour = async (body: FormData) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPut('/tours', body, {
+    headers: {
+      Authorization: value,
+    },
+  });
+
   return response;
 };
 

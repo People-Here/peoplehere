@@ -10,7 +10,6 @@ import useLogin from '../../hooks/useLogin';
 
 import type { AxiosError } from 'axios';
 
-
 const ChangeEmail = () => {
   const { requestLogout } = useLogin();
 
@@ -24,6 +23,7 @@ const ChangeEmail = () => {
   const checkEmailValid = async () => {
     try {
       await checkEmail(email);
+      setAuthCode('');
       setShowAuthCodeInput(true);
       await sendEmailCode(email);
     } catch (error) {

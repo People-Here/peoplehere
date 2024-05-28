@@ -15,21 +15,23 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import i18next from 'i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
 import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
-import { getTourDetail, type TourDetail as TourDetailType } from '../../api/tour';
+import { getTourDetail, likeTour, type TourDetail as TourDetailType } from '../../api/tour';
 import LogoRunning from '../../components/LogoRunning';
-import i18next from '../../i18n';
 import { themeColors } from '../../constants/theme';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
 import FullPageMap from '../../modals/FullPageMap';
+import MapIcon from '../../assets/svgs/map.svg';
+import { getNewToken } from '../../api/login';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -43,6 +45,8 @@ const TourDetail = () => {
   const [tourDetail, setTourDetail] = useState<TourDetailType>();
 
   const [isMine, setIsMine] = useState(false);
+  const [openEditSheet, setOpenEditSheet] = useState(false);
+  const [openMessageModal, setOpenMessageModal] = useState(false);
 
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
@@ -67,6 +71,20 @@ const TourDetail = () => {
       setIsMine(true);
     }
   }, [tourDetail, user.id]);
+
+  const onClickLike = async () => {
+    try {
+      await likeTour(tourId);
+    } catch (error) {
+      await getNewToken();
+      await likeTour(tourId);
+
+      const response = await getTourDetail(tourId, 'KR');
+      setTourDetail(response.data);
+
+      console.error('Failed to like tour', error);
+    }
+  };
 
   if (!tourDetail) {
     return <LogoRunning />;
@@ -97,14 +115,14 @@ const TourDetail = () => {
           />
         </Link>
 
-        <div className={`relative ${themeColors[tourDetail.theme].background}`}>
+        <div className={`${themeColors[tourDetail.theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} -top-28 -left-[7.1875rem] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} mx-auto top-40 -left-[calc(18.75rem-50%)] -z-10`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div
-              className={`flex items-center ${themeColors[tourDetail.theme].languageBackground} rounded py-0.5 px-1.5 w-fit`}
+              className={`flex items-center ${themeColors[tourDetail.theme].footer} rounded py-0.5 px-1.5 w-fit`}
             >
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {t('common.availableLanguages')}
@@ -132,7 +150,6 @@ const TourDetail = () => {
             />
 
             <PlaceInfo
-              image={tourDetail.placeInfo.imageUrlList[0].imageUrl}
               title={tourDetail.placeInfo.name}
               address={tourDetail.placeInfo.address}
               theme={tourDetail.theme}
@@ -159,19 +176,28 @@ const TourDetail = () => {
             <div className="flex gap-3">
               <div
                 className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
+                onClick={isMine ? () => setOpenEditSheet(true) : onClickLike}
               >
                 <IonIcon src={isMine ? ThreeDotGrayIcon : HeartLineRedIcon} className="svg-lg" />
               </div>
 
-              <button
-                id={isMine ? 'change-status-sheet' : 'send-message-modal'}
-                className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                disabled={tourDetail.userInfo.id.toString() === user.id}
-              >
-                {i18next.resolvedLanguage === 'ko'
-                  ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
-                  : `Message ${tourDetail.userInfo.firstName}`}
-              </button>
+              {isMine ? (
+                <button
+                  className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                  onClick={() => router.push(`/post/${tourId}`)}
+                >
+                  수정하기
+                </button>
+              ) : (
+                <button
+                  id="send-message-modal"
+                  className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                >
+                  {i18next.resolvedLanguage === 'ko'
+                    ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
+                    : `Message ${tourDetail.userInfo.firstName}`}
+                </button>
+              )}
             </div>
           </IonToolbar>
         </IonFooter>
@@ -192,12 +218,13 @@ const TourDetail = () => {
         />
 
         <IonActionSheet
-          trigger="change-status-sheet"
+          isOpen={openEditSheet}
+          onDidDismiss={() => setOpenEditSheet(false)}
           buttons={[
             {
               text: '상태 변경하기',
               handler: () => {
-                router.push(`/post/${tourId}`);
+                router.push(`/change-status/${tourId}`);
               },
             },
             {
@@ -241,23 +268,18 @@ const Divider = () => {
 };
 
 type PlaceInfoProps = {
-  image: string;
   title: string;
   address: string;
   theme: string;
 };
-const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
+const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
   return (
     <div
       id="place-map-modal"
-      className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
+      className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">
-        <IonImg
-          src={image}
-          alt={`place-${title}`}
-          className="object-cover overflow-hidden rounded-lg w-11 h-11 shrink-0"
-        />
+        <IonIcon src={MapIcon} className="svg-xl shrink-0" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
@@ -303,12 +325,12 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   return (
     <>
       <div
-        className="relative w-full h-[16.25rem] overflow-hidden mb-5 bg-gray3 rounded-[20px] border-[0.5px] border-gray6"
+        className="relative w-full h-[16.25rem] overflow-hidden mb-5 rounded-[20px] border-[0.5px] border-gray6"
         onClick={() => setShowFullImage(true)}
       >
         <div
           ref={carouselRef}
-          className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory"
+          className="flex w-full h-full overflow-x-scroll shrink-0 snap-x snap-mandatory no-scrollbar"
         >
           {/* image carousel */}
           {images.map((image) => (

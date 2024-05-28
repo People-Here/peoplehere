@@ -95,6 +95,7 @@ const SelectRegion = (props: ModalProps) => {
       initialBreakpoint={0.87}
       breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
+      buttonDisabled={!selectedRegion.countryCode}
       {...props}
     >
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
@@ -116,12 +117,14 @@ const SelectRegion = (props: ModalProps) => {
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="font-body1 text-orange6">
-                    {i18n.language[0] === 'ko' ? region.koreanName : region.englishName}
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
-                <p className="font-body1 text-gray8">{region.koreanName}</p>
+                <p className="font-body1 text-gray8">
+                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                </p>
               )}
             </IonItem>
           ))}
