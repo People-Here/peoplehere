@@ -24,7 +24,7 @@ const PasswordInput = ({ value, onChange }: Props) => {
 
   return (
     <IonItem
-      className="h-[54px]"
+      className="w-full h-full"
       style={{
         '--background': '#F4F5F7',
         '--border-radius': '12px',
@@ -33,7 +33,7 @@ const PasswordInput = ({ value, onChange }: Props) => {
       lines="none"
     >
       <IonInput
-        className="p-0 font-body1 text-gray8"
+        className="p-0 font-body1 text-gray8 -mb-0.5"
         label={t('common.password')}
         labelPlacement="floating"
         value={value}
