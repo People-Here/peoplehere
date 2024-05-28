@@ -47,7 +47,10 @@ const PasswordInput = ({ value, onChange }: Props) => {
       <IonIcon
         slot="end"
         icon={showPassword ? EyeOpenIcon : EyeClosedIcon}
-        onClick={() => setShowPassword((prev) => !prev)}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => {
+          setShowPassword((prev) => !prev);
+        }}
       />
     </IonItem>
   );
