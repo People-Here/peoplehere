@@ -135,15 +135,14 @@ const ChatListItem = ({
 
       <div className="flex flex-col gap-0.5">
         <div className="flex gap-1.5 items-center">
-          <p className={read ? 'font-body1 text-gray7' : 'font-body1 text-gray7'}>{name}</p>
+          <p className="font-body1 text-gray7" style={{ fontWeight: read ? 500 : 700 }}>
+            {name}
+          </p>
           {hasSchedule && <p className="font-caption2 text-orange6">약속 · {date}</p>}
         </div>
         <p
-          className={
-            read
-              ? 'w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap'
-              : 'w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap font-bold'
-          }
+          className="w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap"
+          style={{ fontWeight: read ? 500 : 700 }}
         >
           {lastMessage}
         </p>
