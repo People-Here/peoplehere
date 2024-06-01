@@ -12,7 +12,11 @@ const options = [
   '기타 사유',
 ];
 
-const DeleteUser = (props: ModalProps) => {
+type Props = {
+  onConfirm: () => void;
+};
+
+const DeleteUser = (props: Props & ModalProps) => {
   const [clickedItem, setClickedItem] = useState('');
 
   return (
@@ -21,6 +25,11 @@ const DeleteUser = (props: ModalProps) => {
       buttonText="확인"
       initialBreakpoint={0.45}
       breakpoints={[0.45, 0.6]}
+      onClickButton={() => {
+        if (clickedItem) {
+          props.onConfirm();
+        }
+      }}
       {...props}
     >
       <div>
