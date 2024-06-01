@@ -8,7 +8,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
@@ -32,8 +32,6 @@ const Settings = () => {
 
   const { id } = useUserStore((state) => state.user);
   const { requestLogout } = useLogin();
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [isLogin, setIsLogin] = useState(false);
   const [openLogoutModal, setOpenLogoutModal] = useState(false);

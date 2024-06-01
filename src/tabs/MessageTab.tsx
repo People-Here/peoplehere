@@ -86,6 +86,7 @@ const MessageTab = () => {
                     date={'2024-04-28 19:00'}
                     lastMessage={message.lastMessage}
                     placeName={message.title}
+                    read={message.readFlag}
                   />
                 ) : (
                   <ChatListItem
@@ -94,6 +95,7 @@ const MessageTab = () => {
                     date={'2024-04-28 19:00'}
                     lastMessage={message.lastMessage}
                     placeName={message.title}
+                    read={message.readFlag}
                   />
                 )}
               </Link>
@@ -110,6 +112,7 @@ type ChatListItemProps = {
   name: string;
   lastMessage: string;
   placeName: string;
+  read: boolean;
   date?: string;
   hasSchedule?: boolean;
 };
@@ -118,6 +121,7 @@ const ChatListItem = ({
   name,
   lastMessage,
   placeName,
+  read,
   date,
   hasSchedule = false,
 }: ChatListItemProps) => {
@@ -131,10 +135,16 @@ const ChatListItem = ({
 
       <div className="flex flex-col gap-0.5">
         <div className="flex gap-1.5 items-center">
-          <p className="font-body1 text-gray7">{name}</p>
+          <p className={read ? 'font-body1 text-gray7' : 'font-body1 text-gray7'}>{name}</p>
           {hasSchedule && <p className="font-caption2 text-orange6">약속 · {date}</p>}
         </div>
-        <p className="w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap">
+        <p
+          className={
+            read
+              ? 'w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap'
+              : 'w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap font-bold'
+          }
+        >
           {lastMessage}
         </p>
         <p className="font-caption2 text-gray5.5">{placeName}</p>

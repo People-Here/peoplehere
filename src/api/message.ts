@@ -66,6 +66,7 @@ export type MessageRoom = {
   tourId: bigint;
   title: string;
   lastMessage: string;
+  readFlag: boolean;
   guestInfo: {
     id: bigint;
     firstName: string;
