@@ -5,3 +5,7 @@ export const maskPhoneNumber = (phoneNumber: string) => {
 export const roundAge = (age: string) => {
   return age ? `${age[2]}0년대생` : '';
 };
+
+export const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
