@@ -27,6 +27,7 @@ import { imageToFile } from '../../utils/image';
 import { editTour, postTour } from '../../api/tour';
 import { getNewToken } from '../../api/login';
 import { themeColors } from '../../constants/theme';
+import MapIcon from '../../assets/svgs/map.svg';
 
 import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
@@ -175,12 +176,7 @@ const Preview = () => {
 
             <ImageCarousel images={images} />
 
-            <PlaceInfo
-              image={images[0]}
-              title={place.title}
-              address={place.address}
-              theme={theme}
-            />
+            <PlaceInfo title={place.title} address={place.address} theme={theme} />
 
             <div
               className={`p-4 flex flex-col gap-2.5 ${themeColors[theme].cardBackground} rounded-xl mt-2`}
@@ -229,22 +225,17 @@ const Divider = () => {
 };
 
 type PlaceInfoProps = {
-  image: string;
   title: string;
   address: string;
   theme: string;
 };
-const PlaceInfo = ({ image, title, address, theme }: PlaceInfoProps) => {
+const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
   return (
     <div
       className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">
-        <IonImg
-          src={image}
-          alt={`place-${title}`}
-          className="object-cover overflow-hidden rounded-lg w-11 h-11"
-        />
+        <IonIcon icon={MapIcon} className="svg-xl" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
