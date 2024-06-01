@@ -153,7 +153,7 @@ const Post = () => {
         </button>
       </Footer>
 
-      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} />
+      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
     </>
   );
 };

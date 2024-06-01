@@ -292,6 +292,7 @@ const EditProfile = () => {
           setLocation(item.title);
           setPlaceId(item.id);
         }}
+        from="TOUR"
       />
     </IonPage>
   );
