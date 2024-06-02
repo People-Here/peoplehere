@@ -35,8 +35,13 @@ export const getBookmarkList = async (region: string, lang: string) => {
 };
 
 export const getTourDetail = async (tourId: string, region: string, lang: string) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
   const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/${lang}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    headers: {
+      Authorization: value,
+    },
   });
   return response;
 };
