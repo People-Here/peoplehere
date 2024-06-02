@@ -265,7 +265,6 @@ const TourDetail = () => {
           lng={127.0684686}
           title={tourDetail.placeInfo.name}
           address={tourDetail.placeInfo.address}
-          thumbnail={tourDetail.placeInfo.imageUrlList[0].imageUrl}
         />
 
         <SendMessage
