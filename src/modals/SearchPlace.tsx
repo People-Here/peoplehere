@@ -179,7 +179,7 @@ const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
 
       <button
         type="submit"
-        className="w-16 px-3 text-white button-primary button-md shrink-0 font-body1"
+        className="w-16 px-3 text-white button-primary button-md shrink-0 font-body1 whitespace-nowrap"
       >
         {t('common.search')}
       </button>
