@@ -8,7 +8,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 
 import Header from '../../components/Header';
@@ -33,11 +33,10 @@ const Settings = () => {
   const { id } = useUserStore((state) => state.user);
   const { requestLogout } = useLogin();
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
   const [isLogin, setIsLogin] = useState(false);
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openDeleteReasonSheet, setOpenDeleteReasonSheet] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -99,7 +98,7 @@ const Settings = () => {
             {isLogin ? (
               <p
                 className="text-center underline font-caption1 text-gray5.5"
-                onClick={() => setOpenDeleteModal(true)}
+                onClick={() => setOpenDeleteReasonSheet(true)}
               >
                 계정 삭제
               </p>
@@ -111,7 +110,11 @@ const Settings = () => {
           </IonToolbar>
         </IonFooter>
 
-        <DeleteUser trigger="delete-modal" onDidDismiss={() => buttonRef.current?.click()} />
+        <DeleteUser
+          isOpen={openDeleteReasonSheet}
+          onDidDismiss={() => setOpenDeleteReasonSheet(false)}
+          onConfirm={() => setOpenDeleteModal(true)}
+        />
 
         <Alert
           isOpen={openDeleteModal}

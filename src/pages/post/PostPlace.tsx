@@ -65,7 +65,7 @@ const Post = () => {
     (async () => {
       if (!isNaN(Number(tourId))) {
         setFetchImages(false);
-        const response = await getTourDetail(tourId, region.countryCode.toUpperCase());
+        const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
 
         setPlace({
           id: response.data.placeInfo.id.toString(),
@@ -147,12 +147,13 @@ const Post = () => {
         <button
           className="w-full text-white button-primary button-lg font-subheading1"
           onClick={uploadPost}
+          disabled={!place.id || !images.length || !title || !description}
         >
           {t('common.preview')}
         </button>
       </Footer>
 
-      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} />
+      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
     </>
   );
 };

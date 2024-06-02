@@ -134,6 +134,7 @@ const Home = () => {
       <SearchPlace
         trigger="search-modal"
         onClickItem={(item) => router.push(`/home?search=${item.title}`)}
+        from="MAIN"
       />
     </div>
   );

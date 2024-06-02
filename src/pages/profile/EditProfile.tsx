@@ -35,6 +35,7 @@ import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
 import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
+import { roundAge } from '../../utils/mask';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
@@ -82,6 +83,7 @@ const EditProfile = () => {
           setSchool(response.data.school ?? '');
           setFirstName(response.data.firstName);
           setAge(response.data.birthDate);
+          setShowAge(response.data.showBirth);
         }
       }
     })();
@@ -114,7 +116,7 @@ const EditProfile = () => {
     {
       iconSrc: CakeIcon,
       title: '나이',
-      value: age ? age[2] + '0년대생' : '',
+      value: roundAge(age),
       modalId: 'age-modal',
       required: false,
     },
@@ -283,13 +285,14 @@ const EditProfile = () => {
         value={school}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age="90년대생" showAge={showAge} setShowAge={setShowAge} />
+      <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
       <SearchPlace
         trigger="search-place"
         onClickItem={(item) => {
           setLocation(item.title);
           setPlaceId(item.id);
         }}
+        from="TOUR"
       />
     </IonPage>
   );

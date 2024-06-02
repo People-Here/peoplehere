@@ -19,7 +19,6 @@ import i18next from 'i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
-import ShareIcon from '../../assets/svgs/share.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import { getTourDetail, likeTour, type TourDetail as TourDetailType } from '../../api/tour';
@@ -33,6 +32,8 @@ import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
 import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
+import useSignInStore from '../../stores/signIn';
+import { getTranslateLanguage } from '../../utils/translate';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ const TourDetail = () => {
   const location = useLocation();
 
   const user = useUserStore((state) => state.user);
+  const region = useSignInStore((state) => state.region);
   const { checkLogin } = useLogin();
 
   const [tourId, setTourId] = useState('');
@@ -50,6 +52,10 @@ const TourDetail = () => {
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
 
+  const [currentLanguage, setCurrentLanguage] = useState(
+    region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
+  );
+
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
@@ -58,7 +64,8 @@ const TourDetail = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getTourDetail(tourId, 'KR');
+      const lang = await getTranslateLanguage();
+      const response = await getTourDetail(tourId, region.countryCode, lang);
 
       if (response.status === 200) {
         setTourDetail(response.data);
@@ -81,12 +88,45 @@ const TourDetail = () => {
       await getNewToken();
       await likeTour(tourId);
 
-      const response = await getTourDetail(tourId, 'KR');
+      const response = await getTourDetail(tourId, region.countryCode, currentLanguage);
       setTourDetail(response.data);
 
       console.error('Failed to like tour', error);
     }
   };
+
+  const onClickTranslate = async () => {
+    const translatedLang = currentLanguage === 'KOREAN' ? 'ENGLISH' : 'KOREAN';
+
+    const response = await getTourDetail(tourId, region.countryCode, translatedLang);
+    setTourDetail(response.data);
+    setCurrentLanguage(translatedLang);
+  };
+
+  // const onClickShare = async () => {
+  //   if (!tourDetail) return;
+
+  //   const shareLang = region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH';
+
+  //   const contents = {
+  //     KOREAN: {
+  //       title: '피플히어의 외국인 친구들을 만나 보세요.',
+  //       dialogTitle: `${tourDetail.placeInfo.name}에서 외국인 친구랑 놀래?`,
+  //       url: tourDetail.placeInfo.imageUrlList[0].imageUrl,
+  //     },
+  //     ENGLISH: {
+  //       title: `Meet people here in ${tourDetail.placeInfo.name}`,
+  //       dialogTitle: `Wanna meet people here in ${tourDetail.placeInfo.name}?`,
+  //       url: tourDetail.placeInfo.imageUrlList[0].imageUrl,
+  //     },
+  //   };
+
+  //   await Share.share({
+  //     title: contents[shareLang].title,
+  //     dialogTitle: contents[shareLang].dialogTitle,
+  //     url: `https://odongdong.site/tabs/main`,
+  //   });
+  // };
 
   if (!tourDetail) {
     return <LogoRunning />;
@@ -102,8 +142,8 @@ const TourDetail = () => {
           </IonButtons>
 
           <IonButtons slot="end" className="flex items-center gap-3">
-            <IonIcon src={LanguagueIcon} className="svg-lg" />
-            <IonIcon src={ShareIcon} className="svg-lg" />
+            <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
+            {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
           </IonButtons>
         </IonToolbar>
 

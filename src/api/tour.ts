@@ -34,8 +34,8 @@ export const getBookmarkList = async (region: string, lang: string) => {
   return response;
 };
 
-export const getTourDetail = async (tourId: string, region: string) => {
-  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/ORIGIN`, {
+export const getTourDetail = async (tourId: string, region: string, lang: string) => {
+  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/${lang}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
   });
   return response;

@@ -23,6 +23,7 @@ import { getTranslateLanguage } from '../../utils/translate';
 import LogoRunning from '../../components/LogoRunning';
 import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
+import LoadingGIF from '../../assets/images/three-dot-loading.gif';
 
 import type { Message } from '../../api/message';
 
@@ -36,6 +37,7 @@ const MessageRoom = () => {
 
   const [messages, setMessages] = useState<Message>();
   const [userInfo, setUserInfo] = useState<Message['guestInfo']>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -48,6 +50,8 @@ const MessageRoom = () => {
     if (!tourId) return;
 
     const lang = await getTranslateLanguage();
+
+    setIsLoading(true);
 
     try {
       const response = await getMessages(tourId, lang);
@@ -71,6 +75,8 @@ const MessageRoom = () => {
       );
 
       console.error('fail to get messages', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,8 +93,15 @@ const MessageRoom = () => {
           <p className="pl-1.5 font-headline3 text-gray8">{userInfo.firstName}</p>
 
           <IonButtons slot="end">
-            <span className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7">
-              {t('common.refresh')}
+            <span
+              className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7"
+              onClick={getMessageList}
+            >
+              {isLoading ? (
+                <img src={LoadingGIF} alt="loading" width={24} height={24} />
+              ) : (
+                t('common.refresh')
+              )}
             </span>
           </IonButtons>
         </IonToolbar>
@@ -105,11 +118,11 @@ const MessageRoom = () => {
         />
 
         <div className="px-4">
-          {messages.messageList.length === 0 ? (
+          {messages.messageInfoList.length === 0 ? (
             <NoChatChip userName={userInfo.firstName} />
           ) : (
             <div className="flex flex-col gap-8 mt-4">
-              {messages.messageList.map((message) => (
+              {messages.messageInfoList.map((message) => (
                 <Chat
                   key={message.messageId}
                   type={
