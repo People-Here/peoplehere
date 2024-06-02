@@ -27,10 +27,12 @@ import LogoRunning from '../../components/LogoRunning';
 import { themeColors } from '../../constants/theme';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
+import ThreeDotIcon from '../../assets/svgs/three-dots.svg';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
 import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
+import MapWhiteIcon from '../../assets/svgs/map-white.svg';
 import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
 import useSignInStore from '../../stores/signIn';
@@ -225,12 +227,17 @@ const TourDetail = () => {
                 className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
                 onClick={isMine ? () => setOpenEditSheet(true) : onClickLike}
               >
-                <IonIcon
-                  src={
-                    isMine ? ThreeDotGrayIcon : tourDetail.like ? HeartFilledIcon : HeartLineRedIcon
-                  }
-                  className="svg-lg"
-                />
+                {isMine ? (
+                  <IonIcon
+                    icon={tourDetail.theme === 'black' ? ThreeDotGrayIcon : ThreeDotIcon}
+                    className="svg-lg"
+                  />
+                ) : (
+                  <IonIcon
+                    icon={tourDetail.like ? HeartFilledIcon : HeartLineRedIcon}
+                    className="svg-lg"
+                  />
+                )}
               </div>
 
               {isMine ? (
@@ -336,7 +343,7 @@ const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
       className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">
-        <IonIcon src={MapIcon} className="svg-xl shrink-0" />
+        <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
