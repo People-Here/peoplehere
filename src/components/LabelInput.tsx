@@ -10,6 +10,7 @@ type Props = {
   onBlur?: () => void;
   type?: ComponentProps<typeof IonInput>['type'];
   readonly?: boolean;
+  disabled?: boolean;
   errorText?: string;
   inputMode?: ComponentProps<typeof IonInput>['inputMode'];
 };
@@ -21,13 +22,14 @@ const LabelInput = ({
   onBlur,
   type,
   readonly,
+  disabled,
   errorText,
   inputMode,
 }: Props) => {
   return (
     <div className="w-full">
       <IonItem
-        className="w-full h-full"
+        className="w-full h-fit"
         lines="none"
         style={{
           '--background': '#F4F5F7',
@@ -45,6 +47,7 @@ const LabelInput = ({
           onIonInput={(e) => onChange(e.target.value as string)}
           onIonBlur={onBlur}
           readonly={readonly}
+          disabled={disabled}
           style={{
             '--highlight-color-focused': '#9FA4A9',
           }}

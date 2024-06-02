@@ -69,6 +69,7 @@ export type ProfileResponse = {
   firstName: string;
   lastName: string;
   birthDate: string;
+  showBirth: boolean;
   phoneNumber: string;
   favorite?: string;
   hobby?: string;

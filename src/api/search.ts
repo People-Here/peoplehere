@@ -57,6 +57,7 @@ export type SearchHistory = {
 type EnrollPlaceRequest = {
   placeId: string;
   region: string;
+  type: 'MAIN' | 'TOUR';
 };
 
 type EnrollPlaceResponse = {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
+import { languages as languageConstants } from '../constants/language';
 import ModalContainer from '.';
 import colors from '../theme/colors';
 
@@ -47,7 +48,7 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Pro
         className={isMobile ? 'overflow-y-scroll h-[57vh] mb-4' : 'overflow-y-scroll h-[65vh] mb-4'}
       >
         <IonList lines="full">
-          {data.langs.map((language) => (
+          {languageConstants.map((language) => (
             <div key={language.lang}>
               <div className="flex flex-col p-4 border-b border-gray1.5">
                 <IonCheckbox
@@ -76,53 +77,3 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Pro
 };
 
 export default SelectLanguages;
-
-const data = {
-  langs: [
-    {
-      koreanName: '한국어',
-      englishName: 'Korean',
-      lang: 'ko',
-    },
-    {
-      koreanName: '영어',
-      englishName: 'English',
-      lang: 'en',
-    },
-    {
-      koreanName: '일본어',
-      englishName: 'Japanese',
-      lang: 'ja',
-    },
-    {
-      koreanName: '중국어',
-      englishName: 'Chinese',
-      lang: 'zh',
-    },
-    {
-      koreanName: '스페인어',
-      englishName: 'Spanish',
-      lang: 'es',
-    },
-    {
-      koreanName: '프랑스어',
-      englishName: 'French',
-      lang: 'fr',
-    },
-    {
-      koreanName: '독일어',
-      englishName: 'German',
-      lang: 'de',
-    },
-    {
-      koreanName: '러시아어',
-      englishName: 'Russian',
-      lang: 'ru',
-    },
-    {
-      koreanName: '이탈리아어',
-      englishName: 'Italian',
-      lang: 'it',
-    },
-  ],
-};

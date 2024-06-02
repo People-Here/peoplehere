@@ -39,7 +39,7 @@ const ChangeStatus = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const response = await getTourDetail(tourId, region.countryCode.toUpperCase());
+      const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
       setTourInfo(response.data);
 
       setActive(response.data.available);

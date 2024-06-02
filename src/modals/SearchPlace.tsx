@@ -31,9 +31,10 @@ export type PlaceItem = {
 
 type Props = {
   onClickItem: (item: PlaceItem) => void;
+  from: 'MAIN' | 'TOUR';
 };
 
-const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
+const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
   const { t } = useTranslation();
 
   const region = useSignInStore((state) => state.region);
@@ -83,7 +84,7 @@ const SearchPlace = ({ onClickItem, ...rest }: ModalProps & Props) => {
 
   const onClick = async (item: PlaceItem) => {
     try {
-      await enrollPlace({ placeId: item.id, region: region.countryCode.toUpperCase() });
+      await enrollPlace({ placeId: item.id, region: region.countryCode.toUpperCase(), type: from });
       onClickItem(item);
       await modalRef.current?.dismiss();
     } catch (error) {

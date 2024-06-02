@@ -39,7 +39,13 @@ const SetPassword = () => {
         </h1>
 
         <div className="flex flex-col gap-2 mt-5">
-          <LabelInput label={t('common.email')} value={email} onChange={() => {}} readonly />
+          <LabelInput
+            label={t('common.email')}
+            value={email}
+            onChange={() => {}}
+            readonly
+            disabled
+          />
 
           <PasswordInput value={passwordInput} onChange={setPasswordInput} />
           <PasswordValidator password={passwordInput} />

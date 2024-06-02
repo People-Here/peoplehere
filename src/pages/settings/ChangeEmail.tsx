@@ -1,5 +1,5 @@
 import { IonContent, IonPage, IonText } from '@ionic/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -19,6 +19,12 @@ const ChangeEmail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authCode, setAuthCode] = useState('');
+
+  useEffect(() => {
+    if (!errorMessage || !email) return;
+
+    setErrorMessage('');
+  }, [email]);
 
   const checkEmailValid = async () => {
     try {
@@ -67,7 +73,7 @@ const ChangeEmail = () => {
             새 이메일 주소를 저장하면 확인용 이메일을 보내드려요.
           </p>
 
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex gap-2 mt-2">
             <LabelInput
               label="이메일"
               type="email"

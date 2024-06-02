@@ -22,6 +22,7 @@ import { getUserProfile } from '../../api/profile';
 import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getTourListByUser } from '../../api/tour';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { Tour } from '../../api/tour';
 
@@ -38,10 +39,12 @@ const MyPage = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const lang = await getTranslateLanguage();
+
       const response = await getUserProfile(user.id, region.countryCode);
       const tourListResponse = await getTourListByUser(
         region.countryCode.toUpperCase(),
-        'KOREAN',
+        lang,
         response.data.id.toString(),
       );
 
