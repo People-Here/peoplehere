@@ -100,7 +100,8 @@
     "description": "함께 하고 싶은 활동에 대해 얘기해 보세요.",
     "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요.",
     "selectTheme": "스킨 색상 선택",
-    "post": "장소 올리기"
+    "post": "장소 올리기",
+    "postLoading": "최대 1분 정도 소요될 수 있어요..."
   },
   "mypage": {
     "title": "마이페이지",

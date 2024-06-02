@@ -21,6 +21,7 @@ import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
+import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import { getTourDetail, likeTour, type TourDetail as TourDetailType } from '../../api/tour';
 import LogoRunning from '../../components/LogoRunning';
 import { themeColors } from '../../constants/theme';
@@ -63,14 +64,7 @@ const TourDetail = () => {
     setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const lang = await getTranslateLanguage();
-      const response = await getTourDetail(tourId, region.countryCode, lang);
-
-      if (response.status === 200) {
-        setTourDetail(response.data);
-      }
-    })();
+    fetchTourDetail(tourId);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -81,15 +75,26 @@ const TourDetail = () => {
     }
   }, [tourDetail, user.id]);
 
+  const fetchTourDetail = async (tourId: string) => {
+    const lang = await getTranslateLanguage();
+    const response = await getTourDetail(tourId, region.countryCode, lang);
+
+    if (response.status === 200) {
+      setTourDetail(response.data);
+    }
+  };
+
   const onClickLike = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) return;
+
     try {
       await likeTour(tourId);
+      await fetchTourDetail(tourId);
     } catch (error) {
       await getNewToken();
       await likeTour(tourId);
-
-      const response = await getTourDetail(tourId, region.countryCode, currentLanguage);
-      setTourDetail(response.data);
+      await fetchTourDetail(tourId);
 
       console.error('Failed to like tour', error);
     }
@@ -220,7 +225,12 @@ const TourDetail = () => {
                 className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
                 onClick={isMine ? () => setOpenEditSheet(true) : onClickLike}
               >
-                <IonIcon src={isMine ? ThreeDotGrayIcon : HeartLineRedIcon} className="svg-lg" />
+                <IonIcon
+                  src={
+                    isMine ? ThreeDotGrayIcon : tourDetail.like ? HeartFilledIcon : HeartLineRedIcon
+                  }
+                  className="svg-lg"
+                />
               </div>
 
               {isMine ? (
@@ -233,11 +243,11 @@ const TourDetail = () => {
               ) : (
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                  onClick={() => {
-                    const isLoggedIn = checkLogin();
-                    if (!isLoggedIn) return;
-
-                    setOpenMessageModal(true);
+                  onClick={async () => {
+                    const isLoggedIn = await checkLogin();
+                    if (isLoggedIn) {
+                      setOpenMessageModal(true);
+                    }
                   }}
                 >
                   {i18next.resolvedLanguage === 'ko'
@@ -255,7 +265,6 @@ const TourDetail = () => {
           lng={127.0684686}
           title={tourDetail.placeInfo.name}
           address={tourDetail.placeInfo.address}
-          thumbnail={tourDetail.placeInfo.imageUrlList[0].imageUrl}
         />
 
         <SendMessage

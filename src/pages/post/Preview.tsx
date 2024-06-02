@@ -61,7 +61,7 @@ const Preview = () => {
         setUserInfo(response.data);
       }
     })();
-  }, [user.id]);
+  }, []);
 
   const uploadPost = async () => {
     setIsLoading(true);
@@ -309,7 +309,7 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
           onClick={onClick}
           disabled={buttonDisable}
         >
-          {buttonDisable ? 'loading...' : t('newTour.post')}
+          {buttonDisable ? t('newTour.postLoading') : t('newTour.post')}
         </button>
       </div>
     </IonFooter>

@@ -100,7 +100,8 @@
     "description": "Share the idea of activities you would like to do with other people.",
     "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate.",
     "selectTheme": "Select a theme",
-    "post": "Post my place"
+    "post": "Post my place",
+    "postLoading": "May take up to 1 minute..."
   },
   "mypage": {
     "title": "My page",

@@ -12,10 +12,9 @@ type Props = {
   lng: number;
   title: string;
   address: string;
-  thumbnail: string;
 };
 
-const FullPageMap = ({ lat, lng, title, address, thumbnail, ...rest }: Props & ModalProps) => {
+const FullPageMap = ({ lat, lng, title, address, ...rest }: Props & ModalProps) => {
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
@@ -71,8 +70,6 @@ const FullPageMap = ({ lat, lng, title, address, thumbnail, ...rest }: Props & M
 
           <div className="absolute z-30 w-full px-4 bottom-6">
             <div className="w-full border-[1.5px] border-gray2 rounded-xl flex items-center gap-3 p-3 bg-white">
-              <img src={thumbnail} alt="place info" className="object-cover rounded-lg w-11 h-11" />
-
               <div>
                 <p className="font-subheading2 text-gray7 mb-0.5">{title}</p>
                 <p className="font-caption2 text-gray5">{address}</p>
