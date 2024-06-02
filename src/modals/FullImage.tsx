@@ -53,13 +53,13 @@ const FullImage = ({ images, setShow }: Props) => {
 
       <div
         ref={carouselRef}
-        className="flex overflow-x-scroll snap-x snap-mandatory no-scrollbar max-h-[80%]"
+        className="flex overflow-x-scroll snap-x snap-mandatory no-scrollbar w-full max-h-[80%]"
       >
         {images.map((image) => (
           <img
             key={image}
             src={image}
-            className="object-contain snap-center"
+            className="object-contain w-full snap-center shrink-0"
             alt="full screen image"
           />
         ))}
