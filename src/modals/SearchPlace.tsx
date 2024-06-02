@@ -56,7 +56,7 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
 
   const getHistory = async () => {
     try {
-      const response = await getSearchHistory();
+      const response = await getSearchHistory(from);
       setHistory(response.data.places);
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -64,7 +64,7 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
       if (errorInstance.response?.status === 401) {
         await getNewToken();
 
-        const response = await getSearchHistory();
+        const response = await getSearchHistory(from);
         setHistory(response.data.places);
       }
     }

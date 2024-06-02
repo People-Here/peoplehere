@@ -18,10 +18,10 @@ export const enrollPlace = async (body: EnrollPlaceRequest) => {
   return response;
 };
 
-export const getSearchHistory = async () => {
+export const getSearchHistory = async (type: 'MAIN' | 'TOUR') => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
-  const response = await typedGet<SearchHistory>('/places/search-history', {
+  const response = await typedGet<SearchHistory>(`/places/search-history/${type}`, {
     headers: {
       Authorization: value,
     },
