@@ -85,7 +85,7 @@ const TourDetail = () => {
   };
 
   const onClickLike = async () => {
-    const isLoggedIn = checkLogin();
+    const isLoggedIn = await checkLogin();
     if (!isLoggedIn) return;
 
     try {
@@ -243,11 +243,11 @@ const TourDetail = () => {
               ) : (
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                  onClick={() => {
-                    const isLoggedIn = checkLogin();
-                    if (!isLoggedIn) return;
-
-                    setOpenMessageModal(true);
+                  onClick={async () => {
+                    const isLoggedIn = await checkLogin();
+                    if (isLoggedIn) {
+                      setOpenMessageModal(true);
+                    }
                   }}
                 >
                   {i18next.resolvedLanguage === 'ko'
