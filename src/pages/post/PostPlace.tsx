@@ -61,21 +61,21 @@ const Post = () => {
   }, []);
 
   useEffect(() => {
+    if (tourId === 'post') return;
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      if (!isNaN(Number(tourId))) {
-        setFetchImages(false);
-        const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
+      setFetchImages(false);
+      const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
 
-        setPlace({
-          id: response.data.placeInfo.id.toString(),
-          title: response.data.placeInfo.name,
-          address: response.data.placeInfo.address,
-        });
-        setTitle(response.data.title);
-        setDescription(response.data.description);
-        setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
-      }
+      setPlace({
+        id: response.data.placeInfo.id.toString(),
+        title: response.data.placeInfo.name,
+        address: response.data.placeInfo.address,
+      });
+      setTitle(response.data.title);
+      setDescription(response.data.description);
+      setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
     })();
   }, []);
 

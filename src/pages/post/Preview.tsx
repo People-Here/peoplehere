@@ -61,7 +61,7 @@ const Preview = () => {
         setUserInfo(response.data);
       }
     })();
-  }, [user.id]);
+  }, []);
 
   const uploadPost = async () => {
     setIsLoading(true);
