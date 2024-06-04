@@ -18,6 +18,7 @@ type Action = {
   setDescription: (description: string) => void;
   setImages: (images: string[]) => void;
   setFetchImages: (fetchImages: boolean) => void;
+  clearAll: () => void;
 };
 
 const usePostPlaceStore = create<State & Action>((set) => ({
@@ -36,6 +37,18 @@ const usePostPlaceStore = create<State & Action>((set) => ({
   setDescription: (description) => set(() => ({ description })),
   setImages: (images) => set(() => ({ images })),
   setFetchImages: (fetchImages) => set(() => ({ fetchImages })),
+  clearAll: () =>
+    set(() => ({
+      place: {
+        id: '',
+        title: '',
+        address: '',
+      },
+      title: '',
+      description: '',
+      images: [],
+      fetchImages: true,
+    })),
 }));
 
 export default usePostPlaceStore;

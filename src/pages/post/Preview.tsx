@@ -28,6 +28,7 @@ import { editTour, postTour } from '../../api/tour';
 import { getNewToken } from '../../api/login';
 import { themeColors } from '../../constants/theme';
 import MapIcon from '../../assets/svgs/map.svg';
+import MapWhiteIcon from '../../assets/svgs/map-white.svg';
 
 import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
@@ -40,12 +41,11 @@ const Preview = () => {
 
   const tourId = location.pathname.split('/').at(-1) ?? '';
 
-  const { place, title, description, images, fetchImages, setFetchImages } = usePostPlaceStore(
+  const { place, title, description, images, fetchImages, clearAll } = usePostPlaceStore(
     (state) => state,
   );
   const user = useUserStore((state) => state.user);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [theme, setTheme] = useState('black');
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
   const [isLoading, setIsLoading] = useState(false);
@@ -80,6 +80,7 @@ const Preview = () => {
 
     try {
       await postTour(formData);
+      clearAll();
       router.push('/', 'root');
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -88,6 +89,7 @@ const Preview = () => {
         await getNewToken();
 
         await postTour(formData);
+        clearAll();
         router.push('/', 'root');
       }
     } finally {
@@ -116,12 +118,12 @@ const Preview = () => {
 
     try {
       await editTour(formData);
+      clearAll();
       router.push('/', 'root');
     } catch (error) {
       console.error('fail to edit post', error);
     } finally {
       setIsLoading(false);
-      setFetchImages(true);
     }
   };
 
@@ -235,7 +237,7 @@ const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
       className={`flex items-center justify-between p-4 ${themeColors[theme].cardBackground} rounded-xl`}
     >
       <div className="flex items-center gap-3">
-        <IonIcon icon={MapIcon} className="svg-xl" />
+        <IonIcon icon={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
