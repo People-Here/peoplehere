@@ -68,7 +68,7 @@ const NavigationBar = () => {
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="post" href="/post">
-          <IonIcon aria-hidden="true" className="pb-3 w-9 h-9" src={PlusLineIcon} />
+          <IonIcon aria-hidden="true" className="pt-1 pb-3 w-9 h-9" src={PlusLineIcon} />
         </IonTabButton>
         <IonTabButton tab="message" href="/message">
           <IonIcon
