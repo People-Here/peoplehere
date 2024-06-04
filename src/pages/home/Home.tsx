@@ -182,7 +182,8 @@ const TourItem = ({
   const { checkLogin } = useLogin();
 
   const onClickLike = async (id: string) => {
-    if (!checkLogin()) return;
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) return;
 
     try {
       await likeTour(id);
@@ -267,7 +268,11 @@ const UserImage = ({ firstName, profileImageUrl }: User) => {
 
 const SingleImage = ({ image }: { image: string }) => {
   return (
-    <IonImg className="object-cover w-full overflow-hidden rounded-xl" src={image} alt="place" />
+    <IonImg
+      className="object-cover w-full overflow-hidden rounded-xl border-[0.5px] border-gray2"
+      src={image}
+      alt="place"
+    />
   );
 };
 
@@ -279,7 +284,7 @@ const Images = ({ images }: { images: string[] }) => {
           key={index}
           src={image}
           alt={`place-${index}`}
-          className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl"
+          className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl border-[0.5px] border-gray2"
         />
       ))}
     </div>
