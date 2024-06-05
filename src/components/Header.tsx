@@ -6,15 +6,22 @@ import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
 type Props = {
   type: 'close' | 'back';
   title?: string;
+  onClickIcon?: () => void;
 };
 
-const Header = ({ type, title }: Props) => {
+const Header = ({ type, title, onClickIcon }: Props) => {
   const router = useIonRouter();
 
   return (
     <IonToolbar className="px-4 h-14">
       <IonButtons slot="start">
-        <IonIcon src={iconMapper[type]} className="svg-lg" onClick={() => router.goBack()} />
+        <IonIcon
+          src={iconMapper[type]}
+          className="svg-lg"
+          onClick={() => {
+            onClickIcon ? onClickIcon() : router.goBack();
+          }}
+        />
       </IonButtons>
 
       {title ? (

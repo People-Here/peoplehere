@@ -16,6 +16,7 @@ import usePostPlaceStore from '../../stores/place';
 import { getTourDetail } from '../../api/tour';
 import useSignInStore from '../../stores/signIn';
 import SearchPlace from '../../modals/SearchPlace';
+import Alert from '../../components/Alert';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
@@ -42,6 +43,8 @@ const Post = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<string[]>([]);
+
+  const [showExitAlert, setShowExitAlert] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -95,7 +98,7 @@ const Post = () => {
 
   return (
     <>
-      <Header type="close" />
+      <Header type="close" onClickIcon={() => setShowExitAlert(true)} />
 
       <div className="flex flex-col items-center px-4">
         <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
@@ -154,6 +157,22 @@ const Post = () => {
       </Footer>
 
       <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
+
+      <Alert
+        isOpen={showExitAlert}
+        title="그만하고 나갈까요?"
+        subTitle="지금까지 작성한 내용이 모두 사라져요."
+        onDismiss={() => setShowExitAlert(false)}
+        buttons={[
+          {
+            text: '나가기',
+            onClick: () => router.goBack(),
+          },
+          {
+            text: '취소',
+          },
+        ]}
+      />
     </>
   );
 };
