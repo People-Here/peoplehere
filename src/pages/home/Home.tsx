@@ -180,20 +180,23 @@ const TourItem = ({
   setList,
 }: Omit<Tour, 'placeInfo' | 'userInfo'> & TourItemProps) => {
   const { checkLogin } = useLogin();
+  const region = useSignInStore((state) => state.region);
 
   const onClickLike = async (id: string) => {
+    const lang = await getTranslateLanguage();
+
     const isLoggedIn = await checkLogin();
     if (!isLoggedIn) return;
 
     try {
       await likeTour(id);
-      const response = await getTourList('KR', 'ORIGIN');
+      const response = await getTourList(region.countryCode.toUpperCase(), lang);
 
       setList(response.data.tourList);
     } catch (error) {
       await getNewToken();
       await likeTour(id);
-      const response = await getTourList('KR', 'ORIGIN');
+      const response = await getTourList(region.countryCode.toUpperCase(), lang);
 
       setList(response.data.tourList);
 
