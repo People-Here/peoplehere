@@ -170,6 +170,9 @@ export type TourDetail = {
     name: string;
     imageUrlList: { imageUrl: string }[];
     address: string;
+    district: string;
+    latitude: number;
+    longitude: number;
   };
   like: boolean;
   available: boolean;

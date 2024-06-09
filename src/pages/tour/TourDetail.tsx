@@ -30,7 +30,6 @@ import useUserStore from '../../stores/user';
 import ThreeDotIcon from '../../assets/svgs/three-dots.svg';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
-import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
 import MapWhiteIcon from '../../assets/svgs/map-white.svg';
 import { getNewToken } from '../../api/login';
@@ -202,6 +201,8 @@ const TourDetail = () => {
               title={tourDetail.placeInfo.name}
               address={tourDetail.placeInfo.address}
               theme={tourDetail.theme}
+              lat={tourDetail.placeInfo.latitude}
+              lng={tourDetail.placeInfo.longitude}
             />
 
             <div
@@ -266,14 +267,6 @@ const TourDetail = () => {
           </IonToolbar>
         </IonFooter>
 
-        <FullPageMap
-          trigger="place-map-modal"
-          lat={37.5409582}
-          lng={127.0684686}
-          title={tourDetail.placeInfo.name}
-          address={tourDetail.placeInfo.address}
-        />
-
         <SendMessage
           isOpen={openMessageModal}
           tourId={tourId}
@@ -335,12 +328,18 @@ type PlaceInfoProps = {
   title: string;
   address: string;
   theme: string;
+  lat: number;
+  lng: number;
 };
-const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
+const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
+  const router = useIonRouter();
+
   return (
     <div
-      id="place-map-modal"
       className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
+      onClick={() => {
+        router.push(`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`);
+      }}
     >
       <div className="flex items-center gap-3">
         <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
