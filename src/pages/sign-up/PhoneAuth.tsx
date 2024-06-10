@@ -11,6 +11,8 @@ import useSignInStore from '../../stores/signIn';
 import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 import { secondToMinuteSecond } from '../../utils/date';
 
+import type { AxiosError } from 'axios';
+
 const PhoneAuth = () => {
   const { t } = useTranslation();
 
@@ -46,6 +48,12 @@ const PhoneAuth = () => {
       setShowCodeInput(true);
       setTimeLeft(180);
     } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 409) {
+        setErrorMessage('이미 사용 중인 전화번호입니다.');
+      }
+
       console.error('fail to send phone code', error);
     } finally {
       setIsLoading(false);
@@ -77,13 +85,14 @@ const PhoneAuth = () => {
             value={`${region.koreanName} (+${String(region.dialCode).padStart(2, '0')})`}
           />
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <LabelInput
               label="전화번호"
               type="tel"
               inputMode="tel"
               value={phoneNumberInput}
               onChange={setPhoneNumberInput}
+              errorText={errorMessage}
             />
 
             <button

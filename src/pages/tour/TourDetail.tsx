@@ -21,15 +21,17 @@ import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
+import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
 import { getTourDetail, likeTour, type TourDetail as TourDetailType } from '../../api/tour';
 import LogoRunning from '../../components/LogoRunning';
 import { themeColors } from '../../constants/theme';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
+import ThreeDotIcon from '../../assets/svgs/three-dots.svg';
 import ThreeDotGrayIcon from '../../assets/svgs/three-dots-gray.svg';
 import FullImage from '../../modals/FullImage';
-import FullPageMap from '../../modals/FullPageMap';
 import MapIcon from '../../assets/svgs/map.svg';
+import MapWhiteIcon from '../../assets/svgs/map-white.svg';
 import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
 import useSignInStore from '../../stores/signIn';
@@ -63,14 +65,7 @@ const TourDetail = () => {
     setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const lang = await getTranslateLanguage();
-      const response = await getTourDetail(tourId, region.countryCode, lang);
-
-      if (response.status === 200) {
-        setTourDetail(response.data);
-      }
-    })();
+    fetchTourDetail(tourId);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -81,15 +76,26 @@ const TourDetail = () => {
     }
   }, [tourDetail, user.id]);
 
+  const fetchTourDetail = async (tourId: string) => {
+    const lang = await getTranslateLanguage();
+    const response = await getTourDetail(tourId, region.countryCode, lang);
+
+    if (response.status === 200) {
+      setTourDetail(response.data);
+    }
+  };
+
   const onClickLike = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) return;
+
     try {
       await likeTour(tourId);
+      await fetchTourDetail(tourId);
     } catch (error) {
       await getNewToken();
       await likeTour(tourId);
-
-      const response = await getTourDetail(tourId, region.countryCode, currentLanguage);
-      setTourDetail(response.data);
+      await fetchTourDetail(tourId);
 
       console.error('Failed to like tour', error);
     }
@@ -159,7 +165,7 @@ const TourDetail = () => {
 
         <div className={`${themeColors[tourDetail.theme].background}`}>
           <div
-            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} mx-auto top-40 -left-[calc(18.75rem-50%)] -z-10`}
+            className={`absolute rounded-full w-[37.5rem] h-[37.5rem] ${themeColors[tourDetail.theme].background} mx-auto top-40 -left-[calc(18.75rem-50%)] -z-10 shrink-0`}
           />
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
@@ -195,6 +201,8 @@ const TourDetail = () => {
               title={tourDetail.placeInfo.name}
               address={tourDetail.placeInfo.address}
               theme={tourDetail.theme}
+              lat={tourDetail.placeInfo.latitude}
+              lng={tourDetail.placeInfo.longitude}
             />
 
             <div
@@ -220,7 +228,17 @@ const TourDetail = () => {
                 className={`flex items-center justify-center border ${themeColors[tourDetail.theme].buttonBorder} ${themeColors[tourDetail.theme].likeButton} rounded-xl w-14 h-[3.25rem] shrink-0`}
                 onClick={isMine ? () => setOpenEditSheet(true) : onClickLike}
               >
-                <IonIcon src={isMine ? ThreeDotGrayIcon : HeartLineRedIcon} className="svg-lg" />
+                {isMine ? (
+                  <IonIcon
+                    icon={tourDetail.theme === 'black' ? ThreeDotGrayIcon : ThreeDotIcon}
+                    className="svg-lg"
+                  />
+                ) : (
+                  <IonIcon
+                    icon={tourDetail.like ? HeartFilledIcon : HeartLineRedIcon}
+                    className="svg-lg"
+                  />
+                )}
               </div>
 
               {isMine ? (
@@ -233,11 +251,11 @@ const TourDetail = () => {
               ) : (
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                  onClick={() => {
-                    const isLoggedIn = checkLogin();
-                    if (!isLoggedIn) return;
-
-                    setOpenMessageModal(true);
+                  onClick={async () => {
+                    const isLoggedIn = await checkLogin();
+                    if (isLoggedIn) {
+                      setOpenMessageModal(true);
+                    }
                   }}
                 >
                   {i18next.resolvedLanguage === 'ko'
@@ -248,15 +266,6 @@ const TourDetail = () => {
             </div>
           </IonToolbar>
         </IonFooter>
-
-        <FullPageMap
-          trigger="place-map-modal"
-          lat={37.5409582}
-          lng={127.0684686}
-          title={tourDetail.placeInfo.name}
-          address={tourDetail.placeInfo.address}
-          thumbnail={tourDetail.placeInfo.imageUrlList[0].imageUrl}
-        />
 
         <SendMessage
           isOpen={openMessageModal}
@@ -319,15 +328,21 @@ type PlaceInfoProps = {
   title: string;
   address: string;
   theme: string;
+  lat: number;
+  lng: number;
 };
-const PlaceInfo = ({ title, address, theme }: PlaceInfoProps) => {
+const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
+  const router = useIonRouter();
+
   return (
     <div
-      id="place-map-modal"
       className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
+      onClick={() => {
+        router.push(`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`);
+      }}
     >
       <div className="flex items-center gap-3">
-        <IonIcon src={MapIcon} className="svg-xl shrink-0" />
+        <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
 
         <div className="flex flex-col gap-0.5">
           <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>

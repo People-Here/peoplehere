@@ -56,7 +56,7 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
 
   const getHistory = async () => {
     try {
-      const response = await getSearchHistory();
+      const response = await getSearchHistory(from);
       setHistory(response.data.places);
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -64,7 +64,7 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
       if (errorInstance.response?.status === 401) {
         await getNewToken();
 
-        const response = await getSearchHistory();
+        const response = await getSearchHistory(from);
         setHistory(response.data.places);
       }
     }
@@ -179,7 +179,7 @@ const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
 
       <button
         type="submit"
-        className="w-16 px-3 text-white button-primary button-md shrink-0 font-body1"
+        className="w-16 px-3 text-white button-primary button-md shrink-0 font-body1 whitespace-nowrap"
       >
         {t('common.search')}
       </button>
