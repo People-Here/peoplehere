@@ -1,0 +1,11 @@
+capacitor-google-map {
+  display: inline-block;
+  width: 100vw;
+  height: calc(100vh - 56px);
+
+  position: relative;
+}
+
+ion-content {
+  --background: transparent;
+}

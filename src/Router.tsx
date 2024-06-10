@@ -30,6 +30,7 @@ import TourDetail from './pages/tour/TourDetail';
 import ChangeStatus from './pages/my-page/ChangeStatus';
 import Translate from './pages/settings/Translate';
 import ChangePhone from './pages/settings/ChangePhone';
+import FullPageMap from './pages/map/FullPageMap';
 
 const Router = () => {
   return (
@@ -40,7 +41,7 @@ const Router = () => {
       <Route exact path="/bookmark">
         <BookmarkTab />
       </Route>
-      <Route path="/post">
+      <Route exact path="/post">
         <PostTab />
       </Route>
       <Route exact path="/message">
@@ -96,7 +97,7 @@ const Router = () => {
         <MessageRoom />
       </Route>
 
-      <Route path="/post/:id">
+      <Route exact path="/post/:id">
         <PostTab />
       </Route>
       <Route path="/preview-post">
@@ -136,6 +137,10 @@ const Router = () => {
 
       <Route path="/tour/:id">
         <TourDetail />
+      </Route>
+
+      <Route path="/place-map">
+        <FullPageMap />
       </Route>
 
       <Route exact path="/">
