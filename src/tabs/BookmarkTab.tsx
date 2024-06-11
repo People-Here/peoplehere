@@ -140,7 +140,7 @@ const ListItem = ({
               <IonText className="font-headline3 text-gray8">{title}</IonText>
               <IonIcon
                 icon={HeartFilledIcon}
-                className="svg-lg"
+                className="svg-lg shrink-0"
                 onClick={(e) => {
                   e.preventDefault();
                   onClickIcon();
