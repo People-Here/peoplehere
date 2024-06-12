@@ -182,9 +182,7 @@ const TourDetail = () => {
               </IonText>
             </div>
 
-            <p
-              className={`leading-6 text-center ${themeColors[tourDetail.theme].content} font-body1`}
-            >
+            <p className={`text-center ${themeColors[tourDetail.theme].content} font-subheading2`}>
               {tourDetail.userInfo.introduce}
             </p>
           </div>
@@ -207,12 +205,12 @@ const TourDetail = () => {
             />
 
             <div
-              className={`p-4 flex flex-col gap-2.5 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
+              className={`p-4 flex flex-col gap-2 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
             >
               <p className={`font-headline3 ${themeColors[tourDetail.theme].cardTitle}`}>
                 {t('tour.detail')}
               </p>
-              <p className={`font-body2 ${themeColors[tourDetail.theme].cardContent}`}>
+              <p className={`font-subheading2 ${themeColors[tourDetail.theme].cardContent}`}>
                 {tourDetail.description}
               </p>
             </div>

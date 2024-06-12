@@ -103,7 +103,7 @@ const Home = () => {
       <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
         <IonRefresherContent />
       </IonRefresher>
-      <div className="flex flex-col pb-20 mt-6 gap-7">
+      <div className="flex flex-col pb-20 mt-[1.625rem] gap-[1.875rem]">
         {list.length === 0 ? (
           <div className="mt-60">
             <div className="flex flex-col items-center gap-8">
@@ -212,7 +212,7 @@ const TourItem = ({
 
         <div className="pl-1 flex flex-col gap-0.5">
           <div className="flex items-center justify-between">
-            <IonText className="font-headline3 text-gray8">{title}</IonText>
+            <IonText className="font-headline2 text-gray8">{title}</IonText>
             <IonIcon
               icon={like ? HeartFilledIcon : HeartLineRedIcon}
               className="svg-lg shrink-0"
@@ -224,9 +224,9 @@ const TourItem = ({
           </div>
 
           <div className="flex items-center">
-            <IonText className="font-caption1 text-gray6">{place.name}</IonText>
+            <IonText className="font-body1 text-gray6">{place.name}</IonText>
             {place.district && <Divider />}
-            <IonText className="font-caption2 text-gray6">{place.district}</IonText>
+            <IonText className="font-body2 text-gray6">{place.district}</IonText>
           </div>
         </div>
       </div>

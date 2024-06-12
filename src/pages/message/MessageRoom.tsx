@@ -209,13 +209,13 @@ const Chat = ({ type, message, time }: ChatProps) => {
     <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
       <div className="flex flex-col gap-0.5 w-fit">
         {type === 'receive' ? (
-          <p className="font-body1 text-orange6">받은 쪽지</p>
+          <p className="font-caption1 text-orange6">받은 쪽지</p>
         ) : (
-          <p className="font-body1 text-gray5">보낸 쪽지</p>
+          <p className="font-caption1 text-gray5">보낸 쪽지</p>
         )}
 
         <div className="px-2.5 py-2 bg-gray1.5 rounded-md whitespace-pre-wrap max-w-[16.5rem]">
-          <p className="font-body1 text-gray8">{message}</p>
+          <p className="font-subheading2 text-gray8">{message}</p>
         </div>
 
         <div className="flex items-center justify-between">

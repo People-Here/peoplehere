@@ -141,8 +141,8 @@ const ChatListItem = ({
           {hasSchedule && <p className="font-caption2 text-orange6">약속 · {date}</p>}
         </div>
         <p
-          className="w-[16.25rem] overflow-hidden font-body2 text-gray8 text-ellipsis whitespace-nowrap"
-          style={{ fontWeight: read ? 500 : 700 }}
+          className="w-[16.25rem] overflow-hidden font-subheading2 text-gray8 text-ellipsis whitespace-nowrap"
+          style={{ fontWeight: read ? 500 : 600 }}
         >
           {lastMessage}
         </p>
