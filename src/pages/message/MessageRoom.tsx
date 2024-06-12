@@ -174,7 +174,7 @@ type ChatInfoProps = {
 };
 const ChatInfo = ({ imageUrl, languages, title, tourId }: ChatInfoProps) => {
   return (
-    <div className="flex items-center gap-4 p-4 bg-white border-b border-gray1.5">
+    <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5">
       <IonImg
         src={imageUrl}
         alt="chat user profile"
