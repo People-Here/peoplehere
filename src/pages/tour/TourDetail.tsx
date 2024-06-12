@@ -36,6 +36,7 @@ import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
 import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
+import { findKoreanLanguageName } from '../../utils/find';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -177,7 +178,7 @@ const TourDetail = () => {
               </IonText>
               <Divider />
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
-                {tourDetail.userInfo.languages.join(', ')}
+                {findKoreanLanguageName(tourDetail.userInfo.languages)}
               </IonText>
             </div>
 
