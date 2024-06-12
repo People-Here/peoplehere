@@ -37,6 +37,7 @@ import useLogin from '../../hooks/useLogin';
 import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
 import { findKoreanLanguageName } from '../../utils/find';
+import { getUserProfile } from '../../api/profile';
 
 const TourDetail = () => {
   const { t } = useTranslation();
@@ -55,6 +56,8 @@ const TourDetail = () => {
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
 
+  const [needProfileInfo, setNeedProfileInfo] = useState(false);
+
   const [currentLanguage, setCurrentLanguage] = useState(
     region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
   );
@@ -66,7 +69,18 @@ const TourDetail = () => {
     setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchTourDetail(tourId);
+    (async () => {
+      await fetchTourDetail(tourId);
+
+      const response = await getUserProfile(user.id, region.countryCode);
+      if (
+        !response.data.introduce ||
+        !response.data.profileImageUrl ||
+        !response.data.languages.length
+      ) {
+        setNeedProfileInfo(true);
+      }
+    })();
   }, [location.pathname]);
 
   useEffect(() => {
@@ -87,6 +101,11 @@ const TourDetail = () => {
   };
 
   const onClickLike = async () => {
+    if (needProfileInfo) {
+      router.push('/edit-profile');
+      return;
+    }
+
     const isLoggedIn = await checkLogin();
     if (!isLoggedIn) return;
 
@@ -251,6 +270,11 @@ const TourDetail = () => {
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
                   onClick={async () => {
+                    if (needProfileInfo) {
+                      router.push('/edit-profile');
+                      return;
+                    }
+
                     const isLoggedIn = await checkLogin();
                     if (isLoggedIn) {
                       setOpenMessageModal(true);
