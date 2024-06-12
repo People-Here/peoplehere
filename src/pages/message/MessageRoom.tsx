@@ -6,6 +6,7 @@ import {
   IonPage,
   IonToolbar,
   useIonRouter,
+  useIonViewDidEnter,
 } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +44,13 @@ const MessageRoom = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getMessageList();
   }, []);
+
+  useIonViewDidEnter(() => {
+    // eslint-disable-next-line no-undef
+    const content = document.querySelector('ion-content');
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    content?.scrollToBottom();
+  });
 
   const getMessageList = async () => {
     const tourId = location.pathname.split('/').at(-1);
@@ -117,7 +125,7 @@ const MessageRoom = () => {
           tourId={messages.tourId.toString()}
         />
 
-        <div className="px-4">
+        <div className="px-4 pb-24">
           {messages.messageInfoList.length === 0 ? (
             <NoChatChip userName={userInfo.firstName} />
           ) : (
