@@ -2,14 +2,13 @@ import { IonContent, IonIcon, IonImg, IonPage, IonText, IonToolbar } from '@ioni
 import { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import MessageIcon from '../assets/svgs/message-line-color.svg';
-import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
 import { getBookmarkList, likeTour } from '../api/tour';
 import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getTranslateLanguage } from '../utils/translate';
+import StatusChip from '../components/StatusChip';
 
 import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
@@ -162,20 +161,6 @@ const ListItem = ({
           <SingleImage image={images[0]} />
         </div>
       </div>
-    </div>
-  );
-};
-
-const StatusChip = ({ available }: { available?: boolean }) => {
-  return available ? (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-orange1 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-orange5">말 걸 수 있음</IonText>
-      <IonIcon icon={MessageIcon} className="svg-sm" />
-    </div>
-  ) : (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-gray1.5 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-gray6">쪽지 마감</IonText>
-      <IonIcon icon={MessageBlockedIcon} className="svg-sm" />
     </div>
   );
 };
