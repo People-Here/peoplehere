@@ -220,7 +220,9 @@ const TourDetail = () => {
               </IonText>
             </div>
 
-            <p className={`text-center ${themeColors[tourDetail.theme].content} font-subheading2`}>
+            <p
+              className={`text-center ${themeColors[tourDetail.theme].content} font-subheading2 whitespace-pre-wrap`}
+            >
               {tourDetail.userInfo.introduce}
             </p>
           </div>
@@ -248,7 +250,9 @@ const TourDetail = () => {
               <p className={`font-headline3 ${themeColors[tourDetail.theme].cardTitle}`}>
                 {t('tour.detail')}
               </p>
-              <p className={`font-subheading2 ${themeColors[tourDetail.theme].cardContent}`}>
+              <p
+                className={`font-subheading2 whitespace-pre-wrap ${themeColors[tourDetail.theme].cardContent}`}
+              >
                 {tourDetail.description}
               </p>
             </div>
