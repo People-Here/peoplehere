@@ -241,7 +241,7 @@ const Chat = ({ type, message, time }: ChatProps) => {
         {type === 'receive' ? (
           <p className="font-caption1 text-orange6">받은 쪽지</p>
         ) : (
-          <p className="font-caption1 text-gray5">보낸 쪽지</p>
+          <p className="text-right font-caption1 text-gray5">보낸 쪽지</p>
         )}
 
         <div className="px-2.5 py-2 bg-gray1.5 rounded-md whitespace-pre-wrap max-w-[16.5rem]">
@@ -249,7 +249,15 @@ const Chat = ({ type, message, time }: ChatProps) => {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="font-caption2 text-gray5.5">{time}</p>
+          <p
+            className={
+              type === 'receive'
+                ? 'font-caption2 text-gray5.5 w-full'
+                : 'font-caption2 text-gray5.5 w-full text-right'
+            }
+          >
+            {time}
+          </p>
           {/* <IonIcon src={LanguageIcon} className="svg-md" /> */}
         </div>
       </div>
