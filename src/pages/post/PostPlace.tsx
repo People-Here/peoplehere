@@ -100,7 +100,7 @@ const Post = () => {
     <>
       <Header type="close" onClickIcon={() => setShowExitAlert(true)} />
 
-      <div className="flex flex-col items-center px-4">
+      <div className="flex flex-col items-center px-4 pb-24">
         <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
 
         {place.id ? (
