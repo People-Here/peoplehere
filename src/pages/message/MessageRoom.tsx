@@ -123,6 +123,7 @@ const MessageRoom = () => {
           }
           title={messages.title}
           tourId={messages.tourId.toString()}
+          userId={userInfo.id.toString()}
         />
 
         <div className="px-4 pb-24">
@@ -171,15 +172,18 @@ type ChatInfoProps = {
   languages: string[];
   title: string;
   tourId: string;
+  userId: string;
 };
-const ChatInfo = ({ imageUrl, languages, title, tourId }: ChatInfoProps) => {
+const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps) => {
   return (
     <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5">
-      <IonImg
-        src={imageUrl}
-        alt="chat user profile"
-        className="object-cover overflow-hidden rounded-full w-11 h-11"
-      />
+      <Link to={`/detail-profile/${userId}`}>
+        <IonImg
+          src={imageUrl}
+          alt="chat user profile"
+          className="object-cover overflow-hidden rounded-full w-11 h-11"
+        />
+      </Link>
 
       <div>
         <div className="flex items-center">
