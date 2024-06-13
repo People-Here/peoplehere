@@ -16,6 +16,7 @@ import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import i18next from 'i18next';
+import { Device } from '@capacitor/device';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -38,6 +39,8 @@ import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
 import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
+
+import type { DeviceInfo } from '@capacitor/device';
 
 const TourDetail = () => {
   const { t, i18n } = useTranslation();
@@ -62,6 +65,8 @@ const TourDetail = () => {
     region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
   );
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
@@ -70,6 +75,9 @@ const TourDetail = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
       await fetchTourDetail(tourId);
 
       const response = await getUserProfile(user.id, region.countryCode);
@@ -163,7 +171,16 @@ const TourDetail = () => {
       <IonContent fullscreen>
         {/* header */}
         {/* eslint-disable-next-line react/no-unknown-property */}
-        <IonToolbar slot="fixed" className="flex items-center justify-between px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 top-11'
+                : 'px-4 bg-white h-14 top-16'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
