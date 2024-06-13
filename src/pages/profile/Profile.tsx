@@ -85,6 +85,15 @@ const Profile = () => {
     })();
   }, []);
 
+  const hasAdditionalInfo =
+    userInfo?.address ||
+    userInfo?.birthDate ||
+    userInfo?.job ||
+    userInfo?.school ||
+    userInfo?.hobby ||
+    userInfo?.pet ||
+    userInfo?.favorite;
+
   const handleClickIcon = async () => {
     if (isMe) {
       router.push('/edit-profile');
@@ -178,23 +187,25 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
-            {userInfo.address && (
-              <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
-            )}
-            {userInfo.birthDate && (
-              <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
-            )}
-            {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
-            {userInfo.school && (
-              <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
-            )}
-            {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
-            {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
-            {userInfo.favorite && (
-              <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
-            )}
-          </div>
+          {hasAdditionalInfo && (
+            <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
+              {userInfo.address && (
+                <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
+              )}
+              {userInfo.birthDate && (
+                <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
+              )}
+              {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
+              {userInfo.school && (
+                <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
+              )}
+              {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
+              {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
+              {userInfo.favorite && (
+                <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
+              )}
+            </div>
+          )}
 
           {/* 유저가 만든 장소 */}
           {!isMe && (
