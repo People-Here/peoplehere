@@ -32,7 +32,7 @@ const Header = ({ type, title, onClickIcon, fixed = false }: Props) => {
       slot={fixed ? 'fixed' : ''}
       className={
         !fixed
-          ? 'px-4 h-14'
+          ? 'px-4 h-14 bg-white'
           : platform === 'web'
             ? 'px-4 bg-white h-14'
             : platform === 'android'

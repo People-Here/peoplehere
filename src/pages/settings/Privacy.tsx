@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 const Privacy = () => {
   return (
     <IonPage>
-      <IonContent fullscreen className="bg-white">
+      <IonContent fullscreen>
         <Header type="close" />
 
         <div className="px-4 pb-10">

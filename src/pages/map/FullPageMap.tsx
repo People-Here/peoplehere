@@ -69,7 +69,7 @@ const FullPageMap = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen style={{ '--background': 'transparent' }}>
         <Header type="close" title="지도" />
 
         <div className="relative w-full h-[calc(100%-3.5rem)] overflow-hidden">
