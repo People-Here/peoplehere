@@ -210,9 +210,9 @@ const TourItem = ({
       <div className="flex flex-col gap-1.5 mb-3 pr-4">
         <StatusChip available />
 
-        <div className="pl-1 flex flex-col gap-0.5">
+        <div className="pl-1 flex flex-col gap-0.5 grow-0">
           <div className="flex items-center justify-between">
-            <IonText className="font-headline2 text-gray8">{title}</IonText>
+            <IonText className="break-all font-headline2 text-gray8">{title}</IonText>
             <IonIcon
               icon={like ? HeartFilledIcon : HeartLineRedIcon}
               className="svg-lg shrink-0"
