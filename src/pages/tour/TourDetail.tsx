@@ -40,7 +40,7 @@ import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
 
 const TourDetail = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const location = useLocation();
@@ -197,7 +197,9 @@ const TourDetail = () => {
               </IonText>
               <Divider />
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
-                {findKoreanLanguageName(tourDetail.userInfo.languages)}
+                {i18n.resolvedLanguage === 'ko'
+                  ? findKoreanLanguageName(tourDetail.userInfo.languages)
+                  : tourDetail.userInfo.languages.join(', ')}
               </IonText>
             </div>
 
