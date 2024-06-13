@@ -177,8 +177,8 @@ const TourDetail = () => {
             platform === 'web'
               ? 'px-4 bg-white h-14'
               : platform === 'android'
-                ? 'px-4 bg-white h-14 top-11'
-                : 'px-4 bg-white h-14 top-16'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
           }
         >
           <IonButtons slot="start">
