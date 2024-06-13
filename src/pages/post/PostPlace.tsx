@@ -8,7 +8,6 @@ import { useLocation } from 'react-router';
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
 import CameraIcon from '../../assets/svgs/camera.svg';
-import Footer from '../../layouts/Footer';
 import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
 import useUserStore from '../../stores/user';
@@ -146,7 +145,7 @@ const Post = () => {
         </div>
       </div>
 
-      <Footer>
+      <footer className="p-4 pt-0">
         <button
           className="w-full text-white button-primary button-lg font-subheading1"
           onClick={uploadPost}
@@ -154,7 +153,7 @@ const Post = () => {
         >
           {t('common.preview')}
         </button>
-      </Footer>
+      </footer>
 
       <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
 
