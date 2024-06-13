@@ -2,6 +2,7 @@ import { IonContent, IonImg, IonPage, IonToolbar, useIonRouter } from '@ionic/re
 import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Device } from '@capacitor/device';
 
 import useLogin from '../hooks/useLogin';
 import { getUserProfile } from '../api/profile';
@@ -10,6 +11,7 @@ import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getMessageRooms } from '../api/message';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { AxiosError } from 'axios';
 import type { MessageRoom } from '../api/message';
 
@@ -24,6 +26,8 @@ const MessageTab = () => {
 
   const [messages, setMessages] = useState<MessageRoom[]>([]);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -31,6 +35,9 @@ const MessageTab = () => {
       if (!isLoggedIn) {
         return;
       }
+
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
 
       const profileInfo = await getUserProfile(user.id, region.countryCode.toUpperCase());
 
@@ -66,17 +73,26 @@ const MessageTab = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonToolbar className="px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <p className="pl-0 text-gray8 font-headline1">{t('message.title')}</p>
         </IonToolbar>
 
         {messages.length === 0 ? (
-          <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center overflow-hidden">
+          <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center overflow-hidden mt-16">
             <p className="text-black font-headline2">{t('message.noMessage')}</p>
             <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
           </div>
         ) : (
-          <div className="px-4 pb-16">
+          <div className="px-4 pb-16 mt-16">
             {messages.map((message) => (
               <Link key={message.id} to={`/room-message/${message.id}`}>
                 {message.guestInfo.id.toString() === user.id ? (

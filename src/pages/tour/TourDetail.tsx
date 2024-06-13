@@ -170,7 +170,6 @@ const TourDetail = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        {/* eslint-disable-next-line react/no-unknown-property */}
         <IonToolbar
           slot="fixed"
           className={

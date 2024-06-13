@@ -13,6 +13,7 @@ import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Device } from '@capacitor/device';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -35,6 +36,7 @@ import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import { getTranslateLanguage } from '../../utils/translate';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { ProfileResponse } from '../../api/profile';
 
 const Profile = () => {
@@ -51,6 +53,8 @@ const Profile = () => {
   const [placeList, setPlaceList] = useState<Tour[]>([]);
   const [currentRegion, setCurrentRegion] = useState(region.countryCode);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
     if (!userId) {
@@ -63,6 +67,9 @@ const Profile = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
       const lang = await getTranslateLanguage();
       const response = await getUserProfile(userId, currentRegion);
 
@@ -144,7 +151,16 @@ const Profile = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar className="px-4 h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -165,7 +181,7 @@ const Profile = () => {
         {/* image area */}
         <IonImg
           src={userInfo.profileImageUrl ?? DefaultUserImage}
-          className="object-cover w-full h-[20.5rem]"
+          className="object-cover w-full h-[20.5rem] mt-16"
         />
 
         {/* content area */}

@@ -11,6 +11,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
+import { Device } from '@capacitor/device';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -26,6 +27,7 @@ import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
 
 const MessageRoom = () => {
@@ -40,9 +42,16 @@ const MessageRoom = () => {
   const [userInfo, setUserInfo] = useState<Message['guestInfo']>();
   const [isLoading, setIsLoading] = useState(true);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getMessageList();
+    (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
+      await getMessageList();
+    })();
   }, []);
 
   useIonViewDidEnter(() => {
@@ -94,7 +103,16 @@ const MessageRoom = () => {
     <IonPage>
       <IonContent>
         {/* header */}
-        <IonToolbar className="px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -176,7 +194,7 @@ type ChatInfoProps = {
 };
 const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps) => {
   return (
-    <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5">
+    <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5 mt-16">
       <Link to={`/detail-profile/${userId}`}>
         <IonImg
           src={imageUrl}

@@ -97,9 +97,9 @@ const Post = () => {
 
   return (
     <>
-      <Header type="close" onClickIcon={() => setShowExitAlert(true)} />
+      <Header type="close" onClickIcon={() => setShowExitAlert(true)} fixed />
 
-      <div className="flex flex-col items-center px-4 pb-24">
+      <div className="flex flex-col items-center px-4 pb-24 mt-16">
         <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
 
         {place.id ? (
