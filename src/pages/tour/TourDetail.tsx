@@ -162,7 +162,8 @@ const TourDetail = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <header className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 bg-white h-14">
+        {/* eslint-disable-next-line react/no-unknown-property */}
+        <IonToolbar slot="fixed" className="flex items-center justify-between px-4 bg-white h-14">
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -171,10 +172,10 @@ const TourDetail = () => {
             <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
             {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
           </IonButtons>
-        </header>
+        </IonToolbar>
 
         <Link
-          className="flex justify-center w-full mt-6 mt-16 mb-12"
+          className="flex justify-center w-full mt-16 mb-12"
           to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
         >
           <UserImage
