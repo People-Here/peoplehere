@@ -13,6 +13,7 @@ import PolicyAgreement from '../../modals/PolicyAgreement';
 import useSignInStore from '../../stores/signIn';
 import Toast from '../../toasts/Toast';
 import { GENDER } from '../../constants/gender';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 const UserInfo = () => {
   const { t, i18n } = useTranslation();
@@ -109,7 +110,9 @@ const UserInfo = () => {
             <SelectInput
               label={t('signup.info.gender')}
               value={
-                i18n.resolvedLanguage === 'ko' ? GENDER[gender as keyof typeof GENDER] : gender
+                i18n.resolvedLanguage === 'ko'
+                  ? GENDER[gender as keyof typeof GENDER]
+                  : capitalizeFirstLetter(gender)
               }
             />
           </div>

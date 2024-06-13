@@ -7,6 +7,7 @@ import CheckIcon from '../assets/svgs/check.svg';
 import ModalContainer from '.';
 import { getAllGenders } from '../api/constants';
 import { GENDER } from '../constants/gender';
+import { capitalizeFirstLetter } from '../utils/mask';
 
 import type { ModalProps } from '.';
 
@@ -52,7 +53,9 @@ const SelectGender = ({ setGender, ...rest }: ModalProps & Props) => {
                 gender === selectedGender ? 'font-body1 text-orange5' : 'font-body1 text-gray8'
               }
             >
-              {i18n.resolvedLanguage === 'ko' ? GENDER[gender as keyof typeof GENDER] : gender}
+              {i18n.resolvedLanguage === 'ko'
+                ? GENDER[gender as keyof typeof GENDER]
+                : capitalizeFirstLetter(gender)}
             </IonText>
             {gender === selectedGender && <IonIcon className="svg-md" slot="end" src={CheckIcon} />}
           </div>
