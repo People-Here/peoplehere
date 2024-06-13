@@ -1,4 +1,12 @@
-import { IonContent, IonImg, IonPage, IonToolbar, useIonRouter } from '@ionic/react';
+import {
+  IonContent,
+  IonImg,
+  IonPage,
+  IonRefresher,
+  IonRefresherContent,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -11,6 +19,7 @@ import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getMessageRooms } from '../api/message';
 
+import type { RefresherEventDetail } from '@ionic/react';
 import type { DeviceInfo } from '@capacitor/device';
 import type { AxiosError } from 'axios';
 import type { MessageRoom } from '../api/message';
@@ -53,22 +62,29 @@ const MessageTab = () => {
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      try {
+    getAllMessageRooms();
+  }, []);
+
+  const getAllMessageRooms = async () => {
+    try {
+      const response = await getMessageRooms();
+      setMessages(response.data.tourRoomList);
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 401) {
+        await getNewToken();
+
         const response = await getMessageRooms();
         setMessages(response.data.tourRoomList);
-      } catch (error) {
-        const errorInstance = error as AxiosError;
-
-        if (errorInstance.response?.status === 401) {
-          await getNewToken();
-
-          const response = await getMessageRooms();
-          setMessages(response.data.tourRoomList);
-        }
       }
-    })();
-  }, []);
+    }
+  };
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    await getAllMessageRooms();
+    event.detail.complete();
+  };
 
   return (
     <IonPage>
@@ -85,6 +101,10 @@ const MessageTab = () => {
         >
           <p className="pl-0 text-gray8 font-headline1">{t('message.title')}</p>
         </IonToolbar>
+
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent />
+        </IonRefresher>
 
         {messages.length === 0 ? (
           <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center overflow-hidden mt-16">
