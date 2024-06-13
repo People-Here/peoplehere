@@ -33,6 +33,7 @@ import { getTourListByUser, type Tour } from '../../api/tour';
 import { findKoreanLanguageName } from '../../utils/find';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { ProfileResponse } from '../../api/profile';
 
@@ -47,7 +48,6 @@ const Profile = () => {
 
   const [isMe, setIsMe] = useState(false);
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
-  const [lang, setLang] = useState('KOREAN');
   const [placeList, setPlaceList] = useState<Tour[]>([]);
   const [currentRegion, setCurrentRegion] = useState(region.countryCode);
 
@@ -63,6 +63,7 @@ const Profile = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const lang = await getTranslateLanguage();
       const response = await getUserProfile(userId, currentRegion);
 
       if (userId !== user.id) {
