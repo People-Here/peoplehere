@@ -18,6 +18,7 @@ import useUserStore from '../stores/user';
 import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getMessageRooms } from '../api/message';
+import { getTranslateLanguage } from '../utils/translate';
 
 import type { RefresherEventDetail } from '@ionic/react';
 import type { DeviceInfo } from '@capacitor/device';
@@ -66,8 +67,10 @@ const MessageTab = () => {
   }, []);
 
   const getAllMessageRooms = async () => {
+    const lang = await getTranslateLanguage();
+
     try {
-      const response = await getMessageRooms();
+      const response = await getMessageRooms(lang);
       setMessages(response.data.tourRoomList);
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -75,7 +78,7 @@ const MessageTab = () => {
       if (errorInstance.response?.status === 401) {
         await getNewToken();
 
-        const response = await getMessageRooms();
+        const response = await getMessageRooms(lang);
         setMessages(response.data.tourRoomList);
       }
     }
