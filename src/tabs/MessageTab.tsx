@@ -71,7 +71,7 @@ const MessageTab = () => {
         </IonToolbar>
 
         {messages.length === 0 ? (
-          <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center">
+          <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center overflow-hidden">
             <p className="text-black font-headline2">{t('message.noMessage')}</p>
             <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
           </div>
