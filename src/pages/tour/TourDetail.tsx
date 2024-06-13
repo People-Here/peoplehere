@@ -227,7 +227,7 @@ const TourDetail = () => {
             </p>
           </div>
 
-          <div className="px-4 pb-32">
+          <div className="px-4 pb-28">
             <p className={`mb-4 text-center font-headline1 ${themeColors[tourDetail.theme].title}`}>
               {tourDetail.title}
             </p>
