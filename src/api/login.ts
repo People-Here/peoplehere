@@ -18,6 +18,8 @@ export const getNewToken = async () => {
   const accessToken = await Preferences.get({ key: 'accessToken' });
   const refreshToken = await Preferences.get({ key: 'refreshToken' });
 
+  console.log('tokens', accessToken.value, refreshToken.value);
+
   const response = await typedPost<string>('/account/token', {
     accessToken: accessToken.value,
     refreshToken: refreshToken.value,
