@@ -22,6 +22,9 @@ import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
+import DefaultImage from '../../assets/images/default-place.png';
+import DefaultImageLarge from '../../assets/images/default-place-lg.png';
+import DefaultAvatar from '../../assets/images/default-avatar.png';
 
 import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
@@ -254,7 +257,12 @@ const Divider = () => {
 const UserImage = ({ firstName, profileImageUrl }: User) => {
   return (
     <div className="overflow-hidden rounded-xl w-[100px] h-full relative flex justify-center shrink-0">
-      <IonImg className="w-[100px] h-full object-cover" src={profileImageUrl} alt="user profile" />
+      <IonImg
+        className="w-[100px] h-full object-cover"
+        src={DefaultAvatar}
+        alt="user profile"
+        onIonImgDidLoad={(e) => (e.target.src = profileImageUrl)}
+      />
 
       <div
         className="h-[72px] absolute bottom-0 left-0 right-0"
@@ -273,8 +281,9 @@ const SingleImage = ({ image }: { image: string }) => {
   return (
     <IonImg
       className="object-cover w-full overflow-hidden rounded-xl border-[0.5px] border-gray2"
-      src={image}
+      src={DefaultImageLarge}
       alt="place"
+      onIonImgDidLoad={(e) => (e.target.src = image)}
     />
   );
 };
@@ -285,9 +294,10 @@ const Images = ({ images }: { images: string[] }) => {
       {images.map((image, index) => (
         <IonImg
           key={index}
-          src={image}
+          src={DefaultImage}
           alt={`place-${index}`}
           className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl border-[0.5px] border-gray2"
+          onIonImgDidLoad={(e) => (e.target.src = image)}
         />
       ))}
     </div>
