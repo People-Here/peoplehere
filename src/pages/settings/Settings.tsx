@@ -52,9 +52,9 @@ const Settings = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" />
+        <Header type="close" fixed />
 
-        <div className="px-4">
+        <div className="px-4 mt-14">
           <IonText className="mt-1 font-headline1 text-gray8">환경 설정</IonText>
 
           <div className="mt-4">

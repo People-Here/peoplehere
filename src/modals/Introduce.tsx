@@ -31,7 +31,7 @@ const Introduce = ({ introduce, setIntroduce, ...rest }: ModalProps & Props) => 
           maxLength={450}
         />
 
-        <IonText className="font-caption2 text-gray5">{input.length}/450</IonText>
+        <IonText className="font-caption2 text-gray5">{input?.length ?? 0}/450</IonText>
       </div>
     </ModalContainer>
   );

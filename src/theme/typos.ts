@@ -56,27 +56,27 @@ const typos = {
   '.font-title2': {
     fontSize: '1.25rem',
     fontWeight: 500,
-    lineHeight: '1.5rem',
+    lineHeight: '1.875rem',
     letterSpacing: '-0.0125rem',
   },
   '.font-title1': {
     fontSize: '1.25rem',
     fontWeight: 600,
-    lineHeight: '1.5rem',
+    lineHeight: '1.875rem',
     letterSpacing: '-0.0125rem',
   },
   '.font-headline3': {
     fontFamily: 'SUITE Variable',
     fontSize: '1rem',
     fontWeight: 700,
-    lineHeight: '1.875rem',
+    lineHeight: '1.5rem',
     letterSpacing: '-0.0125rem',
   },
   '.font-headline2': {
     fontFamily: 'SUITE Variable',
     fontSize: '1.125rem',
     fontWeight: 700,
-    lineHeight: '1.875rem',
+    lineHeight: '1.5rem',
     letterSpacing: '-0.0125rem',
   },
   '.font-headline1': {

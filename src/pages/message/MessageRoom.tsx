@@ -6,10 +6,12 @@ import {
   IonPage,
   IonToolbar,
   useIonRouter,
+  useIonViewDidEnter,
 } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
+import { Device } from '@capacitor/device';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -25,6 +27,7 @@ import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
 
 const MessageRoom = () => {
@@ -39,10 +42,24 @@ const MessageRoom = () => {
   const [userInfo, setUserInfo] = useState<Message['guestInfo']>();
   const [isLoading, setIsLoading] = useState(true);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getMessageList();
+    (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
+      await getMessageList();
+    })();
   }, []);
+
+  useIonViewDidEnter(() => {
+    // eslint-disable-next-line no-undef
+    const content = document.querySelector('ion-content');
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    content?.scrollToBottom();
+  });
 
   const getMessageList = async () => {
     const tourId = location.pathname.split('/').at(-1);
@@ -86,7 +103,16 @@ const MessageRoom = () => {
     <IonPage>
       <IonContent>
         {/* header */}
-        <IonToolbar className="px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -115,9 +141,10 @@ const MessageRoom = () => {
           }
           title={messages.title}
           tourId={messages.tourId.toString()}
+          userId={userInfo.id.toString()}
         />
 
-        <div className="px-4">
+        <div className="px-4 pb-24">
           {messages.messageInfoList.length === 0 ? (
             <NoChatChip userName={userInfo.firstName} />
           ) : (
@@ -163,15 +190,18 @@ type ChatInfoProps = {
   languages: string[];
   title: string;
   tourId: string;
+  userId: string;
 };
-const ChatInfo = ({ imageUrl, languages, title, tourId }: ChatInfoProps) => {
+const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps) => {
   return (
-    <div className="flex items-center gap-4 p-4 bg-white border-b border-gray1.5">
-      <IonImg
-        src={imageUrl}
-        alt="chat user profile"
-        className="object-cover overflow-hidden rounded-full w-11 h-11"
-      />
+    <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5 mt-16">
+      <Link to={`/detail-profile/${userId}`}>
+        <IonImg
+          src={imageUrl}
+          alt="chat user profile"
+          className="object-cover overflow-hidden rounded-full w-11 h-11"
+        />
+      </Link>
 
       <div>
         <div className="flex items-center">
@@ -209,17 +239,25 @@ const Chat = ({ type, message, time }: ChatProps) => {
     <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
       <div className="flex flex-col gap-0.5 w-fit">
         {type === 'receive' ? (
-          <p className="font-body1 text-orange6">받은 쪽지</p>
+          <p className="font-caption1 text-orange6">받은 쪽지</p>
         ) : (
-          <p className="font-body1 text-gray5">보낸 쪽지</p>
+          <p className="text-right font-caption1 text-gray5">보낸 쪽지</p>
         )}
 
         <div className="px-2.5 py-2 bg-gray1.5 rounded-md whitespace-pre-wrap max-w-[16.5rem]">
-          <p className="font-body1 text-gray8">{message}</p>
+          <p className="font-subheading2 text-gray8">{message}</p>
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="font-caption2 text-gray5.5">{time}</p>
+          <p
+            className={
+              type === 'receive'
+                ? 'font-caption2 text-gray5.5 w-full'
+                : 'font-caption2 text-gray5.5 w-full text-right'
+            }
+          >
+            {time}
+          </p>
           {/* <IonIcon src={LanguageIcon} className="svg-md" /> */}
         </div>
       </div>
