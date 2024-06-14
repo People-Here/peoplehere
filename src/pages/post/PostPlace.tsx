@@ -35,6 +35,7 @@ const Post = () => {
     setDescription: storeDescription,
     setImages: storeImages,
     setFetchImages,
+    setTheme,
   } = usePostPlaceStore((state) => state);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
@@ -78,6 +79,7 @@ const Post = () => {
       setTitle(response.data.title);
       setDescription(response.data.description);
       setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
+      setTheme(response.data.theme);
     })();
   }, []);
 

@@ -353,7 +353,7 @@ type ImageProps = {
 };
 const UserImage = ({ src, name }: ImageProps) => {
   return (
-    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
+    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5 bg-white">
       <IonImg className="object-cover w-full h-full" src={src} alt="user profile" />
 
       <div
