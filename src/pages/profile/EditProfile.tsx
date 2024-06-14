@@ -186,10 +186,10 @@ const EditProfile = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title={firstName} />
+        <Header type="close" title={firstName} fixed />
 
         {/* title area */}
-        <div className="px-4 mt-2 mb-4">
+        <div className="px-4 mt-16 mb-4">
           <div className="border border-gray3 rounded-2xl flex items-center py-2 flex-col gap-1.5">
             <IonText className="text-center whitespace-pre-wrap font-body1 text-gray6">
               {'피플히어의 다른 회원들에게\n나를 소개하는 프로필을 만들어 주세요.'}
@@ -300,7 +300,7 @@ const EditProfile = () => {
 
 const RequiredChip = () => {
   return (
-    <span className="px-2 py-0.5 border border-orange2 bg-orange1 rounded-full font-caption1 text-orange5">
+    <span className="px-2 py-0.5 border border-orange2 bg-orange1 rounded-full font-caption1 text-orange5 shrink-0">
       필수
     </span>
   );
@@ -365,7 +365,7 @@ const ListItem = ({ iconSrc, title, id, value, required }: ListItemProps) => {
     <div className="flex items-center justify-between py-4 border-b border-gray1.5" id={id}>
       <div className="flex items-center gap-4">
         <IonIcon icon={iconSrc} className="svg-lg" />
-        <IonLabel className="font-body1 text-gray8">
+        <IonLabel className={value ? 'font-body1 text-gray8' : 'font-body1 text-gray5.5'}>
           {title}
           {value && `: ${value}`}
         </IonLabel>

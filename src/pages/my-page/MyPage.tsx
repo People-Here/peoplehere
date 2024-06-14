@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Device } from '@capacitor/device';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -24,6 +25,7 @@ import DefaultUserImage from '../../assets/images/default-user.png';
 import { getTourListByUser } from '../../api/tour';
 import { getTranslateLanguage } from '../../utils/translate';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { Tour } from '../../api/tour';
 
 const MyPage = () => {
@@ -36,9 +38,14 @@ const MyPage = () => {
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
   const [tourList, setTourList] = useState<Tour[]>([]);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
       const lang = await getTranslateLanguage();
 
       const response = await getUserProfile(user.id, region.countryCode);
@@ -76,7 +83,16 @@ const MyPage = () => {
   return (
     <>
       {/* header */}
-      <IonToolbar className="px-4 h-14">
+      <IonToolbar
+        slot="fixed"
+        className={
+          platform === 'web'
+            ? 'px-4 bg-white h-14'
+            : platform === 'android'
+              ? 'px-4 bg-white h-14 content-end'
+              : 'px-4 bg-white h-24 content-end'
+        }
+      >
         <p className="font-headline1 text-gray8">{t('mypage.title')}</p>
 
         <IonButtons slot="end">
@@ -84,7 +100,7 @@ const MyPage = () => {
         </IonButtons>
       </IonToolbar>
 
-      <div className="px-4 pb-20 mt-6">
+      <div className="px-4 pb-20 mt-20">
         <UserInfo image={user.profileImageUrl} name={user.firstName} needEdit={needProfileInfo} />
 
         <div className="flex flex-col gap-4 mt-10">

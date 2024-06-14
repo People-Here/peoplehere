@@ -13,6 +13,7 @@ import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Device } from '@capacitor/device';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -33,7 +34,9 @@ import { getTourListByUser, type Tour } from '../../api/tour';
 import { findKoreanLanguageName } from '../../utils/find';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
+import { getTranslateLanguage } from '../../utils/translate';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { ProfileResponse } from '../../api/profile';
 
 const Profile = () => {
@@ -47,9 +50,10 @@ const Profile = () => {
 
   const [isMe, setIsMe] = useState(false);
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
-  const [lang, setLang] = useState('KOREAN');
   const [placeList, setPlaceList] = useState<Tour[]>([]);
   const [currentRegion, setCurrentRegion] = useState(region.countryCode);
+
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
@@ -63,6 +67,10 @@ const Profile = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
+      const lang = await getTranslateLanguage();
       const response = await getUserProfile(userId, currentRegion);
 
       if (userId !== user.id) {
@@ -84,6 +92,15 @@ const Profile = () => {
       }
     })();
   }, []);
+
+  const hasAdditionalInfo =
+    userInfo?.address ||
+    userInfo?.birthDate ||
+    userInfo?.job ||
+    userInfo?.school ||
+    userInfo?.hobby ||
+    userInfo?.pet ||
+    userInfo?.favorite;
 
   const handleClickIcon = async () => {
     if (isMe) {
@@ -134,7 +151,16 @@ const Profile = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar className="px-4 h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -155,7 +181,7 @@ const Profile = () => {
         {/* image area */}
         <IonImg
           src={userInfo.profileImageUrl ?? DefaultUserImage}
-          className="object-cover w-full h-[20.5rem]"
+          className="object-cover w-full h-[20.5rem] mt-16"
         />
 
         {/* content area */}
@@ -178,23 +204,25 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
-            {userInfo.address && (
-              <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
-            )}
-            {userInfo.birthDate && (
-              <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
-            )}
-            {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
-            {userInfo.school && (
-              <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
-            )}
-            {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
-            {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
-            {userInfo.favorite && (
-              <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
-            )}
-          </div>
+          {hasAdditionalInfo && (
+            <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
+              {userInfo.address && (
+                <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
+              )}
+              {userInfo.birthDate && (
+                <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
+              )}
+              {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
+              {userInfo.school && (
+                <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
+              )}
+              {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
+              {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
+              {userInfo.favorite && (
+                <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
+              )}
+            </div>
+          )}
 
           {/* 유저가 만든 장소 */}
           {!isMe && (

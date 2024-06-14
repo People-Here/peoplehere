@@ -16,6 +16,7 @@ import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import i18next from 'i18next';
+import { Device } from '@capacitor/device';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -36,9 +37,13 @@ import { getNewToken } from '../../api/login';
 import useLogin from '../../hooks/useLogin';
 import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
+import { findKoreanLanguageName } from '../../utils/find';
+import { getUserProfile } from '../../api/profile';
+
+import type { DeviceInfo } from '@capacitor/device';
 
 const TourDetail = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const location = useLocation();
@@ -54,9 +59,13 @@ const TourDetail = () => {
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
 
+  const [needProfileInfo, setNeedProfileInfo] = useState(false);
+
   const [currentLanguage, setCurrentLanguage] = useState(
     region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
   );
+
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
   useLayoutEffect(() => {
     const tourId = location.pathname.split('/').at(-1);
@@ -65,7 +74,21 @@ const TourDetail = () => {
     setTourId(tourId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchTourDetail(tourId);
+    (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
+      await fetchTourDetail(tourId);
+
+      const response = await getUserProfile(user.id, region.countryCode);
+      if (
+        !response.data.introduce ||
+        !response.data.profileImageUrl ||
+        !response.data.languages.length
+      ) {
+        setNeedProfileInfo(true);
+      }
+    })();
   }, [location.pathname]);
 
   useEffect(() => {
@@ -86,6 +109,11 @@ const TourDetail = () => {
   };
 
   const onClickLike = async () => {
+    if (needProfileInfo) {
+      router.push('/edit-profile');
+      return;
+    }
+
     const isLoggedIn = await checkLogin();
     if (!isLoggedIn) return;
 
@@ -142,7 +170,16 @@ const TourDetail = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar className="px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <IonButtons slot="start">
             <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
           </IonButtons>
@@ -154,7 +191,7 @@ const TourDetail = () => {
         </IonToolbar>
 
         <Link
-          className="flex justify-center w-full mt-6 mb-12"
+          className="flex justify-center w-full mt-16 mb-12"
           to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
         >
           <UserImage
@@ -177,18 +214,20 @@ const TourDetail = () => {
               </IonText>
               <Divider />
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
-                {tourDetail.userInfo.languages.join(', ')}
+                {i18n.resolvedLanguage === 'ko'
+                  ? findKoreanLanguageName(tourDetail.userInfo.languages)
+                  : tourDetail.userInfo.languages.join(', ')}
               </IonText>
             </div>
 
             <p
-              className={`leading-6 text-center ${themeColors[tourDetail.theme].content} font-body1`}
+              className={`text-center ${themeColors[tourDetail.theme].content} font-subheading2 whitespace-pre-wrap`}
             >
               {tourDetail.userInfo.introduce}
             </p>
           </div>
 
-          <div className="px-4 pb-32">
+          <div className="px-4 pb-28">
             <p className={`mb-4 text-center font-headline1 ${themeColors[tourDetail.theme].title}`}>
               {tourDetail.title}
             </p>
@@ -206,12 +245,14 @@ const TourDetail = () => {
             />
 
             <div
-              className={`p-4 flex flex-col gap-2.5 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
+              className={`p-4 flex flex-col gap-2 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
             >
               <p className={`font-headline3 ${themeColors[tourDetail.theme].cardTitle}`}>
                 {t('tour.detail')}
               </p>
-              <p className={`font-body2 ${themeColors[tourDetail.theme].cardContent}`}>
+              <p
+                className={`font-subheading2 whitespace-pre-wrap ${themeColors[tourDetail.theme].cardContent}`}
+              >
                 {tourDetail.description}
               </p>
             </div>
@@ -252,6 +293,11 @@ const TourDetail = () => {
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
                   onClick={async () => {
+                    if (needProfileInfo) {
+                      router.push('/edit-profile');
+                      return;
+                    }
+
                     const isLoggedIn = await checkLogin();
                     if (isLoggedIn) {
                       setOpenMessageModal(true);

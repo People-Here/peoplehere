@@ -52,8 +52,6 @@ const FullPageMap = () => {
       },
     });
 
-    // console.log('map info', googleMap);
-
     await map.addMarker({
       coordinate: {
         lat: parseFloat(lat),
@@ -69,7 +67,7 @@ const FullPageMap = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen style={{ '--background': 'transparent' }}>
         <Header type="close" title="지도" />
 
         <div className="relative w-full h-[calc(100%-3.5rem)] overflow-hidden">

@@ -1,16 +1,17 @@
 import { IonContent, IonIcon, IonImg, IonPage, IonText, IonToolbar } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Device } from '@capacitor/device';
 
-import MessageIcon from '../assets/svgs/message-line-color.svg';
-import MessageBlockedIcon from '../assets/svgs/message-blocked.svg';
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
 import { getBookmarkList, likeTour } from '../api/tour';
 import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getTranslateLanguage } from '../utils/translate';
+import StatusChip from '../components/StatusChip';
 
+import type { DeviceInfo } from '@capacitor/device';
 import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
 
@@ -21,9 +22,14 @@ const BookmarkTab = () => {
 
   const [list, setList] = useState<BookmarkedTour[]>([]);
 
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+
       const lang = await getTranslateLanguage();
 
       const isLoggedIn = await checkLogin();
@@ -71,7 +77,16 @@ const BookmarkTab = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar className="px-4 bg-white h-14">
+        <IonToolbar
+          slot="fixed"
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 content-end'
+                : 'px-4 bg-white h-24 content-end'
+          }
+        >
           <p className="pl-0 font-headline1 text-gray8">관심 목록</p>
         </IonToolbar>
 
@@ -81,7 +96,7 @@ const BookmarkTab = () => {
             <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3 px-4 mt-[1.625rem] pb-20">
+          <div className="flex flex-col gap-3 px-4 pb-20 mt-16">
             {list.map((item) => (
               <Link key={item.id} to={`/tour/${item.id}`}>
                 <ListItem
@@ -140,7 +155,7 @@ const ListItem = ({
               <IonText className="font-headline3 text-gray8">{title}</IonText>
               <IonIcon
                 icon={HeartFilledIcon}
-                className="svg-lg"
+                className="svg-lg shrink-0"
                 onClick={(e) => {
                   e.preventDefault();
                   onClickIcon();
@@ -162,20 +177,6 @@ const ListItem = ({
           <SingleImage image={images[0]} />
         </div>
       </div>
-    </div>
-  );
-};
-
-const StatusChip = ({ available }: { available?: boolean }) => {
-  return available ? (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-orange1 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-orange5">말 걸 수 있음</IonText>
-      <IonIcon icon={MessageIcon} className="svg-sm" />
-    </div>
-  ) : (
-    <div className="flex items-center gap-[5px] px-2 py-1 bg-gray1.5 rounded-[10px] w-fit">
-      <IonText className="font-caption1 text-gray6">쪽지 마감</IonText>
-      <IonIcon icon={MessageBlockedIcon} className="svg-sm" />
     </div>
   );
 };

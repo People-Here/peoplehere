@@ -3,10 +3,10 @@ import JSONbig from 'json-bigint';
 
 import { typedGet, typedPost, typedPut } from '.';
 
-export const getMessageRooms = async () => {
+export const getMessageRooms = async (langCode: string) => {
   const { value: token } = await Preferences.get({ key: 'accessToken' });
 
-  const response = await typedGet<MessageRoomsResponse>(`/tours/messages/KOREAN`, {
+  const response = await typedGet<MessageRoomsResponse>(`/tours/messages/${langCode}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
     headers: {
       Authorization: token,

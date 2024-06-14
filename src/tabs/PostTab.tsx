@@ -29,7 +29,7 @@ const PostTab = () => {
         !profileInfo.data.profileImageUrl ||
         !profileInfo.data.languages.length
       ) {
-        router.push('/edit-profile');
+        router.push('/edit-profile', 'forward', 'replace');
       }
     })();
   }, []);

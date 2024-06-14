@@ -69,7 +69,8 @@ const SelectRegion = (props: ModalProps) => {
   }, [searchText, regions, filterCountries]);
 
   const onClickRegion = (event: any) => {
-    if (selectedRegion.countryCode) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (selectedRegion.countryCode && selectedRegion.koreanName === event.target.innerText) {
       setSelectedRegion({
         countryCode: '',
         dialCode: 0,
@@ -116,13 +117,13 @@ const SelectRegion = (props: ModalProps) => {
             <IonItem key={region.countryCode}>
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
-                  <p className="font-body1 text-orange6">
+                  <p className="w-full font-body1 text-orange6">
                     {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
-                <p className="font-body1 text-gray8">
+                <p className="w-full font-body1 text-gray8">
                   {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
                 </p>
               )}
