@@ -52,8 +52,6 @@ const FullPageMap = () => {
       },
     });
 
-    // console.log('map info', googleMap);
-
     await map.addMarker({
       coordinate: {
         lat: parseFloat(lat),
