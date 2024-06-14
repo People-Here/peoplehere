@@ -169,7 +169,7 @@ const ChatListItem = ({
       <IonImg
         src={imageUrl}
         alt="user profile"
-        className="w-[3.25rem] h-[3.25rem] object-cover rounded-full overflow-hidden shrink-0"
+        className="w-[3.25rem] h-[3.25rem] object-cover rounded-full overflow-hidden shrink-0 border border-gray1.5"
       />
 
       <div className="flex flex-col gap-0.5">
