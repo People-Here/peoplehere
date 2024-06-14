@@ -35,7 +35,7 @@ import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
 import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
-import { roundAge } from '../../utils/mask';
+import { capitalizeFirstLetter, roundAge } from '../../utils/mask';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
@@ -72,7 +72,7 @@ const EditProfile = () => {
           setLanguages(
             response.data.languages.map((lang) => ({
               koreanName: findKoreanLanguageName(lang),
-              englishName: lang,
+              englishName: capitalizeFirstLetter(lang),
               lang: findLanguageCode(lang),
             })),
           );

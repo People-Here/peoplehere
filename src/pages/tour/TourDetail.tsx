@@ -39,6 +39,7 @@ import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
 import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 
@@ -216,7 +217,9 @@ const TourDetail = () => {
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {i18n.resolvedLanguage === 'ko'
                   ? findKoreanLanguageName(tourDetail.userInfo.languages)
-                  : tourDetail.userInfo.languages.join(', ')}
+                  : tourDetail.userInfo.languages
+                      .map((lang) => capitalizeFirstLetter(lang))
+                      .join(', ')}
               </IonText>
             </div>
 

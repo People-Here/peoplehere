@@ -26,6 +26,7 @@ import LogoRunning from '../../components/LogoRunning';
 import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
@@ -137,7 +138,7 @@ const MessageRoom = () => {
           languages={
             i18n.resolvedLanguage === 'ko'
               ? userInfo.languages.map((lang) => findKoreanLanguageName(lang))
-              : userInfo.languages
+              : userInfo.languages.map((lang) => capitalizeFirstLetter(lang))
           }
           title={messages.title}
           tourId={messages.tourId.toString()}

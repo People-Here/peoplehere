@@ -35,6 +35,7 @@ import { findKoreanLanguageName } from '../../utils/find';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import { getTranslateLanguage } from '../../utils/translate';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { ProfileResponse } from '../../api/profile';
@@ -88,6 +89,11 @@ const Profile = () => {
             ...response.data,
             languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
           });
+        } else {
+          setUserInfo({
+            ...response.data,
+            languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+          });
         }
       }
     })();
@@ -127,6 +133,11 @@ const Profile = () => {
           ...response.data,
           languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
         });
+      } else {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+        });
       }
     } else {
       setCurrentRegion('KR');
@@ -138,6 +149,11 @@ const Profile = () => {
         setUserInfo({
           ...response.data,
           languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+        });
+      } else {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
         });
       }
     }
