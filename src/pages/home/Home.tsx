@@ -25,6 +25,7 @@ import { getTranslateLanguage } from '../../utils/translate';
 import DefaultImage from '../../assets/images/default-place.png';
 import DefaultImageLarge from '../../assets/images/default-place-lg.png';
 import DefaultAvatar from '../../assets/images/default-avatar.png';
+import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 
 import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
@@ -227,6 +228,7 @@ const TourItem = ({
           </div>
 
           <div className="flex items-center">
+            <IonIcon icon={LocationGrayIcon} className="w-4 h-4 shrink-0 mr-0.5" />
             <IonText className="font-body1 text-gray6">{place.name}</IonText>
             {place.district && <Divider />}
             <IonText className="font-body2 text-gray6">{place.district}</IonText>
