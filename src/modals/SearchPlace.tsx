@@ -95,7 +95,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
     <IonModal
       ref={modalRef}
       {...rest}
-      onDidDismiss={() => setSearch('')}
+      onDidDismiss={() => {
+        setSearch('');
+      }}
       onWillPresent={getHistory}
     >
       <IonContent fullscreen>
@@ -201,7 +203,7 @@ const SearchList = ({ list, onClickItem }: SearchListProps) => {
             onClickItem(item);
           }}
         >
-          <div>
+          <div className="py-2">
             <IonText className="block font-subheading2 text-gray8">{item.title}</IonText>
             <p className="font-caption2 text-gray5">{item.address}</p>
           </div>

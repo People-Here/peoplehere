@@ -26,6 +26,7 @@ import DefaultImage from '../../assets/images/default-place.png';
 import DefaultImageLarge from '../../assets/images/default-place-lg.png';
 import DefaultAvatar from '../../assets/images/default-avatar.png';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
+import CloseIcon from '../../assets/svgs/close.svg';
 
 import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
@@ -38,6 +39,7 @@ const Home = () => {
 
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
 
   const region = useSignInStore((state) => state.region);
 
@@ -102,7 +104,7 @@ const Home = () => {
 
   return (
     <div className="px-4 mt-3">
-      <SearchBar />
+      <SearchBar setOpenSearchModal={setOpenSearchModal} />
 
       <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
         <IonRefresherContent />
@@ -136,17 +138,22 @@ const Home = () => {
       </div>
 
       <SearchPlace
-        trigger="search-modal"
+        isOpen={openSearchModal}
         onClickItem={(item) => router.push(`/home?search=${item.title}`)}
         from="MAIN"
+        onWillDismiss={() => setOpenSearchModal(false)}
       />
     </div>
   );
 };
 
-const SearchBar = () => {
+type SearchBarProps = {
+  setOpenSearchModal: (value: boolean) => void;
+};
+const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
   const { t } = useTranslation();
   const location = useLocation();
+  const router = useIonRouter();
 
   const { region } = useSignInStore((state) => state);
 
@@ -154,16 +161,29 @@ const SearchBar = () => {
   const keyword = params.get('search');
 
   return (
-    <div id="search-modal" className="w-full">
+    <div
+      className="w-full"
+      onClick={() => {
+        if (!keyword) {
+          setOpenSearchModal(true);
+        }
+      }}
+    >
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
-          <IonText className="font-headline3 text-gray7">{t(`searchBar.title`)}</IonText>
-          <IonText className="font-caption2 text-gray5">
-            {location.search ? keyword : region.koreanName}
-          </IonText>
+          <IonText className="font-headline3 text-gray7">{keyword ?? t(`searchBar.title`)}</IonText>
+          {!keyword && <IonText className="font-caption2 text-gray5">{region.koreanName}</IonText>}
         </div>
 
-        <IonIcon icon={SearchIcon} className="svg-lg" />
+        <IonIcon
+          icon={keyword ? CloseIcon : SearchIcon}
+          className="svg-lg"
+          onClick={() => {
+            if (keyword) {
+              router.push('/home');
+            }
+          }}
+        />
       </div>
     </div>
   );
