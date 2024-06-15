@@ -4,7 +4,6 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
   IonModal,
   IonText,
@@ -202,10 +201,10 @@ const SearchList = ({ list, onClickItem }: SearchListProps) => {
             onClickItem(item);
           }}
         >
-          <IonLabel>
+          <div>
             <IonText className="block font-subheading2 text-gray8">{item.title}</IonText>
-            <IonText className="font-caption2 text-gray5">{item.address}</IonText>
-          </IonLabel>
+            <p className="font-caption2 text-gray5">{item.address}</p>
+          </div>
         </IonItem>
       ))}
     </IonList>

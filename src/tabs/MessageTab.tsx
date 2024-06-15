@@ -98,8 +98,8 @@ const MessageTab = () => {
             platform === 'web'
               ? 'px-4 bg-white h-14'
               : platform === 'android'
-                ? 'px-4 bg-white h-14 content-end'
-                : 'px-4 bg-white h-24 content-end'
+                ? 'px-4 bg-white h-14 flex items-end'
+                : 'px-4 bg-white h-24 flex items-end'
           }
         >
           <p className="pl-0 text-gray8 font-headline1">{t('message.title')}</p>
