@@ -30,6 +30,7 @@ const Post = () => {
   const user = useUserStore((state) => state.user);
   const region = useSignInStore((state) => state.region);
   const {
+    place: storedPlace,
     setPlace: storePlace,
     setTitle: storeTitle,
     setDescription: storeDescription,
@@ -82,6 +83,12 @@ const Post = () => {
       setTheme(response.data.theme);
     })();
   }, []);
+
+  useEffect(() => {
+    if (!storedPlace.id) return;
+
+    setPlace(storedPlace);
+  }, [storedPlace]);
 
   const uploadPost = () => {
     if (!place.id || !images.length || !title || !description) {
@@ -157,7 +164,15 @@ const Post = () => {
         </button>
       </footer>
 
-      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
+      <SearchPlace
+        trigger="search-modal"
+        onClickItem={(place) =>
+          router.push(
+            `/confirm-place?title=${place.title}&address=${place.address}&lat=${37.5665}&lng=${126.978}&id=${place.id}`,
+          )
+        }
+        from="TOUR"
+      />
 
       <Alert
         isOpen={showExitAlert}

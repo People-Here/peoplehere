@@ -31,6 +31,7 @@ import ChangeStatus from './pages/my-page/ChangeStatus';
 import Translate from './pages/settings/Translate';
 import ChangePhone from './pages/settings/ChangePhone';
 import FullPageMap from './pages/map/FullPageMap';
+import ConfirmPlace from './pages/post/ConfirmPlace';
 
 const Router = () => {
   return (
@@ -102,6 +103,9 @@ const Router = () => {
       </Route>
       <Route path="/preview-post">
         <Preview />
+      </Route>
+      <Route path="/confirm-place">
+        <ConfirmPlace />
       </Route>
 
       <Route exact path="/settings">
