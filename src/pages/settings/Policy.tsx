@@ -7,7 +7,7 @@ const Policy = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="back" title="법률" />
+        <Header type="back" title="법률" fixed />
 
         <div className="px-4">
           <Link
