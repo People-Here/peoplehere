@@ -101,7 +101,7 @@ const Profile = () => {
 
   const hasAdditionalInfo =
     userInfo?.address ||
-    userInfo?.birthDate ||
+    (userInfo?.showBirth && userInfo?.birthDate) ||
     userInfo?.job ||
     userInfo?.school ||
     userInfo?.hobby ||
