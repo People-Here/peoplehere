@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
 import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -18,7 +19,7 @@ import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
-import { getMessages } from '../../api/message';
+import { getMessages, translateMessage } from '../../api/message';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
 import LogoRunning from '../../components/LogoRunning';
@@ -26,6 +27,7 @@ import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import LanguageIcon from '../../assets/svgs/language.svg';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
@@ -43,12 +45,16 @@ const MessageRoom = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+  const [currentLang, setCurrentLang] = useState('ko');
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const platformInfo = await Device.getInfo();
       setPlatform(platformInfo.platform);
+
+      const lang = await Preferences.get({ key: 'language' });
+      setCurrentLang(lang.value ?? 'en');
 
       await getMessageList();
     })();
@@ -157,6 +163,7 @@ const MessageRoom = () => {
                   }
                   message={message.message}
                   time={formatDateTimeToString(String(message.createdAt))}
+                  currentLang={currentLang}
                 />
               ))}
             </div>
@@ -233,8 +240,23 @@ type ChatProps = {
   type: 'send' | 'receive';
   message: string;
   time: string;
+  currentLang: string;
 };
-const Chat = ({ type, message, time }: ChatProps) => {
+const Chat = ({ type, message, time, currentLang }: ChatProps) => {
+  const [messageLang, setMessageLang] = useState(currentLang);
+
+  const onClickTranslate = async () => {
+    const translateTo = messageLang === 'en' ? 'KO' : 'EN';
+
+    try {
+      const response = await translateMessage(message, translateTo);
+      setMessageLang(response.data.language);
+      message = response.data.content;
+    } catch (error) {
+      console.error('fail to translate message', error);
+    }
+  };
+
   return (
     <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
       <div className="flex flex-col gap-0.5 w-fit">
@@ -258,7 +280,7 @@ const Chat = ({ type, message, time }: ChatProps) => {
           >
             {time}
           </p>
-          {/* <IonIcon src={LanguageIcon} className="svg-md" /> */}
+          <IonIcon src={LanguageIcon} className="svg-md" onClick={onClickTranslate} />
         </div>
       </div>
     </div>
