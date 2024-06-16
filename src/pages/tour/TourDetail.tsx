@@ -59,6 +59,7 @@ const TourDetail = () => {
   const [isMine, setIsMine] = useState(false);
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
+  const [showFullImage, setShowFullImage] = useState(false);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
 
@@ -171,26 +172,27 @@ const TourDetail = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar
-          slot="fixed"
-          className={
-            platform === 'web'
-              ? 'px-4 bg-white h-14'
-              : platform === 'android'
-                ? 'px-4 bg-white h-14 flex items-end'
-                : 'px-4 bg-white h-24 flex items-end'
-          }
-        >
-          <IonButtons slot="start">
-            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
-          </IonButtons>
+        {!showFullImage && (
+          <IonToolbar
+            slot="fixed"
+            className={
+              platform === 'web'
+                ? 'px-4 bg-white h-14'
+                : platform === 'android'
+                  ? 'px-4 bg-white h-14 flex items-end'
+                  : 'px-4 bg-white h-24 flex items-end'
+            }
+          >
+            <IonButtons slot="start">
+              <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
+            </IonButtons>
 
-          <IonButtons slot="end" className="flex items-center gap-3">
-            <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
-            {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
-          </IonButtons>
-        </IonToolbar>
-
+            <IonButtons slot="end" className="flex items-center gap-3">
+              <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
+              {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
+            </IonButtons>
+          </IonToolbar>
+        )}
         <Link
           className="flex justify-center w-full mt-16 mb-12"
           to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
@@ -237,6 +239,8 @@ const TourDetail = () => {
 
             <ImageCarousel
               images={tourDetail.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+              show={showFullImage}
+              setShow={setShowFullImage}
             />
 
             <PlaceInfo
@@ -404,11 +408,18 @@ const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
   );
 };
 
-const ImageCarousel = ({ images }: { images: string[] }) => {
+const ImageCarousel = ({
+  images,
+  show,
+  setShow,
+}: {
+  images: string[];
+  show: boolean;
+  setShow: (show: boolean) => void;
+}) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showFullImage, setShowFullImage] = useState(false);
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -438,7 +449,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
     <>
       <div
         className="relative w-full h-[16.25rem] overflow-hidden mb-5 rounded-[20px] border-[0.5px] border-gray6"
-        onClick={() => setShowFullImage(true)}
+        onClick={() => setShow(true)}
       >
         <div
           ref={carouselRef}
@@ -472,7 +483,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         </div>
       </div>
 
-      {showFullImage && <FullImage images={images} setShow={setShowFullImage} />}
+      {show && <FullImage images={images} setShow={setShow} />}
     </>
   );
 };

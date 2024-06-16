@@ -27,7 +27,6 @@ import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
 import { capitalizeFirstLetter } from '../../utils/mask';
-import LanguageIcon from '../../assets/svgs/language.svg';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
@@ -280,7 +279,7 @@ const Chat = ({ type, message, time, currentLang }: ChatProps) => {
           >
             {time}
           </p>
-          <IonIcon src={LanguageIcon} className="svg-md" onClick={onClickTranslate} />
+          {/* <IonIcon src={LanguageIcon} className="svg-md" onClick={onClickTranslate} /> */}
         </div>
       </div>
     </div>
