@@ -10,8 +10,9 @@ import {
   IonText,
   IonToolbar,
   useIonRouter,
+  useIonViewWillEnter,
 } from '@ionic/react';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -68,7 +69,7 @@ const TourDetail = () => {
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
-  useLayoutEffect(() => {
+  useIonViewWillEnter(() => {
     const tourId = location.pathname.split('/').at(-1);
     if (!tourId) return;
 
