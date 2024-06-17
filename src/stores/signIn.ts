@@ -19,7 +19,7 @@ type State = {
     countryCode: string;
     englishName: string;
     koreanName: string;
-    dialCode: number;
+    dialCode: string;
   };
 };
 
@@ -51,7 +51,7 @@ const useSignInStore = create(
       gender: 'OTHER',
       region: {
         countryCode: '',
-        dialCode: 0,
+        dialCode: '',
         koreanName: '',
         englishName: '',
       },
@@ -74,7 +74,7 @@ const useSignInStore = create(
       setRegion: (region: State['region']) => set(() => ({ region })),
       resetRegion: () =>
         set(() => ({
-          region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
+          region: { countryCode: '', dialCode: '', koreanName: '', englishName: '' },
         })),
 
       clearSignInInfo: () =>
@@ -86,7 +86,7 @@ const useSignInStore = create(
           lastName: '',
           birthDate: '',
           gender: 'OTHER',
-          region: { countryCode: '', dialCode: 0, koreanName: '', englishName: '' },
+          region: { countryCode: '', dialCode: '', koreanName: '', englishName: '' },
           policyConsent: { privacy: false, marketing: false },
         })),
     }),

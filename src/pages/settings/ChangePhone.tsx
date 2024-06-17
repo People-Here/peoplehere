@@ -11,9 +11,10 @@ import SelectRegion from '../../modals/SelectRegion';
 import useSignInStore from '../../stores/signIn';
 import { secondToMinuteSecond } from '../../utils/date';
 import useUserStore from '../../stores/user';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 const ChangePhone = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const region = useSignInStore((state) => state.region);
@@ -76,7 +77,7 @@ const ChangePhone = () => {
           <SelectInput
             id="region-modal"
             label="국가/지역"
-            value={`${region.koreanName} (+${String(region.dialCode).padStart(2, '0')})`}
+            value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
           />
 
           <div className="flex items-center gap-2">

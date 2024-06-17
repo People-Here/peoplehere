@@ -35,7 +35,7 @@ const SelectRegion = (props: ModalProps) => {
   const [searchText, setSearchText] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<Region>({
     countryCode: '',
-    dialCode: 0,
+    dialCode: '',
     englishName: '',
     koreanName: '',
   });
@@ -73,7 +73,7 @@ const SelectRegion = (props: ModalProps) => {
     if (selectedRegion.countryCode && selectedRegion.countryCode === regionCode) {
       setSelectedRegion({
         countryCode: '',
-        dialCode: 0,
+        dialCode: '',
         englishName: '',
         koreanName: '',
       });
