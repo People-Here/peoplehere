@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import JSONbig from 'json-bigint';
 
-import { typedDelete, typedGet, typedPost, typedPut } from '.';
+import { typedGet, typedPost, typedPut } from '.';
 
 export const getTourList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
@@ -102,13 +102,16 @@ export const likeTour = async (tourId: string) => {
   return response;
 };
 
-export const deleteTour = async (tourId: string) => {
+export const deleteTour = async (tourId: string, reason: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
-  const response = await typedDelete('/tours', {
-    data: { id: tourId },
-    headers: { Authorization: value },
-  });
+  const response = await typedPost(
+    '/tours',
+    { id: tourId, reason },
+    {
+      headers: { Authorization: value },
+    },
+  );
 
   return response;
 };
