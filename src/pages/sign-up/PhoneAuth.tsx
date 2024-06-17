@@ -11,6 +11,7 @@ import useSignInStore from '../../stores/signIn';
 import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 import { secondToMinuteSecond } from '../../utils/date';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
@@ -44,8 +45,11 @@ const PhoneAuth = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
-      await sendPhoneCode(region.countryCode, phoneNumberInput);
+      await sendPhoneCode(region.countryCode, phoneNumberInput, textLanguage);
       setShowCodeInput(true);
       setTimeLeft(180);
     } catch (error) {

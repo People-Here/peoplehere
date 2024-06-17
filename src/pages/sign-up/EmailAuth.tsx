@@ -8,6 +8,7 @@ import ProgressDots from '../../components/ProgressDots';
 import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
 import { EMAIL_VALIDATION } from '../../constants/regex';
 import useSignInStore from '../../stores/signIn';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
@@ -34,10 +35,13 @@ const EmailAuth = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
       await checkEmail(emailInput);
       try {
-        await sendEmailCode(emailInput);
+        await sendEmailCode(emailInput, textLanguage);
         setAuthCode('');
         setShowAuthCodeInput(true);
       } catch (error) {

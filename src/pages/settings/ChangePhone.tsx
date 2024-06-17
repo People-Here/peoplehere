@@ -12,6 +12,7 @@ import useSignInStore from '../../stores/signIn';
 import { secondToMinuteSecond } from '../../utils/date';
 import useUserStore from '../../stores/user';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import { getTranslateLanguage } from '../../utils/translate';
 
 const ChangePhone = () => {
   const { t, i18n } = useTranslation();
@@ -44,8 +45,11 @@ const ChangePhone = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
-      await sendPhoneCode(region.countryCode, phoneNumberInput);
+      await sendPhoneCode(region.countryCode, phoneNumberInput, textLanguage);
       setShowCodeInput(true);
       setTimeLeft(180);
     } catch (error) {

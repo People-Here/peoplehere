@@ -7,6 +7,7 @@ import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verificati
 import Toast from '../../toasts/Toast';
 import { updateUserEmail } from '../../api/profile';
 import useLogin from '../../hooks/useLogin';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
@@ -27,11 +28,14 @@ const ChangeEmail = () => {
   }, [email]);
 
   const checkEmailValid = async () => {
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
       await checkEmail(email);
       setAuthCode('');
       setShowAuthCodeInput(true);
-      await sendEmailCode(email);
+      await sendEmailCode(email, textLanguage);
     } catch (error) {
       const errorInstance = error as AxiosError;
 

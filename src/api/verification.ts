@@ -10,8 +10,11 @@ export const checkEmailExist = async (email: string) => {
   return response;
 };
 
-export const sendEmailCode = async (email: string) => {
-  const response = await typedPost<SendEmailResponse>('/account/email/verification', { email });
+export const sendEmailCode = async (email: string, lang: string) => {
+  const response = await typedPost<SendEmailResponse>('/account/email/verification', {
+    email,
+    lang,
+  });
 
   return response;
 };
@@ -21,8 +24,12 @@ export const verifyEmailCode = async (email: string, code: string) => {
   return response;
 };
 
-export const sendPhoneCode = async (region: string, phone: string) => {
-  const response = await typedPost('/account/phone/verification', { region, phoneNumber: phone });
+export const sendPhoneCode = async (region: string, phone: string, lang: string) => {
+  const response = await typedPost('/account/phone/verification', {
+    region,
+    phoneNumber: phone,
+    lang,
+  });
   return response;
 };
 

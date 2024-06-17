@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
 import { checkEmailExist, sendEmailCode, verifyEmailCode } from '../../api/verification';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
@@ -30,10 +31,13 @@ const CheckEmail = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
       await checkEmailExist(emailInput);
       try {
-        await sendEmailCode(emailInput);
+        await sendEmailCode(emailInput, textLanguage);
         setAuthCode('');
         setShowAuthCodeInput(true);
       } catch (error) {
