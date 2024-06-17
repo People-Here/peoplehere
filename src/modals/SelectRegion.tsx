@@ -118,13 +118,15 @@ const SelectRegion = (props: ModalProps) => {
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="w-full font-body1 text-orange6">
-                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
+                    {region.dialCode})
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
                 <p className="w-full font-body1 text-gray8">
-                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
+                  {region.dialCode})
                 </p>
               )}
             </IonItem>
