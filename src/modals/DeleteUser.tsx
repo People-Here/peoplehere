@@ -14,6 +14,7 @@ const options = [
 
 type Props = {
   onConfirm: () => void;
+  setReason: (reason: string) => void;
 };
 
 const DeleteUser = (props: Props & ModalProps) => {
@@ -27,9 +28,11 @@ const DeleteUser = (props: Props & ModalProps) => {
       breakpoints={[0.45, 0.6]}
       onClickButton={() => {
         if (clickedItem) {
+          props.setReason(clickedItem);
           props.onConfirm();
         }
       }}
+      buttonDisabled={!clickedItem}
       {...props}
     >
       <div>
