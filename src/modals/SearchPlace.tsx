@@ -26,6 +26,8 @@ export type PlaceItem = {
   id: string;
   title: string;
   address: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 type Props = {
@@ -83,8 +85,16 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
 
   const onClick = async (item: PlaceItem) => {
     try {
-      await enrollPlace({ placeId: item.id, region: region.countryCode.toUpperCase(), type: from });
-      onClickItem(item);
+      const response = await enrollPlace({
+        placeId: item.id,
+        region: region.countryCode.toUpperCase(),
+        type: from,
+      });
+      onClickItem({
+        ...item,
+        latitude: response.data.latitude,
+        longitude: response.data.longitude,
+      });
       await modalRef.current?.dismiss();
     } catch (error) {
       console.error(error);

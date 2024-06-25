@@ -169,7 +169,7 @@ const Post = () => {
         trigger="search-modal"
         onClickItem={(place) =>
           router.push(
-            `/confirm-place?title=${place.title}&address=${place.address}&lat=${37.5665}&lng=${126.978}&id=${place.id}`,
+            `/confirm-place?title=${place.title}&address=${place.address}&lat=${place.latitude}&lng=${place.longitude}&id=${place.id}`,
           )
         }
         from="TOUR"

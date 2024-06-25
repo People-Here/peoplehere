@@ -47,7 +47,7 @@ const ConfirmPlace = () => {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
         },
-        zoom: 17,
+        zoom: 16,
         disableDefaultUI: true,
         disableDoubleClickZoom: true,
         clickableIcons: false,
