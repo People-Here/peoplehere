@@ -6,8 +6,6 @@ import { useRef } from 'react';
 import MapPinIcon from '../../assets/svgs/location.svg';
 import MapIcon from '../../assets/svgs/map.svg';
 import Header from '../../components/Header';
-
-import '../../theme/google-map-sm.css';
 import Footer from '../../layouts/Footer';
 import usePostPlaceStore from '../../stores/place';
 
@@ -88,7 +86,7 @@ const ConfirmPlace = () => {
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden border-[1.5px] border-gray2">
+          <div className="rounded-xl overflow-hidden border-[1.5px] border-gray2 w-[20.5rem] h-[17.75rem]">
             <capacitor-google-map ref={mapRef} />
           </div>
         </div>
