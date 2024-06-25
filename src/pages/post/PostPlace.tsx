@@ -37,6 +37,7 @@ const Post = () => {
     setImages: storeImages,
     setFetchImages,
     setTheme,
+    clearAll,
   } = usePostPlaceStore((state) => state);
 
   const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
@@ -182,7 +183,10 @@ const Post = () => {
         buttons={[
           {
             text: '나가기',
-            onClick: () => router.goBack(),
+            onClick: () => {
+              clearAll();
+              router.goBack();
+            },
           },
           {
             text: '취소',
