@@ -32,19 +32,24 @@ const Post = () => {
   const {
     place: storedPlace,
     setPlace: storePlace,
+    title: storedTitle,
     setTitle: storeTitle,
+    description: storedDescription,
     setDescription: storeDescription,
+    images: storedImages,
     setImages: storeImages,
     setFetchImages,
     setTheme,
     clearAll,
   } = usePostPlaceStore((state) => state);
 
-  const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
+  const [place, setPlace] = useState<PlaceItemType>(
+    storedPlace ?? { id: '', text: '', description: '', latitude: 0, longitude: 0 },
+  );
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [title, setTitle] = useState(storedTitle ?? '');
+  const [description, setDescription] = useState(storedDescription ?? '');
+  const [images, setImages] = useState<string[]>(storedImages ?? []);
 
   const [showExitAlert, setShowExitAlert] = useState(false);
 

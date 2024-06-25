@@ -5,6 +5,8 @@ type State = {
     id: string;
     title: string;
     address: string;
+    latitude?: number;
+    longitude?: number;
   };
   title: string;
   description: string;
@@ -28,6 +30,8 @@ const usePostPlaceStore = create<State & Action>((set) => ({
     id: '',
     title: '',
     address: '',
+    latitude: 0,
+    longitude: 0,
   },
   title: '',
   description: '',
