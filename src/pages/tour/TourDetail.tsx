@@ -385,26 +385,23 @@ type PlaceInfoProps = {
   lng: number;
 };
 const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
-  const router = useIonRouter();
-
   return (
-    <div
-      className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
-      onClick={() => {
-        router.push(`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`);
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
+    <Link to={`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`}>
+      <div
+        className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
+      >
+        <div className="flex items-center gap-3">
+          <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
 
-        <div className="flex flex-col gap-0.5">
-          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
-          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
+          <div className="flex flex-col gap-0.5">
+            <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+            <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
+          </div>
         </div>
-      </div>
 
-      <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
-    </div>
+        <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
+      </div>
+    </Link>
   );
 };
 

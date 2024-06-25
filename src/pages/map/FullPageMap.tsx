@@ -21,17 +21,17 @@ const FullPageMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useIonViewWillEnter(() => {
-    if (!title || !address || !lat || !lng) return;
+    if (!lat || !lng) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    createMap();
+    createMap(lat, lng);
   }, [title, address, lat, lng]);
 
-  const createMap = async () => {
+  const createMap = async (lat: string, lng: string) => {
     if (!mapRef.current) return;
 
     const map = await GoogleMap.create({
-      id: 'google-map',
+      id: `google-map-${title}`,
       element: mapRef.current,
       apiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY as string,
       config: {
