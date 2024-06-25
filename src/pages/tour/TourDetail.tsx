@@ -210,7 +210,7 @@ const TourDetail = () => {
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div
-              className={`flex items-center ${themeColors[tourDetail.theme].footer} rounded py-0.5 px-1.5 w-fit`}
+              className={`flex items-center ${themeColors[tourDetail.theme].languageBackground} rounded py-0.5 px-1.5 w-fit`}
             >
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {t('common.availableLanguages')}
