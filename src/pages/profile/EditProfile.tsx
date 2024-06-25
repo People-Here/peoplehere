@@ -249,7 +249,7 @@ const EditProfile = () => {
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"
         placeholder="예: 샤워하면서 춤추기, 호밀빵"
-        maxLength={20}
+        maxLength={40}
         value={favorite}
         setValue={setFavorite}
       />
@@ -257,7 +257,7 @@ const EditProfile = () => {
         trigger="hobby-modal"
         title="어떤 취미를 가지고 있나요?"
         placeholder="예: 배드민턴, 요리"
-        maxLength={20}
+        maxLength={40}
         value={hobby}
         setValue={setHobby}
       />
@@ -265,7 +265,7 @@ const EditProfile = () => {
         trigger="pet-modal"
         title="같이 사는 반려동물이 있나요?"
         placeholder="예: 하얀 말티즈 밍키와 샐리"
-        maxLength={20}
+        maxLength={40}
         value={pet}
         setValue={setPet}
       />
@@ -273,7 +273,7 @@ const EditProfile = () => {
         trigger="job-modal"
         title="어떤 일을 하시나요?"
         placeholder="직업 또는 인생의 목표"
-        maxLength={20}
+        maxLength={40}
         value={job}
         setValue={setJob}
       />
@@ -281,7 +281,7 @@ const EditProfile = () => {
         trigger="school-modal"
         title="어떤 학교를 졸업했나요?"
         placeholder="홈스쿨링, 고등학교, 직업학교 등 출신학교"
-        maxLength={20}
+        maxLength={40}
         value={school}
         setValue={setSchool}
       />
