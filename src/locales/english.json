@@ -20,7 +20,7 @@
   },
   "region": {
     "welcome": "Hello :)\nWhere are you from?",
-    "selectRegion": "Choose your country",
+    "selectRegion": "Choose your country or region",
     "placeholder": "Enter your country"
   },
   "app": {
