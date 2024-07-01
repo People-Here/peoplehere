@@ -12,9 +12,9 @@ type Props = {
 };
 
 const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(date ?? new Date().toISOString());
 
   return (
     <ModalContainer
@@ -28,8 +28,8 @@ const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
       <IonDatetime
         preferWheel
         presentation="date"
-        locale="KO"
-        defaultValue={date}
+        locale={i18n.resolvedLanguage}
+        value={selectedDate}
         onIonChange={(event) => {
           setSelectedDate(event.detail.value as string);
         }}

@@ -31,8 +31,10 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
   const [input, setInput] = useState('');
 
   const onDeleteTour = async (tourId: string) => {
+    if (!input.trim()) return;
+
     try {
-      await deleteTour(tourId);
+      await deleteTour(tourId, input);
       router.push('/profile');
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -40,7 +42,7 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
       if (errorInstance.response?.status === 401) {
         await getNewToken();
 
-        await deleteTour(tourId);
+        await deleteTour(tourId, input);
         router.push('/profile');
       }
       console.error('fail to delete tour', error);
@@ -82,7 +84,7 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
         <Footer>
           <button
             className="w-full mb-4 text-white button-primary button-lg font-subheading1"
-            disabled={input.length <= 0}
+            disabled={input.trim().length <= 0}
             onClick={() => onDeleteTour(tourId)}
           >
             삭제하기

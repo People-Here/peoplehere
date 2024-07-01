@@ -38,7 +38,7 @@ const FullImage = ({ images, setShow }: Props) => {
   }, []);
 
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black">
+    <div className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center w-full h-full bg-black">
       <div className="fixed left-0 right-0 flex items-center justify-center top-6 h-14">
         <IonText className="text-white font-headline3">
           {currentIndex + 1} / {images.length}

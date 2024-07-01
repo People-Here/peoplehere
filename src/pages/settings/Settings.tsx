@@ -38,6 +38,8 @@ const Settings = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDeleteReasonSheet, setOpenDeleteReasonSheet] = useState(false);
 
+  const [deleteReason, setDeleteReason] = useState('');
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -114,6 +116,7 @@ const Settings = () => {
           isOpen={openDeleteReasonSheet}
           onDidDismiss={() => setOpenDeleteReasonSheet(false)}
           onConfirm={() => setOpenDeleteModal(true)}
+          setReason={setDeleteReason}
         />
 
         <Alert
@@ -125,7 +128,7 @@ const Settings = () => {
               text: '계정 삭제',
               onClick: async () => {
                 try {
-                  await deleteAccount(id);
+                  await deleteAccount(id, deleteReason);
                   await requestLogout();
                   router.push('/login', 'forward', 'replace');
                 } catch (error) {
@@ -133,7 +136,7 @@ const Settings = () => {
 
                   if (errorInstance.response?.status === 401) {
                     await getNewToken();
-                    await deleteAccount(id);
+                    await deleteAccount(id, deleteReason);
                     await requestLogout();
                     router.push('/login', 'forward', 'replace');
                   }

@@ -23,7 +23,7 @@ const Introduce = ({ introduce, setIntroduce, ...rest }: ModalProps & Props) => 
       onWillPresent={() => setInput(introduce)}
       {...rest}
     >
-      <div className="flex flex-col gap-1.5 items-end mb-5">
+      <div className="flex flex-col gap-1.5 items-end mb-5 mt-3">
         <textarea
           className="px-4 py-2.5 rounded-lg bg-gray1.5 h-[8.75rem] w-full font-body1 text-gray8"
           value={input}

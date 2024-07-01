@@ -89,8 +89,8 @@ const MyPage = () => {
           platform === 'web'
             ? 'px-4 bg-white h-14'
             : platform === 'android'
-              ? 'px-4 bg-white h-14 content-end'
-              : 'px-4 bg-white h-24 content-end'
+              ? 'px-4 bg-white h-14 flex items-end'
+              : 'px-4 bg-white h-24 flex items-end'
         }
       >
         <p className="font-headline1 text-gray8">{t('mypage.title')}</p>
@@ -100,38 +100,62 @@ const MyPage = () => {
         </IonButtons>
       </IonToolbar>
 
-      <div className="px-4 pb-20 mt-20">
-        <UserInfo image={user.profileImageUrl} name={user.firstName} needEdit={needProfileInfo} />
+      <div className="h-[100%] px-4 pb-20 mt-20">
+        {needProfileInfo ? (
+          <div className="flex flex-col justify-center items-center gap-12 h-[90%]">
+            <div className="flex flex-col items-center gap-5">
+              <IonImg src={DefaultUserImage} alt="default user" className="w-14 h-14" />
 
-        <div className="flex flex-col gap-4 mt-10">
-          {tourList.length > 0 ? (
-            <>
-              {tourList.map((tour) => (
-                <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
-                  <TourInfo
-                    id={tour.id.toString()}
-                    image={
-                      tour.placeInfo.imageUrlList.length > 0
-                        ? tour.placeInfo.imageUrlList[0].imageUrl
-                        : ''
-                    }
-                    title={tour.title}
-                    placeName={tour.placeInfo.name}
-                    district={tour.placeInfo.district}
-                    available={true}
-                  />
-                </Link>
-              ))}
+              <p
+                className="text-center text-black whitespace-pre-wrap font-subheading1"
+                style={{ lineHeight: '26px' }}
+              >
+                {'프로필을 완성하고\n사람들과 만나보세요'}
+              </p>
+            </div>
 
-              <Link to="/post" className="flex items-center justify-center gap-1 p-3">
-                <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-                <p className="font-body1 text-orange6">장소 올리기</p>
-              </Link>
-            </>
-          ) : (
-            <NoPlace />
-          )}
-        </div>
+            <button
+              className="px-6 text-white button-primary button-lg font-subheading1 w-fit"
+              onClick={() => router.push(`/edit-profile/${user.id}`)}
+            >
+              프로필 완성하기
+            </button>
+          </div>
+        ) : (
+          <>
+            <UserInfo image={user.profileImageUrl} name={user.firstName} />
+
+            <div className="flex flex-col gap-4 mt-10">
+              {tourList.length > 0 ? (
+                <>
+                  {tourList.map((tour) => (
+                    <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
+                      <TourInfo
+                        id={tour.id.toString()}
+                        image={
+                          tour.placeInfo.imageUrlList.length > 0
+                            ? tour.placeInfo.imageUrlList[0].imageUrl
+                            : ''
+                        }
+                        title={tour.title}
+                        placeName={tour.placeInfo.name}
+                        district={tour.placeInfo.district}
+                        available={true}
+                      />
+                    </Link>
+                  ))}
+
+                  <Link to="/post" className="flex items-center justify-center gap-1 p-3">
+                    <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
+                    <p className="font-body1 text-orange6">장소 올리기</p>
+                  </Link>
+                </>
+              ) : (
+                <NoPlace />
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
@@ -140,9 +164,8 @@ const MyPage = () => {
 type UserInfoProps = {
   image: string;
   name: string;
-  needEdit: boolean;
 };
-const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
+const UserInfo = ({ image, name }: UserInfoProps) => {
   const { t } = useTranslation();
   const router = useIonRouter();
 
@@ -151,13 +174,7 @@ const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
   return (
     <div
       className="flex items-center justify-between px-4"
-      onClick={() => {
-        if (needEdit) {
-          router.push('/edit-profile');
-        } else {
-          router.push(`/detail-profile/${user.id}`);
-        }
-      }}
+      onClick={() => router.push(`/detail-profile/${user.id}`)}
     >
       <div className="flex items-center gap-4">
         <IonImg
@@ -168,9 +185,7 @@ const UserInfo = ({ image, name, needEdit }: UserInfoProps) => {
 
         <div>
           <p className="font-headline3 text-gray7">{name}</p>
-          <p className="font-body1 text-gray6">
-            {needEdit ? t('mypage.completeProfile') : t('mypage.seeProfile')}
-          </p>
+          <p className="font-body1 text-gray6">{t('mypage.seeProfile')}</p>
         </div>
       </div>
 

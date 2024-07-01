@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import JSONbig from 'json-bigint';
 
-import { typedDelete, typedGet, typedPost, typedPut } from '.';
+import { typedGet, typedPost, typedPut } from '.';
 
 export const getTourList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
@@ -37,7 +37,9 @@ export const getBookmarkList = async (region: string, lang: string) => {
 export const getTourDetail = async (tourId: string, region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
-  const response = await typedGet<TourDetail>(`/tours/${tourId}/${region}/${lang}`, {
+  const requestRegion = lang === 'ENGLISH' ? 'US' : region;
+
+  const response = await typedGet<TourDetail>(`/tours/${tourId}/${requestRegion}/${lang}`, {
     transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
     headers: {
       Authorization: value,
@@ -102,13 +104,16 @@ export const likeTour = async (tourId: string) => {
   return response;
 };
 
-export const deleteTour = async (tourId: string) => {
+export const deleteTour = async (tourId: string, reason: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
-  const response = await typedDelete('/tours', {
-    data: { id: tourId },
-    headers: { Authorization: value },
-  });
+  const response = await typedPost(
+    '/tours',
+    { id: tourId, reason },
+    {
+      headers: { Authorization: value },
+    },
+  );
 
   return response;
 };

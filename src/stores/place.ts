@@ -5,11 +5,14 @@ type State = {
     id: string;
     title: string;
     address: string;
+    latitude?: number;
+    longitude?: number;
   };
   title: string;
   description: string;
   images: string[];
   fetchImages: boolean;
+  theme: string;
 };
 
 type Action = {
@@ -18,6 +21,7 @@ type Action = {
   setDescription: (description: string) => void;
   setImages: (images: string[]) => void;
   setFetchImages: (fetchImages: boolean) => void;
+  setTheme: (theme: string) => void;
   clearAll: () => void;
 };
 
@@ -26,17 +30,21 @@ const usePostPlaceStore = create<State & Action>((set) => ({
     id: '',
     title: '',
     address: '',
+    latitude: 0,
+    longitude: 0,
   },
   title: '',
   description: '',
   images: [],
   fetchImages: true,
+  theme: 'black',
 
   setPlace: (place) => set(() => ({ place })),
   setTitle: (title) => set(() => ({ title })),
   setDescription: (description) => set(() => ({ description })),
   setImages: (images) => set(() => ({ images })),
   setFetchImages: (fetchImages) => set(() => ({ fetchImages })),
+  setTheme: (theme) => set(() => ({ theme })),
   clearAll: () =>
     set(() => ({
       place: {
@@ -48,6 +56,7 @@ const usePostPlaceStore = create<State & Action>((set) => ({
       description: '',
       images: [],
       fetchImages: true,
+      theme: 'black',
     })),
 }));
 

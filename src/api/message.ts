@@ -61,6 +61,22 @@ export const translateMessage = async (content: string, language: string) => {
   return response;
 };
 
+export const changeMessageReceiveStatus = async (tourId: string, consent: boolean) => {
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost(
+    '/tours/messages/status',
+    { id: tourId, consent },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
+
+  return response;
+};
+
 export type MessageRoom = {
   id: bigint;
   tourId: bigint;

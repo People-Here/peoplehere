@@ -22,7 +22,7 @@ export type Region = {
   countryCode: string;
   englishName: string;
   koreanName: string;
-  dialCode: number;
+  dialCode: string;
 };
 
 export type Language = {

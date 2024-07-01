@@ -51,7 +51,7 @@ const Informations = () => {
               <p className="mb-1 font-subheading2 text-gray7">전화번호</p>
               {user.phoneNumber ? (
                 <p className="font-body2 text-gray6">
-                  +{region.dialCode} {maskPhoneNumber(user.phoneNumber)}
+                  {region.dialCode} {maskPhoneNumber(user.phoneNumber)}
                 </p>
               ) : (
                 <p className="font-body1 text-orange6">

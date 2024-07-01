@@ -39,6 +39,7 @@ import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
 import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 
@@ -58,6 +59,7 @@ const TourDetail = () => {
   const [isMine, setIsMine] = useState(false);
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
+  const [showFullImage, setShowFullImage] = useState(false);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
 
@@ -170,26 +172,27 @@ const TourDetail = () => {
     <IonPage>
       <IonContent fullscreen>
         {/* header */}
-        <IonToolbar
-          slot="fixed"
-          className={
-            platform === 'web'
-              ? 'px-4 bg-white h-14'
-              : platform === 'android'
-                ? 'px-4 bg-white h-14 content-end'
-                : 'px-4 bg-white h-24 content-end'
-          }
-        >
-          <IonButtons slot="start">
-            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
-          </IonButtons>
+        {!showFullImage && (
+          <IonToolbar
+            slot="fixed"
+            className={
+              platform === 'web'
+                ? 'px-4 bg-white h-14'
+                : platform === 'android'
+                  ? 'px-4 bg-white h-14 flex items-end'
+                  : 'px-4 bg-white h-24 flex items-end'
+            }
+          >
+            <IonButtons slot="start">
+              <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={() => router.goBack()} />
+            </IonButtons>
 
-          <IonButtons slot="end" className="flex items-center gap-3">
-            <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
-            {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
-          </IonButtons>
-        </IonToolbar>
-
+            <IonButtons slot="end" className="flex items-center gap-3">
+              <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
+              {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
+            </IonButtons>
+          </IonToolbar>
+        )}
         <Link
           className="flex justify-center w-full mt-16 mb-12"
           to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
@@ -207,7 +210,7 @@ const TourDetail = () => {
 
           <div className="flex flex-col items-center gap-6 mb-16 px-9">
             <div
-              className={`flex items-center ${themeColors[tourDetail.theme].footer} rounded py-0.5 px-1.5 w-fit`}
+              className={`flex items-center ${themeColors[tourDetail.theme].languageBackground} rounded py-0.5 px-1.5 w-fit`}
             >
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {t('common.availableLanguages')}
@@ -216,7 +219,9 @@ const TourDetail = () => {
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
                 {i18n.resolvedLanguage === 'ko'
                   ? findKoreanLanguageName(tourDetail.userInfo.languages)
-                  : tourDetail.userInfo.languages.join(', ')}
+                  : tourDetail.userInfo.languages
+                      .map((lang) => capitalizeFirstLetter(lang))
+                      .join(', ')}
               </IonText>
             </div>
 
@@ -234,6 +239,8 @@ const TourDetail = () => {
 
             <ImageCarousel
               images={tourDetail.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+              show={showFullImage}
+              setShow={setShowFullImage}
             />
 
             <PlaceInfo
@@ -350,7 +357,7 @@ type ImageProps = {
 };
 const UserImage = ({ src, name }: ImageProps) => {
   return (
-    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5">
+    <div className="overflow-hidden rounded-xl w-[100px] h-[140px] relative flex justify-center shrink-0 border-[0.5px] border-gray5.5 bg-white">
       <IonImg className="object-cover w-full h-full" src={src} alt="user profile" />
 
       <div
@@ -378,34 +385,38 @@ type PlaceInfoProps = {
   lng: number;
 };
 const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
-  const router = useIonRouter();
-
   return (
-    <div
-      className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
-      onClick={() => {
-        router.push(`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`);
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
+    <Link to={`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`}>
+      <div
+        className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
+      >
+        <div className="flex items-center gap-3">
+          <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
 
-        <div className="flex flex-col gap-0.5">
-          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
-          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
+          <div className="flex flex-col gap-0.5">
+            <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+            <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
+          </div>
         </div>
-      </div>
 
-      <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
-    </div>
+        <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
+      </div>
+    </Link>
   );
 };
 
-const ImageCarousel = ({ images }: { images: string[] }) => {
+const ImageCarousel = ({
+  images,
+  show,
+  setShow,
+}: {
+  images: string[];
+  show: boolean;
+  setShow: (show: boolean) => void;
+}) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showFullImage, setShowFullImage] = useState(false);
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -435,7 +446,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
     <>
       <div
         className="relative w-full h-[16.25rem] overflow-hidden mb-5 rounded-[20px] border-[0.5px] border-gray6"
-        onClick={() => setShowFullImage(true)}
+        onClick={() => setShow(true)}
       >
         <div
           ref={carouselRef}
@@ -469,7 +480,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         </div>
       </div>
 
-      {showFullImage && <FullImage images={images} setShow={setShowFullImage} />}
+      {show && <FullImage images={images} setShow={setShow} />}
     </>
   );
 };

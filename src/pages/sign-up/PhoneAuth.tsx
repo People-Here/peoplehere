@@ -10,11 +10,13 @@ import Alert from '../../components/Alert';
 import useSignInStore from '../../stores/signIn';
 import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 import { secondToMinuteSecond } from '../../utils/date';
+import { capitalizeFirstLetter } from '../../utils/mask';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
 const PhoneAuth = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const { region, setPhoneNumber } = useSignInStore((state) => state);
@@ -43,8 +45,11 @@ const PhoneAuth = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
-      await sendPhoneCode(region.countryCode, phoneNumberInput);
+      await sendPhoneCode(region.countryCode, phoneNumberInput, textLanguage);
       setShowCodeInput(true);
       setTimeLeft(180);
     } catch (error) {
@@ -82,7 +87,7 @@ const PhoneAuth = () => {
           <SelectInput
             id="region-modal"
             label="국가/지역"
-            value={`${region.koreanName} (+${String(region.dialCode).padStart(2, '0')})`}
+            value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
           />
 
           <div className="flex gap-2">

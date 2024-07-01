@@ -8,6 +8,7 @@ import ProgressDots from '../../components/ProgressDots';
 import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
 import { EMAIL_VALIDATION } from '../../constants/regex';
 import useSignInStore from '../../stores/signIn';
+import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
@@ -20,7 +21,7 @@ const EmailAuth = () => {
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
+  const [showAuthCodeInput, setShowAuthCodeInput] = useState(true);
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,10 +35,13 @@ const EmailAuth = () => {
     setErrorMessage('');
     setIsLoading(true);
 
+    const lang = await getTranslateLanguage();
+    const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
+
     try {
       await checkEmail(emailInput);
       try {
-        await sendEmailCode(emailInput);
+        await sendEmailCode(emailInput, textLanguage);
         setAuthCode('');
         setShowAuthCodeInput(true);
       } catch (error) {
@@ -114,23 +118,35 @@ const EmailAuth = () => {
           </div>
 
           {showAuthCodeInput && (
-            <div className="flex gap-2 mt-3 animate-fade-down">
-              <LabelInput
-                label={t('signup.verify.placeholder')}
-                inputMode="numeric"
-                value={authCode}
-                onChange={setAuthCode}
-                errorText={authErrorMessage}
-              />
+            <>
+              <div className="flex gap-2 mt-3 animate-fade-down">
+                <LabelInput
+                  label={t('signup.verify.placeholder')}
+                  inputMode="numeric"
+                  value={authCode}
+                  onChange={setAuthCode}
+                  errorText={authErrorMessage}
+                />
 
-              <button
-                className="px-3 button-primary button-lg w-[100px] shrink-0"
-                disabled={!authCode.length}
-                onClick={confirmAuthCode}
-              >
-                <IonText className="font-body1">{t('common.confirm')}</IonText>
-              </button>
-            </div>
+                <button
+                  className="px-3 button-primary button-lg w-[100px] shrink-0"
+                  disabled={!authCode.length}
+                  onClick={confirmAuthCode}
+                >
+                  <IonText className="font-body1">{t('common.confirm')}</IonText>
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-1 mt-6">
+                <p className="font-body1 text-gray6">코드를 받지 못하셨나요?</p>
+                <ul className="pl-4 list-disc">
+                  <li className="font-caption2 text-gray5.5">
+                    코드가 도착하는데 최대 5분이 걸릴 수 있습니다.
+                  </li>
+                  <li className="font-caption2 text-gray5.5">스팸 폴더를 확인하세요.</li>
+                </ul>
+              </div>
+            </>
           )}
         </div>
       </IonContent>

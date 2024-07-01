@@ -18,30 +18,33 @@ const FullPageMap = () => {
   const address = params.get('address');
 
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useIonViewWillEnter(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    createMap();
-  });
+    if (!lat || !lng) return;
 
-  const createMap = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    createMap(lat, lng);
+  }, [title, address, lat, lng]);
+
+  const createMap = async (lat: string, lng: string) => {
     if (!mapRef.current) return;
 
     const map = await GoogleMap.create({
-      id: 'google-map',
+      id: `google-map-${title}`,
       element: mapRef.current,
       apiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY as string,
       config: {
         mapId: '50768681a96d17df',
         iOSMapId: 'cf72b44089ef16e3',
         androidMapId: 'b6e7531585349271',
-        width: 400,
-        height: 700,
         center: {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
         },
         zoom: 17,
+        width: 400,
+        height: 1000,
         disableDefaultUI: true,
         disableDoubleClickZoom: true,
         clickableIcons: false,
@@ -70,7 +73,10 @@ const FullPageMap = () => {
       <IonContent fullscreen style={{ '--background': 'transparent' }}>
         <Header type="close" title="지도" />
 
-        <div className="relative w-full h-[calc(100%-3.5rem)] overflow-hidden">
+        <div
+          ref={mapContainerRef}
+          className="relative w-full h-[calc(100vh-3.5rem)] overflow-hidden"
+        >
           <capacitor-google-map ref={mapRef} />
 
           <div className="absolute z-30 w-full px-4 bottom-6">

@@ -2,7 +2,6 @@ import {
   IonButtons,
   IonContent,
   IonIcon,
-  IonImg,
   IonPage,
   IonToolbar,
   useIonRouter,
@@ -12,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
 import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -19,13 +19,14 @@ import MessageIcon from '../../assets/svgs/message.svg';
 import Footer from '../../layouts/Footer';
 import SendMessage from '../../modals/SendMessage';
 import useUserStore from '../../stores/user';
-import { getMessages } from '../../api/message';
+import { getMessages, translateMessage } from '../../api/message';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
 import LogoRunning from '../../components/LogoRunning';
 import { formatDateTimeToString } from '../../utils/date';
 import { findKoreanLanguageName } from '../../utils/find';
 import LoadingGIF from '../../assets/images/three-dot-loading.gif';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { Message } from '../../api/message';
@@ -43,12 +44,16 @@ const MessageRoom = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+  const [currentLang, setCurrentLang] = useState('ko');
 
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const platformInfo = await Device.getInfo();
       setPlatform(platformInfo.platform);
+
+      const lang = await Preferences.get({ key: 'language' });
+      setCurrentLang(lang.value ?? 'en');
 
       await getMessageList();
     })();
@@ -109,8 +114,8 @@ const MessageRoom = () => {
             platform === 'web'
               ? 'px-4 bg-white h-14'
               : platform === 'android'
-                ? 'px-4 bg-white h-14 content-end'
-                : 'px-4 bg-white h-24 content-end'
+                ? 'px-4 bg-white h-14 flex items-end'
+                : 'px-4 bg-white h-24 flex items-end'
           }
         >
           <IonButtons slot="start">
@@ -137,7 +142,7 @@ const MessageRoom = () => {
           languages={
             i18n.resolvedLanguage === 'ko'
               ? userInfo.languages.map((lang) => findKoreanLanguageName(lang))
-              : userInfo.languages
+              : userInfo.languages.map((lang) => capitalizeFirstLetter(lang))
           }
           title={messages.title}
           tourId={messages.tourId.toString()}
@@ -157,6 +162,7 @@ const MessageRoom = () => {
                   }
                   message={message.message}
                   time={formatDateTimeToString(String(message.createdAt))}
+                  currentLang={currentLang}
                 />
               ))}
             </div>
@@ -196,10 +202,10 @@ const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps)
   return (
     <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5 mt-16">
       <Link to={`/detail-profile/${userId}`}>
-        <IonImg
+        <img
           src={imageUrl}
           alt="chat user profile"
-          className="object-cover overflow-hidden rounded-full w-11 h-11"
+          className="object-cover overflow-hidden rounded-full w-11 h-11 border-[0.5px] border-gray2"
         />
       </Link>
 
@@ -233,8 +239,23 @@ type ChatProps = {
   type: 'send' | 'receive';
   message: string;
   time: string;
+  currentLang: string;
 };
-const Chat = ({ type, message, time }: ChatProps) => {
+const Chat = ({ type, message, time, currentLang }: ChatProps) => {
+  const [messageLang, setMessageLang] = useState(currentLang);
+
+  const onClickTranslate = async () => {
+    const translateTo = messageLang === 'en' ? 'KO' : 'EN';
+
+    try {
+      const response = await translateMessage(message, translateTo);
+      setMessageLang(response.data.language);
+      message = response.data.content;
+    } catch (error) {
+      console.error('fail to translate message', error);
+    }
+  };
+
   return (
     <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
       <div className="flex flex-col gap-0.5 w-fit">
@@ -258,7 +279,7 @@ const Chat = ({ type, message, time }: ChatProps) => {
           >
             {time}
           </p>
-          {/* <IonIcon src={LanguageIcon} className="svg-md" /> */}
+          {/* <IonIcon src={LanguageIcon} className="svg-md" onClick={onClickTranslate} /> */}
         </div>
       </div>
     </div>

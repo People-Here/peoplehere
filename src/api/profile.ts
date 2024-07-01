@@ -78,6 +78,12 @@ export type ProfileResponse = {
   school?: string;
   address?: string;
   langCode?: string;
+  consentInfo: {
+    privacyConsent: boolean;
+    marketingConsent: boolean;
+    messageAlarmConsent: boolean;
+    meetingAlarmConsent: boolean;
+  };
 };
 
 export type UpdateProfileRequest = {
