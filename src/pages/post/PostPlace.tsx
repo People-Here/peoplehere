@@ -49,7 +49,7 @@ const Post = () => {
 
   const [title, setTitle] = useState(storedTitle ?? '');
   const [description, setDescription] = useState(storedDescription ?? '');
-  const [images, setImages] = useState<string[]>(storedImages ?? []);
+  const [images, setImages] = useState<string[]>(storedImages ?? null);
 
   const [showExitAlert, setShowExitAlert] = useState(false);
 
@@ -85,7 +85,7 @@ const Post = () => {
       });
       setTitle(response.data.title);
       setDescription(response.data.description);
-      setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
+      setImages(response.data.placeInfo.imageInfoList.map((image) => image.imageUrl));
       setTheme(response.data.theme);
     })();
   }, []);
@@ -97,8 +97,8 @@ const Post = () => {
   }, [storedPlace]);
 
   const uploadPost = () => {
-    if (!place.id || !images.length || !title || !description) {
-      console.error('place, images, title, description are required');
+    if (!place.id || !title || !description) {
+      console.error('place, title, description are required');
       return;
     }
 
@@ -164,7 +164,7 @@ const Post = () => {
         <button
           className="w-full text-white button-primary button-lg font-subheading1"
           onClick={uploadPost}
-          disabled={!place.id || !images.length || !title || !description}
+          disabled={!place.id || !title || !description}
         >
           {t('common.preview')}
         </button>
