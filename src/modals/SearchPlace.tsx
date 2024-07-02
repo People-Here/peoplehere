@@ -128,7 +128,6 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
             <div className="mt-5">
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
-              {/* TODO: 최근 검색 내역 백엔드 나오면 추가 필요 */}
               <SearchList
                 list={history.map((item) => {
                   return {
