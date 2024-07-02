@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -31,16 +32,18 @@ import SelectLanguages from '../../modals/SelectLanguages';
 import useProfileStore from '../../stores/user';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
-import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
 import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
 import { capitalizeFirstLetter, roundAge } from '../../utils/mask';
+import SelectCity from '../../modals/SelectCity';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
 
 const EditProfile = () => {
+  const { i18n } = useTranslation();
+
   const router = useIonRouter();
 
   const region = useSignInStore((state) => state.region);
@@ -286,13 +289,16 @@ const EditProfile = () => {
         setValue={setSchool}
       />
       <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
-      <SearchPlace
+      <SelectCity
         trigger="search-place"
         onClickItem={(item) => {
-          setLocation(item.title);
-          setPlaceId(item.id);
+          setLocation(
+            i18n.resolvedLanguage === 'ko'
+              ? item.cityInfoList.filter((info) => info.langCode === 'KOREAN')[0].name
+              : item.cityInfoList.filter((info) => info.langCode === 'ENGLISH')[0].name,
+          );
+          setPlaceId(String(item.id));
         }}
-        from="TOUR"
       />
     </IonPage>
   );
