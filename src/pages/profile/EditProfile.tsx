@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -31,16 +32,18 @@ import SelectLanguages from '../../modals/SelectLanguages';
 import useProfileStore from '../../stores/user';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile, updateUserProfile } from '../../api/profile';
-import SearchPlace from '../../modals/SearchPlace';
 import { getNewToken } from '../../api/login';
 import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
-import { roundAge } from '../../utils/mask';
+import { capitalizeFirstLetter, roundAge } from '../../utils/mask';
+import SelectCity from '../../modals/SelectCity';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
 
 const EditProfile = () => {
+  const { i18n } = useTranslation();
+
   const router = useIonRouter();
 
   const region = useSignInStore((state) => state.region);
@@ -72,7 +75,7 @@ const EditProfile = () => {
           setLanguages(
             response.data.languages.map((lang) => ({
               koreanName: findKoreanLanguageName(lang),
-              englishName: lang,
+              englishName: capitalizeFirstLetter(lang),
               lang: findLanguageCode(lang),
             })),
           );
@@ -249,7 +252,7 @@ const EditProfile = () => {
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"
         placeholder="예: 샤워하면서 춤추기, 호밀빵"
-        maxLength={20}
+        maxLength={40}
         value={favorite}
         setValue={setFavorite}
       />
@@ -257,7 +260,7 @@ const EditProfile = () => {
         trigger="hobby-modal"
         title="어떤 취미를 가지고 있나요?"
         placeholder="예: 배드민턴, 요리"
-        maxLength={20}
+        maxLength={40}
         value={hobby}
         setValue={setHobby}
       />
@@ -265,7 +268,7 @@ const EditProfile = () => {
         trigger="pet-modal"
         title="같이 사는 반려동물이 있나요?"
         placeholder="예: 하얀 말티즈 밍키와 샐리"
-        maxLength={20}
+        maxLength={40}
         value={pet}
         setValue={setPet}
       />
@@ -273,7 +276,7 @@ const EditProfile = () => {
         trigger="job-modal"
         title="어떤 일을 하시나요?"
         placeholder="직업 또는 인생의 목표"
-        maxLength={20}
+        maxLength={40}
         value={job}
         setValue={setJob}
       />
@@ -281,18 +284,21 @@ const EditProfile = () => {
         trigger="school-modal"
         title="어떤 학교를 졸업했나요?"
         placeholder="홈스쿨링, 고등학교, 직업학교 등 출신학교"
-        maxLength={20}
+        maxLength={40}
         value={school}
         setValue={setSchool}
       />
       <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
-      <SearchPlace
+      <SelectCity
         trigger="search-place"
         onClickItem={(item) => {
-          setLocation(item.title);
-          setPlaceId(item.id);
+          setLocation(
+            i18n.resolvedLanguage === 'ko'
+              ? item.cityInfoList.filter((info) => info.langCode === 'KOREAN')[0].name
+              : item.cityInfoList.filter((info) => info.langCode === 'ENGLISH')[0].name,
+          );
+          setPlaceId(String(item.id));
         }}
-        from="TOUR"
       />
     </IonPage>
   );

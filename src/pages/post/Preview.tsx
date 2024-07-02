@@ -41,12 +41,18 @@ const Preview = () => {
 
   const tourId = location.pathname.split('/').at(-1) ?? '';
 
-  const { place, title, description, images, fetchImages, clearAll } = usePostPlaceStore(
-    (state) => state,
-  );
+  const {
+    place,
+    title,
+    description,
+    images,
+    fetchImages,
+    theme: storedTheme,
+    clearAll,
+  } = usePostPlaceStore((state) => state);
   const user = useUserStore((state) => state.user);
 
-  const [theme, setTheme] = useState('black');
+  const [theme, setTheme] = useState(storedTheme);
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
   const [isLoading, setIsLoading] = useState(false);
 

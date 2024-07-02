@@ -30,18 +30,26 @@ const Post = () => {
   const user = useUserStore((state) => state.user);
   const region = useSignInStore((state) => state.region);
   const {
+    place: storedPlace,
     setPlace: storePlace,
+    title: storedTitle,
     setTitle: storeTitle,
+    description: storedDescription,
     setDescription: storeDescription,
+    images: storedImages,
     setImages: storeImages,
     setFetchImages,
+    setTheme,
+    clearAll,
   } = usePostPlaceStore((state) => state);
 
-  const [place, setPlace] = useState<PlaceItemType>({ id: '', title: '', address: '' });
+  const [place, setPlace] = useState<PlaceItemType>(
+    storedPlace ?? { id: '', text: '', description: '', latitude: 0, longitude: 0 },
+  );
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [title, setTitle] = useState(storedTitle ?? '');
+  const [description, setDescription] = useState(storedDescription ?? '');
+  const [images, setImages] = useState<string[]>(storedImages ?? null);
 
   const [showExitAlert, setShowExitAlert] = useState(false);
 
@@ -77,13 +85,20 @@ const Post = () => {
       });
       setTitle(response.data.title);
       setDescription(response.data.description);
-      setImages(response.data.placeInfo.imageUrlList.map((image) => image.imageUrl));
+      setImages(response.data.placeInfo.imageInfoList.map((image) => image.imageUrl));
+      setTheme(response.data.theme);
     })();
   }, []);
 
+  useEffect(() => {
+    if (!storedPlace.id) return;
+
+    setPlace(storedPlace);
+  }, [storedPlace]);
+
   const uploadPost = () => {
-    if (!place.id || !images.length || !title || !description) {
-      console.error('place, images, title, description are required');
+    if (!place.id || !title || !description) {
+      console.error('place, title, description are required');
       return;
     }
 
@@ -149,13 +164,21 @@ const Post = () => {
         <button
           className="w-full text-white button-primary button-lg font-subheading1"
           onClick={uploadPost}
-          disabled={!place.id || !images.length || !title || !description}
+          disabled={!place.id || !title || !description}
         >
           {t('common.preview')}
         </button>
       </footer>
 
-      <SearchPlace trigger="search-modal" onClickItem={(place) => setPlace(place)} from="TOUR" />
+      <SearchPlace
+        trigger="search-modal"
+        onClickItem={(place) =>
+          router.push(
+            `/confirm-place?title=${place.title}&address=${place.address}&lat=${place.latitude}&lng=${place.longitude}&id=${place.id}`,
+          )
+        }
+        from="TOUR"
+      />
 
       <Alert
         isOpen={showExitAlert}
@@ -165,7 +188,10 @@ const Post = () => {
         buttons={[
           {
             text: '나가기',
-            onClick: () => router.goBack(),
+            onClick: () => {
+              clearAll();
+              router.goBack();
+            },
           },
           {
             text: '취소',

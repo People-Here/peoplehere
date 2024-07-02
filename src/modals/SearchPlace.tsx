@@ -4,7 +4,6 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
   IonModal,
   IonText,
@@ -27,6 +26,8 @@ export type PlaceItem = {
   id: string;
   title: string;
   address: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 type Props = {
@@ -84,8 +85,16 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
 
   const onClick = async (item: PlaceItem) => {
     try {
-      await enrollPlace({ placeId: item.id, region: region.countryCode.toUpperCase(), type: from });
-      onClickItem(item);
+      const response = await enrollPlace({
+        placeId: item.id,
+        region: region.countryCode.toUpperCase(),
+        type: from,
+      });
+      onClickItem({
+        ...item,
+        latitude: response.data.latitude,
+        longitude: response.data.longitude,
+      });
       await modalRef.current?.dismiss();
     } catch (error) {
       console.error(error);
@@ -96,7 +105,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
     <IonModal
       ref={modalRef}
       {...rest}
-      onDidDismiss={() => setSearch('')}
+      onDidDismiss={() => {
+        setSearch('');
+      }}
       onWillPresent={getHistory}
     >
       <IonContent fullscreen>
@@ -117,7 +128,6 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
             <div className="mt-5">
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
-              {/* TODO: 최근 검색 내역 백엔드 나오면 추가 필요 */}
               <SearchList
                 list={history.map((item) => {
                   return {
@@ -202,10 +212,10 @@ const SearchList = ({ list, onClickItem }: SearchListProps) => {
             onClickItem(item);
           }}
         >
-          <IonLabel>
+          <div className="py-2">
             <IonText className="block font-subheading2 text-gray8">{item.title}</IonText>
-            <IonText className="font-caption2 text-gray5">{item.address}</IonText>
-          </IonLabel>
+            <p className="font-caption2 text-gray5">{item.address}</p>
+          </div>
         </IonItem>
       ))}
     </IonList>

@@ -1,14 +1,41 @@
 import { IonContent, IonPage } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import { updateAlarmStatus } from '../../api/alarm';
 import { getNewToken } from '../../api/login';
+import { getUserProfile } from '../../api/profile';
+import useUserStore from '../../stores/user';
+import useSignInStore from '../../stores/signIn';
 
-import type { AxiosError } from 'axios';
+import type { ProfileResponse } from '../../api/profile';
 import type { AlarmType } from '../../api/alarm';
+import type { AxiosError } from 'axios';
 
 const ManageAlerts = () => {
+  const user = useUserStore((state) => state.user);
+  const region = useSignInStore((state) => state.region);
+
+  const [userConsentInfo, setUserConsentInfo] = useState<ProfileResponse['consentInfo']>({
+    privacyConsent: false,
+    marketingConsent: false,
+    messageAlarmConsent: false,
+    meetingAlarmConsent: false,
+  });
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetchConsentInfo();
+  }, [user.id, region.countryCode]);
+
+  const fetchConsentInfo = async () => {
+    const response = await getUserProfile(user.id, region.countryCode);
+
+    if (response.status === 200) {
+      setUserConsentInfo(response.data.consentInfo);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -23,14 +50,28 @@ const ManageAlerts = () => {
           <ListItem
             title="새로운 쪽지 알림"
             content="다른 사용자가 보낸 쪽지에 대한 알림을 받습니다."
-            onOff={true}
+            onOff={userConsentInfo.messageAlarmConsent}
+            onChange={() =>
+              setUserConsentInfo((prev) => ({
+                ...prev,
+                messageAlarmConsent: !prev.messageAlarmConsent,
+              }))
+            }
             type="MESSAGE"
+            triggerFetch={fetchConsentInfo}
           />
           <ListItem
             title="마케팅 정보 수신"
             content="피플히어의 업데이트 소식, 이벤트, 프로모션 등 마케팅과 관련된 알림을 받습니다."
-            onOff={true}
+            onOff={userConsentInfo.marketingConsent}
+            onChange={() =>
+              setUserConsentInfo((prev) => ({
+                ...prev,
+                marketingConsent: !prev.messageAlarmConsent,
+              }))
+            }
             type="MARKETING"
+            triggerFetch={fetchConsentInfo}
           />
         </div>
       </IonContent>
@@ -42,11 +83,11 @@ type ListItemProps = {
   title: string;
   content: string;
   onOff: boolean;
+  onChange: () => void;
   type: AlarmType;
+  triggerFetch: () => Promise<void>;
 };
-const ListItem = ({ title, content, onOff, type }: ListItemProps) => {
-  const [isOn, setIsOn] = useState(onOff);
-
+const ListItem = ({ title, content, onOff, onChange, type, triggerFetch }: ListItemProps) => {
   const updateAlert = async (type: AlarmType, onOff: boolean) => {
     try {
       await updateAlarmStatus({ type, consent: onOff });
@@ -70,10 +111,11 @@ const ListItem = ({ title, content, onOff, type }: ListItemProps) => {
       </div>
 
       <Switch
-        onOff={isOn}
+        onOff={onOff}
         onChange={async () => {
-          await updateAlert(type, !isOn);
-          setIsOn((prev) => !prev);
+          await updateAlert(type, !onOff);
+          onChange();
+          await triggerFetch();
         }}
       />
     </div>

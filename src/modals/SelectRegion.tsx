@@ -35,7 +35,7 @@ const SelectRegion = (props: ModalProps) => {
   const [searchText, setSearchText] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<Region>({
     countryCode: '',
-    dialCode: 0,
+    dialCode: '',
     englishName: '',
     koreanName: '',
   });
@@ -68,12 +68,12 @@ const SelectRegion = (props: ModalProps) => {
     };
   }, [searchText, regions, filterCountries]);
 
-  const onClickRegion = (event: any) => {
+  const onClickRegion = (regionCode: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (selectedRegion.countryCode && selectedRegion.koreanName === event.target.innerText) {
+    if (selectedRegion.countryCode && selectedRegion.countryCode === regionCode) {
       setSelectedRegion({
         countryCode: '',
-        dialCode: 0,
+        dialCode: '',
         englishName: '',
         koreanName: '',
       });
@@ -82,7 +82,7 @@ const SelectRegion = (props: ModalProps) => {
 
     const targetRegion = regions.find(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      (region) => region.koreanName === event.target.innerText,
+      (region) => region.countryCode === regionCode,
     );
     if (!targetRegion) return;
 
@@ -112,19 +112,21 @@ const SelectRegion = (props: ModalProps) => {
       <section
         className={isMobile ? 'overflow-y-scroll h-[57vh] mb-4' : 'overflow-y-scroll h-[65vh] mb-4'}
       >
-        <IonList lines="full" onClick={onClickRegion}>
+        <IonList lines="full">
           {filteredRegions.map((region) => (
-            <IonItem key={region.countryCode}>
+            <IonItem key={region.countryCode} onClick={() => onClickRegion(region.countryCode)}>
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="w-full font-body1 text-orange6">
-                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
+                    {region.dialCode})
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
                 <p className="w-full font-body1 text-gray8">
-                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
+                  {region.dialCode})
                 </p>
               )}
             </IonItem>

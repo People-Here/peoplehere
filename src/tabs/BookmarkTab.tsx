@@ -83,8 +83,8 @@ const BookmarkTab = () => {
             platform === 'web'
               ? 'px-4 bg-white h-14'
               : platform === 'android'
-                ? 'px-4 bg-white h-14 content-end'
-                : 'px-4 bg-white h-24 content-end'
+                ? 'px-4 bg-white h-14 flex items-end'
+                : 'px-4 bg-white h-24 flex items-end'
           }
         >
           <p className="pl-0 font-headline1 text-gray8">관심 목록</p>
@@ -103,7 +103,7 @@ const BookmarkTab = () => {
                   title={item.title}
                   placeName={item.placeInfo.name}
                   district={item.placeInfo.district}
-                  images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+                  images={item.placeInfo.imageInfoList.map((image) => image.imageUrl)}
                   available={item.userInfo.directMessageStatus}
                   user={{
                     id: item.userInfo.id.toString(),

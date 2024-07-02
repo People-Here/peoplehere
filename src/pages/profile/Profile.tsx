@@ -35,6 +35,7 @@ import { findKoreanLanguageName } from '../../utils/find';
 import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import { getTranslateLanguage } from '../../utils/translate';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { ProfileResponse } from '../../api/profile';
@@ -88,6 +89,11 @@ const Profile = () => {
             ...response.data,
             languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
           });
+        } else {
+          setUserInfo({
+            ...response.data,
+            languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+          });
         }
       }
     })();
@@ -95,7 +101,7 @@ const Profile = () => {
 
   const hasAdditionalInfo =
     userInfo?.address ||
-    userInfo?.birthDate ||
+    (userInfo?.showBirth && userInfo?.birthDate) ||
     userInfo?.job ||
     userInfo?.school ||
     userInfo?.hobby ||
@@ -127,6 +133,11 @@ const Profile = () => {
           ...response.data,
           languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
         });
+      } else {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+        });
       }
     } else {
       setCurrentRegion('KR');
@@ -138,6 +149,11 @@ const Profile = () => {
         setUserInfo({
           ...response.data,
           languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+        });
+      } else {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
         });
       }
     }
@@ -157,8 +173,8 @@ const Profile = () => {
             platform === 'web'
               ? 'px-4 bg-white h-14'
               : platform === 'android'
-                ? 'px-4 bg-white h-14 content-end'
-                : 'px-4 bg-white h-24 content-end'
+                ? 'px-4 bg-white h-14 flex items-end'
+                : 'px-4 bg-white h-24 flex items-end'
           }
         >
           <IonButtons slot="start">
@@ -239,8 +255,8 @@ const Profile = () => {
                         <TourInfo
                           id={place.id.toString()}
                           image={
-                            place.placeInfo.imageUrlList.length > 0
-                              ? place.placeInfo.imageUrlList[0].imageUrl
+                            place.placeInfo.imageInfoList.length > 0
+                              ? place.placeInfo.imageInfoList[0].imageUrl
                               : ''
                           }
                           title={place.title}

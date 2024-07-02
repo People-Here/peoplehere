@@ -138,7 +138,11 @@ const UserInfo = () => {
           birth && setShowGenderInput(true);
         }}
       />
-      <SelectGender isOpen={openGenderModal} setGender={setGender} />
+      <SelectGender
+        isOpen={openGenderModal}
+        setGender={setGender}
+        onDidDismiss={() => setOpenGenderModal(false)}
+      />
       <PolicyAgreement
         trigger="policy-modal"
         onClickButton={onClickNext}

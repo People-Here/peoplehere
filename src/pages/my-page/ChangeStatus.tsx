@@ -18,6 +18,7 @@ import TrashcanIcon from '../../assets/svgs/trashcan.svg';
 import Footer from '../../layouts/Footer';
 import Alert from '../../components/Alert';
 import DeleteReason from '../../modals/DeleteReason';
+import { changeMessageReceiveStatus } from '../../api/message';
 
 import type { TourDetail } from '../../api/tour';
 
@@ -45,6 +46,16 @@ const ChangeStatus = () => {
       setActive(response.data.available);
     })();
   }, [tourId, region.countryCode]);
+
+  const onClickSave = async () => {
+    if (!tourId) return;
+
+    try {
+      await changeMessageReceiveStatus(tourId, active);
+    } catch (error) {
+      console.error('fail to save status', error);
+    }
+  };
 
   if (!tourInfo) {
     return <LogoRunning />;
@@ -108,7 +119,10 @@ const ChangeStatus = () => {
         </div>
 
         <Footer>
-          <button className="w-full text-white button-primary button-lg font-subheading1">
+          <button
+            className="w-full text-white button-primary button-lg font-subheading1"
+            onClick={onClickSave}
+          >
             저장
           </button>
         </Footer>
