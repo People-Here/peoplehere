@@ -255,8 +255,8 @@ const Profile = () => {
                         <TourInfo
                           id={place.id.toString()}
                           image={
-                            place.placeInfo.imageUrlList.length > 0
-                              ? place.placeInfo.imageUrlList[0].imageUrl
+                            place.placeInfo.imageInfoList.length > 0
+                              ? place.placeInfo.imageInfoList[0].imageUrl
                               : ''
                           }
                           title={place.title}

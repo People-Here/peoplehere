@@ -103,7 +103,7 @@ const BookmarkTab = () => {
                   title={item.title}
                   placeName={item.placeInfo.name}
                   district={item.placeInfo.district}
-                  images={item.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+                  images={item.placeInfo.imageInfoList.map((image) => image.imageUrl)}
                   available={item.userInfo.directMessageStatus}
                   user={{
                     id: item.userInfo.id.toString(),
