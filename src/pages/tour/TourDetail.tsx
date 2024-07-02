@@ -148,12 +148,12 @@ const TourDetail = () => {
   //     KOREAN: {
   //       title: '피플히어의 외국인 친구들을 만나 보세요.',
   //       dialogTitle: `${tourDetail.placeInfo.name}에서 외국인 친구랑 놀래?`,
-  //       url: tourDetail.placeInfo.imageUrlList[0].imageUrl,
+  //       url: tourDetail.placeInfo.imageInfoList[0].imageUrl,
   //     },
   //     ENGLISH: {
   //       title: `Meet people here in ${tourDetail.placeInfo.name}`,
   //       dialogTitle: `Wanna meet people here in ${tourDetail.placeInfo.name}?`,
-  //       url: tourDetail.placeInfo.imageUrlList[0].imageUrl,
+  //       url: tourDetail.placeInfo.imageInfoList[0].imageUrl,
   //     },
   //   };
 
@@ -238,7 +238,7 @@ const TourDetail = () => {
             </p>
 
             <ImageCarousel
-              images={tourDetail.placeInfo.imageUrlList.map((image) => image.imageUrl)}
+              images={tourDetail.placeInfo.imageInfoList.map((image) => image.imageUrl)}
               show={showFullImage}
               setShow={setShowFullImage}
             />

@@ -144,7 +144,7 @@ export type BookmarkedTour = {
   placeInfo: {
     name: string;
     isDefaultImage: boolean;
-    imageUrlList: { imageUrl: string }[];
+    imageInfoList: { imageUrl: string; authorName?: string; authorUrl?: string }[];
     district: string;
     id: string;
   };
@@ -173,7 +173,7 @@ export type TourDetail = {
   placeInfo: {
     id: bigint;
     name: string;
-    imageUrlList: { imageUrl: string }[];
+    imageInfoList: { imageUrl: string; authorName?: string; authorUrl?: string }[];
     address: string;
     district: string;
     latitude: number;
@@ -187,7 +187,7 @@ export type TourDetail = {
 export type Place = {
   id: string;
   name: string;
-  imageUrlList: { imageUrl: string }[];
+  imageInfoList: { imageUrl: string; authorName?: string; authorUrl?: string }[];
   district: string;
 };
 

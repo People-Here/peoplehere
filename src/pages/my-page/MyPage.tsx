@@ -133,8 +133,8 @@ const MyPage = () => {
                       <TourInfo
                         id={tour.id.toString()}
                         image={
-                          tour.placeInfo.imageUrlList.length > 0
-                            ? tour.placeInfo.imageUrlList[0].imageUrl
+                          tour.placeInfo.imageInfoList.length > 0
+                            ? tour.placeInfo.imageInfoList[0].imageUrl
                             : ''
                         }
                         title={tour.title}
