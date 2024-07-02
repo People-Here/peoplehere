@@ -22,9 +22,9 @@ import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
-import DefaultImage from '../../assets/images/default-place.png';
 import DefaultImageLarge from '../../assets/images/default-place-lg.png';
-import DefaultAvatar from '../../assets/images/default-avatar.png';
+import AvatarLoading from '../../assets/images/user-loading.gif';
+import ImageLoading from '../../assets/images/place-loading.gif';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 import CloseIcon from '../../assets/svgs/close.svg';
 
@@ -281,7 +281,7 @@ const UserImage = ({ firstName, profileImageUrl }: User) => {
     <div className="overflow-hidden rounded-xl w-[100px] h-full relative flex justify-center shrink-0">
       <IonImg
         className="w-[100px] h-full object-cover"
-        src={DefaultAvatar}
+        src={AvatarLoading}
         alt="user profile"
         onIonImgDidLoad={(e) => (e.target.src = profileImageUrl)}
       />
@@ -316,7 +316,7 @@ const Images = ({ images }: { images: string[] }) => {
       {images.map((image, index) => (
         <IonImg
           key={index}
-          src={DefaultImage}
+          src={ImageLoading}
           alt={`place-${index}`}
           className="object-cover overflow-hidden w-[140px] h-[140px] rounded-xl border-[0.5px] border-gray2"
           onIonImgDidLoad={(e) => (e.target.src = image)}
