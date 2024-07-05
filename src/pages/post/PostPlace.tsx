@@ -1,4 +1,4 @@
-import { IonIcon, IonImg, IonText, useIonRouter } from '@ionic/react';
+import { IonFooter, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
@@ -160,15 +160,17 @@ const Post = () => {
         </div>
       </div>
 
-      <footer className="p-4 pt-0">
-        <button
-          className="w-full text-white button-primary button-lg font-subheading1"
-          onClick={uploadPost}
-          disabled={!place.id || !title || !description}
-        >
-          {t('common.preview')}
-        </button>
-      </footer>
+      <IonFooter class="ion-no-border" className="fixed bottom-0 left-0 right-0 bg-white">
+        <IonToolbar className="p-4 mb-4">
+          <button
+            className="w-full text-white button-primary button-lg font-subheading1"
+            onClick={uploadPost}
+            disabled={!place.id || !title || !description}
+          >
+            {t('common.preview')}
+          </button>
+        </IonToolbar>
+      </IonFooter>
 
       <SearchPlace
         trigger="search-modal"
