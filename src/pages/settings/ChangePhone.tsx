@@ -14,6 +14,8 @@ import useUserStore from '../../stores/user';
 import { capitalizeFirstLetter } from '../../utils/mask';
 import { getTranslateLanguage } from '../../utils/translate';
 
+import type { AxiosError } from 'axios';
+
 const ChangePhone = () => {
   const { t, i18n } = useTranslation();
 
@@ -53,6 +55,12 @@ const ChangePhone = () => {
       setShowCodeInput(true);
       setTimeLeft(180);
     } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 409) {
+        setErrorMessage('이미 사용 중인 전화번호입니다.');
+      }
+
       console.error('fail to send phone code', error);
     } finally {
       setIsLoading(false);
