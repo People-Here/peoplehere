@@ -13,7 +13,7 @@ export const checkEmailExist = async (email: string) => {
 export const sendEmailCode = async (email: string, lang: string) => {
   const response = await typedPost<SendEmailResponse>('/account/email/verification', {
     email,
-    lang,
+    langCode: lang,
   });
 
   return response;
@@ -28,7 +28,7 @@ export const sendPhoneCode = async (region: string, phone: string, lang: string)
   const response = await typedPost('/account/phone/verification', {
     region,
     phoneNumber: phone,
-    lang,
+    langCode: lang,
   });
   return response;
 };
