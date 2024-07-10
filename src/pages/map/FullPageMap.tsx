@@ -1,4 +1,4 @@
-import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonPage, isPlatform, useIonViewWillEnter } from '@ionic/react';
 import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { GoogleMap } from '@capacitor/google-maps';
@@ -19,6 +19,8 @@ const FullPageMap = () => {
 
   const mapRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  const isIOS = isPlatform('ios');
 
   useIonViewWillEnter(() => {
     if (!lat || !lng) return;
@@ -79,7 +81,11 @@ const FullPageMap = () => {
         >
           <capacitor-google-map ref={mapRef} />
 
-          <div className="absolute z-30 w-full px-4 bottom-6">
+          <div
+            className={
+              isIOS ? 'absolute z-30 w-full px-4 bottom-20' : 'absolute z-30 w-full px-4 bottom-6'
+            }
+          >
             <div className="w-full border-[1.5px] border-gray2 rounded-xl flex items-center gap-3 p-3 bg-white">
               <div>
                 <p className="font-subheading2 text-gray7 mb-0.5">{title}</p>
