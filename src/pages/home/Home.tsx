@@ -22,9 +22,9 @@ import StatusChip from '../../components/StatusChip';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
 import { getTranslateLanguage } from '../../utils/translate';
-import DefaultImageLarge from '../../assets/images/default-place-lg.png';
 import AvatarLoading from '../../assets/images/user-loading.gif';
 import ImageLoading from '../../assets/images/place-loading.gif';
+import ImageLoadingLarge from '../../assets/images/place-loading-large.gif';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 import CloseIcon from '../../assets/svgs/close.svg';
 
@@ -109,6 +109,7 @@ const Home = () => {
       <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
         <IonRefresherContent />
       </IonRefresher>
+
       <div className="flex flex-col pb-20 mt-[1.625rem] gap-[1.875rem]">
         {list.length === 0 ? (
           <div className="mt-60">
@@ -303,7 +304,7 @@ const SingleImage = ({ image }: { image: string }) => {
   return (
     <IonImg
       className="object-cover w-full overflow-hidden rounded-xl border-[0.5px] border-gray2"
-      src={DefaultImageLarge}
+      src={ImageLoadingLarge}
       alt="place"
       onIonImgDidLoad={(e) => (e.target.src = image)}
     />
