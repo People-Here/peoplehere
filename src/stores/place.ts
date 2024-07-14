@@ -10,7 +10,11 @@ type State = {
   };
   title: string;
   description: string;
-  images: string[];
+  images: {
+    authorName?: string;
+    authorUrl?: string;
+    imageUrl: string;
+  }[];
   fetchImages: boolean;
   theme: string;
 };
@@ -19,7 +23,13 @@ type Action = {
   setPlace: (place: State['place']) => void;
   setTitle: (title: string) => void;
   setDescription: (description: string) => void;
-  setImages: (images: string[]) => void;
+  setImages: (
+    images: {
+      authorName?: string;
+      authorUrl?: string;
+      imageUrl: string;
+    }[],
+  ) => void;
   setFetchImages: (fetchImages: boolean) => void;
   setTheme: (theme: string) => void;
   clearAll: () => void;

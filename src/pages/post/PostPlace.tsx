@@ -1,4 +1,12 @@
-import { IonFooter, IonIcon, IonImg, IonText, IonToolbar, useIonRouter } from '@ionic/react';
+import {
+  IonActionSheet,
+  IonFooter,
+  IonIcon,
+  IonImg,
+  IonText,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
@@ -16,6 +24,8 @@ import { getTourDetail } from '../../api/tour';
 import useSignInStore from '../../stores/signIn';
 import SearchPlace from '../../modals/SearchPlace';
 import Alert from '../../components/Alert';
+import { getDefaultImages } from '../../api/place';
+import Toast from '../../toasts/Toast';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
@@ -49,9 +59,43 @@ const Post = () => {
 
   const [title, setTitle] = useState(storedTitle ?? '');
   const [description, setDescription] = useState(storedDescription ?? '');
-  const [images, setImages] = useState<string[]>(storedImages ?? null);
+  const [images, setImages] = useState<
+    { imageUrl: string; authorName?: string; authorUrl?: string }[]
+  >(storedImages ?? null);
 
+  const [showPhotoOptionSheet, setShowPhotoOptionSheet] = useState(false);
   const [showExitAlert, setShowExitAlert] = useState(false);
+  const [showDefaultImageAlert, setShowDefaultImageAlert] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const selectPhotosFromGallery = async () => {
+    const selectedImages = await Camera.pickImages({
+      limit: 12 - images.length,
+    });
+
+    setImages(
+      selectedImages.photos.map((photo) => {
+        return {
+          imageUrl: photo.webPath,
+        };
+      }),
+    );
+    setFetchImages(true);
+  };
+
+  const getGoogleDefaultImages = async () => {
+    if (!place.id) {
+      setShowToast(true);
+      return;
+    }
+
+    try {
+      const response = await getDefaultImages(place.id);
+      setImages(response.data);
+    } catch (error) {
+      console.error('Failed to get default images', error);
+    }
+  };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -85,7 +129,7 @@ const Post = () => {
       });
       setTitle(response.data.title);
       setDescription(response.data.description);
-      setImages(response.data.placeInfo.imageInfoList.map((image) => image.imageUrl));
+      setImages(response.data.placeInfo.imageInfoList);
       setTheme(response.data.theme);
     })();
   }, []);
@@ -130,9 +174,19 @@ const Post = () => {
         )}
 
         {images.length ? (
-          <ImageList images={images} setImages={setImages} setFetchImages={setFetchImages} />
+          <ImageList
+            images={images}
+            setImages={setImages}
+            setFetchImages={setFetchImages}
+            openGallerySheet={() => setShowPhotoOptionSheet(true)}
+          />
         ) : (
-          <UploadImages images={images} setImages={setImages} setFetchImages={setFetchImages} />
+          <UploadImages
+            images={images}
+            setImages={setImages}
+            setFetchImages={setFetchImages}
+            openGallerySheet={() => setShowPhotoOptionSheet(true)}
+          />
         )}
 
         <div className="mt-[3.25rem] flex flex-col items-center gap-1 mb-5">
@@ -182,6 +236,29 @@ const Post = () => {
         from="TOUR"
       />
 
+      <IonActionSheet
+        isOpen={showPhotoOptionSheet}
+        onDidDismiss={() => setShowPhotoOptionSheet(false)}
+        header="관련 사진 추가"
+        subHeader="직접 찍은 사진이 없다면 구글 이미지를 사용하세요."
+        buttons={[
+          {
+            text: '앨범에서 추가하기',
+            handler: selectPhotosFromGallery,
+          },
+          {
+            text: '구글 이미지로 넣기',
+            handler: async () => {
+              if (images.length) {
+                setShowDefaultImageAlert(true);
+              } else {
+                await getGoogleDefaultImages();
+              }
+            },
+          },
+        ]}
+      />
+
       <Alert
         isOpen={showExitAlert}
         title="그만하고 나갈까요?"
@@ -200,31 +277,57 @@ const Post = () => {
           },
         ]}
       />
+
+      <Alert
+        isOpen={showDefaultImageAlert}
+        onDismiss={() => setShowDefaultImageAlert(false)}
+        title="이미 앨범에서 추가했어요."
+        subTitle="구글 이미지로 변경할 경우 앨범에서 추가한 사진은 모두 삭제 돼요. 계속하시겠어요?"
+        buttons={[
+          {
+            text: '계속',
+            onClick: getGoogleDefaultImages,
+          },
+          {
+            text: '취소',
+          },
+        ]}
+      />
+
+      <Toast
+        type="error-small"
+        message="장소를 먼저 등록해야 해요."
+        isOpen={showToast}
+        onDismiss={() => setShowToast(false)}
+      />
     </>
   );
 };
 
 type ImageProps = {
-  images: string[];
-  setImages: (images: string[]) => void;
+  images: {
+    authorName?: string;
+    authorUrl?: string;
+    imageUrl: string;
+  }[];
+  setImages: (
+    images: {
+      authorName?: string;
+      authorUrl?: string;
+      imageUrl: string;
+    }[],
+  ) => void;
   setFetchImages: (fetchImages: boolean) => void;
+  openGallerySheet: () => void;
 };
-const UploadImages = ({ images, setImages }: ImageProps) => {
+const UploadImages = ({ images, openGallerySheet }: ImageProps) => {
   const { t } = useTranslation();
-
-  const selectPhotosFromGallery = async () => {
-    const selectedImages = await Camera.pickImages({
-      limit: 12,
-    });
-
-    setImages(selectedImages.photos.map((photo) => photo.webPath));
-  };
 
   return (
     <div
       className="bg-white border border-gray2 rounded-3xl w-full py-[1.875rem] flex flex-col gap-2 items-center"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onClick={selectPhotosFromGallery}
+      onClick={openGallerySheet}
     >
       <div className="bg-gray1.5 px-4 py-3 flex items-center gap-1 w-fit rounded-full">
         <IonIcon src={CameraIcon} className="svg-md" />
@@ -256,20 +359,11 @@ const PlaceItem = ({ text, description }: Place) => {
   );
 };
 
-const ImageList = ({ images, setImages, setFetchImages }: ImageProps) => {
+const ImageList = ({ images, setImages, setFetchImages, openGallerySheet }: ImageProps) => {
   const { t } = useTranslation();
 
-  const selectPhotosFromGallery = async () => {
-    const selectedImages = await Camera.pickImages({
-      limit: 12 - images.length,
-    });
-
-    setImages(selectedImages.photos.map((photo) => photo.webPath));
-    setFetchImages(true);
-  };
-
   const removeImage = (image: string) => {
-    setImages(images.filter((img) => img !== image));
+    setImages(images.filter((img) => img.imageUrl !== image));
     setFetchImages(true);
   };
 
@@ -280,7 +374,7 @@ const ImageList = ({ images, setImages, setFetchImages }: ImageProps) => {
 
         <div
           className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full shrink-0"
-          onClick={selectPhotosFromGallery}
+          onClick={openGallerySheet}
         >
           <IonIcon className="svg-md" src={CameraIcon} />
           <IonText className="font-body1 text-gray6">{images.length} / 12</IonText>
@@ -289,16 +383,18 @@ const ImageList = ({ images, setImages, setFetchImages }: ImageProps) => {
 
       <div className="grid grid-cols-4 gap-2">
         {images.map((image) => (
-          <div key={image} className="relative">
+          <div key={image.imageUrl} className="relative">
             <IonImg
-              src={image}
+              src={image.imageUrl}
               className="w-[4.25rem] h-[4.25rem] object-cover rounded-xl overflow-hidden"
             />
-            <IonIcon
-              src={GridDeleteIcon}
-              className="absolute svg-md -top-1.5 -right-1.5"
-              onClick={() => removeImage(image)}
-            />
+            {!image.authorName && (
+              <IonIcon
+                src={GridDeleteIcon}
+                className="absolute svg-md -top-1.5 -right-1.5"
+                onClick={() => removeImage(image.imageUrl)}
+              />
+            )}
           </div>
         ))}
       </div>

@@ -74,7 +74,7 @@ const Preview = () => {
 
     const formData = new FormData();
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
     imageBlobs.forEach((blob) => {
       formData.append('images', blob);
     });
@@ -109,7 +109,7 @@ const Preview = () => {
     const formData = new FormData();
 
     if (fetchImages) {
-      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
       imageBlobs.forEach((blob) => {
         formData.append('images', blob);
       });
@@ -324,7 +324,15 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
   );
 };
 
-const ImageCarousel = ({ images }: { images: string[] }) => {
+const ImageCarousel = ({
+  images,
+}: {
+  images: {
+    authorName?: string;
+    authorUrl?: string;
+    imageUrl: string;
+  }[];
+}) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -362,8 +370,8 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         {/* image carousel */}
         {images.map((image) => (
           <IonImg
-            key={image}
-            src={image}
+            key={image.imageUrl}
+            src={image.imageUrl}
             className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
           />
         ))}
