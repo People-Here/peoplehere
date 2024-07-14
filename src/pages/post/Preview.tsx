@@ -48,6 +48,7 @@ const Preview = () => {
     images,
     fetchImages,
     theme: storedTheme,
+    isDefaultImage,
     clearAll,
   } = usePostPlaceStore((state) => state);
   const user = useUserStore((state) => state.user);
@@ -69,15 +70,19 @@ const Preview = () => {
     })();
   }, []);
 
+  console.log('default', isDefaultImage);
+
   const uploadPost = async () => {
     setIsLoading(true);
 
     const formData = new FormData();
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
-    imageBlobs.forEach((blob) => {
-      formData.append('images', blob);
-    });
+    if (!isDefaultImage) {
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
+      imageBlobs.forEach((blob) => {
+        formData.append('images', blob);
+      });
+    }
 
     formData.append('placeId', place.id);
     formData.append('title', title);
@@ -108,7 +113,7 @@ const Preview = () => {
 
     const formData = new FormData();
 
-    if (fetchImages) {
+    if (fetchImages && !isDefaultImage) {
       const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
       imageBlobs.forEach((blob) => {
         formData.append('images', blob);

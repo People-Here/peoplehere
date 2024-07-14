@@ -17,6 +17,7 @@ type State = {
   }[];
   fetchImages: boolean;
   theme: string;
+  isDefaultImage: boolean;
 };
 
 type Action = {
@@ -32,6 +33,7 @@ type Action = {
   ) => void;
   setFetchImages: (fetchImages: boolean) => void;
   setTheme: (theme: string) => void;
+  setIsDefaultImage: (isDefaultImage: boolean) => void;
   clearAll: () => void;
 };
 
@@ -48,6 +50,7 @@ const usePostPlaceStore = create<State & Action>((set) => ({
   images: [],
   fetchImages: true,
   theme: 'black',
+  isDefaultImage: false,
 
   setPlace: (place) => set(() => ({ place })),
   setTitle: (title) => set(() => ({ title })),
@@ -55,6 +58,7 @@ const usePostPlaceStore = create<State & Action>((set) => ({
   setImages: (images) => set(() => ({ images })),
   setFetchImages: (fetchImages) => set(() => ({ fetchImages })),
   setTheme: (theme) => set(() => ({ theme })),
+  setIsDefaultImage: (isDefaultImage) => set(() => ({ isDefaultImage })),
   clearAll: () =>
     set(() => ({
       place: {
@@ -67,6 +71,7 @@ const usePostPlaceStore = create<State & Action>((set) => ({
       images: [],
       fetchImages: true,
       theme: 'black',
+      isDefaultImage: false,
     })),
 }));
 

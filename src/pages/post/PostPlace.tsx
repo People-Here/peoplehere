@@ -50,6 +50,7 @@ const Post = () => {
     setImages: storeImages,
     setFetchImages,
     setTheme,
+    setIsDefaultImage,
     clearAll,
   } = usePostPlaceStore((state) => state);
 
@@ -81,6 +82,7 @@ const Post = () => {
       }),
     );
     setFetchImages(true);
+    setIsDefaultImage(false);
   };
 
   const getGoogleDefaultImages = async () => {
@@ -92,6 +94,7 @@ const Post = () => {
     try {
       const response = await getDefaultImages(place.id);
       setImages(response.data);
+      setIsDefaultImage(true);
     } catch (error) {
       console.error('Failed to get default images', error);
     }
