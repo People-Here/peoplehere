@@ -1,7 +1,9 @@
+import { Preferences } from '@capacitor/preferences';
 import { PushNotifications } from '@capacitor/push-notifications';
 
 export const addFCMLogListeners = async () => {
-  await PushNotifications.addListener('registration', (token) => {
+  await PushNotifications.addListener('registration', async (token) => {
+    await Preferences.set({ key: 'fcmToken', value: token.value });
     console.log('Push registration success, token: ' + token.value);
   });
 
@@ -29,7 +31,7 @@ export const registerNotifications = async () => {
     permission = await PushNotifications.requestPermissions();
   }
 
-  if (permission.receive === 'granted') {
+  if (permission.receive !== 'granted') {
     throw new Error('User denied permissions');
   }
 

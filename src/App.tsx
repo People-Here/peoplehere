@@ -1,6 +1,6 @@
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,8 @@ import './theme/tailwind.css';
 import './theme/global.css';
 
 import './i18n';
+import { addFCMLogListeners, registerNotifications } from './services/fcmService';
+import { sendNotification } from './api/notification';
 
 setupIonicReact();
 
@@ -54,6 +56,18 @@ const App = () => {
     })();
   }, [i18n]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const platformInfo = await Device.getInfo();
+      if (platformInfo.platform !== 'web') {
+        await registerNotifications();
+        await addFCMLogListeners();
+        await sendNotification();
+      }
+    })();
+  }, []);
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -64,3 +78,6 @@ const App = () => {
 };
 
 export default App;
+function registerListeners() {
+  throw new Error('Function not implemented.');
+}
