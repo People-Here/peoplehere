@@ -11,19 +11,23 @@ type ToastType = 'error-large' | 'error-small' | 'success' | 'info';
 
 type Props = {
   type: ToastType;
-  trigger: string;
+  trigger?: string;
+  isOpen?: boolean;
   message: string;
   duration?: number;
+  onDismiss?: () => void;
 };
 
-const Toast = ({ type, trigger, message, duration = 1500 }: Props) => {
+const Toast = ({ type, trigger, isOpen, message, duration = 1500, onDismiss }: Props) => {
   return (
     <IonToast
       trigger={trigger}
+      isOpen={isOpen}
       message={message}
       duration={duration}
       icon={toastIcons[type]}
       position="bottom"
+      onWillDismiss={onDismiss}
       style={{ ...commonToastStyles, ...toastStyles[type] }}
     />
   );

@@ -48,6 +48,7 @@ const Preview = () => {
     images,
     fetchImages,
     theme: storedTheme,
+    isDefaultImage,
     clearAll,
   } = usePostPlaceStore((state) => state);
   const user = useUserStore((state) => state.user);
@@ -69,15 +70,19 @@ const Preview = () => {
     })();
   }, []);
 
+  console.log('default', isDefaultImage);
+
   const uploadPost = async () => {
     setIsLoading(true);
 
     const formData = new FormData();
 
-    const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
-    imageBlobs.forEach((blob) => {
-      formData.append('images', blob);
-    });
+    if (!isDefaultImage) {
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
+      imageBlobs.forEach((blob) => {
+        formData.append('images', blob);
+      });
+    }
 
     formData.append('placeId', place.id);
     formData.append('title', title);
@@ -108,8 +113,8 @@ const Preview = () => {
 
     const formData = new FormData();
 
-    if (fetchImages) {
-      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image)));
+    if (fetchImages && !isDefaultImage) {
+      const imageBlobs = await Promise.all(images.map((image) => imageToFile(image.imageUrl)));
       imageBlobs.forEach((blob) => {
         formData.append('images', blob);
       });
@@ -324,7 +329,15 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
   );
 };
 
-const ImageCarousel = ({ images }: { images: string[] }) => {
+const ImageCarousel = ({
+  images,
+}: {
+  images: {
+    authorName?: string;
+    authorUrl?: string;
+    imageUrl: string;
+  }[];
+}) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -362,8 +375,8 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
         {/* image carousel */}
         {images.map((image) => (
           <IonImg
-            key={image}
-            src={image}
+            key={image.imageUrl}
+            src={image.imageUrl}
             className="object-cover w-full h-full overflow-hidden shrink-0 snap-center"
           />
         ))}
