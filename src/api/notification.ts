@@ -8,7 +8,7 @@ export const sendNotification = async () => {
   const accessToken = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedPost(
-    '/api/notify/token',
+    '/notify/token',
     {
       token: fcmToken.value,
       deviceId: deviceId.value,

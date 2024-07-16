@@ -9,6 +9,8 @@ import Header from '../../components/Header';
 import Footer from '../../layouts/Footer';
 import usePostPlaceStore from '../../stores/place';
 
+import '../../theme/google-map.css';
+
 const ConfirmPlace = () => {
   const router = useIonRouter();
   const { setPlace } = usePostPlaceStore((state) => state);
@@ -22,6 +24,7 @@ const ConfirmPlace = () => {
   const id = params.get('id') ?? '';
 
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useIonViewWillEnter(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -32,7 +35,7 @@ const ConfirmPlace = () => {
     if (!mapRef.current) return;
 
     const map = await GoogleMap.create({
-      id: 'google-map',
+      id: `google-map-${title}`,
       element: mapRef.current,
       apiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY as string,
       config: {
@@ -45,7 +48,7 @@ const ConfirmPlace = () => {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
         },
-        zoom: 16,
+        zoom: 17,
         disableDefaultUI: true,
         disableDoubleClickZoom: true,
         clickableIcons: false,
@@ -86,7 +89,10 @@ const ConfirmPlace = () => {
             </div>
           </div>
 
-          <div className="rounded-xl overflow-hidden border-[1.5px] border-gray2 w-[20.5rem] h-[17.75rem]">
+          <div
+            ref={mapContainerRef}
+            className="relative w-full h-[17.75rem] overflow-hidden rounded-xl border border-gray2"
+          >
             <capacitor-google-map ref={mapRef} />
           </div>
         </div>
