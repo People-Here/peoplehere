@@ -37,7 +37,7 @@ const LoginLanding = () => {
 
           <IonImg className="absolute bottom-4 w-[6.75rem] h-[1.875rem]" src={LogoWithLabelImage} />
 
-          <SelectRegion trigger="region-modal" />
+          <SelectRegion trigger="region-modal" hideDialCode />
         </div>
       </IonContent>
     </IonPage>

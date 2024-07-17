@@ -10,7 +10,11 @@ import { getAllRegions } from '../api/constants';
 import type { Region } from '../api/constants';
 import type { ModalProps } from '.';
 
-const SelectRegion = (props: ModalProps) => {
+type Props = {
+  hideDialCode?: boolean;
+};
+
+const SelectRegion = ({ hideDialCode = false, ...props }: Props & ModalProps) => {
   const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
@@ -118,15 +122,15 @@ const SelectRegion = (props: ModalProps) => {
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="w-full font-body1 text-orange6">
-                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
-                    {region.dialCode})
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}{' '}
+                    {!hideDialCode && `(${region.dialCode})`}
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
                 <p className="w-full font-body1 text-gray8">
-                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
-                  {region.dialCode})
+                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}{' '}
+                  {!hideDialCode && `(${region.dialCode})`}
                 </p>
               )}
             </IonItem>

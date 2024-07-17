@@ -78,6 +78,3 @@ const App = () => {
 };
 
 export default App;
-function registerListeners() {
-  throw new Error('Function not implemented.');
-}
