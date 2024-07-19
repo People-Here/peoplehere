@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { IonIcon, IonModal } from '@ionic/react';
 import { Preferences } from '@capacitor/preferences';
 
@@ -6,11 +6,23 @@ import CloseIcon from '../assets/svgs/close.svg';
 
 import type { ModalProps } from '.';
 
-const AutoTranslate = (props: ModalProps) => {
+type Props = {
+  onToggleChange?: (value: boolean) => void;
+};
+
+const AutoTranslate = ({ onToggleChange, ...rest }: Props & ModalProps) => {
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   const [enableAutoTranslate, setEnableAutoTranslate] = useState(false);
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const autoTranslate = await Preferences.get({ key: 'autoTranslate' });
+      setEnableAutoTranslate(autoTranslate.value === 'true');
+    })();
+  }, []);
 
   return (
     <IonModal
@@ -18,7 +30,7 @@ const AutoTranslate = (props: ModalProps) => {
       title="번역"
       breakpoints={[0.2, 0.3, 0.4]}
       initialBreakpoint={0.2}
-      {...props}
+      {...rest}
     >
       <div className="relative px-4 py-6">
         <IonIcon
@@ -40,6 +52,7 @@ const AutoTranslate = (props: ModalProps) => {
             onChange={async () => {
               await Preferences.set({ key: 'autoTranslate', value: String(!enableAutoTranslate) });
               setEnableAutoTranslate((prev) => !prev);
+              onToggleChange?.(!enableAutoTranslate);
             }}
           />
         </div>
