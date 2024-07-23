@@ -70,8 +70,8 @@ export type FixedModalProps = {
 };
 
 type FixedProps = {
-  title: string;
-  buttonText: string;
+  title?: string;
+  buttonText?: string;
   buttonDisabled?: boolean;
 };
 export const FixedModalContainer = ({
@@ -80,7 +80,7 @@ export const FixedModalContainer = ({
   onDismiss,
   onPresent,
   title,
-  buttonText,
+  buttonText = '저장',
   onClickButton,
   buttonDisabled,
   children,
@@ -110,7 +110,7 @@ export const FixedModalContainer = ({
           <IonIcon icon={CloseIcon} className="svg-lg" />
         </button>
 
-        <p className="mb-5 font-headline2 text-gray8">{title}</p>
+        {title && <p className="mb-5 font-headline2 text-gray8">{title}</p>}
 
         {children}
 
