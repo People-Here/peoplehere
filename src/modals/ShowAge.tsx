@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { IonLabel, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import Checkbox from '../components/Checkbox';
 import { roundAge } from '../utils/mask';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 type Props = {
   age: string;
@@ -14,26 +14,24 @@ type Props = {
   setShowAge: (value: boolean) => void;
 };
 
-const ShowAge = ({ age, showAge, setShowAge, ...props }: ModalProps & Props) => {
+const ShowAge = ({ age, showAge, setShowAge, ...rest }: FixedModalProps & Props) => {
   const { t } = useTranslation();
 
   const [show, setShow] = useState(false);
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title={t('signup.info.showAgeTitle')}
+      onPresent={() => setShow(showAge)}
       buttonText={t('common.save')}
-      initialBreakpoint={0.35}
-      breakpoints={[0, 0.35, 0.5]}
       onClickButton={() => setShowAge(show)}
-      onWillPresent={() => setShow(showAge)}
-      {...props}
+      {...rest}
     >
       <div className="px-4 py-2.5 w-full rounded-lg bg-gray1.5 mt-4">
         <IonText className="font-body1 text-gray8">{roundAge(age)}</IonText>
       </div>
 
-      <div className="px-1 mt-8 mb-3">
+      <div className="px-1 mt-8">
         <Checkbox
           checked={show}
           onChange={setShow}
@@ -42,7 +40,7 @@ const ShowAge = ({ age, showAge, setShowAge, ...props }: ModalProps & Props) => 
           }
         />
       </div>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

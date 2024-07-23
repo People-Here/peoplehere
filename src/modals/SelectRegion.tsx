@@ -4,13 +4,17 @@ import { useTranslation } from 'react-i18next';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import useSignInStore from '../stores/signIn';
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import { getAllRegions } from '../api/constants';
 
 import type { Region } from '../api/constants';
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
-const SelectRegion = (props: ModalProps) => {
+type Props = {
+  hideDialCode?: boolean;
+};
+
+const SelectRegion = ({ hideDialCode = false, ...props }: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
@@ -90,11 +94,9 @@ const SelectRegion = (props: ModalProps) => {
   };
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title={t('region.selectRegion')}
       buttonText={t('common.confirm')}
-      initialBreakpoint={0.87}
-      breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
       buttonDisabled={!selectedRegion.countryCode}
       {...props}
@@ -118,22 +120,22 @@ const SelectRegion = (props: ModalProps) => {
               {selectedRegion.countryCode === region.countryCode ? (
                 <div className="flex items-center justify-between w-full">
                   <p className="w-full font-body1 text-orange6">
-                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
-                    {region.dialCode})
+                    {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}{' '}
+                    {!hideDialCode && `(${region.dialCode})`}
                   </p>
                   <IonIcon className="svg-md" src={CheckIcon} />
                 </div>
               ) : (
                 <p className="w-full font-body1 text-gray8">
-                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName} (
-                  {region.dialCode})
+                  {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}{' '}
+                  {!hideDialCode && `(${region.dialCode})`}
                 </p>
               )}
             </IonItem>
           ))}
         </IonList>
       </section>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

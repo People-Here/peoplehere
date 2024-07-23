@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import CheckIcon from '../assets/svgs/check.svg';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 const options = [
   '이미 멋진 친구를 많이 만났어요.',
@@ -17,15 +17,13 @@ type Props = {
   setReason: (reason: string) => void;
 };
 
-const DeleteUser = (props: Props & ModalProps) => {
+const DeleteUser = (props: Props & FixedModalProps) => {
   const [clickedItem, setClickedItem] = useState('');
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title="계정을 삭제하시나요?"
       buttonText="확인"
-      initialBreakpoint={0.45}
-      breakpoints={[0.45, 0.6]}
       onClickButton={() => {
         if (clickedItem) {
           props.setReason(clickedItem);
@@ -38,7 +36,7 @@ const DeleteUser = (props: Props & ModalProps) => {
       <div>
         <p className="mb-4 font-body2 text-gray6">삭제하려는 이유를 알려주세요.</p>
 
-        <div className="mb-5">
+        <div className="mb-2">
           {options.map((option) => (
             <OptionItem
               key={option}
@@ -49,7 +47,7 @@ const DeleteUser = (props: Props & ModalProps) => {
           ))}
         </div>
       </div>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

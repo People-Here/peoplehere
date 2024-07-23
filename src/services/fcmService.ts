@@ -1,44 +1,34 @@
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
 import { Preferences } from '@capacitor/preferences';
-import { PushNotifications } from '@capacitor/push-notifications';
 
-export const addFCMLogListeners = async () => {
-  await PushNotifications.addListener('registration', async (token) => {
-    await Preferences.set({ key: 'fcmToken', value: token.value });
-    console.log('Push registration success, token: ' + token.value);
+export const addFCMListeners = async () => {
+  await FirebaseMessaging.addListener('tokenReceived', async (event) => {
+    await Preferences.set({ key: 'fcmToken', value: event.token });
+    console.log('Push registration success, token: ' + event.token);
   });
 
-  await PushNotifications.addListener('registrationError', (err) => {
-    console.error('Registration error: ', err.error);
+  await FirebaseMessaging.addListener('notificationReceived', (event) => {
+    console.log('Push notification received: ', event.notification);
   });
 
-  await PushNotifications.addListener('pushNotificationReceived', (notification) => {
-    console.log('Push notification received: ', notification);
-  });
-
-  await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-    console.log(
-      'Push notification action performed',
-      notification.actionId,
-      notification.inputValue,
-    );
+  await FirebaseMessaging.addListener('notificationActionPerformed', (event) => {
+    console.log('Push notification action performed', event.actionId, event.inputValue);
   });
 };
 
 export const registerNotifications = async () => {
-  let permission = await PushNotifications.checkPermissions();
+  let permission = await FirebaseMessaging.checkPermissions();
 
   if (permission.receive === 'prompt') {
-    permission = await PushNotifications.requestPermissions();
+    permission = await FirebaseMessaging.requestPermissions();
   }
 
   if (permission.receive !== 'granted') {
     throw new Error('User denied permissions');
   }
-
-  await PushNotifications.register();
 };
 
 export const getDeliveredNotifications = async () => {
-  const notificationList = await PushNotifications.getDeliveredNotifications();
+  const notificationList = await FirebaseMessaging.getDeliveredNotifications();
   console.log('Delivered notifications: ', notificationList);
 };

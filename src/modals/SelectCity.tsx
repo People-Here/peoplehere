@@ -4,16 +4,16 @@ import { useTranslation } from 'react-i18next';
 
 import { getCities } from '../api/city';
 import CheckIcon from '../assets/svgs/check.svg';
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 import type { CityResponse } from '../api/city';
 
 type Props = {
   onClickItem: (item: CityResponse['cityList'][0]) => void;
 };
 
-const SelectCity = ({ onClickItem, ...rest }: ModalProps & Props) => {
+const SelectCity = ({ onClickItem, ...rest }: FixedModalProps & Props) => {
   const { i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
@@ -84,14 +84,12 @@ const SelectCity = ({ onClickItem, ...rest }: ModalProps & Props) => {
   };
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title="거주지를 알려주세요"
       buttonText="저장"
       onClickButton={() => onClickItem(selectedCity)}
-      initialBreakpoint={0.87}
-      breakpoints={[0, 0.87, 0.95]}
       buttonDisabled={!selectedCity.id}
-      onIonModalDidDismiss={() => {
+      onDismiss={() => {
         setSearchText('');
       }}
       {...rest}
@@ -149,7 +147,7 @@ const SelectCity = ({ onClickItem, ...rest }: ModalProps & Props) => {
           </IonList>
         )}
       </section>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

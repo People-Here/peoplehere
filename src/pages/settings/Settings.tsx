@@ -114,7 +114,7 @@ const Settings = () => {
 
         <DeleteUser
           isOpen={openDeleteReasonSheet}
-          onDidDismiss={() => setOpenDeleteReasonSheet(false)}
+          closeModal={() => setOpenDeleteReasonSheet(false)}
           onConfirm={() => setOpenDeleteModal(true)}
           setReason={setDeleteReason}
         />

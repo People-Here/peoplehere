@@ -1,5 +1,5 @@
 import { IonContent, IonIcon, IonImg, IonPage, IonText, useIonRouter } from '@ionic/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import GlobeIcon from '../../assets/svgs/globe.svg';
@@ -12,6 +12,8 @@ const LoginLanding = () => {
 
   const router = useIonRouter();
   const { region } = useSignInStore((state) => state);
+
+  const [showRegionModal, setShowRegionModal] = useState(false);
 
   useEffect(() => {
     if (region.countryCode) {
@@ -37,7 +39,11 @@ const LoginLanding = () => {
 
           <IonImg className="absolute bottom-4 w-[6.75rem] h-[1.875rem]" src={LogoWithLabelImage} />
 
-          <SelectRegion trigger="region-modal" />
+          <SelectRegion
+            isOpen={showRegionModal}
+            closeModal={() => setShowRegionModal(false)}
+            hideDialCode
+          />
         </div>
       </IonContent>
     </IonPage>

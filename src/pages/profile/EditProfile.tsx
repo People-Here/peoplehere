@@ -63,6 +63,12 @@ const EditProfile = () => {
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
 
+  const [showIntroduceModal, setShowIntroduceModal] = useState(false);
+  const [showAgeModal, setShowAgeModal] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [showRegionModal, setShowRegionModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -98,6 +104,7 @@ const EditProfile = () => {
       title: '출신국가',
       value: region.koreanName,
       modalId: 'region-modal',
+      onClick: () => setShowRegionModal(true),
       required: true,
     },
     {
@@ -105,6 +112,7 @@ const EditProfile = () => {
       title: '구사언어',
       value: languages.map((lang) => lang.koreanName).join(', '),
       modalId: 'language-modal',
+      onClick: () => setShowLanguageModal(true),
       required: true,
     },
     {
@@ -121,6 +129,7 @@ const EditProfile = () => {
       title: '나이',
       value: roundAge(age),
       modalId: 'age-modal',
+      onClick: () => setShowAgeModal(true),
       required: false,
     },
     {
@@ -128,6 +137,7 @@ const EditProfile = () => {
       title: '거주지',
       value: location,
       modalId: 'search-place',
+      onClick: () => setShowCityModal(true),
       required: false,
     },
     { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
@@ -213,7 +223,11 @@ const EditProfile = () => {
             <RequiredChip />
           </div>
 
-          <div id="introduce-modal" className="p-4 bg-gray1.5 rounded-xl mb-4">
+          <div
+            id="introduce-modal"
+            className="p-4 bg-gray1.5 rounded-xl mb-4"
+            onClick={() => setShowIntroduceModal(true)}
+          >
             <IonText className="whitespace-pre-wrap font-body1 text-gray8">
               {introduce ? introduce : '나에 대한 자유로운 소개글을 작성해 보세요.'}
             </IonText>
@@ -228,6 +242,7 @@ const EditProfile = () => {
                 title={item.title}
                 value={item.value}
                 required={item.required}
+                onClick={item?.onClick}
               />
             ))}
           </div>
@@ -245,9 +260,19 @@ const EditProfile = () => {
       </IonContent>
 
       {/* modals */}
-      <Introduce trigger="introduce-modal" introduce={introduce} setIntroduce={setIntroduce} />
-      <SelectRegion trigger="region-modal" />
-      <SelectLanguages trigger="language-modal" languages={languages} setLanguages={setLanguages} />
+      <Introduce
+        isOpen={showIntroduceModal}
+        closeModal={() => setShowIntroduceModal(false)}
+        introduce={introduce}
+        setIntroduce={setIntroduce}
+      />
+      <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(false)} />
+      <SelectLanguages
+        isOpen={showLanguageModal}
+        closeModal={() => setShowLanguageModal(false)}
+        languages={languages}
+        setLanguages={setLanguages}
+      />
       <SimpleInputModal
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"
@@ -288,9 +313,16 @@ const EditProfile = () => {
         value={school}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
+      <ShowAge
+        isOpen={showAgeModal}
+        closeModal={() => setShowAgeModal(false)}
+        age={age}
+        showAge={showAge}
+        setShowAge={setShowAge}
+      />
       <SelectCity
-        trigger="search-place"
+        isOpen={showCityModal}
+        closeModal={() => setShowCityModal(false)}
         onClickItem={(item) => {
           setLocation(
             i18n.resolvedLanguage === 'ko'
@@ -365,10 +397,15 @@ type ListItemProps = {
   id?: string;
   value?: string;
   required?: boolean;
+  onClick?: () => void;
 };
-const ListItem = ({ iconSrc, title, id, value, required }: ListItemProps) => {
+const ListItem = ({ iconSrc, title, id, value, required, onClick }: ListItemProps) => {
   return (
-    <div className="flex items-center justify-between py-4 border-b border-gray1.5" id={id}>
+    <div
+      className="flex items-center justify-between py-4 border-b border-gray1.5"
+      id={id}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-4">
         <IonIcon icon={iconSrc} className="svg-lg" />
         <IonLabel className={value ? 'font-body1 text-gray8' : 'font-body1 text-gray5.5'}>

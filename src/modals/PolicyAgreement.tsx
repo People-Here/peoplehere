@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import colors from '../theme/colors';
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import Checkbox from '../components/Checkbox';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 type Props = {
   marketingChecked: boolean;
@@ -18,15 +18,13 @@ const PolicyAgreement = ({
   setMarketingChecked,
   onClickButton,
   ...rest
-}: Props & ModalProps) => {
+}: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title={t('signup.policy.title')}
       buttonText={t('signup.policy.agree')}
-      initialBreakpoint={0.35}
-      breakpoints={[0, 0.35, 0.4]}
       onClickButton={onClickButton}
       {...rest}
     >
@@ -90,7 +88,7 @@ const PolicyAgreement = ({
           </p>
         )}
       </div>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

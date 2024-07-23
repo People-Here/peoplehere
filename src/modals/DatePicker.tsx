@@ -2,27 +2,28 @@ import { IonDatetime } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 type Props = {
   date?: string;
   setDate: (date: string) => void;
 };
 
-const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
+const DatePicker = ({ date, setDate, onClickButton, ...rest }: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
 
   const [selectedDate, setSelectedDate] = useState(date ?? new Date().toISOString());
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title={t('signup.info.selectBirthDay')}
       buttonText={t('common.confirm')}
-      initialBreakpoint={0.45}
-      breakpoints={[0, 0.45]}
-      onWillDismiss={() => setDate(selectedDate)}
+      onClickButton={() => {
+        setDate(selectedDate);
+        onClickButton?.();
+      }}
       {...rest}
     >
       <IonDatetime
@@ -38,7 +39,7 @@ const DatePicker = ({ date, setDate, ...rest }: Props & ModalProps) => {
           '--background-rgb': '255, 255, 255',
         }}
       />
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

@@ -29,7 +29,7 @@ import './theme/tailwind.css';
 import './theme/global.css';
 
 import './i18n';
-import { addFCMLogListeners, registerNotifications } from './services/fcmService';
+import { addFCMListeners, registerNotifications } from './services/fcmService';
 import { sendNotification } from './api/notification';
 
 setupIonicReact();
@@ -62,7 +62,7 @@ const App = () => {
       const platformInfo = await Device.getInfo();
       if (platformInfo.platform !== 'web') {
         await registerNotifications();
-        await addFCMLogListeners();
+        await addFCMListeners();
         await sendNotification();
       }
     })();
@@ -78,6 +78,3 @@ const App = () => {
 };
 
 export default App;
-function registerListeners() {
-  throw new Error('Function not implemented.');
-}

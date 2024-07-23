@@ -32,6 +32,8 @@ const ChangePhone = () => {
 
   const [timeLeft, setTimeLeft] = useState(0);
 
+  const [showRegionModal, setShowRegionModal] = useState(false);
+
   useEffect(() => {
     if (!timeLeft) return;
 
@@ -148,7 +150,7 @@ const ChangePhone = () => {
           ) : null}
         </div>
 
-        <SelectRegion trigger="region-modal" />
+        <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(true)} />
 
         <Alert
           trigger="phone-alert"

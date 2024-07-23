@@ -3,10 +3,10 @@ import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { languages as languageConstants } from '../constants/language';
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import colors from '../theme/colors';
 
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 export type Language = {
   koreanName: string;
@@ -19,7 +19,7 @@ type Props = {
   setLanguages: (languages: Language[]) => void;
 };
 
-const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Props) => {
+const SelectLanguages = ({ languages, setLanguages, ...props }: FixedModalProps & Props) => {
   const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
@@ -35,13 +35,11 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Pro
   };
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title="구사 언어를 모두 선택하세요"
       buttonText={t('common.select')}
-      initialBreakpoint={0.87}
-      breakpoints={[0, 0.87, 0.95]}
-      onWillDismiss={() => setLanguages(selected)}
-      onWillPresent={() => setSelected(languages)}
+      onDismiss={() => setLanguages(selected)}
+      onPresent={() => setSelected(languages)}
       {...props}
     >
       <section
@@ -72,7 +70,7 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: ModalProps & Pro
           ))}
         </IonList>
       </section>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

@@ -17,9 +17,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import i18next from 'i18next';
 import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
+import LanguageGrayIcon from '../../assets/svgs/language-gray.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
 import HeartFilledIcon from '../../assets/svgs/heart-filled.svg';
@@ -40,6 +42,7 @@ import { getTranslateLanguage } from '../../utils/translate';
 import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import AutoTranslate from '../../modals/AutoTranslate';
 
 import type { DeviceInfo } from '@capacitor/device';
 
@@ -59,7 +62,9 @@ const TourDetail = () => {
   const [isMine, setIsMine] = useState(false);
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
+  const [showTranslateModal, setShowTranslateModal] = useState(false);
   const [showFullImage, setShowFullImage] = useState(false);
+  const [enableAutoTranslate, setAutoTranslate] = useState(false);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
 
@@ -92,6 +97,14 @@ const TourDetail = () => {
       }
     })();
   }, [location.pathname]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const autoTranslate = await Preferences.get({ key: 'autoTranslate' });
+      setAutoTranslate(autoTranslate.value === 'true');
+    })();
+  }, []);
 
   useEffect(() => {
     if (!tourDetail) return;
@@ -131,12 +144,13 @@ const TourDetail = () => {
     }
   };
 
-  const onClickTranslate = async () => {
-    const translatedLang = currentLanguage === 'KOREAN' ? 'ENGLISH' : 'KOREAN';
+  const onClickTranslate = () => {
+    setShowTranslateModal(true);
+    // const translatedLang = currentLanguage === 'KOREAN' ? 'ENGLISH' : 'KOREAN';
 
-    const response = await getTourDetail(tourId, region.countryCode, translatedLang);
-    setTourDetail(response.data);
-    setCurrentLanguage(translatedLang);
+    // const response = await getTourDetail(tourId, region.countryCode, translatedLang);
+    // setTourDetail(response.data);
+    // setCurrentLanguage(translatedLang);
   };
 
   // const onClickShare = async () => {
@@ -188,7 +202,11 @@ const TourDetail = () => {
             </IonButtons>
 
             <IonButtons slot="end" className="flex items-center gap-3">
-              <IonIcon src={LanguagueIcon} className="svg-lg" onClick={onClickTranslate} />
+              <IonIcon
+                src={enableAutoTranslate ? LanguagueIcon : LanguageGrayIcon}
+                className="svg-lg"
+                onClick={onClickTranslate}
+              />
               {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
             </IonButtons>
           </IonToolbar>
@@ -345,6 +363,12 @@ const TourDetail = () => {
               },
             },
           ]}
+        />
+
+        <AutoTranslate
+          isOpen={showTranslateModal}
+          onDidDismiss={() => setShowTranslateModal(false)}
+          onToggleChange={(value) => setAutoTranslate(value)}
         />
       </IonContent>
     </IonPage>
