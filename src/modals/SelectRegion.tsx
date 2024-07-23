@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import useSignInStore from '../stores/signIn';
-import ModalContainer from '.';
+import { FixedModalContainer } from '.';
 import { getAllRegions } from '../api/constants';
 
 import type { Region } from '../api/constants';
-import type { ModalProps } from '.';
+import type { FixedModalProps } from '.';
 
 type Props = {
   hideDialCode?: boolean;
 };
 
-const SelectRegion = ({ hideDialCode = false, ...props }: Props & ModalProps) => {
+const SelectRegion = ({ hideDialCode = false, ...props }: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
@@ -94,11 +94,9 @@ const SelectRegion = ({ hideDialCode = false, ...props }: Props & ModalProps) =>
   };
 
   return (
-    <ModalContainer
+    <FixedModalContainer
       title={t('region.selectRegion')}
       buttonText={t('common.confirm')}
-      initialBreakpoint={0.87}
-      breakpoints={[0, 0.87, 0.95]}
       onClickButton={() => setRegion(selectedRegion)}
       buttonDisabled={!selectedRegion.countryCode}
       {...props}
@@ -137,7 +135,7 @@ const SelectRegion = ({ hideDialCode = false, ...props }: Props & ModalProps) =>
           ))}
         </IonList>
       </section>
-    </ModalContainer>
+    </FixedModalContainer>
   );
 };
 

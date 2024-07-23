@@ -65,6 +65,8 @@ const EditProfile = () => {
 
   const [showIntroduceModal, setShowIntroduceModal] = useState(false);
   const [showAgeModal, setShowAgeModal] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [showRegionModal, setShowRegionModal] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -101,6 +103,7 @@ const EditProfile = () => {
       title: '출신국가',
       value: region.koreanName,
       modalId: 'region-modal',
+      onClick: () => setShowRegionModal(true),
       required: true,
     },
     {
@@ -132,6 +135,7 @@ const EditProfile = () => {
       title: '거주지',
       value: location,
       modalId: 'search-place',
+      onClick: () => setShowCityModal(true),
       required: false,
     },
     { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
@@ -260,7 +264,7 @@ const EditProfile = () => {
         introduce={introduce}
         setIntroduce={setIntroduce}
       />
-      <SelectRegion trigger="region-modal" />
+      <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(false)} />
       <SelectLanguages trigger="language-modal" languages={languages} setLanguages={setLanguages} />
       <SimpleInputModal
         trigger="favorite-modal"
@@ -310,7 +314,8 @@ const EditProfile = () => {
         setShowAge={setShowAge}
       />
       <SelectCity
-        trigger="search-place"
+        isOpen={showCityModal}
+        closeModal={() => setShowCityModal(false)}
         onClickItem={(item) => {
           setLocation(
             i18n.resolvedLanguage === 'ko'
