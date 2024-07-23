@@ -63,6 +63,7 @@ const EditProfile = () => {
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
 
+  const [showIntroduceModal, setShowIntroduceModal] = useState(false);
   const [showAgeModal, setShowAgeModal] = useState(false);
 
   useEffect(() => {
@@ -216,7 +217,11 @@ const EditProfile = () => {
             <RequiredChip />
           </div>
 
-          <div id="introduce-modal" className="p-4 bg-gray1.5 rounded-xl mb-4">
+          <div
+            id="introduce-modal"
+            className="p-4 bg-gray1.5 rounded-xl mb-4"
+            onClick={() => setShowIntroduceModal(true)}
+          >
             <IonText className="whitespace-pre-wrap font-body1 text-gray8">
               {introduce ? introduce : '나에 대한 자유로운 소개글을 작성해 보세요.'}
             </IonText>
@@ -249,7 +254,12 @@ const EditProfile = () => {
       </IonContent>
 
       {/* modals */}
-      <Introduce trigger="introduce-modal" introduce={introduce} setIntroduce={setIntroduce} />
+      <Introduce
+        isOpen={showIntroduceModal}
+        closeModal={() => setShowIntroduceModal(false)}
+        introduce={introduce}
+        setIntroduce={setIntroduce}
+      />
       <SelectRegion trigger="region-modal" />
       <SelectLanguages trigger="language-modal" languages={languages} setLanguages={setLanguages} />
       <SimpleInputModal
