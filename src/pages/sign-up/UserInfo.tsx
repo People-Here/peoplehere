@@ -38,6 +38,7 @@ const UserInfo = () => {
 
   const [openBirthModal, setOpenBirthModal] = useState(false);
   const [openGenderModal, setOpenGenderModal] = useState(false);
+  const [openPolicyModal, setOpenPolicyModal] = useState(false);
 
   const [marketingChecked, setMarketingChecked] = useState(false);
 
@@ -120,9 +121,9 @@ const UserInfo = () => {
 
         <Footer>
           <button
-            id="policy-modal"
             className="w-full button-primary button-lg"
             disabled={!firstName || !lastName || !birth || !gender}
+            onClick={() => setOpenPolicyModal(true)}
           >
             {t('common.continue')}
           </button>
@@ -132,11 +133,9 @@ const UserInfo = () => {
       {/* Modals */}
       <DatePicker
         isOpen={openBirthModal}
+        closeModal={() => setOpenBirthModal(false)}
         setDate={setBirth}
-        onDidDismiss={() => {
-          setOpenBirthModal(false);
-          birth && setShowGenderInput(true);
-        }}
+        onClickButton={() => setShowGenderInput(true)}
       />
       <SelectGender
         isOpen={openGenderModal}
@@ -144,7 +143,8 @@ const UserInfo = () => {
         onDidDismiss={() => setOpenGenderModal(false)}
       />
       <PolicyAgreement
-        trigger="policy-modal"
+        isOpen={openPolicyModal}
+        closeModal={() => setOpenPolicyModal(false)}
         onClickButton={onClickNext}
         marketingChecked={marketingChecked}
         setMarketingChecked={setMarketingChecked}

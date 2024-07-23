@@ -11,38 +11,19 @@ type Props = {
   setDate: (date: string) => void;
 };
 
-const DatePicker = ({ date, setDate, ...rest }: Props & FixedModalProps) => {
+const DatePicker = ({ date, setDate, onClickButton, ...rest }: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
 
   const [selectedDate, setSelectedDate] = useState(date ?? new Date().toISOString());
 
   return (
-    // <ModalContainer
-    //   title={t('signup.info.selectBirthDay')}
-    //   buttonText={t('common.confirm')}
-    //   initialBreakpoint={0.45}
-    //   breakpoints={[0, 0.45]}
-    //   onWillDismiss={() => setDate(selectedDate)}
-    //   {...rest}
-    // >
-    //   <IonDatetime
-    //     preferWheel
-    //     presentation="date"
-    //     locale={i18n.resolvedLanguage}
-    //     value={selectedDate}
-    //     onIonChange={(event) => {
-    //       setSelectedDate(event.detail.value as string);
-    //     }}
-    //     style={{
-    //       '--background': '#fff',
-    //       '--background-rgb': '255, 255, 255',
-    //     }}
-    //   />
-    // </ModalContainer>
     <FixedModalContainer
       title={t('signup.info.selectBirthDay')}
       buttonText={t('common.confirm')}
-      onDismiss={() => setDate(selectedDate)}
+      onClickButton={() => {
+        setDate(selectedDate);
+        onClickButton?.();
+      }}
       {...rest}
     >
       <IonDatetime
