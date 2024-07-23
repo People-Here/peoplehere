@@ -139,8 +139,9 @@ const UserInfo = () => {
       />
       <SelectGender
         isOpen={openGenderModal}
+        closeModal={() => setOpenGenderModal(false)}
         setGender={setGender}
-        onDidDismiss={() => setOpenGenderModal(false)}
+        onClickButton={() => setOpenGenderModal(false)}
       />
       <PolicyAgreement
         isOpen={openPolicyModal}
