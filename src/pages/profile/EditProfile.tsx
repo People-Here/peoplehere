@@ -63,6 +63,8 @@ const EditProfile = () => {
   const [job, setJob] = useState('');
   const [school, setSchool] = useState('');
 
+  const [showAgeModal, setShowAgeModal] = useState(false);
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
@@ -121,6 +123,7 @@ const EditProfile = () => {
       title: '나이',
       value: roundAge(age),
       modalId: 'age-modal',
+      onClick: () => setShowAgeModal(true),
       required: false,
     },
     {
@@ -228,6 +231,7 @@ const EditProfile = () => {
                 title={item.title}
                 value={item.value}
                 required={item.required}
+                onClick={item?.onClick}
               />
             ))}
           </div>
@@ -288,7 +292,13 @@ const EditProfile = () => {
         value={school}
         setValue={setSchool}
       />
-      <ShowAge trigger="age-modal" age={age} showAge={showAge} setShowAge={setShowAge} />
+      <ShowAge
+        isOpen={showAgeModal}
+        closeModal={() => setShowAgeModal(false)}
+        age={age}
+        showAge={showAge}
+        setShowAge={setShowAge}
+      />
       <SelectCity
         trigger="search-place"
         onClickItem={(item) => {
@@ -365,10 +375,15 @@ type ListItemProps = {
   id?: string;
   value?: string;
   required?: boolean;
+  onClick?: () => void;
 };
-const ListItem = ({ iconSrc, title, id, value, required }: ListItemProps) => {
+const ListItem = ({ iconSrc, title, id, value, required, onClick }: ListItemProps) => {
   return (
-    <div className="flex items-center justify-between py-4 border-b border-gray1.5" id={id}>
+    <div
+      className="flex items-center justify-between py-4 border-b border-gray1.5"
+      id={id}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-4">
         <IonIcon icon={iconSrc} className="svg-lg" />
         <IonLabel className={value ? 'font-body1 text-gray8' : 'font-body1 text-gray5.5'}>
