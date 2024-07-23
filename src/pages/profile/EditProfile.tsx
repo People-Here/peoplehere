@@ -67,6 +67,7 @@ const EditProfile = () => {
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [showRegionModal, setShowRegionModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -111,6 +112,7 @@ const EditProfile = () => {
       title: '구사언어',
       value: languages.map((lang) => lang.koreanName).join(', '),
       modalId: 'language-modal',
+      onClick: () => setShowLanguageModal(true),
       required: true,
     },
     {
@@ -265,7 +267,12 @@ const EditProfile = () => {
         setIntroduce={setIntroduce}
       />
       <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(false)} />
-      <SelectLanguages trigger="language-modal" languages={languages} setLanguages={setLanguages} />
+      <SelectLanguages
+        isOpen={showLanguageModal}
+        closeModal={() => setShowLanguageModal(false)}
+        languages={languages}
+        setLanguages={setLanguages}
+      />
       <SimpleInputModal
         trigger="favorite-modal"
         title="무엇을 좋아하나요?"

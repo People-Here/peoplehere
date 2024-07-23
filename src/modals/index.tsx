@@ -114,7 +114,7 @@ export const FixedModalContainer = ({
 
         {children}
 
-        <footer className="absolute bottom-[var(--ion-safe-area-bottom)] left-0 right-0 p-4">
+        <footer className="absolute bottom-[var(--ion-safe-area-bottom)] left-0 right-0 p-4 bg-white">
           <button
             className="w-full button-primary button-lg"
             disabled={buttonDisabled}
