@@ -1,3 +1,5 @@
+import JSONbig from 'json-bigint';
+
 export const parseBigint = (input: string) => {
   const obj: Record<string, string> = {};
 
@@ -9,4 +11,12 @@ export const parseBigint = (input: string) => {
   });
 
   return obj;
+};
+
+export const parseJSONBigint = (input: string) => {
+  if (!input) {
+    return input;
+  }
+
+  return JSONbig.parse(input) as JSON;
 };
