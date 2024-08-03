@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "913814939429",
-    "project_id": "peoplehere-77304",
-    "storage_bucket": "peoplehere-77304.appspot.com"
+    "project_number": "278384598647",
+    "project_id": "peoplehere-645a3",
+    "storage_bucket": "peoplehere-645a3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:913814939429:android:6495c797df50da86525ccc",
+        "mobilesdk_app_id": "1:278384598647:android:b0939d08545c74d5ef7072",
         "android_client_info": {
           "package_name": "com.peoplehereteam.peoplehere"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA8Rjaq6Qw_CEJb-AMCBh3E9lvaYa3nH5Q"
+          "current_key": "AIzaSyBdhiQM4RGNBkjPHcbz0c35qYTfAJFLh54"
         }
       ],
       "services": {
