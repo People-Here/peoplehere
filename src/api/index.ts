@@ -1,44 +1,21 @@
 import axios from 'axios';
 
+import { onAxiosErrorResponse } from '../utils/api';
+
 import type { AxiosRequestConfig } from 'axios';
 
 const apiInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
   withCredentials: true,
   timeout: 60000,
+  responseType: 'json',
 });
 
 // interceptors
-// apiInstance.interceptors.request.use(
-//   async (config) => {
-//     const { value } = await Preferences.get({ key: 'DeviceId' });
-
-//     config.headers.Identifier = value;
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-//   { synchronous: true },
-// );
-
-// check token validation
-// apiInstance.interceptors.response.use(
-//   (res) => res,
-//   async (error: AxiosError) => {
-//     const originalRequest = error.config as AxiosRequestConfig;
-
-//     if (error.response?.status === 401) {
-//       const accessToken = await getNewToken();
-//       apiInstance.defaults.headers.common.Authorization = `Bearer ${accessToken.data.accessToken}`;
-
-//       return apiInstance(originalRequest);
-//     }
-
-//     return Promise.reject(error);
-//   },
-// );
+apiInstance.interceptors.response.use((response) => {
+  console.log('api success', response);
+  return response;
+}, onAxiosErrorResponse);
 
 // types
 export const typedGet = async <T>(url: string, config?: AxiosRequestConfig) => {
