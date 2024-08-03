@@ -28,6 +28,7 @@ import ImageLoadingLarge from '../../assets/images/place-loading-large.gif';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 import CloseIcon from '../../assets/svgs/close.svg';
 
+import type { AxiosError } from 'axios';
 import type { RefresherEventDetail } from '@ionic/react';
 import type { Place, Tour, User } from '../../api/tour';
 
@@ -62,10 +63,24 @@ const Home = () => {
       } else {
         try {
           const response = await getTourList(region.countryCode.toUpperCase(), lang);
-
           setList(response.data.tourList);
         } catch (error) {
-          await getNewToken();
+          const errorInstance = error as AxiosError;
+          console.warn('try to get new token...');
+
+          if (errorInstance.response?.status === 403) {
+            try {
+              await getNewToken();
+              const response = await getTourList(region.countryCode.toUpperCase(), lang);
+              setList(response.data.tourList);
+            } catch (error) {
+              console.error('user token as expired');
+              const errorInstance = error as AxiosError;
+              if (errorInstance.response?.status === 400) {
+                router.push('/login');
+              }
+            }
+          }
 
           const { data } = await getTourList(region.countryCode.toUpperCase(), lang);
           setList(data.tourList);

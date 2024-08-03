@@ -40,7 +40,7 @@ export const getTourDetail = async (tourId: string, region: string, lang: string
   const requestRegion = lang === 'ENGLISH' ? 'US' : region;
 
   const response = await typedGet<TourDetail>(`/tours/${tourId}/${requestRegion}/${lang}`, {
-    transformResponse: [(data: string) => parseJSONBigint(data)],
+    // transformResponse: [(data: string) => parseJSONBigint(data)],
     headers: {
       Authorization: value,
     },
