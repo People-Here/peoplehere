@@ -1,13 +1,13 @@
 import { Preferences } from '@capacitor/preferences';
-import JSONbig from 'json-bigint';
 
 import { typedGet, typedPost, typedPut } from '.';
+import { parseJSONBigint } from '../utils/parse';
 
 export const getMessageRooms = async (langCode: string) => {
   const { value: token } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedGet<MessageRoomsResponse>(`/tours/messages/${langCode}`, {
-    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    transformResponse: [(data: string) => parseJSONBigint(data)],
     headers: {
       Authorization: token,
     },
@@ -26,7 +26,7 @@ export const getMessages = async (tourId: string, langCode: string) => {
       headers: {
         Authorization: token,
       },
-      transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+      transformResponse: [(data: string) => parseJSONBigint(data)],
     },
   );
 

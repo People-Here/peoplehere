@@ -1,11 +1,10 @@
 import { isAxiosError } from 'axios';
 
-import type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
+import type { AxiosResponse, AxiosError } from 'axios';
 
 export const onAxiosErrorResponse = (error: Error | AxiosError) => {
   if (isAxiosError(error)) {
     const { message } = error;
-    const { method, url } = error.config as AxiosRequestConfig;
     const { status, statusText } = error.response as AxiosResponse;
     console.error('api error axios', message, status, statusText);
   } else {
