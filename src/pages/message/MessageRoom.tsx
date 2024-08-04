@@ -205,7 +205,7 @@ const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps)
         <img
           src={imageUrl}
           alt="chat user profile"
-          className="object-cover overflow-hidden rounded-full w-11 h-11 border-[0.5px] border-gray2"
+          className="object-cover overflow-hidden rounded-full w-11 h-11 border-[0.5px] border-gray2 shrink-0"
         />
       </Link>
 

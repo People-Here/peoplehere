@@ -15,7 +15,7 @@ export const parseBigint = (input: string) => {
 
 export const parseJSONBigint = (input: string) => {
   if (!input) {
-    return input;
+    return;
   }
 
   return JSONbig.parse(input) as JSON;
