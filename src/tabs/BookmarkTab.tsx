@@ -1,4 +1,12 @@
-import { IonContent, IonIcon, IonImg, IonPage, IonText, IonToolbar } from '@ionic/react';
+import {
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonPage,
+  IonText,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
@@ -16,6 +24,7 @@ import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
 
 const BookmarkTab = () => {
+  const router = useIonRouter();
   const { checkLogin } = useLogin();
 
   const region = useSignInStore((state) => state.region);
@@ -43,15 +52,21 @@ const BookmarkTab = () => {
         setList(response.data.tourList);
       } catch (error) {
         const errorInstance = error as AxiosError;
+        console.warn('try to get new token...');
 
-        if (errorInstance.status === 403) {
-          await getNewToken();
-
-          const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
-          setList(response.data.tourList);
+        if (errorInstance.response?.status === 403) {
+          try {
+            await getNewToken();
+            const response = await getBookmarkList(region.countryCode.toUpperCase(), lang);
+            setList(response.data.tourList);
+          } catch (error) {
+            console.error('user token as expired');
+            const errorInstance = error as AxiosError;
+            if (errorInstance.response?.status === 400) {
+              router.push('/login');
+            }
+          }
         }
-
-        console.error('fail to get bookmark list', error);
       }
     })();
   }, []);

@@ -1,20 +1,25 @@
 import { isAxiosError } from 'axios';
 
-import type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
+import { getNewToken } from '../api/login';
 
-export const onAxiosErrorResponse = (error: Error | AxiosError) => {
+import type { AxiosResponse, AxiosError } from 'axios';
+
+export const onAxiosErrorResponse = async (error: Error | AxiosError) => {
   if (isAxiosError(error)) {
     const { message } = error;
-    const { method, url } = error.config as AxiosRequestConfig;
     const { status, statusText } = error.response as AxiosResponse;
     console.error('api error axios', message, status, statusText);
+
+    if (status === 403) {
+      await getNewToken();
+    }
   } else {
-    console.error('api error', error);
+    console.error('Unknown api error', error);
   }
 };
 
 const errorHandler = (errorStatus: number) => {
   switch (errorStatus) {
-    case 401:
+    case 403:
   }
 };

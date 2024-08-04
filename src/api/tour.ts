@@ -1,13 +1,13 @@
 import { Preferences } from '@capacitor/preferences';
-import JSONbig from 'json-bigint';
 
 import { typedGet, typedPost, typedPut } from '.';
+import { parseJSONBigint } from '../utils/parse';
 
 export const getTourList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}`, {
-    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    transformResponse: [(data: string) => parseJSONBigint(data)],
     headers: {
       Authorization: value,
     },
@@ -17,7 +17,7 @@ export const getTourList = async (region: string, lang: string) => {
 
 export const getTourListByUser = async (region: string, lang: string, userId: string) => {
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}/account/${userId}`, {
-    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    transformResponse: [(data: string) => parseJSONBigint(data)],
   });
   return response;
 };
@@ -26,7 +26,7 @@ export const getBookmarkList = async (region: string, lang: string) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedGet<BookmarkTourListResponse>(`/tours/like/${region}/${lang}`, {
-    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    transformResponse: [(data: string) => parseJSONBigint(data)],
     headers: {
       Authorization: value,
     },
@@ -40,7 +40,7 @@ export const getTourDetail = async (tourId: string, region: string, lang: string
   const requestRegion = lang === 'ENGLISH' ? 'US' : region;
 
   const response = await typedGet<TourDetail>(`/tours/${tourId}/${requestRegion}/${lang}`, {
-    transformResponse: [(data: string) => JSONbig.parse(data) as JSON],
+    // transformResponse: [(data: string) => parseJSONBigint(data)],
     headers: {
       Authorization: value,
     },
@@ -56,7 +56,7 @@ export const searchTour = async (keyword: string, region: string, langCode: stri
       region,
       langCode,
     },
-    { transformResponse: [(data: string) => JSONbig.parse(data) as JSON] },
+    { transformResponse: [(data: string) => parseJSONBigint(data)] },
   );
   return response;
 };

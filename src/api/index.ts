@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { onAxiosErrorResponse } from '../utils/api';
-
 import type { AxiosRequestConfig } from 'axios';
 
 const apiInstance = axios.create({
@@ -12,10 +10,10 @@ const apiInstance = axios.create({
 });
 
 // interceptors
-apiInstance.interceptors.response.use((response) => {
-  console.log('api success', response);
-  return response;
-}, onAxiosErrorResponse);
+// apiInstance.interceptors.response.use((response) => {
+//   console.log('api success', response);
+//   return response;
+// }, onAxiosErrorResponse);
 
 // types
 export const typedGet = async <T>(url: string, config?: AxiosRequestConfig) => {

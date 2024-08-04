@@ -74,12 +74,20 @@ const MessageTab = () => {
       setMessages(response.data.tourRoomList);
     } catch (error) {
       const errorInstance = error as AxiosError;
+      console.warn('try to get new token...');
 
-      if (errorInstance.response?.status === 401) {
-        await getNewToken();
-
-        const response = await getMessageRooms(lang);
-        setMessages(response.data.tourRoomList);
+      if (errorInstance.response?.status === 403) {
+        try {
+          await getNewToken();
+          const response = await getMessageRooms(lang);
+          setMessages(response.data.tourRoomList);
+        } catch (error) {
+          console.error('user token as expired');
+          const errorInstance = error as AxiosError;
+          if (errorInstance.response?.status === 400) {
+            router.push('/login');
+          }
+        }
       }
     }
   };

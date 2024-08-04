@@ -24,7 +24,9 @@ import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getTourListByUser } from '../../api/tour';
 import { getTranslateLanguage } from '../../utils/translate';
+import { getNewToken } from '../../api/login';
 
+import type { AxiosError } from 'axios';
 import type { DeviceInfo } from '@capacitor/device';
 import type { Tour } from '../../api/tour';
 
@@ -48,22 +50,21 @@ const MyPage = () => {
 
       const lang = await getTranslateLanguage();
 
-      const response = await getUserProfile(user.id, region.countryCode);
-      const tourListResponse = await getTourListByUser(
-        region.countryCode.toUpperCase(),
-        lang,
-        response.data.id.toString(),
-      );
+      try {
+        const response = await getUserProfile(user.id, region.countryCode);
+        const tourListResponse = await getTourListByUser(
+          region.countryCode.toUpperCase(),
+          lang,
+          response.data.id.toString(),
+        );
+        if (
+          !response.data.introduce ||
+          !response.data.profileImageUrl ||
+          !response.data.languages.length
+        ) {
+          setNeedProfileInfo(true);
+        }
 
-      if (
-        !response.data.introduce ||
-        !response.data.profileImageUrl ||
-        !response.data.languages.length
-      ) {
-        setNeedProfileInfo(true);
-      }
-
-      if (response.status === 200) {
         setUser({
           id: response.data.id.toString(),
           email: response.data.email,
@@ -72,10 +73,48 @@ const MyPage = () => {
           profileImageUrl: response.data.profileImageUrl,
           phoneNumber: response.data.phoneNumber,
         });
-      }
 
-      if (tourListResponse.status === 200) {
         setTourList(tourListResponse.data.tourList);
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+        console.warn('try to get new token...');
+
+        if (errorInstance.response?.status === 403) {
+          try {
+            await getNewToken();
+
+            const response = await getUserProfile(user.id, region.countryCode);
+            const tourListResponse = await getTourListByUser(
+              region.countryCode.toUpperCase(),
+              lang,
+              response.data.id.toString(),
+            );
+            if (
+              !response.data.introduce ||
+              !response.data.profileImageUrl ||
+              !response.data.languages.length
+            ) {
+              setNeedProfileInfo(true);
+            }
+
+            setUser({
+              id: response.data.id.toString(),
+              email: response.data.email,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              profileImageUrl: response.data.profileImageUrl,
+              phoneNumber: response.data.phoneNumber,
+            });
+
+            setTourList(tourListResponse.data.tourList);
+          } catch (error) {
+            console.error('user token as expired');
+            const errorInstance = error as AxiosError;
+            if (errorInstance.response?.status === 400) {
+              router.push('/login');
+            }
+          }
+        }
       }
     })();
   }, [setUser, user.id, region.countryCode]);

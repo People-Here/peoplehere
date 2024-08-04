@@ -159,7 +159,18 @@ const Post = () => {
 
   return (
     <>
-      <Header type="close" onClickIcon={() => setShowExitAlert(true)} fixed />
+      <Header
+        fixed
+        type="close"
+        onClickIcon={() => {
+          if (place.id || title || description || images.length) {
+            setShowExitAlert(true);
+          } else {
+            clearAll();
+            router.goBack();
+          }
+        }}
+      />
 
       <div className="flex flex-col items-center px-4 pb-24 mt-16">
         <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
