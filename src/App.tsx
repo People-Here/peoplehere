@@ -31,6 +31,7 @@ import './theme/global.css';
 import './i18n';
 import { addFCMListeners, registerNotifications } from './services/fcmService';
 import { sendNotification } from './api/notification';
+import { initializeFirebase } from './services/firebase';
 
 setupIonicReact();
 
@@ -66,6 +67,11 @@ const App = () => {
         await sendNotification();
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    initializeFirebase();
   }, []);
 
   return (
