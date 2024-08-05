@@ -87,7 +87,7 @@ export const FixedModalContainer = ({
 }: PropsWithChildren<FixedModalProps & FixedProps>) => {
   useLayoutEffect(() => {
     onPresent?.();
-  }, [onPresent]);
+  }, []);
 
   const dismissModal = () => {
     onDismiss?.();

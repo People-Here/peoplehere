@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { languages as languageConstants } from '../constants/language';
-import { FixedModalContainer } from '.';
 import colors from '../theme/colors';
-
-import type { FixedModalProps } from '.';
+import { FixedModalContainer, type FixedModalProps } from '.';
 
 export type Language = {
   koreanName: string;
@@ -27,19 +25,22 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: FixedModalProps 
   const [selected, setSelected] = useState<Language[]>([]);
 
   const onClickLanguage = (language: Language) => {
-    if (selected.includes(language)) {
-      setSelected(selected.filter((lang) => lang.lang !== language.lang));
+    if (selected.some((lang) => lang.lang === language.lang)) {
+      setSelected((prev) => prev.filter((lang) => lang.lang !== language.lang));
     } else {
-      setSelected([...selected, language]);
+      setSelected((prev) => [...prev, language]);
     }
   };
+
+  useEffect(() => {
+    setSelected(languages);
+  }, [languages]);
 
   return (
     <FixedModalContainer
       title="구사 언어를 모두 선택하세요"
       buttonText={t('common.select')}
-      onDismiss={() => setLanguages(selected)}
-      onPresent={() => setSelected(languages)}
+      onClickButton={() => setLanguages(selected)}
       {...props}
     >
       <section
@@ -47,13 +48,12 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: FixedModalProps 
       >
         <IonList lines="full">
           {languageConstants.map((language) => (
-            <div key={language.lang}>
+            <div key={language.lang} onClick={() => onClickLanguage(language)}>
               <div className="flex flex-col p-4 border-b border-gray1.5">
                 <IonCheckbox
                   class="ion-no-margin"
                   justify="space-between"
-                  checked={selected.map((lang) => lang.lang).includes(language.lang)}
-                  onIonChange={() => onClickLanguage(language)}
+                  checked={selected.some((lang) => lang.lang === language.lang)}
                   style={{
                     '--size': '18px',
                     '--checkbox-background': colors.gray3,

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonLabel, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,10 +19,13 @@ const ShowAge = ({ age, showAge, setShowAge, ...rest }: FixedModalProps & Props)
 
   const [show, setShow] = useState(false);
 
+  useEffect(() => {
+    setShow(showAge);
+  }, [showAge]);
+
   return (
     <FixedModalContainer
       title={t('signup.info.showAgeTitle')}
-      onPresent={() => setShow(showAge)}
       buttonText={t('common.save')}
       onClickButton={() => setShowAge(show)}
       {...rest}

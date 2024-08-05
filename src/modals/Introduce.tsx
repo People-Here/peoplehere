@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
 
 import { FixedModalContainer } from '.';
@@ -13,12 +13,15 @@ type Props = {
 const Introduce = ({ introduce, setIntroduce, ...rest }: FixedModalProps & Props) => {
   const [input, setInput] = useState('');
 
+  useEffect(() => {
+    setInput(introduce);
+  }, [introduce]);
+
   return (
     <FixedModalContainer
       title="자기 소개를 작성하세요"
       buttonText="저장"
-      onDismiss={() => setIntroduce(input)}
-      onPresent={() => setInput(introduce)}
+      onClickButton={() => setIntroduce(input)}
       {...rest}
     >
       <div className="flex flex-col gap-1.5 items-end mb-5 mt-3 h-screen">
