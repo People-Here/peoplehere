@@ -2,116 +2,312 @@
   "nav": {
     "home": "둘러보기",
     "bookmark": "관심 목록",
-    "message": "쪽지",
+    "inbox": "쪽지",
     "mypage": "마이페이지"
   },
-  "searchBar": {
-    "title": "어디서 만날까요?",
-    "noResults": "검색 결과가 없어요."
-  },
-  "search": {
-    "placeholder": "지역명, 장소명, 주소 검색",
-    "recent": "최근 검색 내역"
-  },
-  "tour": {
-    "available": "말 걸 수 있음",
-    "unavailable": "쪽지 마감",
-    "detail": "우리 여기서 같이 뭐할까?"
-  },
-  "region": {
-    "welcome": "반가워요 :)\n어느 나라에서 오셨나요?",
-    "selectRegion": "출신 국가를 선택하세요",
-    "placeholder": "국가 이름"
-  },
-  "app": {
-    "description": "여기를 살아가는 사람들을 만나,\n이곳의 삶을 여행하세요."
-  },
-  "common": {
-    "confirm": "확인",
+  "user": {
     "email": "이메일",
+    "invalidEmail": "유효한 이메일 형식이 아닙니다.",
     "password": "비밀번호",
+    "phoneNumber": "전화번호",
+    "languages": "구사 언어",
     "login": "로그인",
-    "signup": "회원가입",
-    "retry": "다시 입력",
+    "logout": "로그아웃",
+    "signup": "회원가입"
+  },
+  "progress": {
+    "done": "완료",
+    "confirm": "확인",
+    "next": "다음",
     "continue": "계속",
     "save": "저장",
-    "search": "검색",
-    "preview": "미리보기 및 색상 선택",
-    "availableLanguages": "구사언어",
-    "refresh": "새로고침",
-    "select": "선택"
+    "positive": "네",
+    "cancel": "취소",
+    "goBack": "뒤로",
+    "close": "닫기",
+    "leave": "나가기",
+    "delete": "삭제",
+    "retry": "재시도"
   },
-  "error": {
-    "invalidAccount": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
-    "invalidEmail": "유효한 이메일 형식이 아닙니다.",
-    "alreadyInUse": "이미 사용 중인 이메일입니다."
-  },
-  "password": {
-    "reset": "비밀번호 재설정",
-    "length": "8자리 이상",
-    "format": "기호나 숫자를 1자 이상 포함"
-  },
-  "signup": {
-    "email": {
-      "title": "아이디로 사용할\n이메일을 설정해 주세요",
-      "sending": "발송중..."
-    },
-    "verify": {
-      "send": "인증코드 발송",
-      "resend": "재발송",
-      "placeholder": "인증번호 입력"
-    },
-    "password": {
-      "title": "비밀번호를\n설정해 주세요"
-    },
-    "info": {
-      "title": "마지막으로\n회원가입을 위한 정보를 알려주세요",
-      "firstName": "이름 (예: 길동)",
-      "lastName": "성 (예: 홍)",
-      "birthDay": "생년월일(YYYY/MM/DD)",
-      "ageLimit": "피플히어에 가입하려면 만 18세 이상이어야 해요.",
-      "gender": "성별",
-      "selectGender": "성별을 선택하세요",
-      "showAgeTitle": "출생연도 공개 여부를 선택하세요",
-      "showAge": "출생연도를 공개할까요?",
-      "selectBirthDay": "생년월일을 선택해 주세요"
-    },
-    "policy": {
-      "title": "약관동의",
-      "agree": "회원가입 완료",
-      "marketingAgreement1": "마케팅 이메일을 수신하겠습니다. (선택)",
-      "marketingAgreement2": "설정에서 언제든지 수신을 거부할 수 있습니다.",
-      "confirmText": "'동의 및 완료'를 클릭함으로써 피플히어의 서비스 약관, 위치기반서비스 이용 약관, 개인정보처리방침에 동의합니다."
-    },
-    "alarm": {
-      "title": "알림을 받으시겠어요?",
-      "description": "새로운 쪽지, 다가오는 약속 등\n중요한 소식을 놓치지 마세요.",
-      "agree": "네, 알림을 받을게요",
-      "skip": "나중에 설정하기"
+  "code": {
+    "send": "인증코드 발송",
+    "sending": "발송 중...",
+    "resend": "재발송",
+    "resendToast": "인증 코드를 다시 발송했어요.",
+    "placeholder": "인증번호 6자리 입력",
+    "verify": "인증하기",
+    "timeLeft": "남은 시간",
+    "wrong": "잘못된 인증 코드를 입력하셨어요.",
+    "expired": "인증 코드가 만료됐어요.",
+    "limit": "하루 발송 최대 개수를 초과했어요.\n내일 다시 시도해 주세요.",
+    "tip": {
+      "title": "코드를 받지 못하셨나요?",
+      "1": "코드가 도착하는 데 최대 5분이 걸릴 수 있어요.",
+      "2": "스팸 폴더를 확인해 주세요."
     }
   },
-  "newTour": {
-    "header": "우리 어디서 만날까?",
-    "search": "장소 등록",
-    "addPictures": "관련 사진을 추가하세요",
-    "detail": "여기서 같이 뭐하면 좋을까?",
-    "translate": "한글로 작성할 경우 자동으로 영문 번역될 수 있어요.",
-    "title": "짧고 재치있는 한 줄 제목",
-    "description": "함께 하고 싶은 활동에 대해 얘기해 보세요.",
-    "policyWarning": "저작권법 위반 시 임의로 삭제될 수 있어요.",
-    "selectTheme": "스킨 색상 선택",
-    "post": "장소 올리기",
-    "postLoading": "최대 1분 정도 소요될 수 있어요..."
+  "search": {
+    "go": "검색",
+    "recent": "최근 검색 내역",
+    "placeholder": "장소 또는 지역을 검색하세요",
+    "noResults": "{검색어}를(을) 찾을 수 없어요.\n검색어를 바르게 입력했는지 확인하세요."
   },
+
+  "onboarding": {
+    "welcome": "반가워요 :)\n어느 나라에서 오셨나요?",
+    "country": "출신 국가를 선택하세요",
+    "placeholder": "국가를 검색하세요"
+  },
+  "loginError": "이메일 또는 비밀번호를\n잘못 입력하셨습니다.",
+  "password": {
+    "length": "8자리 이상이어야 합니다.",
+    "format": "기호나 숫자를 1자 이상 포함해야 합니다."
+  },
+  "resetPassword": {
+    "title": "비밀번호 재설정",
+    "detail": "가입하신 이메일을 입력해 주세요.",
+    "error": "가입되지 않은 이메일입니다.",
+    "newPassword": "새로운 비밀번호를 입력해 주세요.",
+    "warning": "기존과 동일한 비밀번호를 사용할 수 없습니다. 새로운 비밀번호를 설정해 주세요."
+  },
+  "verifyPhone": {
+    "title": "본인인증",
+    "countryCode": "국가/지역",
+    "selectCode": "국가/지역을 선택하세요",
+    "searchCode": "국가/지역을 검색하세요",
+    "skip": "전화번호 인증이 불가한가요?",
+    "skipDetail": "다음에 인증하고\n회원가입으로 넘어갈까요?"
+  },
+  "loginInfo": {
+    "email": "아이디로 사용할\n이메일을 설정해 주세요.",
+    "emailInUse": "이미 가입된 이메일이에요.",
+    "password": "비밀번호를\n설정해 주세요"
+  },
+  "signupInfo": {
+    "title": "마지막으로\n회원가입을 위한 정보를 알려주세요",
+    "firstName": "이름 (예: 길동)",
+    "lastName": "성 (예: 홍)",
+    "birthday": "생년월일(YYYY/MM/DD)",
+    "selectBirthday": "생년월일을 선택해 주세요",
+    "ageLimit": "피플히어에 가입하려면 만 18세 이상이어야 해요.",
+    "gender": "성별",
+    "selectGender": "성별을 선택하세요",
+    "female": "여성",
+    "male": "남성",
+    "noGender": "선택 안 함",
+    "blankFirstName": "이름을 입력해 주세요.",
+    "blankLastName": "성을 입력해 주세요.",
+    "blankBirthday": "생년월일을 선택해 주세요.",
+    "underAge": "만 18세 미만은 가입할 수 없어요.",
+    "blankGender": "성별을 선택해 주세요."
+  },
+  "agreePolicy": {
+    "title": "약관 동의",
+    "marketing1": "마케팅 이메일을 수신하겠습니다. (선택)",
+    "marketing2": "설정에서 언제든지 수신을 거부할 수 있습니다.",
+    "detail": "'동의 및 가입 완료'를 클릭함으로써 피플히어의 서비스 약관, 개인정보처리방침에 동의합니다.",
+    "agree": "동의 및 가입 완료"
+  },
+  "allowNotification": {
+    "title": "알림을 받으시겠어요?",
+    "detail": "사람들이 보내는 쪽지와 새 포스트 등\n중요한 소식을 놓치지 마세요.",
+    "allow": "네, 알림을 받을게요",
+    "skip": "나중에 설정하기"
+  },
+
+  "explore": {
+    "searchBar": "어디서 만날까요?",
+    "noPosts": "해당 장소/지역에 등록된 포스트가 없어요."
+  },
+  "savedPosts": {
+    "title": "관심 목록",
+    "noList": "관심 목록이 비어있어요",
+    "unsave": "관심 목록에서 삭제했어요."
+  },
+  "post": {
+    "onTag": "쪽지 받음",
+    "offTag": "쪽지 쉬는 중",
+    "viewMap": "지도",
+    "description": "여기서 만나면 뭐 할까?",
+    "edit": "수정하기",
+    "manage": "포스트 관리",
+    "messageOn": "{플레이스 포스트 작성자 first_name} 님에게 쪽지하기",
+    "messageOff": "지금은 쪽지 쉬는 중",
+    "sentToast": "전송 완료! 쪽지에서 확인하세요."
+  },
+  "posting": {
+    "header1": "어디로 가볼까?",
+    "photos": {
+      "title": "관련 사진 추가",
+      "detail": "직접 찍은 사진이 없다면 구글 기본 이미지를 사용하세요.",
+      "album": "앨범에서 선택하기",
+      "googlephotos": "구글 이미지로 넣기",
+      "policy": "저작권법을 위반하거나 부적절한 사진은 임의로 삭제될 수 있어요.",
+      "switchingP1": "이미 앨범에서 추가했어요.",
+      "swtichingP2": "구글 이미지로 변경할 경우 앨범에서 추가한 사진은 모두 삭제 돼요. 계속하시겠어요?"
+    },
+    "header2": "여기서 만나면 뭐 할까?",
+    "translation": "한글은 자동 번역될 수 있으므로 영문 작성을 권장해요.",
+    "title": "한 줄 제목",
+    "description": "만나서 함께 하고 싶은 활동",
+    "preview": {
+      "title": "미리보기",
+      "color": "색상 선택",
+      "upload": "포스트",
+      "uploading": "최대 1분 정도 소요될 수 있어요..."
+    }
+  },
+  "newPost": {
+    "place": {
+      "title": "장소 추가",
+      "confirm": "찾으신 장소의 주소와 위치가 맞나요?",
+      "warningToast": "장소를 먼저 추가해야 해요."
+    },
+    "blank": {
+      "place": "장소를 등록해 주세요.",
+      "photos": "사진을 1장 이상 추가해 주세요.",
+      "title": "제목을 입력해 주세요.",
+      "description": "내용을 입력해 주세요."
+    },
+    "exit": {
+      "p1": "작성 중인 포스트를 삭제할까요?",
+      "p2": "이 페이지를 나가면\n지금까지 작성한 내용이 모두 사라져요.",
+      "confirm": "삭제"
+    }
+  },
+  "editPost": {
+    "unsaved": "변경된 내용을 저장하지 않고 나갈까요?"
+  },
+
+  "inbox": {
+    "title": "쪽지",
+    "noList": "아직 주고 받은 쪽지가 없어요",
+    "noListDetail": "만나고 싶은 사람에게 쪽지를 보내 보세요.",
+    "received": "받은 쪽지",
+    "sent": "보낸 쪽지",
+    "writeDraft": "쪽지 보내기",
+    "refresh": "새로고침"
+  },
+  "draft": {
+    "title": "To. {수신자 first_name}",
+    "send": "보내기",
+    "p1": "쪽지를 보낼까요?"
+  },
+
   "mypage": {
     "title": "마이페이지",
-    "completeProfile": "프로필 완성하기",
-    "seeProfile": "프로필 보기",
-    "noPlace": "장소를 올리고\n사람들과 약속을 잡아 보세요!"
+    "noLogin": "로그인하고\n외국인들을 만나보세요",
+    "login": "로그인 또는 회원가입",
+    "createProfile": "프로필 완성하기",
+    "showProfile": "프로필 보기",
+    "noPosts": "외국인들과 함께 가보고 싶은 장소를\n포스트 하세요.",
+    "addPost": "플레이스 포스트"
   },
-  "message": {
-    "title": "쪽지",
-    "noMessage": "아직 주고 받은 쪽지가 없어요",
-    "writeFirstMessage": "만나고 싶은 사람에게 쪽지를 보내 보세요!"
+  "profile": {
+    "languages": "구사 언어",
+    "country": "출신 국가",
+    "introduction": "자기소개",
+    "location": "거주지:",
+    "age": "나이:",
+    "work": "직업:",
+    "school": "출신 학교:",
+    "hobby": "취미:",
+    "pet": "반려동물:",
+    "favorite": "좋아하는 것:",
+    "postList": "같이 가고 싶은 곳",
+    "noPosts": "아직 찾아 보는 중..."
+  },
+  "editProfile": {
+    "guide": "피플히어의 다른 사용자들에게\n나를 소개하는 프로필을 만들어 주세요.",
+    "translation": "한글은 자동 번역되므로 영문 작성을 권장해요.",
+    "required": "필수",
+    "photo": "프로필 사진 추가",
+    "album": "앨범에서 선택하기",
+    "takePhoto": "사진 촬영하기",
+    "introduction": "자기소개",
+    "introduction2": "나에 대해 자유롭게 소개해 보세요.",
+    "languages": "구사 언어를 모두 선택하세요",
+    "location": "현재 거주지는 어디인가요?",
+    "location2": "도시를 검색하세요",
+    "decade": "출생 연대",
+    "showDecade": "프로필에 공개할까요?",
+    "work": "어떤 일을 하고 계신가요?",
+    "work2": "간호사, 은퇴한 서퍼, 쌍둥이의 부모",
+    "school": "어떤 학교를 졸업했나요?",
+    "school2": "홈스쿨링, 고등학교, 직업학교 등 출신 학교",
+    "hobby": "즐겨하는 취미는 무엇인가요?",
+    "hobby2": "배드민턴, 레시피 개발",
+    "favorite": "가장 좋아하는 건 무엇인가요?",
+    "favorite2": "샤워하면서 춤추기, 호밀빵",
+    "pets": "같이 사는 반려동물이 있나요?",
+    "pets2": "하얀 말티즈 밍키와 샐리"
+  },
+  "managePost": {
+    "messageOn": "쪽지 받음",
+    "messageOff": "새로운 쪽지 받지 않음",
+    "onDetail": "포스트에 ‘쪽지 받음’ 태그를 표시하고, 새로운 쪽지를 받습니다.",
+    "offDetail": "포스트에 ‘쪽지 쉬는 중’ 태그를 표시하고, 더 이상 새로운 쪽지를 받지 않습니다. 이미 대화가 시작된 사용자와는 계속해서 쪽지를 주고 받을 수 있습니다."
+  },
+  "deletePost": {
+    "p1": "이 포스트를 삭제할까요?",
+    "p2": "삭제된 포스트는 다시 복구할 수 없어요.",
+    "feedback": "삭제하시는 이유를 알려주세요",
+    "confirm": "삭제하기",
+    "toast": "포스트가 삭제되었습니다."
+  },
+
+  "settings": {
+    "version": "버전 [버전명]",
+    "phrase": "전 세계의 모든 우정을 담아.",
+    "logout": "로그아웃 할까요?"
+  },
+  "personal": {
+    "title": "개인정보",
+    "fullname": "이름",
+    "needVerify": "안전한 만남을 위해 본인인증을 완료해 주세요.",
+    "editName": "이름 변경",
+    "firstName": "이름",
+    "lastName": "성",
+    "editEmail": "이메일 변경",
+    "emailDetail": "새 이메일 주소를 입력하면 확인용 이메일을 보내드려요.",
+    "emailConfirmed": "이메일이 변경되었어요.",
+    "editPhone": "전화번호 변경",
+    "phoneConfirmed": "전화번호가 변경되었어요."
+  },
+  "translation": {
+    "title": "번역",
+    "auto": "자동 번역",
+    "autoDetail": "포스트, 프로필, 쪽지의 내용을 한국어로 자동 번역합니다. 원문으로 보기를 원하는 경우 이 기능을 비활성화 하세요."
+  },
+  "notification": {
+    "title": "알림",
+    "messages": "새로운 쪽지",
+    "messages2": "다른 사용자가 보낸 쪽지에 대한 알림을 받습니다.",
+    "marketing": "업데이트 및 마케팅 정보",
+    "marketing2": "피플히어의 최신 업데이트 정보에 대한 알림을 받습니다."
+  },
+  "contactUs": {
+    "title": "문의하기",
+    "detail": "문의 사항이나 개선 사항이 있다면\n아래 주소로 이메일을 보내주세요.",
+    "copy": "이메일 복사하기",
+    "copyToast": "이메일 주소가 복사되었어요."
+  },
+  "legal": {
+    "title": "법률",
+    "privacy": "개인정보 보호방침",
+    "terms": "서비스 약관"
+  },
+  "deleteAccount": {
+    "title": "회원 탈퇴",
+    "detail": "피플히어를 떠나시는 이유를 알려주세요.\n다시 돌아오실 수 있도록 더 나은 서비스가 되어있을게요.",
+    "option1": "피플히어에서 친구를 찾았어요.",
+    "option2": "활동하는 사용자가 적어요.",
+    "option3": "앱 사용이 불편해요.",
+    "other": "기타 사유(직접 입력)",
+    "otherTitle": "기타 사유",
+    "otherDetail": "탈퇴하시는 이유를 알려주세요",
+    "confirm": "정말로 탈퇴할까요?",
+    "confirmDetail": "개인정보 보호 방침에 따라 회원님의 계정은 30일 간 비활성화 후 영구 삭제될 예정이며, 비활성화 중 로그인을 시도하면 삭제 요청을 철회하고 계정을 복구할 수 있습니다.",
+    "complete": "탈퇴하기"
   }
 }

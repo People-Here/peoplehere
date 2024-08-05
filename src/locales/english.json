@@ -1,117 +1,313 @@
 {
   "nav": {
     "home": "Explore",
-    "bookmark": "Saved list",
-    "message": "Message",
-    "mypage": "My page"
+    "bookmark": "Saved Posts",
+    "inbox": "Inbox",
+    "mypage": "My Page"
   },
-  "searchBar": {
-    "title": "Where to meet?",
-    "noResults": "No results found."
-  },
-  "search": {
-    "placeholder": "Places, regions, address",
-    "recent": "Recent"
-  },
-  "tour": {
-    "available": "Talk to me",
-    "unavailable": "Unavailable",
-    "detail": "What are we going to do here?"
-  },
-  "region": {
-    "welcome": "Hello :)\nWhere are you from?",
-    "selectRegion": "Choose your country or region",
-    "placeholder": "Enter your country"
-  },
-  "app": {
-    "description": "Meet people here,\ntravel the living life of here"
-  },
-  "common": {
-    "confirm": "Done",
+  "user": {
     "email": "Email",
+    "invalidEmail": "Invalid email format.",
     "password": "Password",
+    "phoneNumber": "Phone number",
+    "languages": "Speaks",
     "login": "Log in",
-    "signup": "Sign up",
-    "retry": "Try again",
+    "logout": "Log out",
+    "signup": "Sign up"
+  },
+  "progress": {
+    "done": "Done",
+    "confirm": "Got it",
+    "next": "Next",
     "continue": "Continue",
     "save": "Save",
-    "search": "Search",
-    "preview": "Preview & Theme",
-    "availableLanguages": "Speaks",
-    "refresh": "Refresh",
-    "select": "Select"
+    "positive": "Yes",
+    "cancel": "Cancel",
+    "goBack": "Back",
+    "close": "Close",
+    "leave": "Leave",
+    "delete": "Delete",
+    "retry": "Try again"
   },
-  "error": {
-    "invalidAccount": "Incorrect email or password",
-    "invalidEmail": "Invalid email format.",
-    "alreadyInUse": "Email already in use."
+  "code": {
+    "send": "Send Code",
+    "sending": "Sending...",
+    "resend": "Resend",
+    "resendToast": "We just sent you a new code.",
+    "placeholder": "Enter 6-digit code",
+    "verify": "Verify",
+    "timeLeft": "Time left",
+    "wrong": "Incorrect verification code",
+    "expired": "The verification code has expired.",
+    "limit": "You’ve reached our limit of verification codes.\nPlease try again tomorrow.",
+    "tip": {
+      "title": "Didn’t get a code?",
+      "1": "The email may take up to 5 minutes to arrive.",
+      "2": "Check your spam or junk folder if you can't find our email."
+    }
   },
+  "search": {
+    "go": "search",
+    "recent": "recent",
+    "placeholder": "Search places or regions",
+    "noResults": "No results found for {검색어}.\nMake sure that all words are spelled correctly."
+  },
+
+  "onboarding": {
+    "welcome": "Hello :)\nWhere are you from?",
+    "country": "Choose your country",
+    "placeholder": "Enter your country"
+  },
+  "loginError": "Incorrect email or password",
   "password": {
-    "reset": "Reset password",
     "length": "At least 8 characters",
     "format": "At least 1 symbol or number"
   },
+  "resetPassword": {
+    "title": "Reset password",
+    "detail": "Enter the email you signed up for.",
+    "error": "This email address isn't registered.",
+    "newPassword": "Enter a password that you haven’t used before.",
+    "warning": "Your new password cannot be the same as your old password."
+  },
+  "verifyPhone": {
+    "title": "Phone verification",
+    "countryCode": "Country/Region",
+    "selectCode": "Choose a country or region",
+    "searchCode": "Enter a country or region",
+    "skip": "Unavailable to verify now?",
+    "skipDetail": "Do you want to verify later and move on to the sign up page?"
+  },
+  "loginInfo": {
+    "email": "Choose an email address to use as your account ID.",
+    "emailInUse": "Email already in use.",
+    "password": "Set your account password"
+  },
   "signup": {
-    "email": {
-      "title": "Choose an email to use as an  account ID",
-      "sending": "Sending..."
+    "title": "Almost done!\nPlease enter your details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthday": "Birthday(YYYY/MM/DD)",
+    "selectBirthday": "Choose your birthday",
+    "ageLimit": "To sign up, you need to be at least 18.",
+    "gender": "Gender",
+    "selectGender": "Choose your gender",
+    "female": "Female",
+    "male": "Male",
+    "noGender": "Prefer not to say",
+    "blankFirstName": "Please enter your first name.",
+    "blankLastName": "Please enter your Last name.",
+    "blankBirthday": "Please choose your birthday.",
+    "underAge": "You need to be at least 18.",
+    "blankGender": "Please choose your gender."
+  },
+  "agreePolicy": {
+    "title": "Terms and conditions",
+    "marketing1": "I will receive marketing emails. (optional)",
+    "marketing2": "You can opt out at any time in your account settings.",
+    "detail": "By clicking 'Agree and sign up', I agree to PeopleHere’s Terms of service and Privacy policy.",
+    "agree": "Agree and sign up"
+  },
+  "allowNotification": {
+    "title": "Turn on notification?",
+    "detail": "Don’t miss messages from people here\nand posts about cool places.",
+    "allow": "Yes, notify me",
+    "skip": "Skip"
+  },
+
+  "explore": {
+    "searchBar": "Where to meet?",
+    "noPosts": "No posts found for your search."
+  },
+  "savedPosts": {
+    "title": "관심 목록",
+    "noList": "관심 목록이 비어있어요",
+    "unsave": "관심 목록에서 삭제했어요."
+  },
+  "post": {
+    "onTag": "Talk to Me",
+    "offTag": "On Break",
+    "viewMap": "Map",
+    "description": "What to do here?",
+    "edit": "Edit Post",
+    "manage": "Manage Post",
+    "messageOn": "Message {플레이스 포스트 작성자 first_name}",
+    "messageOff": "On Break for Now",
+    "sentToast": "Message sent! Check your inbox."
+  },
+  "posting": {
+    "header1": "Where to go?",
+    "photos": {
+      "title": "Add related photos",
+      "detail": "No photos you’ve taken? Use Google Photos.",
+      "album": "Select from gallery",
+      "googlephotos": "Use Google Photos",
+      "policy": "Photos violating copyright or our policies will be removed.",
+      "switchingP1": "You've already added photos from your gallery.",
+      "swtichingP2": "Switching to Google Photos will discard your current selection. Continue?"
     },
-    "verify": {
-      "send": "Send code",
-      "resend": "Resend",
-      "placeholder": "Enter 6-digit code"
-    },
-    "password": {
-      "title": "Set your account password"
-    },
-    "info": {
-      "title": "Almost done!\nPlease enter your details",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "birthDay": "Birthday (YYYY/MM/DD)",
-      "ageLimit": "To sign up, you need to be at least 18.",
-      "gender": "Gender",
-      "selectGender": "Choose your gender",
-      "showAgeTitle": "Show your age to public",
-      "showAge": "Show to public?",
-      "selectBirthDay": "Choose your birthday"
-    },
-    "policy": {
-      "title": "Terms and conditions",
-      "agree": "Agree and sign up",
-      "marketingAgreement1": "I will receive marketing emails. (optional)",
-      "marketingAgreement2": "You can opt out at any time in your account settings.",
-      "confirmText": "By selecting Agree and sign up, I agree to Peoplehere's Terms of service."
-    },
-    "alarm": {
-      "title": "Turn on notifications?",
-      "description": "Don't miss new messages.",
-      "agree": "Yes, notify me",
-      "skip": "Skip"
+    "header2": "What to do here?",
+    "translation": "Writing in English improves auto-translation.",
+    "title": "Punchy title",
+    "description": "Things you want to do with people you will meet",
+    "preview": {
+      "title": "Preview",
+      "color": "Choose a color",
+      "upload": "Post",
+      "uploading": "It may take up to a minute..."
     }
   },
-  "newTour": {
-    "header": "Where are we going to meet?",
-    "search": "Add a place",
-    "addPictures": "Add some related photos",
-    "detail": "What are we going to do here?",
-    "translate": "Recommend to write in English.",
-    "title": "Short and witty title",
-    "description": "Share the idea of activities you would like to do with other people.",
-    "policyWarning": "Pictures can be removed if they have privacy issues or are inappropriate.",
-    "selectTheme": "Select a theme",
-    "post": "Post my place",
-    "postLoading": "May take up to 1 minute..."
+  "newPost": {
+    "place": {
+      "title": "Add Place",
+      "confirm": "Is this the correct address and location for your place?",
+      "warningToast": "You need to add a place first."
+    },
+    "blank": {
+      "place": "Please add a place.",
+      "photos": "Please add at least one photo.",
+      "title": "Please enter the title.",
+      "description": "Please enter the description."
+    },
+    "exit": {
+      "p1": "Discard post?",
+      "p2": "Leaving this page will discard your post.",
+      "confirm": "Discard"
+    }
   },
+  "editPost": {
+    "unsaved": "You have unsaved changes.\nAre you sure you want to leave this page?"
+  },
+
+  "inbox": {
+    "title": "Inbox",
+    "noList": "No conversations yet",
+    "noListDetail": "Start a conversation with someone\nyou’d like to meet.",
+    "received": "Received",
+    "sent": "Sent",
+    "writeDraft": "Send Message",
+    "refresh": "Refresh"
+  },
+  "draft": {
+    "title": "To. {수신자 first_name}",
+    "send": "Send",
+    "p1": "Send this message?"
+  },
+
   "mypage": {
-    "title": "My page",
-    "completeProfile": "Complete your profile",
-    "seeProfile": "See Profile",
-    "noPlace": "Post your place\nand meet friends!"
+    "title": "My Page",
+    "noLogin": "Log in to meet new people here",
+    "login": "Log in or sign up",
+    "createProfile": "Create Profile",
+    "showProfile": "Show Profile",
+    "noPosts": "Post about places you’d like to visit with people here.",
+    "addPost": "Post Place"
   },
-  "message": {
-    "title": "Message",
-    "noMessage": "Message box is empty",
-    "writeFirstMessage": "Start a message and hang out with friends!"
+  "profile": {
+    "languages": "I Speak",
+    "country": "I am from",
+    "introduction": "About Me",
+    "location": "I live in",
+    "age": "I was born in",
+    "work": "My work:",
+    "school": "Where I went to school:",
+    "hobby": "I spend my free time",
+    "favorite": "My favorite things:",
+    "pet": "Pets:",
+    "postList": "Places to visit together",
+    "noPosts": "Still looking..."
+  },
+  "editProfile": {
+    "guide": "Set up your profile\nto let people here know more about you.",
+    "translation": "Writing in English improves auto-translation.",
+    "required": "Required",
+    "photo": "Add a Profile Photo",
+    "album": "Select from gallery",
+    "takePhoto": "Take a photo",
+    "introduction": "About Me",
+    "introduction2": "Write something fun about yourself.",
+    "language": "Select the languages you speak",
+    "location": "Where do you currently live?",
+    "location2": "Search your city",
+    "decade": "Decade you were born",
+    "showDecade": "Show birth decade on your profile?",
+    "work": "What do you do for work?",
+    "work2": "Nurse, retired surfer, parent to twins",
+    "school": "Where did you go to school?",
+    "school2": "Name the school that made you who you are",
+    "hobby": "What do you spend your free time doing?",
+    "hobby2": "Badminton, developing recipes",
+    "favorite": "What are your favorite things?",
+    "favorite2": "Dancing in the shower, hot chocolate",
+    "pets": "Do you have any pets in your life?",
+    "pets2": "White Maltese Minky and Sally"
+  },
+  "managePost": {
+    "messageOn": "Messages on",
+    "messageOff": "New Messages Off",
+    "onDetail": "Display the ‘Talk to Me’ tag on the post to receive new messages.",
+    "offDetail": "Display the ‘On Break’ tag on the post to stop receiving new messages. You can continue messaging with users you’ve already started conversations with."
+  },
+  "deletePost": {
+    "p1": "Delete this post?",
+    "p2": "Deleted posts can’t be restored.",
+    "feedback": "Tell us why you’re deleting this post",
+    "confirm": "Delete",
+    "toast": "The post has been deleted."
+  },
+
+  "settings": {
+    "version": "Version [버전명]",
+    "phrase": "With every friendship around the world",
+    "logout": "Log out of your account?"
+  },
+  "personal": {
+    "title": "Personal information",
+    "fullname": "Name",
+    "needVerify": "Verify your identity to build trust in the PeopleHere community.",
+    "editName": "Edit name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "editEmail": "Edit email",
+    "emailDetail": "Enter your new email address, and we will send you a verification email.",
+    "emailConfirmed": "Your email has been updated.",
+    "editPhone": "Edit phone number",
+    "phoneConfirmed": "Your phone number has been updated."
+  },
+  "translation": {
+    "title": "Translation",
+    "auto": "Auto-translation",
+    "autoDetail": "Automatically translate the content of posts, profiles and messages to English. Turn this feature off if you’d like to show the original language."
+  },
+  "notification": {
+    "title": "Notification",
+    "messages": "New messages",
+    "messages2": "Get notified of new messages from other users.",
+    "marketing": "PeopleHere updates",
+    "marketing2": "Stay up to date on the latest news from PeopleHere."
+  },
+  "contactUs": {
+    "title": "Contact us",
+    "detail": "If you have any questions or feedback,\nplease email us at ",
+    "copy": "Copy Address",
+    "copyToast": "Email address copied."
+  },
+  "legal": {
+    "title": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "deleteAccount": {
+    "title": "Delete Account",
+    "detail": "Please tell us why you are leaving PeopleHere. We will make it a better service to welcome you back in the future.",
+    "option1": "I’ve made enough friendships here.",
+    "option2": "There aren’t enough active users.",
+    "option3": "The app is difficult to use.",
+    "other": "Other(please specify)",
+    "otherTitle": "Other",
+    "otherDetail": "Please let us know why you are deleting your account",
+    "confirm": "Are you sure you want to delete your account?",
+    "confirmDetail": "Your account will be deactivated and then permanently deleted after 30 days. Logging in within this period will reactivate your account.",
+    "complete": "Delete"
   }
 }
