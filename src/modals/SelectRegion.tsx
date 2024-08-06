@@ -95,8 +95,8 @@ const SelectRegion = ({ hideDialCode = false, ...props }: Props & FixedModalProp
 
   return (
     <FixedModalContainer
-      title={t('region.selectRegion')}
-      buttonText={t('common.confirm')}
+      title={t('onboarding.country')}
+      buttonText={t('progress.done')}
       onClickButton={() => setRegion(selectedRegion)}
       buttonDisabled={!selectedRegion.countryCode}
       {...props}
@@ -104,7 +104,7 @@ const SelectRegion = ({ hideDialCode = false, ...props }: Props & FixedModalProp
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
         <IonInput
           className="font-body1 text-gray8"
-          placeholder={t('region.placeholder')}
+          placeholder={t('onboarding.placeholder')}
           clearInput
           value={searchText}
           onIonInput={(e) => setSearchText(e.target.value as string)}

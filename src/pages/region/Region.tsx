@@ -26,14 +26,14 @@ const LoginLanding = () => {
       <IonContent fullscreen>
         <div className="relative flex flex-col items-center justify-center h-full gap-6">
           <IonText className="text-center whitespace-pre-wrap font-headline1 text-gray8">
-            {t('region.welcome')}
+            {t('onboarding.welcome')}
           </IonText>
 
           <div
             className="flex items-center justify-between p-4 bg-gray1.5 rounded-xl w-[15rem] cursor-pointer mb-[5rem]"
             onClick={() => setShowRegionModal(true)}
           >
-            <IonText className="text-gray5 font-body1">{t('region.placeholder')}</IonText>
+            <IonText className="text-gray5 font-body1">{t('onboarding.country')}</IonText>
             <IonIcon className="svg-lg" src={GlobeIcon} />
           </div>
 

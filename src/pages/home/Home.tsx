@@ -167,7 +167,7 @@ type SearchBarProps = {
   setOpenSearchModal: (value: boolean) => void;
 };
 const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const router = useIonRouter();
 
@@ -187,8 +187,14 @@ const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
     >
       <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
         <div className="flex flex-col">
-          <IonText className="font-headline3 text-gray7">{keyword ?? t(`searchBar.title`)}</IonText>
-          {!keyword && <IonText className="font-caption2 text-gray5">{region.koreanName}</IonText>}
+          <IonText className="font-headline3 text-gray7">
+            {keyword ?? t('explore.searchBar')}
+          </IonText>
+          {!keyword && (
+            <IonText className="font-caption2 text-gray5">
+              {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+            </IonText>
+          )}
         </div>
 
         <IonIcon

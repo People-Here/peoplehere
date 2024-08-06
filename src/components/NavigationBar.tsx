@@ -79,7 +79,7 @@ const NavigationBar = () => {
           <IonLabel
             className={`font-caption3 ${currentTab === 'message' ? 'text-orange5' : 'text-gray6'}`}
           >
-            {t('nav.message')}
+            {t('nav.inbox')}
           </IonLabel>
         </IonTabButton>
         <IonTabButton tab="profile" href="/profile">

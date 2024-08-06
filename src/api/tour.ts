@@ -167,6 +167,7 @@ export type TourDetail = {
     profileImageUrl: string;
     languages: string[];
     introduce: string;
+    directMessageStatus: boolean;
   };
   title: string;
   description: string;
@@ -180,7 +181,6 @@ export type TourDetail = {
     longitude: number;
   };
   like: boolean;
-  available: boolean;
   theme: string;
 };
 

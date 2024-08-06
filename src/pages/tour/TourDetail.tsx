@@ -231,7 +231,7 @@ const TourDetail = () => {
               className={`flex items-center ${themeColors[tourDetail.theme].languageBackground} rounded py-0.5 px-1.5 w-fit`}
             >
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
-                {t('common.availableLanguages')}
+                {t('user.languages')}
               </IonText>
               <Divider />
               <IonText className={`font-body1 ${themeColors[tourDetail.theme].language}`}>
@@ -273,7 +273,7 @@ const TourDetail = () => {
               className={`p-4 flex flex-col gap-2 ${themeColors[tourDetail.theme].cardBackground} rounded-xl mt-2`}
             >
               <p className={`font-headline3 ${themeColors[tourDetail.theme].cardTitle}`}>
-                {t('tour.detail')}
+                {t('post.description')}
               </p>
               <p
                 className={`font-subheading2 whitespace-pre-wrap ${themeColors[tourDetail.theme].cardContent}`}
@@ -315,24 +315,32 @@ const TourDetail = () => {
                   수정하기
                 </button>
               ) : (
-                <button
-                  className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                  onClick={async () => {
-                    if (needProfileInfo) {
-                      router.push('/edit-profile');
-                      return;
-                    }
+                <>
+                  {tourDetail.userInfo.directMessageStatus ? (
+                    <button
+                      className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
+                      onClick={async () => {
+                        if (needProfileInfo) {
+                          router.push('/edit-profile');
+                          return;
+                        }
 
-                    const isLoggedIn = await checkLogin();
-                    if (isLoggedIn) {
-                      setOpenMessageModal(true);
-                    }
-                  }}
-                >
-                  {i18next.resolvedLanguage === 'ko'
-                    ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
-                    : `Message ${tourDetail.userInfo.firstName}`}
-                </button>
+                        const isLoggedIn = await checkLogin();
+                        if (isLoggedIn) {
+                          setOpenMessageModal(true);
+                        }
+                      }}
+                    >
+                      {i18next.resolvedLanguage === 'ko'
+                        ? `${tourDetail.userInfo.firstName} 님에게 쪽지하기`
+                        : `Message ${tourDetail.userInfo.firstName}`}
+                    </button>
+                  ) : (
+                    <button className="w-full button-gray button-lg font-subheading1 text-gray6">
+                      {t('post.blockMessage')}
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </IonToolbar>

@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import PasswordInput from '../../components/PasswordInput';
@@ -8,6 +9,8 @@ import Footer from '../../layouts/Footer';
 import { PASSWORD_VALIDATION } from '../../constants/regex';
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
 
   const [password, setPassword] = useState('');
@@ -19,7 +22,7 @@ const ResetPassword = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title="비밀번호 재설정" />
+        <Header type="close" title={t('resetPassword.title')} />
 
         <div className="flex flex-col gap-2 px-4 mt-5">
           <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>

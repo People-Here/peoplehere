@@ -30,7 +30,7 @@ const Login = () => {
 
   const tryLogin = async () => {
     if (!isEmailValid) {
-      setErrorMessage(t('error.invalidEmail'));
+      setErrorMessage(t('user.invalidEmail'));
       return;
     }
 
@@ -59,7 +59,7 @@ const Login = () => {
 
           <div className="flex flex-col w-full gap-2 mb-4">
             <LabelInput
-              label={t('common.email')}
+              label={t('user.email')}
               type="email"
               inputMode="email"
               value={email}
@@ -76,7 +76,7 @@ const Login = () => {
               disabled={!email.length || !isPasswordValid}
               onClick={tryLogin}
             >
-              {t('common.login')}
+              {t('user.login')}
             </button>
             <button
               className="button-primary button-lg"
@@ -84,13 +84,13 @@ const Login = () => {
                 router.push('/sign-up/phone');
               }}
             >
-              {t('common.signup')}
+              {t('user.signup')}
             </button>
           </div>
 
           <Link to="/reset-password/check-email">
             <IonText className="font-caption2 text-gray5.5 underline">
-              {t('password.reset')}
+              {t('resetPassword.title')}
             </IonText>
           </Link>
         </div>
@@ -98,9 +98,9 @@ const Login = () => {
         <button id="error-alert" ref={buttonRef} type="button" className="hidden" />
         <Alert
           trigger="error-alert"
-          title={t('error.invalidAccount')}
-          buttons={[{ text: t('common.retry') }]}
-          bottomText={t('password.reset')}
+          title={t('loginError')}
+          buttons={[{ text: t('user.retry') }]}
+          bottomText={t('resetPassword.title')}
           onClickBottomText={() => router.push('/reset-password/check-email')}
         />
       </IonContent>

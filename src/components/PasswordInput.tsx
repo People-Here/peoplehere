@@ -34,7 +34,7 @@ const PasswordInput = ({ value, onChange }: Props) => {
     >
       <IonInput
         className="p-0 font-body1 text-gray8 -mb-0.5"
-        label={t('common.password')}
+        label={t('user.password')}
         labelPlacement="floating"
         value={value}
         onIonInput={(e) => onChange(e.target.value as string)}

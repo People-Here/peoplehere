@@ -43,7 +43,7 @@ const ChangeStatus = () => {
       const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
       setTourInfo(response.data);
 
-      setActive(response.data.available);
+      setActive(response.data.userInfo.directMessageStatus);
     })();
   }, [tourId, region.countryCode]);
 
