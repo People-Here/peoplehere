@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { FixedModalContainer } from '.';
 
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const Introduce = ({ introduce, setIntroduce, ...rest }: FixedModalProps & Props) => {
+  const { t } = useTranslation();
+
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -19,8 +22,8 @@ const Introduce = ({ introduce, setIntroduce, ...rest }: FixedModalProps & Props
 
   return (
     <FixedModalContainer
-      title="자기 소개를 작성하세요"
-      buttonText="저장"
+      title={t('profile.introduction')}
+      buttonText={t('progress.save')}
       onClickButton={() => setIntroduce(input)}
       {...rest}
     >

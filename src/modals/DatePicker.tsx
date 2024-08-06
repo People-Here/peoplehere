@@ -18,8 +18,8 @@ const DatePicker = ({ date, setDate, onClickButton, ...rest }: Props & FixedModa
 
   return (
     <FixedModalContainer
-      title={t('signup.info.selectBirthDay')}
-      buttonText={t('common.confirm')}
+      title={t('signup.selectBirthday')}
+      buttonText={t('progress.save')}
       onClickButton={() => {
         setDate(selectedDate);
         onClickButton?.();

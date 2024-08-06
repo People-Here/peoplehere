@@ -8,6 +8,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Footer from '../layouts/Footer';
 import { getNewToken } from '../api/login';
@@ -23,6 +24,8 @@ type Props = {
 };
 
 const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) => {
+  const { t } = useTranslation();
+
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 
@@ -67,7 +70,7 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
         </IonToolbar>
 
         <div className="px-4">
-          <p className="mt-5 font-headline1 text-gray8">삭제하시는 이유를 알려주세요</p>
+          <p className="mt-5 font-headline1 text-gray8">{t('deletePost.feedback')}</p>
 
           <div className="flex gap-1.5 flex-col items-end mt-6">
             <textarea
@@ -87,7 +90,7 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
             disabled={input.trim().length <= 0}
             onClick={() => onDeleteTour(tourId)}
           >
-            삭제하기
+            {t('deletePost.confirm')}
           </button>
         </Footer>
       </IonContent>

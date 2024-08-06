@@ -29,12 +29,14 @@ import { getNewToken } from '../../api/login';
 import { themeColors } from '../../constants/theme';
 import MapIcon from '../../assets/svgs/map.svg';
 import MapWhiteIcon from '../../assets/svgs/map-white.svg';
+import { findKoreanLanguageName } from '../../utils/find';
+import { capitalizeFirstLetter } from '../../utils/mask';
 
 import type { AxiosError } from 'axios';
 import type { ProfileResponse } from '../../api/profile';
 
 const Preview = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const location = useLocation();
@@ -70,8 +72,6 @@ const Preview = () => {
     })();
   }, []);
 
-  console.log('default', isDefaultImage);
-
   const uploadPost = async () => {
     setIsLoading(true);
 
@@ -96,7 +96,7 @@ const Preview = () => {
     } catch (error) {
       const errorInstance = error as AxiosError;
 
-      if (errorInstance.response?.status === 401) {
+      if (errorInstance.response?.status === 403) {
         await getNewToken();
 
         await postTour(formData);
@@ -170,12 +170,12 @@ const Preview = () => {
             <div
               className={`flex items-center ${themeColors[theme].footer} rounded py-0.5 px-1.5 w-fit`}
             >
-              <p className={`font-body1 ${themeColors[theme].language}`}>
-                {t('common.availableLanguages')}
-              </p>
+              <p className={`font-body1 ${themeColors[theme].language}`}>{t('user.languages')}</p>
               <Divider />
               <p className={`font-body1 ${themeColors[theme].language}`}>
-                {userInfo.languages.join(', ')}
+                {i18n.resolvedLanguage === 'ko'
+                  ? findKoreanLanguageName(userInfo.languages)
+                  : userInfo.languages.map((el) => capitalizeFirstLetter(el)).join(', ')}
               </p>
             </div>
 
@@ -194,7 +194,9 @@ const Preview = () => {
             <div
               className={`p-4 flex flex-col gap-2.5 ${themeColors[theme].cardBackground} rounded-xl mt-2`}
             >
-              <p className={`font-headline3 ${themeColors[theme].cardTitle}`}>{t('tour.detail')}</p>
+              <p className={`font-headline3 ${themeColors[theme].cardTitle}`}>
+                {t('posting.header2')}
+              </p>
               <p className={`font-body2 ${themeColors[theme].cardContent}`}>{description}</p>
             </div>
           </div>
@@ -286,7 +288,7 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
     >
       <div className="flex flex-col gap-4 p-4">
         <div className="flex items-center justify-between w-full">
-          <p className="font-headline2 text-gray8">스킨 색상 선택</p>
+          <p className="font-headline2 text-gray8">{t('posting.preview.color')}</p>
           <div
             className="py-0.5 px-2 rounded-[26px] bg-gray2 flex items-center justify-center"
             onClick={() => setExpand((prev) => !prev)}
@@ -322,7 +324,7 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
           onClick={onClick}
           disabled={buttonDisable}
         >
-          {buttonDisable ? t('newTour.postLoading') : t('newTour.post')}
+          {buttonDisable ? t('posting.preview.uploading') : t('posting.preview.upload')}
         </button>
       </div>
     </IonFooter>

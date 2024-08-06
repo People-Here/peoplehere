@@ -38,8 +38,8 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: FixedModalProps 
 
   return (
     <FixedModalContainer
-      title="구사 언어를 모두 선택하세요"
-      buttonText={t('common.select')}
+      title={t('editProfile.languages')}
+      buttonText={t('progress.save')}
       onClickButton={() => setLanguages(selected)}
       {...props}
     >

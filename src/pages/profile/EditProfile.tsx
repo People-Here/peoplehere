@@ -139,7 +139,7 @@ const EditProfile = () => {
     {
       iconSrc: CakeIcon,
       title: t('profile.age'),
-      value: roundAge(age),
+      value: roundAge(age, i18n.resolvedLanguage),
       modalId: 'age-modal',
       onClick: () => setShowAgeModal(true),
       required: false,

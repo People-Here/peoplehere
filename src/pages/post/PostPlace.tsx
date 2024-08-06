@@ -253,15 +253,15 @@ const Post = () => {
       <IonActionSheet
         isOpen={showPhotoOptionSheet}
         onDidDismiss={() => setShowPhotoOptionSheet(false)}
-        header="관련 사진 추가"
-        subHeader="직접 찍은 사진이 없다면 구글 이미지를 사용하세요."
+        header={t('posting.photos.title')}
+        subHeader={t('posting.photos.detail')}
         buttons={[
           {
-            text: '앨범에서 추가하기',
+            text: t('posting.photos.album'),
             handler: selectPhotosFromGallery,
           },
           {
-            text: '구글 이미지로 넣기',
+            text: t('posting.photos.googlephotos'),
             handler: async () => {
               if (images.length) {
                 setShowDefaultImageAlert(true);
@@ -275,12 +275,12 @@ const Post = () => {
 
       <Alert
         isOpen={showExitAlert}
-        title="그만하고 나갈까요?"
-        subTitle="지금까지 작성한 내용이 모두 사라져요."
+        title={t('newPost.exit.p1')}
+        subTitle={t('newPost.exit.p2')}
         onDismiss={() => setShowExitAlert(false)}
         buttons={[
           {
-            text: '나가기',
+            text: t('newPost.exit.confirm'),
             onClick: () => {
               clearAll();
               router.goBack();
@@ -384,7 +384,7 @@ const ImageList = ({ images, setImages, setFetchImages, openGallerySheet }: Imag
   return (
     <div className="p-4 flex flex-col gap-3 border-[1.5px] border-gray2 rounded-3xl w-full">
       <div className="flex items-center justify-between">
-        <IonText className="font-caption2 text-gray5.5">{t('newTour.policyWarning')}</IonText>
+        <IonText className="font-caption2 text-gray5.5 pr-1">{t('posting.photos.policy')}</IonText>
 
         <div
           className="py-2.5 px-3 flex items-center gap-1 bg-gray1.5 rounded-full shrink-0"

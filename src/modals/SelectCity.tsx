@@ -14,7 +14,7 @@ type Props = {
 };
 
 const SelectCity = ({ onClickItem, ...rest }: FixedModalProps & Props) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const isMobile = isPlatform('iphone') || isPlatform('android');
 
@@ -85,8 +85,8 @@ const SelectCity = ({ onClickItem, ...rest }: FixedModalProps & Props) => {
 
   return (
     <FixedModalContainer
-      title="거주지를 알려주세요"
-      buttonText="저장"
+      title={t('editProfile.location')}
+      buttonText={t('progress.save')}
       onClickButton={() => onClickItem(selectedCity)}
       buttonDisabled={!selectedCity.id}
       onDismiss={() => {
@@ -97,7 +97,7 @@ const SelectCity = ({ onClickItem, ...rest }: FixedModalProps & Props) => {
       <div className="h-11 bg-gray1.5 rounded-lg px-4 w-full justify-between items-center flex my-4">
         <IonInput
           className="font-body1 text-gray8"
-          placeholder="도시 검색"
+          placeholder={t('editProfile.location2')}
           clearInput
           value={searchText}
           onIonInput={(e) => {

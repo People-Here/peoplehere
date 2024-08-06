@@ -15,7 +15,7 @@ type Props = {
 };
 
 const ShowAge = ({ age, showAge, setShowAge, ...rest }: FixedModalProps & Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [show, setShow] = useState(false);
 
@@ -25,13 +25,13 @@ const ShowAge = ({ age, showAge, setShowAge, ...rest }: FixedModalProps & Props)
 
   return (
     <FixedModalContainer
-      title={t('signup.info.showAgeTitle')}
-      buttonText={t('common.save')}
+      title={t('editProfile.decade')}
+      buttonText={t('progress.save')}
       onClickButton={() => setShowAge(show)}
       {...rest}
     >
       <div className="px-4 py-2.5 w-full rounded-lg bg-gray1.5 mt-4">
-        <IonText className="font-body1 text-gray8">{roundAge(age)}</IonText>
+        <IonText className="font-body1 text-gray8">{roundAge(age, i18n.resolvedLanguage)}</IonText>
       </div>
 
       <div className="px-1 mt-8">
@@ -39,7 +39,7 @@ const ShowAge = ({ age, showAge, setShowAge, ...rest }: FixedModalProps & Props)
           checked={show}
           onChange={setShow}
           label={
-            <IonLabel className="font-body1 text-gray5.5">{t('signup.info.showAge')}</IonLabel>
+            <IonLabel className="font-body1 text-gray5.5">{t('editProfile.showDecade')}</IonLabel>
           }
         />
       </div>

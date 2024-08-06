@@ -2,6 +2,7 @@ import { IonContent, IonIcon, IonPage, useIonRouter, useIonViewWillEnter } from 
 import { useLocation } from 'react-router';
 import { GoogleMap } from '@capacitor/google-maps';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import MapPinIcon from '../../assets/svgs/location.svg';
 import MapIcon from '../../assets/svgs/map.svg';
@@ -12,6 +13,8 @@ import usePostPlaceStore from '../../stores/place';
 import '../../theme/google-map.css';
 
 const ConfirmPlace = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const { setPlace } = usePostPlaceStore((state) => state);
 
@@ -78,7 +81,7 @@ const ConfirmPlace = () => {
         <Header type="close" />
 
         <div className="px-4">
-          <p className="font-headline2 text-gray8 mt-0.5 mb-5">장소의 위치와 주소가 맞나요?</p>
+          <p className="font-headline2 text-gray8 mt-0.5 mb-5">{t('newPost.place.confirm')}</p>
 
           <div className="px-2 border-[1.5px] border-gray2 p-3 flex items-center gap-3 rounded-xl mb-4">
             <IonIcon icon={MapIcon} className="svg-xl shrink-0" />
@@ -103,7 +106,7 @@ const ConfirmPlace = () => {
               className="flex-1 w-full button-line button-lg font-subheading1 text-gray6"
               onClick={() => router.goBack()}
             >
-              뒤로
+              {t('progress.goBack')}
             </button>
             <button
               className="flex-[2] w-full text-white button-primary button-lg font-subheading1"
@@ -112,7 +115,7 @@ const ConfirmPlace = () => {
                 router.goBack();
               }}
             >
-              계속
+              {t('progress.continue')}
             </button>
           </div>
         </Footer>

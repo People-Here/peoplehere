@@ -34,8 +34,8 @@ const SelectGender = ({ setGender, onClickButton, ...rest }: FixedModalProps & P
 
   return (
     <FixedModalContainer
-      title={t('signup.info.selectGender')}
-      buttonText={t('common.confirm')}
+      title={t('signup.selectGender')}
+      buttonText={t('progress.done')}
       onClickButton={() => {
         setGender(selectedGender);
         onClickButton?.();

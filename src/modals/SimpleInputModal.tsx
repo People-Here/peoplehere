@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IonText } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import ModalContainer from '.';
 
@@ -21,12 +22,14 @@ const SimpleInputModal = ({
   setValue,
   ...props
 }: Props & ModalProps) => {
+  const { t } = useTranslation();
+
   const [input, setInput] = useState('');
 
   return (
     <ModalContainer
       title={title}
-      buttonText="저장"
+      buttonText={t('progress.save')}
       initialBreakpoint={0.3}
       breakpoints={[0, 0.3, 0.5]}
       onClickButton={() => setValue(input)}

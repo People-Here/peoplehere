@@ -129,9 +129,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
               <SearchList
-                list={history.map((item, index) => {
+                list={history.map((item) => {
                   return {
-                    id: item.placeId + `-${index}`,
+                    id: item.placeId,
                     title: item.name,
                     address: item.address,
                   };
@@ -146,9 +146,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
                 <NoResult keyword={search} />
               ) : (
                 <SearchList
-                  list={searchResult.map((item, index) => {
+                  list={searchResult.map((item) => {
                     return {
-                      id: item.placeId + `-${index}`,
+                      id: item.placeId,
                       title: item.structuredFormatting.mainText,
                       address: item.description,
                     };
@@ -191,7 +191,7 @@ const SearchBar = ({ search, setSearch, onSearch }: SearchBarProps) => {
         type="submit"
         className="w-16 px-3 text-white button-primary button-md shrink-0 font-body1 whitespace-nowrap"
       >
-        {t('common.search')}
+        {t('search.go')}
       </button>
     </form>
   );
@@ -204,9 +204,9 @@ type SearchListProps = {
 const SearchList = ({ list, onClickItem }: SearchListProps) => {
   return (
     <IonList lines="none">
-      {list.map((item) => (
+      {list.map((item, index) => (
         <IonItem
-          key={item.id}
+          key={item.id + index}
           className="ion-no-padding"
           onClick={() => {
             onClickItem(item);

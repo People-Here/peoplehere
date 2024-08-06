@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { IonIcon, IonModal } from '@ionic/react';
 import { Preferences } from '@capacitor/preferences';
+import { useTranslation } from 'react-i18next';
 
 import CloseIcon from '../assets/svgs/close.svg';
 
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const AutoTranslate = ({ onToggleChange, ...rest }: Props & ModalProps) => {
+  const { t } = useTranslation();
+
   // eslint-disable-next-line no-undef
   const modalRef = useRef<HTMLIonModalElement>(null);
 
@@ -27,9 +30,9 @@ const AutoTranslate = ({ onToggleChange, ...rest }: Props & ModalProps) => {
   return (
     <IonModal
       ref={modalRef}
-      title="번역"
-      breakpoints={[0.2, 0.3, 0.4]}
-      initialBreakpoint={0.2}
+      title={t('translation.auto')}
+      breakpoints={[0.3, 0.4]}
+      initialBreakpoint={0.3}
       {...rest}
     >
       <div className="relative px-4 py-6">
@@ -39,22 +42,26 @@ const AutoTranslate = ({ onToggleChange, ...rest }: Props & ModalProps) => {
           onClick={() => modalRef.current?.dismiss()}
         />
 
-        <p className="mb-5 text-center font-headline2 text-gray8">번역</p>
+        <p className="mb-5 text-center font-headline2 text-gray8">{t('translation.auto')}</p>
 
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="font-subheading2 text-gray7">자동 번역 활성화</p>
-            <p className="font-body1 text-gray5">외국어를 한국어로 자동 번역합니다.</p>
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <p className="font-subheading2 text-gray7">{t('translation.auto')}</p>
+
+            <Switch
+              onOff={enableAutoTranslate}
+              onChange={async () => {
+                await Preferences.set({
+                  key: 'autoTranslate',
+                  value: String(!enableAutoTranslate),
+                });
+                setEnableAutoTranslate((prev) => !prev);
+                onToggleChange?.(!enableAutoTranslate);
+              }}
+            />
           </div>
 
-          <Switch
-            onOff={enableAutoTranslate}
-            onChange={async () => {
-              await Preferences.set({ key: 'autoTranslate', value: String(!enableAutoTranslate) });
-              setEnableAutoTranslate((prev) => !prev);
-              onToggleChange?.(!enableAutoTranslate);
-            }}
-          />
+          <p className="font-body1 text-gray5">{t('translation.autoDetail')}</p>
         </div>
       </div>
     </IonModal>

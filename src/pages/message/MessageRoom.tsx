@@ -150,7 +150,7 @@ const MessageRoom = () => {
         />
 
         <div className="px-4 pb-24">
-          {messages.messageInfoList.length !== 0 ? (
+          {messages.messageInfoList.length === 0 ? (
             <NoChatChip userName={userInfo.firstName} />
           ) : (
             <div className="flex flex-col gap-8 mt-4">

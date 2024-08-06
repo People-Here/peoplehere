@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import { getTourDetail } from '../../api/tour';
@@ -23,6 +24,7 @@ import { changeMessageReceiveStatus } from '../../api/message';
 import type { TourDetail } from '../../api/tour';
 
 const ChangeStatus = () => {
+  const { t } = useTranslation();
   const router = useIonRouter();
   const location = useLocation();
   const region = useSignInStore((state) => state.region);
@@ -92,7 +94,7 @@ const ChangeStatus = () => {
               }
             >
               <p className={active ? 'font-body1 text-orange5' : 'font-body1 text-gray5'}>
-                쪽지 받기
+                {t('managePost.messageOn')}
               </p>
             </div>
 
@@ -104,16 +106,14 @@ const ChangeStatus = () => {
               }
             >
               <p className={!active ? 'font-body1 text-orange5' : 'font-body1 text-gray5'}>
-                새로운 쪽지 받지 않기
+                {t('managePost.messageOff')}
               </p>
             </div>
           </div>
 
           <div className="rounded-xl bg-gray1.5 p-4 w-full mt-4">
             <p className="font-body1 text-gray7">
-              {active
-                ? '장소에 [말 걸 수 있음] 상태를 표시하고, 새로운 사용자의 쪽지를 받습니다.'
-                : '장소에 [쪽지 마감] 상태를 표시하고, 새로운 사용자의 쪽지를 받지 않습니다. 이미 대화가 시작된 사용자와는 계속해서 쪽지를 주고 받을 수 있습니다.'}
+              {active ? t('managePost.onDetail') : t('managePost.offDetail')}
             </p>
           </div>
         </div>
@@ -123,21 +123,21 @@ const ChangeStatus = () => {
             className="w-full text-white button-primary button-lg font-subheading1"
             onClick={onClickSave}
           >
-            저장
+            {t('progress.save')}
           </button>
         </Footer>
 
         <Alert
           trigger="delete-tour-alert"
-          title="장소를 삭제할까요?"
-          subTitle={'삭제한 장소는 다시 복구할 수 없어요.'}
+          title={t('deletePost.p1')}
+          subTitle={t('deletePost.p2')}
           buttons={[
             {
-              text: '계속',
+              text: t('progress.continue'),
               onClick: () => setOpenDeleteModal(true),
             },
             {
-              text: '취소',
+              text: t('progress.cancel'),
             },
           ]}
         />
