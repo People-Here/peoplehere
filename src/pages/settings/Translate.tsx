@@ -1,10 +1,12 @@
 import { IonContent, IonPage } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 
 const Translate = () => {
+  const { t } = useTranslation();
   const [isOn, setIsOn] = useState(false);
 
   useEffect(() => {
@@ -27,15 +29,13 @@ const Translate = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="back" title="번역" />
+        <Header type="back" title={t('translation.title')} />
 
         <div className="px-4">
           <div className="flex gap-4 justify-between py-5 border-b border-gray1.5 w-full">
             <div>
-              <p className="mb-1 text-black font-subheading2">자동 번역</p>
-              <p className="font-caption2 text-gray5.5">
-                외국어로 작성된 모든 내용을 한국어로 자동 번역합니다.
-              </p>
+              <p className="mb-1 text-black font-subheading2">{t('translation.auto')}</p>
+              <p className="font-caption2 text-gray5.5">{t('translation.autoDetail')}</p>
             </div>
 
             <Switch onOff={isOn} onChange={onSwitch} />

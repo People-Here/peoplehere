@@ -1,5 +1,6 @@
 import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -8,6 +9,7 @@ import useUserStore from '../../stores/user';
 import { updateUserName } from '../../api/profile';
 
 const ChangeName = () => {
+  const { t } = useTranslation();
   const router = useIonRouter();
   const { user, setUser } = useUserStore((state) => state);
 
@@ -34,11 +36,11 @@ const ChangeName = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title="이름 수정" />
+        <Header type="close" title={t('personal.editName')} />
 
         <div className="flex flex-col gap-3 px-4 mt-4">
-          <LabelInput value={firstName} onChange={setFirstName} label="이름" />
-          <LabelInput value={lastName} onChange={setLastName} label="성" />
+          <LabelInput value={firstName} onChange={setFirstName} label={t('personal.firstName')} />
+          <LabelInput value={lastName} onChange={setLastName} label={t('personal.lastName')} />
         </div>
 
         <Footer>

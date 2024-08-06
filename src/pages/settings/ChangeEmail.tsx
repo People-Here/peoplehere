@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -8,10 +9,12 @@ import Toast from '../../toasts/Toast';
 import { updateUserEmail } from '../../api/profile';
 import useLogin from '../../hooks/useLogin';
 import { getTranslateLanguage } from '../../utils/translate';
+import { EMAIL_VALIDATION } from '../../constants/regex';
 
 import type { AxiosError } from 'axios';
 
 const ChangeEmail = () => {
+  const { t } = useTranslation();
   const { requestLogout } = useLogin();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -20,6 +23,7 @@ const ChangeEmail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authCode, setAuthCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!errorMessage || !email) return;
@@ -28,6 +32,9 @@ const ChangeEmail = () => {
   }, [email]);
 
   const checkEmailValid = async () => {
+    setErrorMessage('');
+    setIsLoading(true);
+
     const lang = await getTranslateLanguage();
     const textLanguage = lang === 'KOREAN' ? 'KOREAN' : 'ENGLISH';
 
@@ -40,12 +47,14 @@ const ChangeEmail = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 400) {
-        setErrorMessage('이메일 형식이 유효하지 않아요.');
+        setErrorMessage(t('user.invalidEmail'));
       }
 
       if (errorInstance.response?.status === 409) {
-        setErrorMessage('이미 가입한 이메일이에요.');
+        setErrorMessage(t('loginInfo.emailInUse'));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,16 +79,14 @@ const ChangeEmail = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title="이메일 수정" />
+        <Header type="close" title={t('personal.editEmail')} />
 
         <div className="px-4 mt-5">
-          <p className="font-body1 text-gray7">
-            새 이메일 주소를 저장하면 확인용 이메일을 보내드려요.
-          </p>
+          <p className="font-body1 text-gray7">{t('personal.emailDetail')}</p>
 
           <div className="flex gap-2 mt-2">
             <LabelInput
-              label="이메일"
+              label={t('user.email')}
               type="email"
               inputMode="email"
               value={email}
@@ -90,14 +97,18 @@ const ChangeEmail = () => {
             <button
               className={
                 showAuthCodeInput
-                  ? 'px-3 button-sub button-lg w-[100px] shrink-0'
-                  : 'px-3 button-primary button-lg w-[100px] shrink-0'
+                  ? 'button-sub button-lg shrink-0 w-[100px]'
+                  : 'px-3 button-primary button-lg shrink-0 w-[100px]'
               }
-              disabled={!email.length}
+              disabled={!EMAIL_VALIDATION.test(email) || isLoading}
               onClick={checkEmailValid}
             >
               <IonText className="font-body1">
-                {showAuthCodeInput ? '재발송' : '인증코드 발송'}
+                {showAuthCodeInput
+                  ? t('code.resend')
+                  : isLoading
+                    ? t('code.sending')
+                    : t('code.send')}
               </IonText>
             </button>
           </div>
@@ -106,7 +117,7 @@ const ChangeEmail = () => {
             <div className="mt-3 animate-fade-down">
               <div className="flex items-center gap-2">
                 <LabelInput
-                  label="인증번호 입력"
+                  label={t('code.placeholder')}
                   inputMode="numeric"
                   value={authCode}
                   onChange={setAuthCode}
@@ -117,15 +128,15 @@ const ChangeEmail = () => {
                   disabled={!authCode.length}
                   onClick={confirmAuthCode}
                 >
-                  <IonText className="font-body1">확인</IonText>
+                  <IonText className="font-body1">{t('code.verify')}</IonText>
                 </button>
               </div>
 
               <div className="mt-6">
-                <p className="font-body1 text-gray6">코드를 받지 못하셨나요?</p>
+                <p className="font-body1 text-gray6">{t('code.tip.title')}</p>
                 <ul className="list-disc font-caption2 text-gray5.5 pl-5 mt-1">
-                  <li>코드가 도착하는데 최대 5분이 걸릴 수 있습니다.</li>
-                  <li>스팸 폴더를 확인하세요.</li>
+                  <li>{t('code.tip.first')}</li>
+                  <li>{t('code.tip.second')}</li>
                 </ul>
               </div>
             </div>

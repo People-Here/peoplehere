@@ -50,12 +50,9 @@ const Login = () => {
         <Header type="close" />
 
         <div className="flex flex-col items-center justify-center px-4 mt-[3.125rem]">
-          <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem]">
+          <h1 className="font-suite text-orange5 text-[2rem] font-black leading-[1.875rem] mb-12">
             PeopleHere
           </h1>
-          <p className="mt-4 mb-12 text-center whitespace-pre-wrap font-body1 text-gray6">
-            {t('app.description')}
-          </p>
 
           <div className="flex flex-col w-full gap-2 mb-4">
             <LabelInput

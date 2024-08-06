@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { FixedModalContainer } from '.';
 import CheckIcon from '../assets/svgs/check.svg';
 
 import type { FixedModalProps } from '.';
-
-const options = [
-  '이미 멋진 친구를 많이 만났어요.',
-  '피플히어 서비스에 만족하지 못했어요.',
-  '기타 사유',
-];
 
 type Props = {
   onConfirm: () => void;
@@ -18,12 +13,20 @@ type Props = {
 };
 
 const DeleteUser = (props: Props & FixedModalProps) => {
+  const { t } = useTranslation();
+
   const [clickedItem, setClickedItem] = useState('');
+
+  const options = [
+    t('deleteAccount.option1'),
+    t('deleteAccount.option2'),
+    t('deleteAccount.option3'),
+  ];
 
   return (
     <FixedModalContainer
-      title="계정을 삭제하시나요?"
-      buttonText="확인"
+      title={t('deleteAccount.title')}
+      buttonText={t('progress.next')}
       onClickButton={() => {
         if (clickedItem) {
           props.setReason(clickedItem);
@@ -34,7 +37,7 @@ const DeleteUser = (props: Props & FixedModalProps) => {
       {...props}
     >
       <div>
-        <p className="mb-4 font-body2 text-gray6">삭제하려는 이유를 알려주세요.</p>
+        <p className="mb-4 font-body2 text-gray6">{t('deleteAccount.detail')}</p>
 
         <div className="mb-2">
           {options.map((option) => (

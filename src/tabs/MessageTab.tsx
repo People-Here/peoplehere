@@ -110,7 +110,7 @@ const MessageTab = () => {
                 : 'px-4 bg-white h-24 flex items-end'
           }
         >
-          <p className="pl-0 text-gray8 font-headline1">{t('message.title')}</p>
+          <p className="pl-0 text-gray8 font-headline1">{t('inbox.title')}</p>
         </IonToolbar>
 
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
@@ -119,8 +119,10 @@ const MessageTab = () => {
 
         {messages.length === 0 ? (
           <div className="flex flex-col gap-1.5 items-center justify-center w-full h-4/5 text-center overflow-hidden mt-16">
-            <p className="text-black font-headline2">{t('message.noMessage')}</p>
-            <p className="font-body1 text-gray5">{t('message.writeFirstMessage')}</p>
+            <p className="text-black font-headline2">{t('inbox.noList')}</p>
+            <p className="text-center whitespace-pre-wrap font-body1 text-gray5">
+              {t('inbox.noListDetail')}
+            </p>
           </div>
         ) : (
           <div className="px-4 pb-16 mt-16">

@@ -38,7 +38,7 @@ const UserInfo = () => {
 
   const [openBirthModal, setOpenBirthModal] = useState(false);
   const [openGenderModal, setOpenGenderModal] = useState(false);
-  const [openPolicyModal, setOpenPolicyModal] = useState(true);
+  const [openPolicyModal, setOpenPolicyModal] = useState(false);
 
   const [marketingChecked, setMarketingChecked] = useState(false);
 

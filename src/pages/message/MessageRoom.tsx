@@ -131,7 +131,7 @@ const MessageRoom = () => {
               {isLoading ? (
                 <img src={LoadingGIF} alt="loading" width={24} height={24} />
               ) : (
-                t('common.refresh')
+                t('inbox.refresh')
               )}
             </span>
           </IonButtons>
@@ -150,7 +150,7 @@ const MessageRoom = () => {
         />
 
         <div className="px-4 pb-24">
-          {messages.messageInfoList.length === 0 ? (
+          {messages.messageInfoList.length !== 0 ? (
             <NoChatChip userName={userInfo.firstName} />
           ) : (
             <div className="flex flex-col gap-8 mt-4">
@@ -176,7 +176,7 @@ const MessageRoom = () => {
               className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
             >
               <IonIcon src={MessageIcon} className="svg-lg" />
-              <p className="text-white font-subheading1">쪽지 작성</p>
+              <p className="text-white font-subheading1">{t('inbox.writeDraft')}</p>
             </button>
           </div>
         </Footer>
@@ -184,6 +184,7 @@ const MessageRoom = () => {
           trigger="send-message-modal"
           tourId={messages.tourId.toString()}
           receiverId={userInfo.id.toString()}
+          receiverName={userInfo.firstName}
           onWillDismiss={getMessageList}
         />
       </IonContent>
@@ -199,6 +200,8 @@ type ChatInfoProps = {
   userId: string;
 };
 const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5 mt-16">
       <Link to={`/detail-profile/${userId}`}>
@@ -211,7 +214,7 @@ const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps)
 
       <div>
         <div className="flex items-center">
-          <p className="font-body1 text-gray6">구사 언어</p>
+          <p className="font-body1 text-gray6">{t('user.languages')}</p>
           <Divider />
           <p className="font-body1 text-gray6">{languages.join(', ')}</p>
         </div>
@@ -242,6 +245,8 @@ type ChatProps = {
   currentLang: string;
 };
 const Chat = ({ type, message, time, currentLang }: ChatProps) => {
+  const { t } = useTranslation();
+
   const [messageLang, setMessageLang] = useState(currentLang);
 
   const onClickTranslate = async () => {
@@ -260,9 +265,9 @@ const Chat = ({ type, message, time, currentLang }: ChatProps) => {
     <div className={type === 'receive' ? 'w-full' : 'flex w-full justify-end'}>
       <div className="flex flex-col gap-0.5 w-fit">
         {type === 'receive' ? (
-          <p className="font-caption1 text-orange6">받은 쪽지</p>
+          <p className="font-caption1 text-orange6">{t('inbox.received')}</p>
         ) : (
-          <p className="text-right font-caption1 text-gray5">보낸 쪽지</p>
+          <p className="text-right font-caption1 text-gray5">{t('inbox.sent')}</p>
         )}
 
         <div className="px-2.5 py-2 bg-gray1.5 rounded-md whitespace-pre-wrap max-w-[16.5rem]">

@@ -1,5 +1,6 @@
 import { IonContent, IonPage } from '@ionic/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Header from '../../components/Header';
 import { updateAlarmStatus } from '../../api/alarm';
@@ -13,6 +14,8 @@ import type { AlarmType } from '../../api/alarm';
 import type { AxiosError } from 'axios';
 
 const ManageAlerts = () => {
+  const { t } = useTranslation();
+
   const user = useUserStore((state) => state.user);
   const region = useSignInStore((state) => state.region);
 
@@ -39,7 +42,7 @@ const ManageAlerts = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="back" title="알림" />
+        <Header type="back" title={t('notification.title')} />
 
         <div className="px-4">
           {/* <ListItem
@@ -48,8 +51,8 @@ const ManageAlerts = () => {
             onOff={true}
           /> */}
           <ListItem
-            title="새로운 쪽지 알림"
-            content="다른 사용자가 보낸 쪽지에 대한 알림을 받습니다."
+            title={t('notification.messages')}
+            content={t('notification.messages2')}
             onOff={userConsentInfo.messageAlarmConsent}
             onChange={() =>
               setUserConsentInfo((prev) => ({
@@ -61,8 +64,8 @@ const ManageAlerts = () => {
             triggerFetch={fetchConsentInfo}
           />
           <ListItem
-            title="마케팅 정보 수신"
-            content="피플히어의 업데이트 소식, 이벤트, 프로모션 등 마케팅과 관련된 알림을 받습니다."
+            title={t('notification.marketing')}
+            content={t('notification.marketing2')}
             onOff={userConsentInfo.marketingConsent}
             onChange={() =>
               setUserConsentInfo((prev) => ({

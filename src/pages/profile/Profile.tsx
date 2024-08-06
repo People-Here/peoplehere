@@ -36,12 +36,14 @@ import MessageIcon from '../../assets/svgs/message-line-color.svg';
 import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import { getTranslateLanguage } from '../../utils/translate';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import { getNewToken } from '../../api/login';
 
+import type { AxiosError } from 'axios';
 import type { DeviceInfo } from '@capacitor/device';
 import type { ProfileResponse } from '../../api/profile';
 
 const Profile = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
   const location = useLocation();
@@ -72,16 +74,9 @@ const Profile = () => {
       setPlatform(platformInfo.platform);
 
       const lang = await getTranslateLanguage();
-      const response = await getUserProfile(userId, currentRegion);
 
-      if (userId !== user.id) {
-        const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
-        if (placeListResponse.status === 200) {
-          setPlaceList(placeListResponse.data.tourList);
-        }
-      }
-
-      if (response.status === 200) {
+      try {
+        const response = await getUserProfile(userId, currentRegion);
         setUserInfo(response.data);
 
         if (i18n.resolvedLanguage === 'ko') {
@@ -94,6 +89,42 @@ const Profile = () => {
             ...response.data,
             languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
           });
+        }
+      } catch (error) {
+        const errorInstance = error as AxiosError;
+        console.warn('try to get new token...');
+
+        if (errorInstance.response?.status === 403) {
+          try {
+            await getNewToken();
+            const response = await getUserProfile(userId, currentRegion);
+            setUserInfo(response.data);
+
+            if (i18n.resolvedLanguage === 'ko') {
+              setUserInfo({
+                ...response.data,
+                languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+              });
+            } else {
+              setUserInfo({
+                ...response.data,
+                languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+              });
+            }
+          } catch (error) {
+            console.error('user token as expired');
+            const errorInstance = error as AxiosError;
+            if (errorInstance.response?.status === 400) {
+              router.push('/login');
+            }
+          }
+        }
+      }
+
+      if (userId !== user.id) {
+        const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
+        if (placeListResponse.status === 200) {
+          setPlaceList(placeListResponse.data.tourList);
         }
       }
     })();
@@ -202,7 +233,11 @@ const Profile = () => {
 
         {/* content area */}
         <div className="px-4 pb-12 mt-6">
-          <p className="mb-3 font-headline1 text-orange6">{userInfo.firstName} 님의 소개</p>
+          <p className="mb-3 font-headline1 text-orange6">
+            {i18n.resolvedLanguage === 'ko'
+              ? `${userInfo.firstName} 님의 소개`
+              : `About ${userInfo.firstName}`}
+          </p>
           <div className="p-4 mb-3 bg-gray1 rounded-xl">
             <IonText className="whitespace-pre-wrap font-body1 text-gray7">
               {userInfo.introduce ?? '자기소개가 아직 없습니다.'}
@@ -211,31 +246,55 @@ const Profile = () => {
 
           <div className="flex gap-3 mb-3">
             <div className="flex flex-col flex-1 gap-1 p-4 mb-3 bg-gray1 rounded-xl">
-              <p className="font-headline3 text-gray6">구사 언어</p>
+              <p className="font-headline3 text-gray6">{t('profile.languages')}</p>
               <p className="font-body1 text-gray7">{userInfo.languages.join(', ')}</p>
             </div>
             <div className="flex flex-col flex-1 gap-1 p-4 mb-3 bg-gray1 rounded-xl">
-              <p className="font-headline3 text-gray6">출신 국가</p>
-              <p className="font-body1 text-gray7">{region.koreanName}</p>
+              <p className="font-headline3 text-gray6">{t('profile.country')}</p>
+              <p className="font-body1 text-gray7">
+                {i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName}
+              </p>
             </div>
           </div>
 
           {hasAdditionalInfo && (
             <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
               {userInfo.address && (
-                <IntroduceItem icon="location" title="거주지" value={userInfo.address} />
+                <IntroduceItem
+                  icon="location"
+                  title={t('profile.location')}
+                  value={userInfo.address}
+                />
               )}
               {userInfo.birthDate && (
-                <IntroduceItem icon="age" title="나이" value={`${userInfo.birthDate[2]}0년대생`} />
+                <IntroduceItem
+                  icon="age"
+                  title={t('profile.age')}
+                  value={
+                    i18n.resolvedLanguage === 'ko'
+                      ? `${userInfo.birthDate[2]}0년대생`
+                      : `${userInfo.birthDate[2]}0s`
+                  }
+                />
               )}
-              {userInfo.job && <IntroduceItem icon="job" title="직업" value={userInfo.job} />}
+              {userInfo.job && (
+                <IntroduceItem icon="job" title={t('profile.work')} value={userInfo.job} />
+              )}
               {userInfo.school && (
-                <IntroduceItem icon="school" title="출신학교" value={userInfo.school} />
+                <IntroduceItem icon="school" title={t('profile.school')} value={userInfo.school} />
               )}
-              {userInfo.hobby && <IntroduceItem icon="hobby" title="취미" value={userInfo.hobby} />}
-              {userInfo.pet && <IntroduceItem icon="pet" title="반려동물" value={userInfo.pet} />}
+              {userInfo.hobby && (
+                <IntroduceItem icon="hobby" title={t('profile.hobby')} value={userInfo.hobby} />
+              )}
+              {userInfo.pet && (
+                <IntroduceItem icon="pet" title={t('profile.pet')} value={userInfo.pet} />
+              )}
               {userInfo.favorite && (
-                <IntroduceItem icon="favorite" title="좋아하는 것" value={userInfo.favorite} />
+                <IntroduceItem
+                  icon="favorite"
+                  title={t('profile.favorite')}
+                  value={userInfo.favorite}
+                />
               )}
             </div>
           )}
@@ -286,11 +345,11 @@ type IntroduceItemProps = {
 };
 const IntroduceItem = ({ icon, title, value }: IntroduceItemProps) => {
   return (
-    <div className="flex items-center">
-      <IonIcon icon={iconMapper[icon]} className="svg-md mr-1.5 shrink-0" />
+    <div className="flex">
+      <IonIcon icon={iconMapper[icon]} className="svg-md mr-1.5 shrink-0 mt-0.5" />
 
-      <p className="font-body1 text-gray6 whitespace-nowrap">{title}</p>
-      <Divider />
+      <p className="mr-1 font-body1 text-gray6 whitespace-nowrap">{title}</p>
+
       <p className="font-body1 text-gray6">{value}</p>
     </div>
   );
@@ -305,6 +364,8 @@ type TourInfoProps = {
   available?: boolean;
 };
 const TourInfo = ({ image, title, placeName, district, available }: TourInfoProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="relative flex gap-3 p-3 bg-white border rounded-xl border-gray2">
       <IonImg
@@ -316,14 +377,14 @@ const TourInfo = ({ image, title, placeName, district, available }: TourInfoProp
         {available ? (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-orange1 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-orange5">
-              쪽지 받기
+              {t('post.onTag')}
             </IonText>
             <IonIcon icon={MessageIcon} className="svg-xs" />
           </div>
         ) : (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-gray1.5 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-gray6">
-              쪽지 마감
+              {t('post.offTag')}
             </IonText>
             <IonIcon icon={MessageBlockedIcon} className="svg-xs" />
           </div>

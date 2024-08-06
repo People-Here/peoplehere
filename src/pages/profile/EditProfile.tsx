@@ -42,7 +42,7 @@ import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
 
 const EditProfile = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const router = useIonRouter();
 
@@ -101,15 +101,15 @@ const EditProfile = () => {
   const listItems = [
     {
       iconSrc: GlobeIcon,
-      title: '출신국가',
-      value: region.koreanName,
+      title: t('profile.country'),
+      value: i18n.resolvedLanguage === 'ko' ? region.koreanName : region.englishName,
       modalId: 'region-modal',
       onClick: () => setShowRegionModal(true),
       required: true,
     },
     {
       iconSrc: LanguageIcon,
-      title: '구사언어',
+      title: t('profile.languages'),
       value: languages.map((lang) => lang.koreanName).join(', '),
       modalId: 'language-modal',
       onClick: () => setShowLanguageModal(true),
@@ -117,16 +117,28 @@ const EditProfile = () => {
     },
     {
       iconSrc: DoubleHeartIcon,
-      title: '좋아하는 것',
+      title: t('profile.favorite'),
       value: favorite ?? '',
       modalId: 'favorite-modal',
       required: false,
     },
-    { iconSrc: ClockIcon, title: '취미', value: hobby, modalId: 'hobby-modal', required: false },
-    { iconSrc: DogIcon, title: '반려동물', value: pet, modalId: 'pet-modal', required: false },
+    {
+      iconSrc: ClockIcon,
+      title: t('profile.hobby'),
+      value: hobby,
+      modalId: 'hobby-modal',
+      required: false,
+    },
+    {
+      iconSrc: DogIcon,
+      title: t('profile.pet'),
+      value: pet,
+      modalId: 'pet-modal',
+      required: false,
+    },
     {
       iconSrc: CakeIcon,
-      title: '나이',
+      title: t('profile.age'),
       value: roundAge(age),
       modalId: 'age-modal',
       onClick: () => setShowAgeModal(true),
@@ -134,16 +146,22 @@ const EditProfile = () => {
     },
     {
       iconSrc: LocationIcon,
-      title: '거주지',
+      title: t('profile.location'),
       value: location,
       modalId: 'search-place',
       onClick: () => setShowCityModal(true),
       required: false,
     },
-    { iconSrc: BagIcon, title: '직업', value: job, modalId: 'job-modal', required: false },
+    {
+      iconSrc: BagIcon,
+      title: t('profile.work'),
+      value: job,
+      modalId: 'job-modal',
+      required: false,
+    },
     {
       iconSrc: SchoolIcon,
-      title: '출신학교',
+      title: t('profile.school'),
       value: school,
       modalId: 'school-modal',
       required: false,
@@ -205,11 +223,9 @@ const EditProfile = () => {
         <div className="px-4 mt-16 mb-4">
           <div className="border border-gray3 rounded-2xl flex items-center py-2 flex-col gap-1.5">
             <IonText className="text-center whitespace-pre-wrap font-body1 text-gray6">
-              {'피플히어의 다른 회원들에게\n나를 소개하는 프로필을 만들어 주세요.'}
+              {t('editProfile.guide')}
             </IonText>
-            <IonText className="font-caption1 text-gray5">
-              한글로 작성할 경우 자동으로 영문 번역될 수 있어요.
-            </IonText>
+            <IonText className="font-caption1 text-gray5">{t('editProfile.translation')}</IonText>
           </div>
         </div>
 
@@ -219,7 +235,7 @@ const EditProfile = () => {
         {/* content area */}
         <div className="px-4 pb-28 mt-7">
           <div className="flex items-center justify-between mb-4">
-            <IonText className="font-headline2 text-gray7">자기 소개</IonText>
+            <IonText className="font-headline2 text-gray7">{t('editProfile.introduction')}</IonText>
             <RequiredChip />
           </div>
 
@@ -229,7 +245,7 @@ const EditProfile = () => {
             onClick={() => setShowIntroduceModal(true)}
           >
             <IonText className="whitespace-pre-wrap font-body1 text-gray8">
-              {introduce ? introduce : '나에 대한 자유로운 소개글을 작성해 보세요.'}
+              {introduce ? introduce : t('editProfile.introduction2')}
             </IonText>
           </div>
 
@@ -254,7 +270,7 @@ const EditProfile = () => {
             onClick={saveProfile}
             disabled={!image || !introduce || !region.countryCode || languages.length === 0}
           >
-            완료
+            {t('progress.done')}
           </button>
         </Footer>
       </IonContent>
@@ -337,9 +353,11 @@ const EditProfile = () => {
 };
 
 const RequiredChip = () => {
+  const { t } = useTranslation();
+
   return (
     <span className="px-2 py-0.5 border border-orange2 bg-orange1 rounded-full font-caption1 text-orange5 shrink-0">
-      필수
+      {t('editProfile.required')}
     </span>
   );
 };

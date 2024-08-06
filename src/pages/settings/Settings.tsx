@@ -10,7 +10,9 @@ import {
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
+import { useTranslation } from 'react-i18next';
 
+import packageJSON from '../../../package.json';
 import Header from '../../components/Header';
 import UserIcon from '../../assets/svgs/user.svg';
 import BellIcon from '../../assets/svgs/bell.svg';
@@ -28,6 +30,7 @@ import LanguageIcon from '../../assets/svgs/language.svg';
 import type { AxiosError } from 'axios';
 
 const Settings = () => {
+  const { t } = useTranslation();
   const router = useIonRouter();
 
   const { id } = useUserStore((state) => state.user);
@@ -60,11 +63,23 @@ const Settings = () => {
           <IonText className="mt-1 font-headline1 text-gray8">환경 설정</IonText>
 
           <div className="mt-4">
-            <MenuItem title="개인정보" icon={UserIcon} routeTo="/settings/informations" />
-            <MenuItem title="번역" icon={LanguageIcon} routeTo="/settings/translate" />
-            <MenuItem title="알림" icon={BellIcon} routeTo="/settings/alert" />
-            <MenuItem title="문의하기" icon={CustomerSupportIcon} routeTo="/settings/support" />
-            <MenuItem title="법률" icon={PaperIcon} routeTo="/settings/policy" />
+            <MenuItem
+              title={t('personal.title')}
+              icon={UserIcon}
+              routeTo="/settings/informations"
+            />
+            <MenuItem
+              title={t('translation.title')}
+              icon={LanguageIcon}
+              routeTo="/settings/translate"
+            />
+            <MenuItem title={t('notification.title')} icon={BellIcon} routeTo="/settings/alert" />
+            <MenuItem
+              title={t('contactUs.title')}
+              icon={CustomerSupportIcon}
+              routeTo="/settings/support"
+            />
+            <MenuItem title={t('legal.title')} icon={PaperIcon} routeTo="/settings/policy" />
           </div>
         </div>
 
@@ -75,12 +90,12 @@ const Settings = () => {
                 className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
                 onClick={() => setOpenLogoutModal(true)}
               >
-                로그아웃
+                {t('user.logout')}
               </button>
             ) : (
               <Link to="/login">
                 <button className="w-full mb-4 button-sub button-lg font-subheading1 text-orange5">
-                  로그인
+                  {t('user.login')}
                 </button>
               </Link>
             )}
@@ -93,8 +108,10 @@ const Settings = () => {
             </div>
 
             <div className="flex flex-col items-center mb-2">
-              <p className="font-caption2 text-gray5.5">버전 1.0</p>
-              <p className="font-caption2 text-gray5.5">전 세계의 모든 우정을 담아.</p>
+              <p className="font-caption2 text-gray5.5">
+                {t('settings.version')} {packageJSON.version}
+              </p>
+              <p className="font-caption2 text-gray5.5">{t('settings.phrase')}</p>
             </div>
 
             {isLogin ? (
@@ -102,11 +119,13 @@ const Settings = () => {
                 className="text-center underline font-caption1 text-gray5.5"
                 onClick={() => setOpenDeleteReasonSheet(true)}
               >
-                계정 삭제
+                {t('deleteAccount.title')}
               </p>
             ) : (
               <Link to="/sign-up/email">
-                <p className="text-center underline font-caption1 text-gray5.5">회원가입</p>
+                <p className="text-center underline font-caption1 text-gray5.5">
+                  {t('user.signup')}
+                </p>
               </Link>
             )}
           </IonToolbar>
@@ -121,11 +140,11 @@ const Settings = () => {
 
         <Alert
           isOpen={openDeleteModal}
-          title="정말로 계정을 삭제할까요?"
-          subTitle="개인정보 보호 방침에 따라 회원님의 계정은 30일 간 비활성화 후 영구 삭제될 예정이며, 비활성화 중 로그인을 시도하면 삭제 요청을 철회하고 계정을 복구할 수 있습니다."
+          title={t('deleteAccount.confirm')}
+          subTitle={t('deleteAccount.confirmDetail')}
           buttons={[
             {
-              text: '계정 삭제',
+              text: t('deleteAccount.complete'),
               onClick: async () => {
                 try {
                   await deleteAccount(id, deleteReason);
@@ -134,7 +153,7 @@ const Settings = () => {
                 } catch (error) {
                   const errorInstance = error as AxiosError;
 
-                  if (errorInstance.response?.status === 401) {
+                  if (errorInstance.response?.status === 403) {
                     await getNewToken();
                     await deleteAccount(id, deleteReason);
                     await requestLogout();
@@ -146,7 +165,7 @@ const Settings = () => {
               },
             },
             {
-              text: '취소',
+              text: t('progress.cancel'),
             },
           ]}
           onDismiss={() => {

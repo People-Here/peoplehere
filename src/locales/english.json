@@ -121,9 +121,9 @@
     "noPosts": "No posts found for your search."
   },
   "savedPosts": {
-    "title": "관심 목록",
-    "noList": "관심 목록이 비어있어요",
-    "unsave": "관심 목록에서 삭제했어요."
+    "title": "Saved Posts",
+    "noList": "Explore posts about cool places!\nThe posts you like will appear here.",
+    "unsave": "Post removed from your list."
   },
   "post": {
     "onTag": "Talk to Me",
@@ -258,7 +258,7 @@
   },
 
   "settings": {
-    "version": "Version [버전명]",
+    "version": "Version",
     "phrase": "With every friendship around the world",
     "logout": "Log out of your account?"
   },

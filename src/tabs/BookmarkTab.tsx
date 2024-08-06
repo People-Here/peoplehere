@@ -10,6 +10,7 @@ import {
 import { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
+import { useTranslation } from 'react-i18next';
 
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
@@ -24,6 +25,8 @@ import type { BookmarkedTour, User } from '../api/tour';
 import type { AxiosError } from 'axios';
 
 const BookmarkTab = () => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
   const { checkLogin } = useLogin();
 
@@ -102,13 +105,15 @@ const BookmarkTab = () => {
                 : 'px-4 bg-white h-24 flex items-end'
           }
         >
-          <p className="pl-0 font-headline1 text-gray8">관심 목록</p>
+          <p className="pl-0 font-headline1 text-gray8">{t('savedPosts.title')}</p>
         </IonToolbar>
 
         {/* body */}
         {list.length === 0 ? (
           <div className="flex items-center justify-center h-full -mt-14">
-            <p className="font-headline2 text-gray6">관심 목록이 비어있어요.</p>
+            <p className="text-center whitespace-pre-wrap font-headline2 text-gray6">
+              {t('savedPosts.noList')}
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-3 px-4 pb-20 mt-16">

@@ -157,14 +157,14 @@ const MyPage = () => {
               className="px-6 text-white button-primary button-lg font-subheading1 w-fit"
               onClick={() => router.push(`/edit-profile/${user.id}`)}
             >
-              프로필 완성하기
+              {t('mypage.createProfile')}
             </button>
           </div>
         ) : (
           <>
             <UserInfo image={user.profileImageUrl} name={user.firstName} />
 
-            <div className="flex flex-col gap-4 mt-10">
+            <div className="flex flex-col gap-4 pb-20 mt-10">
               {tourList.length > 0 ? (
                 <>
                   {tourList.map((tour) => (
@@ -186,7 +186,7 @@ const MyPage = () => {
 
                   <Link to="/post" className="flex items-center justify-center gap-1 p-3">
                     <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-                    <p className="font-body1 text-orange6">장소 올리기</p>
+                    <p className="font-body1 text-orange6">{t('mypage.addPost')}</p>
                   </Link>
                 </>
               ) : (
@@ -224,7 +224,7 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
 
         <div>
           <p className="font-headline3 text-gray7">{name}</p>
-          <p className="font-body1 text-gray6">{t('mypage.seeProfile')}</p>
+          <p className="font-body1 text-gray6">{t('mypage.showProfile')}</p>
         </div>
       </div>
 
@@ -242,6 +242,8 @@ type TourInfoProps = {
   available?: boolean;
 };
 const TourInfo = ({ id, image, title, placeName, district, available }: TourInfoProps) => {
+  const { t } = useTranslation();
+
   const router = useIonRouter();
 
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -266,14 +268,14 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
         {available ? (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-orange1 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-orange5">
-              쪽지 받기
+              {t('post.onTag')}
             </IonText>
             <IonIcon icon={MessageIcon} className="svg-xs" />
           </div>
         ) : (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-gray1.5 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-gray6">
-              쪽지 마감
+              {t('post.offTag')}
             </IonText>
             <IonIcon icon={MessageBlockedIcon} className="svg-xs" />
           </div>
@@ -293,19 +295,19 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
         onDidDismiss={() => setIsActionSheetOpen(false)}
         buttons={[
           {
-            text: '수정하기',
+            text: t('post.edit'),
             handler: () => {
               router.push(`/post/${id}`);
             },
           },
           {
-            text: '상태 변경하기',
+            text: t('post.manage'),
             handler: () => {
               router.push(`/change-status/${id}`);
             },
           },
           {
-            text: '취소',
+            text: t('progress.cancel'),
             role: 'cancel',
             data: {
               action: 'cancel',
