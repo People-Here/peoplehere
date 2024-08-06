@@ -13,7 +13,8 @@
     "languages": "Speaks",
     "login": "Log in",
     "logout": "Log out",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "retry": "Back to Login"
   },
   "progress": {
     "done": "Done",
@@ -42,8 +43,8 @@
     "limit": "You’ve reached our limit of verification codes.\nPlease try again tomorrow.",
     "tip": {
       "title": "Didn’t get a code?",
-      "1": "The email may take up to 5 minutes to arrive.",
-      "2": "Check your spam or junk folder if you can't find our email."
+      "first": "The email may take up to 5 minutes to arrive.",
+      "second": "Check your spam or junk folder if you can't find our email."
     }
   },
   "search": {
@@ -131,8 +132,8 @@
     "description": "What to do here?",
     "edit": "Edit Post",
     "manage": "Manage Post",
-    "messageOn": "Message {플레이스 포스트 작성자 first_name}",
-    "messageOff": "On Break for Now",
+    "message": "Message {플레이스 포스트 작성자 first_name}",
+    "blockMessage": "On Break for Now",
     "sentToast": "Message sent! Check your inbox."
   },
   "posting": {
