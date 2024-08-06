@@ -173,7 +173,7 @@ const Post = () => {
       />
 
       <div className="flex flex-col items-center px-4 pb-24 mt-16">
-        <IonText className="mb-4 font-headline2 text-gray7">{t('newTour.header')}</IonText>
+        <IonText className="mb-4 font-headline2 text-gray7">{t('posting.header1')}</IonText>
 
         {place.id ? (
           <PlaceItem id={place.id} text={place.title} description={place.address} />
@@ -183,7 +183,7 @@ const Post = () => {
             className="w-full py-5 flex items-center justify-center gap-1.5 bg-orange5 rounded-3xl mb-3"
           >
             <IonIcon className="svg-lg" src={PlusCircleWhiteIcon} />
-            <IonText className="text-white font-heading">{t('newTour.search')}</IonText>
+            <IonText className="text-white font-heading">{t('newPost.place.title')}</IonText>
           </button>
         )}
 
@@ -204,15 +204,15 @@ const Post = () => {
         )}
 
         <div className="mt-[3.25rem] flex flex-col items-center gap-1 mb-5">
-          <IonText className="font-headline2 text-gray7">{t('newTour.detail')}</IonText>
-          <IonText className="font-caption2 text-gray6">{t('newTour.translate')}</IonText>
+          <IonText className="font-headline2 text-gray7">{t('posting.header2')}</IonText>
+          <IonText className="font-caption2 text-gray6">{t('posting.translation')}</IonText>
         </div>
 
         <div className="flex flex-col w-full gap-3">
           <div className="p-3.5 border-[1.5px] border-gray2 rounded-xl">
             <input
               className="w-full h-full bg-white outline-none font-body1 text-gray8"
-              placeholder={t('newTour.title')}
+              placeholder={t('posting.title')}
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
@@ -220,7 +220,7 @@ const Post = () => {
           <div className="h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5">
             <textarea
               className="w-full h-full bg-white outline-none resize-none font-body1 text-gray8"
-              placeholder={t('newTour.description')}
+              placeholder={t('posting.description')}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
             />
@@ -235,7 +235,7 @@ const Post = () => {
             onClick={uploadPost}
             disabled={!place.id || !title || !description}
           >
-            {t('common.preview')}
+            {t('posting.preview.title')}
           </button>
         </IonToolbar>
       </IonFooter>
@@ -347,7 +347,7 @@ const UploadImages = ({ images, openGallerySheet }: ImageProps) => {
         <IonIcon src={CameraIcon} className="svg-md" />
         <IonText className="font-body1 text-gray6">{images.length} / 12</IonText>
       </div>
-      <IonText className="font-body1 text-gray5.5">{t('newTour.addPictures')}</IonText>
+      <IonText className="font-body1 text-gray5.5">{t('posting.photos.title')}</IonText>
     </div>
   );
 };

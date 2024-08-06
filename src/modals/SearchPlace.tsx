@@ -36,7 +36,7 @@ type Props = {
 };
 
 const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const region = useSignInStore((state) => state.region);
 
@@ -129,9 +129,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
               <IonText className="font-body1 text-gray6 mb-2.5">{t('search.recent')}</IonText>
 
               <SearchList
-                list={history.map((item) => {
+                list={history.map((item, index) => {
                   return {
-                    id: item.placeId,
+                    id: item.placeId + `-${index}`,
                     title: item.name,
                     address: item.address,
                   };
@@ -146,9 +146,9 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
                 <NoResult keyword={search} />
               ) : (
                 <SearchList
-                  list={searchResult.map((item) => {
+                  list={searchResult.map((item, index) => {
                     return {
-                      id: item.placeId,
+                      id: item.placeId + `-${index}`,
                       title: item.structuredFormatting.mainText,
                       address: item.description,
                     };
