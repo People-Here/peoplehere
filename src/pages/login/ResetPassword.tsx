@@ -25,7 +25,7 @@ const ResetPassword = () => {
         <Header type="close" title={t('resetPassword.title')} />
 
         <div className="flex flex-col gap-2 px-4 mt-5">
-          <IonText className="font-body1 text-gray7">가입하신 이메일을 입력해 주세요.</IonText>
+          <IonText className="font-body1 text-gray7">{t('resetPassword.detail')}</IonText>
 
           <PasswordInput value={password} onChange={setPassword} />
 
@@ -38,7 +38,7 @@ const ResetPassword = () => {
             disabled={!isPasswordValid}
             onClick={() => router.push('/login')}
           >
-            계속
+            {t('progress.continue')}
           </button>
         </Footer>
       </IonContent>

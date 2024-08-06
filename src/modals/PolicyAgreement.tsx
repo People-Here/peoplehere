@@ -23,8 +23,8 @@ const PolicyAgreement = ({
 
   return (
     <FixedModalContainer
-      title={t('signup.policy.title')}
-      buttonText={t('signup.policy.agree')}
+      title={t('agreePolicy.title')}
+      buttonText={t('agreePolicy.agree')}
       onClickButton={onClickButton}
       {...rest}
     >
@@ -41,8 +41,8 @@ const PolicyAgreement = ({
           onChange={setMarketingChecked}
           label={
             <label>
-              <p className="font-caption2 text-gray7">{t('signup.policy.marketingAgreement1')}</p>
-              <p className="font-caption2 text-gray5.5">{t('signup.policy.marketingAgreement2')}</p>
+              <p className="font-caption2 text-gray7">{t('agreePolicy.marketing1')}</p>
+              <p className="font-caption2 text-gray5.5">{t('agreePolicy.marketing2')}</p>
             </label>
           }
         />
@@ -83,7 +83,7 @@ const PolicyAgreement = ({
               target="_blank"
               className="font-medium underline"
             >
-              개인정보처리방침
+              Privacy policy
             </Link>
           </p>
         )}

@@ -21,7 +21,7 @@ const EmailAuth = () => {
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showAuthCodeInput, setShowAuthCodeInput] = useState(true);
+  const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,18 +48,18 @@ const EmailAuth = () => {
         const errorInstance = error as AxiosError;
 
         if (errorInstance.response?.status === 403) {
-          setErrorMessage('하루 이메일 전송 횟수를 초과했어요. 내일 다시 시도해주세요.');
+          setErrorMessage(t('code.limit'));
         }
       }
     } catch (error) {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 400) {
-        setErrorMessage(t('error.invalidEmail'));
+        setErrorMessage(t('user.invalidEmail'));
       }
 
       if (errorInstance.response?.status === 409) {
-        setErrorMessage(t('error.alreadyInUse'));
+        setErrorMessage(t('loginInfo.emailInUse'));
       }
     } finally {
       setIsLoading(false);
@@ -73,7 +73,7 @@ const EmailAuth = () => {
       setEmail(emailInput);
       router.push('/sign-up/password');
     } else {
-      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
+      setAuthErrorMessage(t('code.wrong'));
     }
   };
 
@@ -85,12 +85,12 @@ const EmailAuth = () => {
         <div className="px-4 mt-5">
           <ProgressDots total={3} current={1} />
           <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-            {t('signup.email.title')}
+            {t('loginInfo.email')}
           </h1>
 
           <div className="flex gap-2 mt-5">
             <LabelInput
-              label={t('common.email')}
+              label={t('user.email')}
               type="email"
               inputMode="email"
               value={emailInput}
@@ -109,10 +109,10 @@ const EmailAuth = () => {
             >
               <IonText className="font-body1">
                 {showAuthCodeInput
-                  ? t('signup.verify.resend')
+                  ? t('code.resend')
                   : isLoading
-                    ? t('signup.email.sending')
-                    : t('signup.verify.send')}
+                    ? t('code.sending')
+                    : t('code.send')}
               </IonText>
             </button>
           </div>
@@ -121,7 +121,7 @@ const EmailAuth = () => {
             <>
               <div className="flex gap-2 mt-3 animate-fade-down">
                 <LabelInput
-                  label={t('signup.verify.placeholder')}
+                  label={t('code.placeholder')}
                   inputMode="numeric"
                   value={authCode}
                   onChange={setAuthCode}
@@ -133,17 +133,15 @@ const EmailAuth = () => {
                   disabled={!authCode.length}
                   onClick={confirmAuthCode}
                 >
-                  <IonText className="font-body1">{t('common.confirm')}</IonText>
+                  <IonText className="font-body1">{t('code.verify')}</IonText>
                 </button>
               </div>
 
               <div className="flex flex-col gap-1 mt-6">
-                <p className="font-body1 text-gray6">코드를 받지 못하셨나요?</p>
+                <p className="font-body1 text-gray6">{t('code.tip.title')}</p>
                 <ul className="pl-4 list-disc">
-                  <li className="font-caption2 text-gray5.5">
-                    코드가 도착하는데 최대 5분이 걸릴 수 있습니다.
-                  </li>
-                  <li className="font-caption2 text-gray5.5">스팸 폴더를 확인하세요.</li>
+                  <li className="font-caption2 text-gray5.5">{t('code.tip.first')}</li>
+                  <li className="font-caption2 text-gray5.5">{t('code.tip.second')}</li>
                 </ul>
               </div>
             </>

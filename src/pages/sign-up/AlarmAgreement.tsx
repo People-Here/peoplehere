@@ -100,19 +100,19 @@ const AlarmAgreement = () => {
             />
 
             <IonText className="font-headline2 text-black mb-1.5">
-              {t('signup.alarm.title')}
+              {t('allowNotification.title')}
             </IonText>
-            <IonText className="whitespace-pre-line font-body1 text-gray5">
-              {t('signup.alarm.description')}
+            <IonText className="text-center whitespace-pre-line font-body1 text-gray5">
+              {t('allowNotification.detail')}
             </IonText>
           </div>
 
           <div className="flex flex-col items-center w-full gap-4">
             <button className="w-full button-primary button-lg" onClick={() => agreeAlarm(true)}>
-              {t('signup.alarm.agree')}
+              {t('allowNotification.allow')}
             </button>
             <IonText className="font-body1 text-gray6" onClick={() => agreeAlarm(false)}>
-              {t('signup.alarm.skip')}
+              {t('allowNotification.skip')}
             </IonText>
           </div>
         </div>

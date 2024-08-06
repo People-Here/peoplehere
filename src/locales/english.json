@@ -40,7 +40,7 @@
     "timeLeft": "Time left",
     "wrong": "Incorrect verification code",
     "expired": "The verification code has expired.",
-    "limit": "You’ve reached our limit of verification codes.\nPlease try again tomorrow.",
+    "limit": "You’ve reached our limit of verification codes. Please try again tomorrow.",
     "tip": {
       "title": "Didn’t get a code?",
       "first": "The email may take up to 5 minutes to arrive.",

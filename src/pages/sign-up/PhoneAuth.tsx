@@ -86,15 +86,16 @@ const PhoneAuth = () => {
         <Header type="back" title="본인인증" />
 
         <div className="flex flex-col gap-2 px-4 mt-5">
-          <SelectInput
-            id="region-modal"
-            label="국가/지역"
-            value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
-          />
+          <div onClick={() => setShowRegionModal(true)}>
+            <SelectInput
+              label={t('verifyPhone.countryCode')}
+              value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
+            />
+          </div>
 
           <div className="flex gap-2">
             <LabelInput
-              label="전화번호"
+              label={t('user.phoneNumber')}
               type="tel"
               inputMode="tel"
               value={phoneNumberInput}
@@ -112,17 +113,13 @@ const PhoneAuth = () => {
               onClick={sendAuthCode}
             >
               <IonText className="font-body1">
-                {showCodeInput
-                  ? t('signup.verify.resend')
-                  : isLoading
-                    ? t('signup.email.sending')
-                    : t('signup.verify.send')}
+                {showCodeInput ? t('code.resend') : isLoading ? t('code.sending') : t('code.send')}
               </IonText>
             </button>
           </div>
 
           <IonText id="phone-alert" className="pl-1 underline font-body1 text-gray5">
-            전화번호 인증이 불가한가요?
+            {t('verifyPhone.skip')}
           </IonText>
 
           {showCodeInput ? (
@@ -131,7 +128,7 @@ const PhoneAuth = () => {
 
               <div className="flex items-center gap-2 mt-2">
                 <LabelInput
-                  label={t('signup.verify.placeholder')}
+                  label={t('code.placeholder')}
                   inputMode="numeric"
                   value={authCode}
                   onChange={setAuthCode}
@@ -142,7 +139,7 @@ const PhoneAuth = () => {
                   disabled={authCode.length !== 6 || timeLeft === 0}
                   onClick={confirmAuthCode}
                 >
-                  <IonText className="text-white font-body1">{t('common.confirm')}</IonText>
+                  <IonText className="text-white font-body1">{t('code.verify')}</IonText>
                 </button>
               </div>
 
@@ -153,12 +150,15 @@ const PhoneAuth = () => {
           ) : null}
         </div>
 
-        <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(true)} />
+        <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(false)} />
 
         <Alert
           trigger="phone-alert"
-          title="전화번호 인증이 어려운 상황인가요?"
-          buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-up/email') }]}
+          title={t('verifyPhone.skipDetail')}
+          buttons={[
+            { text: t('progress.cancel') },
+            { text: t('progress.positive'), onClick: () => router.push('/sign-up/email') },
+          ]}
         />
       </IonContent>
     </IonPage>
@@ -169,9 +169,11 @@ type TimerProps = {
   timeLeft: number;
 };
 const Timer = memo(({ timeLeft }: TimerProps) => {
+  const { t } = useTranslation();
+
   return (
     <IonText className="pl-1 font-body2 text-gray6">
-      남은 시간 {secondToMinuteSecond(timeLeft)}
+      {t('code.timeLeft')} {secondToMinuteSecond(timeLeft)}
     </IonText>
   );
 });

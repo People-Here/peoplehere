@@ -11,9 +11,9 @@ import DatePicker from '../../modals/DatePicker';
 import SelectGender from '../../modals/SelectGender';
 import PolicyAgreement from '../../modals/PolicyAgreement';
 import useSignInStore from '../../stores/signIn';
-import Toast from '../../toasts/Toast';
 import { GENDER } from '../../constants/gender';
 import { capitalizeFirstLetter } from '../../utils/mask';
+import Toast from '../../toasts/Toast';
 
 const UserInfo = () => {
   const { t, i18n } = useTranslation();
@@ -38,7 +38,7 @@ const UserInfo = () => {
 
   const [openBirthModal, setOpenBirthModal] = useState(false);
   const [openGenderModal, setOpenGenderModal] = useState(false);
-  const [openPolicyModal, setOpenPolicyModal] = useState(false);
+  const [openPolicyModal, setOpenPolicyModal] = useState(true);
 
   const [marketingChecked, setMarketingChecked] = useState(false);
 
@@ -77,16 +77,12 @@ const UserInfo = () => {
       <div className="px-4 mt-5">
         <ProgressDots total={3} current={3} />
         <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-          {t('signup.info.title')}
+          {t('signup.title')}
         </h1>
 
         <div className="flex flex-col gap-2 mt-5 mb-9">
-          <LabelInput
-            label={t('signup.info.firstName')}
-            value={firstName}
-            onChange={setFirstName}
-          />
-          <LabelInput label={t('signup.info.lastName')} value={lastName} onChange={setLastName} />
+          <LabelInput label={t('signup.firstName')} value={firstName} onChange={setFirstName} />
+          <LabelInput label={t('signup.lastName')} value={lastName} onChange={setLastName} />
         </div>
 
         {showBirthInput && (
@@ -98,18 +94,18 @@ const UserInfo = () => {
             }}
           >
             <SelectInput
-              label={t('signup.info.birthDay')}
+              label={t('signup.birthday')}
               value={birth.split('T')[0].replaceAll('-', '/')}
             />
             {ageError && <IonText className="pl-1 font-caption2 text-red3">{ageError}</IonText>}
-            <IonText className="pl-1 font-caption2 text-gray6">{t('signup.info.ageLimit')}</IonText>
+            <IonText className="pl-1 font-caption2 text-gray6">{t('signup.ageLimit')}</IonText>
           </div>
         )}
 
         {showBirthInput && showGenderInput && (
           <div className="animate-fade-down" onClick={() => setOpenGenderModal(true)}>
             <SelectInput
-              label={t('signup.info.gender')}
+              label={t('signup.gender')}
               value={
                 i18n.resolvedLanguage === 'ko'
                   ? GENDER[gender as keyof typeof GENDER]
@@ -125,7 +121,7 @@ const UserInfo = () => {
             disabled={!firstName || !lastName || !birth || !gender}
             onClick={() => setOpenPolicyModal(true)}
           >
-            {t('common.continue')}
+            {t('progress.next')}
           </button>
         </Footer>
       </div>

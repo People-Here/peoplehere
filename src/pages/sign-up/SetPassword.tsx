@@ -35,17 +35,11 @@ const SetPassword = () => {
       <div className="px-4 mt-5">
         <ProgressDots total={3} current={2} />
         <h1 className="font-headline1 text-[#1D1B20] whitespace-pre-wrap mt-3">
-          {t('signup.password.title')}
+          {t('loginInfo.password')}
         </h1>
 
         <div className="flex flex-col gap-2 mt-5">
-          <LabelInput
-            label={t('common.email')}
-            value={email}
-            onChange={() => {}}
-            readonly
-            disabled
-          />
+          <LabelInput label={t('user.email')} value={email} onChange={() => {}} readonly disabled />
 
           <PasswordInput value={passwordInput} onChange={setPasswordInput} />
           <PasswordValidator password={passwordInput} />
@@ -58,7 +52,7 @@ const SetPassword = () => {
           disabled={!isPasswordValid}
           onClick={onClickNext}
         >
-          {t('common.continue')}
+          {t('progress.next')}
         </button>
       </Footer>
     </IonContent>
