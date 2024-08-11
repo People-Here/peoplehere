@@ -37,9 +37,9 @@ const FullPageMap = () => {
       element: mapRef.current,
       apiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY as string,
       config: {
-        mapId: '50768681a96d17df',
-        iOSMapId: 'cf72b44089ef16e3',
-        androidMapId: 'b6e7531585349271',
+        mapId: '9ba511c953e3f78',
+        iOSMapId: '8a84aa7b5c7d513',
+        androidMapId: 'a4b7a11734117836',
         center: {
           lat: parseFloat(lat),
           lng: parseFloat(lng),
