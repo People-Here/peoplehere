@@ -2,6 +2,7 @@ import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import HomeIcon from '../assets/svgs/home.svg';
 import HomeLineIcon from '../assets/svgs/home-line.svg';
@@ -26,6 +27,15 @@ const NavigationBar = () => {
     setCurrentTab(location.pathname.split('/')[1]);
   }, [location.pathname]);
 
+  const logToGA = async (eventName: string) => {
+    await FirebaseAnalytics.logEvent({
+      name: eventName,
+      params: {
+        screen_name: location.pathname,
+      },
+    });
+  };
+
   return (
     <IonTabs>
       <IonRouterOutlet>
@@ -43,7 +53,7 @@ const NavigationBar = () => {
             : true
         }
       >
-        <IonTabButton tab="home" href="/home">
+        <IonTabButton tab="home" href="/home" onClick={() => logToGA('click_home_navigation')}>
           <IonIcon
             aria-hidden="true"
             className="svg-lg"
@@ -55,7 +65,11 @@ const NavigationBar = () => {
             {t('nav.home')}
           </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="bookmark" href="/bookmark">
+        <IonTabButton
+          tab="bookmark"
+          href="/bookmark"
+          onClick={() => logToGA('click_bookmark_navigation')}
+        >
           <IonIcon
             aria-hidden="true"
             className="svg-lg"
@@ -67,10 +81,18 @@ const NavigationBar = () => {
             {t('nav.bookmark')}
           </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="post" href="/post">
+        <IonTabButton
+          tab="post"
+          href="/post"
+          onClick={() => logToGA('click_create_post_navigation')}
+        >
           <IonIcon aria-hidden="true" className="pt-1 pb-3 w-9 h-9" src={PlusLineIcon} />
         </IonTabButton>
-        <IonTabButton tab="message" href="/message">
+        <IonTabButton
+          tab="message"
+          href="/message"
+          onClick={() => logToGA('click_inbox_navigation')}
+        >
           <IonIcon
             aria-hidden="true"
             className="svg-lg"
@@ -82,7 +104,11 @@ const NavigationBar = () => {
             {t('nav.inbox')}
           </IonLabel>
         </IonTabButton>
-        <IonTabButton tab="profile" href="/profile">
+        <IonTabButton
+          tab="profile"
+          href="/profile"
+          onClick={() => logToGA('click_mypage_navigation')}
+        >
           <IonIcon
             aria-hidden="true"
             className="svg-lg"

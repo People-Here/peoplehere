@@ -1,6 +1,7 @@
 import { IonContent, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import Footer from '../../layouts/Footer';
@@ -50,7 +51,14 @@ const UserInfo = () => {
     }
   }, [firstName, lastName]);
 
-  const onClickNext = () => {
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'signup_info',
+    });
+  }, []);
+
+  const onClickNext = async () => {
     if (Number(birth.slice(0, 4)) > new Date().getFullYear() - 18) {
       setAgeError('만 18세 이상이어야 회원으로 가입할 수 있어요.');
       return;
@@ -68,6 +76,13 @@ const UserInfo = () => {
     storePolicyConsent({ privacy: true, marketing: marketingChecked });
 
     router.push('/sign-up/alarm');
+
+    await FirebaseAnalytics.logEvent({
+      name: 'click_agree_policy',
+      params: {
+        marketing_agreement: marketingChecked,
+      },
+    });
   };
 
   return (
@@ -119,7 +134,13 @@ const UserInfo = () => {
           <button
             className="w-full button-primary button-lg"
             disabled={!firstName || !lastName || !birth || !gender}
-            onClick={() => setOpenPolicyModal(true)}
+            onClick={async () => {
+              setOpenPolicyModal(true);
+              await FirebaseAnalytics.logEvent({
+                name: 'click_signup_info',
+                params: {},
+              });
+            }}
           >
             {t('progress.next')}
           </button>

@@ -3,6 +3,7 @@
 import { IonContent, IonIcon, IonPage, IonText, createAnimation, useIonRouter } from '@ionic/react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import BellIcon from '../../assets/svgs/bell.svg';
 import { signUp } from '../../api/sign-up';
@@ -57,6 +58,12 @@ const AlarmAgreement = () => {
     animation.current?.play();
   }, [animation]);
 
+  useEffect(() => {
+    FirebaseAnalytics.setScreenName({
+      screenName: 'notification_onboarding',
+    });
+  }, []);
+
   const generateSignInData = (alarm: boolean): SignInRequest => {
     return {
       firstName,
@@ -79,6 +86,39 @@ const AlarmAgreement = () => {
       await signUp(requestData);
 
       await requestLogin(email, password);
+      await FirebaseAnalytics.logEvent({
+        name: 'signup_complete',
+        params: {},
+      });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'signup_date',
+        value: new Date().toLocaleString(),
+      });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'signup_country',
+        value: region.koreanName,
+      });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'signup_phone_verification',
+        value: phoneNumber.length > 0 ? 'true' : 'false',
+      });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'signup_marketing_agreement',
+        value: policyConsent.marketing ? 'true' : 'false',
+      });
+
+      if (agree) {
+        await FirebaseAnalytics.logEvent({
+          name: 'click_allow_notification',
+          params: {},
+        });
+      } else {
+        await FirebaseAnalytics.logEvent({
+          name: 'click_skip_notification',
+          params: {},
+        });
+      }
+
       router.push('/', 'root');
     } catch (error) {
       console.error('Failed to post alarm agreement with error:', error);

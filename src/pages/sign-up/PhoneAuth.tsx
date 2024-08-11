@@ -1,6 +1,7 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -41,6 +42,13 @@ const PhoneAuth = () => {
 
     return () => clearInterval(interval);
   }, [timeLeft]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'verify_phone',
+    });
+  }, []);
 
   const sendAuthCode = async () => {
     setAuthCode('');
@@ -109,7 +117,7 @@ const PhoneAuth = () => {
                   ? 'button-sub button-lg shrink-0 w-[100px]'
                   : 'px-3 button-primary button-lg shrink-0 w-[100px]'
               }
-              disabled={isLoading}
+              disabled={isLoading || phoneNumberInput.length === 0}
               onClick={sendAuthCode}
             >
               <IonText className="font-body1">

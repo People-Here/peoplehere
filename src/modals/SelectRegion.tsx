@@ -1,6 +1,7 @@
 import { IonIcon, IonInput, IonItem, IonList, isPlatform } from '@ionic/react';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import CheckIcon from '../assets/svgs/check.svg';
 import useSignInStore from '../stores/signIn';
@@ -93,11 +94,24 @@ const SelectRegion = ({ hideDialCode = false, ...props }: Props & FixedModalProp
     setSelectedRegion(targetRegion);
   };
 
+  const logToAnalytics = async (countryName: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    await FirebaseAnalytics.logEvent({
+      name: 'click_country',
+      params: {
+        country: countryName,
+      },
+    });
+  };
+
   return (
     <FixedModalContainer
       title={t('onboarding.country')}
       buttonText={t('progress.done')}
-      onClickButton={() => setRegion(selectedRegion)}
+      onClickButton={async () => {
+        setRegion(selectedRegion);
+        await logToAnalytics(selectedRegion.koreanName);
+      }}
       buttonDisabled={!selectedRegion.countryCode}
       {...props}
     >

@@ -1,6 +1,7 @@
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -30,6 +31,13 @@ const EmailAuth = () => {
 
     setErrorMessage('');
   }, [emailInput]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'set_email',
+    });
+  }, []);
 
   const checkEmailExist = async () => {
     setErrorMessage('');

@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import i18next from 'i18next';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -114,6 +115,13 @@ const TourDetail = () => {
     }
   }, [tourDetail, user.id]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'post',
+    });
+  }, []);
+
   const fetchTourDetail = async (tourId: string) => {
     const lang = await getTranslateLanguage();
     const response = await getTourDetail(tourId, region.countryCode, lang);
@@ -144,8 +152,12 @@ const TourDetail = () => {
     }
   };
 
-  const onClickTranslate = () => {
+  const onClickTranslate = async () => {
     setShowTranslateModal(true);
+    await FirebaseAnalytics.logEvent({
+      name: 'click_translation_icon',
+      params: {},
+    });
     // const translatedLang = currentLanguage === 'KOREAN' ? 'ENGLISH' : 'KOREAN';
 
     // const response = await getTourDetail(tourId, region.countryCode, translatedLang);
@@ -214,6 +226,14 @@ const TourDetail = () => {
         <Link
           className="flex justify-center w-full mt-16 mb-12"
           to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
+          onClick={async () => {
+            await FirebaseAnalytics.logEvent({
+              name: 'click_profile',
+              params: {
+                screen_name: location.pathname,
+              },
+            });
+          }}
         >
           <UserImage
             src={tourDetail.userInfo.profileImageUrl}
@@ -320,6 +340,18 @@ const TourDetail = () => {
                     <button
                       className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
                       onClick={async () => {
+                        await FirebaseAnalytics.logEvent({
+                          name: 'click_message',
+                          params: {
+                            post_id: '',
+                            post_title: tourDetail.title,
+                            p_user_id: tourDetail.userInfo.id.toString(),
+                            p_user_name:
+                              tourDetail.userInfo.firstName + ' ' + tourDetail.userInfo.lastName,
+                            p_user_languauges: tourDetail.userInfo.languages.join(', '),
+                          },
+                        });
+
                         if (needProfileInfo) {
                           router.push('/edit-profile');
                           return;
@@ -350,6 +382,7 @@ const TourDetail = () => {
           isOpen={openMessageModal}
           tourId={tourId}
           receiverId={tourDetail.userInfo.id.toString()}
+          receiverName={tourDetail.userInfo.firstName}
           onDidDismiss={() => setOpenMessageModal(false)}
         />
 

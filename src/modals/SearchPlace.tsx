@@ -11,6 +11,7 @@ import {
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import ArrowLeftIcon from '../assets/svgs/arrow-left.svg';
 import { enrollPlace, getSearchHistory, searchPlace } from '../api/search';
@@ -108,7 +109,12 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
       onDidDismiss={() => {
         setSearch('');
       }}
-      onWillPresent={getHistory}
+      onWillPresent={async () => {
+        await FirebaseAnalytics.setScreenName({
+          screenName: 'search_main',
+        });
+        await getHistory();
+      }}
     >
       <IonContent fullscreen>
         <IonToolbar className="px-4 h-14">

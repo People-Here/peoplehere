@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import LabelInput from '../../components/LabelInput';
 import PasswordValidator from '../../components/PasswordValidator';
@@ -43,6 +44,13 @@ const Login = () => {
       buttonRef.current?.click();
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'login',
+    });
+  }, []);
 
   return (
     <IonPage>

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonContent, useIonRouter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import LabelInput from '../../components/LabelInput';
@@ -27,6 +28,13 @@ const SetPassword = () => {
     setPassword(passwordInput);
     router.push('/sign-up/info');
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'set_password',
+    });
+  }, []);
 
   return (
     <IonContent fullscreen className="relative">

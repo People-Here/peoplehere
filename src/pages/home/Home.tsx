@@ -7,8 +7,9 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import SearchIcon from '../../assets/svgs/search.svg';
 import HeartLineRedIcon from '../../assets/svgs/heart-line-red.svg';
@@ -27,6 +28,7 @@ import ImageLoading from '../../assets/images/place-loading.gif';
 import ImageLoadingLarge from '../../assets/images/place-loading-large.gif';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 import CloseIcon from '../../assets/svgs/close.svg';
+import useUserStore from '../../stores/user';
 
 import type { AxiosError } from 'axios';
 import type { RefresherEventDetail } from '@ionic/react';
@@ -43,6 +45,7 @@ const Home = () => {
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
   const region = useSignInStore((state) => state.region);
+  const user = useUserStore((state) => state.user);
 
   useLayoutEffect(() => {
     setLoading(true);
@@ -91,6 +94,13 @@ const Home = () => {
     })();
   }, [location.search, region.countryCode]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    FirebaseAnalytics.setScreenName({
+      screenName: 'main',
+    });
+  }, []);
+
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
     const lang = await getTranslateLanguage();
 
@@ -137,7 +147,25 @@ const Home = () => {
         ) : (
           <>
             {list.map((tour) => (
-              <Link key={tour.id} to={`/tour/${tour.id}`}>
+              <Link
+                key={tour.id}
+                to={`/tour/${tour.id}`}
+                onClick={async () => {
+                  await FirebaseAnalytics.logEvent({
+                    name: 'click_post',
+                    params: {
+                      screen_name: 'main',
+                      publisher_check: tour.userInfo.id === user.id ? 'true' : 'false',
+                      place_name: tour.placeInfo.name,
+                      post_title: tour.title,
+                      post_id: tour.id,
+                      p_user_id: tour.userInfo.id,
+                      p_user_name: tour.userInfo.firstName + ' ' + tour.userInfo.lastName,
+                      post_photo_count: tour.placeInfo.imageInfoList.length,
+                    },
+                  });
+                }}
+              >
                 <TourItem
                   id={tour.id}
                   title={tour.title}
@@ -247,6 +275,17 @@ const TourItem = ({
       setList(response.data.tourList);
 
       console.error(error);
+    } finally {
+      await FirebaseAnalytics.logEvent({
+        name: 'click_heart',
+        params: {
+          screen_name: 'main',
+          heart_status: like ? 'true' : 'false',
+          post_id: id,
+          post_title: title,
+          p_user_id: user.id,
+        },
+      });
     }
   };
 

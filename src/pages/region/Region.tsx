@@ -1,6 +1,7 @@
 import { IonContent, IonIcon, IonImg, IonPage, IonText, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LogoWithLabelImage from '../../assets/images/logo-with-label.png';
@@ -18,8 +19,20 @@ const LoginLanding = () => {
   useEffect(() => {
     if (region.countryCode) {
       router.push('/');
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      FirebaseAnalytics.setScreenName({
+        screenName: 'onboarding',
+      });
     }
   }, [region, router]);
+
+  const onClickSelectRegion = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_country_select',
+      params: {},
+    });
+  };
 
   return (
     <IonPage>
@@ -31,7 +44,10 @@ const LoginLanding = () => {
 
           <div
             className="flex items-center justify-between p-4 bg-gray1.5 rounded-xl w-[15rem] cursor-pointer mb-[5rem]"
-            onClick={() => setShowRegionModal(true)}
+            onClick={async () => {
+              setShowRegionModal(true);
+              await onClickSelectRegion();
+            }}
           >
             <IonText className="text-gray5 font-body1">{t('onboarding.country')}</IonText>
             <IonIcon className="svg-lg" src={GlobeIcon} />
