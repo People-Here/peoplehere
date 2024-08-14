@@ -124,7 +124,7 @@ const Preview = () => {
     formData.append('placeId', place.id);
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('isDefaultImage', 'false');
+    formData.append('isDefaultImage', String(isDefaultImage));
     formData.append('theme', theme);
 
     try {

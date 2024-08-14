@@ -134,6 +134,10 @@ const Post = () => {
       setDescription(response.data.description);
       setImages(response.data.placeInfo.imageInfoList);
       setTheme(response.data.theme);
+
+      if (response.data.placeInfo.imageInfoList[0].authorName) {
+        setIsDefaultImage(true);
+      }
     })();
   }, []);
 
