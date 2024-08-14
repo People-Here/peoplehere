@@ -37,7 +37,7 @@ type Props = {
 };
 
 const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const region = useSignInStore((state) => state.region);
 

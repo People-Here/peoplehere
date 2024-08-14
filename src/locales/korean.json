@@ -258,6 +258,7 @@
   },
 
   "settings": {
+    "title": "환경 설정",
     "version": "버전",
     "phrase": "전 세계의 모든 우정을 담아.",
     "logout": "로그아웃 할까요?"

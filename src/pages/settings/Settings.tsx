@@ -60,7 +60,7 @@ const Settings = () => {
         <Header type="close" fixed />
 
         <div className="px-4 mt-14">
-          <IonText className="mt-1 font-headline1 text-gray8">환경 설정</IonText>
+          <IonText className="mt-1 font-headline1 text-gray8">{t('settings.title')}</IonText>
 
           <div className="mt-4">
             <MenuItem
@@ -175,13 +175,13 @@ const Settings = () => {
 
         <Alert
           isOpen={openLogoutModal}
-          title="로그아웃 하시겠어요?"
+          title={t('settings.logout')}
           buttons={[
             {
-              text: '취소',
+              text: t('progress.cancel'),
             },
             {
-              text: '로그아웃',
+              text: t('user.logout'),
               onClick: requestLogout,
             },
           ]}

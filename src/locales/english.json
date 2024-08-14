@@ -48,8 +48,8 @@
     }
   },
   "search": {
-    "go": "search",
-    "recent": "recent",
+    "go": "Search",
+    "recent": "Recent",
     "placeholder": "Search places or regions",
     "noResults": "No results found for {검색어}.\nMake sure that all words are spelled correctly."
   },
@@ -258,6 +258,7 @@
   },
 
   "settings": {
+    "title": "Settings",
     "version": "Version",
     "phrase": "With every friendship around the world",
     "logout": "Log out of your account?"
