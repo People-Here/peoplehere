@@ -10,6 +10,7 @@ import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verificati
 import { EMAIL_VALIDATION } from '../../constants/regex';
 import useSignInStore from '../../stores/signIn';
 import { getTranslateLanguage } from '../../utils/translate';
+import Alert from '../../components/Alert';
 
 import type { AxiosError } from 'axios';
 
@@ -25,6 +26,7 @@ const EmailAuth = () => {
   const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showExistEmailAlert, setShowExistEmailAlert] = useState(false);
 
   useEffect(() => {
     if (!errorMessage || !emailInput) return;
@@ -48,6 +50,7 @@ const EmailAuth = () => {
 
     try {
       await checkEmail(emailInput);
+
       try {
         await sendEmailCode(emailInput, textLanguage);
         setAuthCode('');
@@ -66,8 +69,8 @@ const EmailAuth = () => {
         setErrorMessage(t('user.invalidEmail'));
       }
 
-      if (errorInstance.response?.status === 409) {
-        setErrorMessage(t('loginInfo.emailInUse'));
+      if (errorInstance.response?.status === 403 || errorInstance.response?.status === 409) {
+        setShowExistEmailAlert(true);
       }
     } finally {
       setIsLoading(false);
@@ -156,6 +159,21 @@ const EmailAuth = () => {
           )}
         </div>
       </IonContent>
+
+      <Alert
+        isOpen={showExistEmailAlert}
+        title="이미 가입된 이메일이에요."
+        onDismiss={() => setShowExistEmailAlert(false)}
+        buttons={[
+          {
+            text: '닫기',
+          },
+          {
+            text: '로그인',
+            onClick: () => router.push('/login'),
+          },
+        ]}
+      />
     </IonPage>
   );
 };
