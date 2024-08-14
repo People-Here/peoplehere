@@ -37,6 +37,7 @@ import EditIcon from '../../assets/svgs/pencil-with-circle-black.svg';
 import { findKoreanLanguageName, findLanguageCode } from '../../utils/find';
 import { capitalizeFirstLetter, roundAge } from '../../utils/mask';
 import SelectCity from '../../modals/SelectCity';
+import { imageToFile } from '../../utils/image';
 
 import type { Language } from '../../modals/SelectLanguages';
 import type { AxiosError } from 'axios';
@@ -68,6 +69,7 @@ const EditProfile = () => {
   const [showCityModal, setShowCityModal] = useState(false);
   const [showRegionModal, setShowRegionModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -174,12 +176,13 @@ const EditProfile = () => {
       return;
     }
 
+    setLoading(true);
+
     const formData = new FormData();
 
     if (!image.startsWith('http')) {
-      const imageBlob = await fetch(image, { mode: 'no-cors' }).then((res) => res.blob());
-      const blobObject = new Blob([imageBlob], { type: 'application/json' });
-      formData.append('profileImage', blobObject);
+      const imageBlob = await imageToFile(image);
+      formData.append('profileImage', imageBlob);
     }
 
     formData.append('id', userId);
@@ -203,7 +206,7 @@ const EditProfile = () => {
     } catch (error) {
       const errorInstance = error as AxiosError;
 
-      if (errorInstance.response?.status === 401) {
+      if (errorInstance.response?.status === 403) {
         await getNewToken();
 
         await updateUserProfile(formData);
@@ -211,6 +214,8 @@ const EditProfile = () => {
       }
 
       console.error('Failed to update user profile:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
