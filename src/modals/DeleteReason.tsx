@@ -42,7 +42,7 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
     } catch (error) {
       const errorInstance = error as AxiosError;
 
-      if (errorInstance.response?.status === 401) {
+      if (errorInstance.response?.status === 403) {
         await getNewToken();
 
         await deleteTour(tourId, input);

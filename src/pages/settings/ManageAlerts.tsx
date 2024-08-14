@@ -97,7 +97,7 @@ const ListItem = ({ title, content, onOff, onChange, type, triggerFetch }: ListI
     } catch (error) {
       const errorInstance = error as AxiosError;
 
-      if (errorInstance.response?.status === 401) {
+      if (errorInstance.response?.status === 403) {
         await getNewToken();
         await updateAlarmStatus({ type, consent: onOff });
       }
