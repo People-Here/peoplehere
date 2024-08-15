@@ -1,9 +1,18 @@
-import { IonContent, IonPage, IonText, useIonRouter } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import {
+  IonButtons,
+  IonContent,
+  IonIcon,
+  IonPage,
+  IonText,
+  IonToolbar,
+  useIonRouter,
+} from '@ionic/react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
+import { Device } from '@capacitor/device';
 
-import Header from '../../components/Header';
+import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LabelInput from '../../components/LabelInput';
 import ProgressDots from '../../components/ProgressDots';
 import { checkEmail, sendEmailCode, verifyEmailCode } from '../../api/verification';
@@ -13,6 +22,7 @@ import { getTranslateLanguage } from '../../utils/translate';
 import Alert from '../../components/Alert';
 
 import type { AxiosError } from 'axios';
+import type { DeviceInfo } from '@capacitor/device';
 
 const EmailAuth = () => {
   const { t } = useTranslation();
@@ -27,6 +37,16 @@ const EmailAuth = () => {
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showExistEmailAlert, setShowExistEmailAlert] = useState(false);
+
+  const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const platformInfo = await Device.getInfo();
+      setPlatform(platformInfo.platform);
+    })();
+  }, []);
 
   useEffect(() => {
     if (!errorMessage || !emailInput) return;
@@ -88,10 +108,33 @@ const EmailAuth = () => {
     }
   };
 
+  const onClickBackButton = () => {
+    if (showAuthCodeInput) {
+      setShowAuthCodeInput(false);
+      setAuthCode('');
+      setAuthErrorMessage('');
+
+      return;
+    }
+    router.goBack();
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="back" />
+        <IonToolbar
+          className={
+            platform === 'web'
+              ? 'px-4 bg-white h-14'
+              : platform === 'android'
+                ? 'px-4 bg-white h-14 flex items-end'
+                : 'px-4 bg-white h-24 flex items-end'
+          }
+        >
+          <IonButtons slot="start">
+            <IonIcon src={ArrowLeftIcon} className="svg-lg" onClick={onClickBackButton} />
+          </IonButtons>
+        </IonToolbar>
 
         <div className="px-4 mt-5">
           <ProgressDots total={3} current={1} />
@@ -107,6 +150,7 @@ const EmailAuth = () => {
               value={emailInput}
               onChange={setEmailInput}
               errorText={errorMessage}
+              disabled={showAuthCodeInput}
             />
 
             <button
