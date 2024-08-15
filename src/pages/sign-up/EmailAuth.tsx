@@ -116,6 +116,7 @@ const EmailAuth = () => {
 
       return;
     }
+
     router.goBack();
   };
 
