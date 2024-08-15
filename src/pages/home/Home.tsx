@@ -1,4 +1,6 @@
 import {
+  IonContent,
+  IonHeader,
   IonIcon,
   IonImg,
   IonRefresher,
@@ -128,65 +130,74 @@ const Home = () => {
   }
 
   return (
-    <div className="px-4 mt-3">
+    <div>
       <SearchBar setOpenSearchModal={setOpenSearchModal} />
 
-      <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-        <IonRefresherContent />
-      </IonRefresher>
+      <IonContent fullscreen>
+        <div className="px-4 pt-16 mt-3">
+          <IonRefresher slot="fixed" onIonRefresh={handleRefresh} pullMin={20} pullMax={50}>
+            <IonRefresherContent
+              pullingText={'당겨서 새로고침'}
+              refreshingText={'새로고침 중...'}
+            />
+          </IonRefresher>
 
-      <div className="flex flex-col pb-20 mt-[1.625rem] gap-[1.875rem]">
-        {list.length === 0 ? (
-          <div className="mt-60">
-            <div className="flex flex-col items-center gap-8">
-              <IonIcon icon={EmptyListIcon} className="w-[67px] h-[53px]" />
+          <div className="flex flex-col pb-20 mt-[1.625rem] gap-[1.875rem]">
+            {list.length === 0 ? (
+              <div className="mt-60">
+                <div className="flex flex-col items-center gap-8">
+                  <IonIcon icon={EmptyListIcon} className="w-[67px] h-[53px]" />
 
-              <IonText className="font-headline3 text-gray5.5">{t('searchBar.noResults')}</IonText>
-            </div>
+                  <IonText className="font-headline3 text-gray5.5">
+                    {t('searchBar.noResults')}
+                  </IonText>
+                </div>
+              </div>
+            ) : (
+              <>
+                {list.map((tour) => (
+                  <Link
+                    key={tour.id}
+                    to={`/tour/${tour.id}`}
+                    onClick={async () => {
+                      await FirebaseAnalytics.logEvent({
+                        name: 'click_post',
+                        params: {
+                          screen_name: 'main',
+                          publisher_check: tour.userInfo.id === user.id ? 'true' : 'false',
+                          place_name: tour.placeInfo.name,
+                          post_title: tour.title,
+                          post_id: tour.id,
+                          p_user_id: tour.userInfo.id,
+                          p_user_name: tour.userInfo.firstName + ' ' + tour.userInfo.lastName,
+                          post_photo_count: tour.placeInfo.imageInfoList.length,
+                        },
+                      });
+                    }}
+                  >
+                    <TourItem
+                      id={tour.id}
+                      title={tour.title}
+                      categoryList={tour.categoryList}
+                      like={tour.like}
+                      place={tour.placeInfo}
+                      user={tour.userInfo}
+                      setList={setList}
+                    />
+                  </Link>
+                ))}
+              </>
+            )}
           </div>
-        ) : (
-          <>
-            {list.map((tour) => (
-              <Link
-                key={tour.id}
-                to={`/tour/${tour.id}`}
-                onClick={async () => {
-                  await FirebaseAnalytics.logEvent({
-                    name: 'click_post',
-                    params: {
-                      screen_name: 'main',
-                      publisher_check: tour.userInfo.id === user.id ? 'true' : 'false',
-                      place_name: tour.placeInfo.name,
-                      post_title: tour.title,
-                      post_id: tour.id,
-                      p_user_id: tour.userInfo.id,
-                      p_user_name: tour.userInfo.firstName + ' ' + tour.userInfo.lastName,
-                      post_photo_count: tour.placeInfo.imageInfoList.length,
-                    },
-                  });
-                }}
-              >
-                <TourItem
-                  id={tour.id}
-                  title={tour.title}
-                  categoryList={tour.categoryList}
-                  like={tour.like}
-                  place={tour.placeInfo}
-                  user={tour.userInfo}
-                  setList={setList}
-                />
-              </Link>
-            ))}
-          </>
-        )}
-      </div>
 
-      <SearchPlace
-        isOpen={openSearchModal}
-        onClickItem={(item) => router.push(`/home?search=${item.title}`)}
-        from="MAIN"
-        onWillDismiss={() => setOpenSearchModal(false)}
-      />
+          <SearchPlace
+            isOpen={openSearchModal}
+            onClickItem={(item) => router.push(`/home?search=${item.title}`)}
+            from="MAIN"
+            onWillDismiss={() => setOpenSearchModal(false)}
+          />
+        </div>
+      </IonContent>
     </div>
   );
 };
@@ -205,15 +216,18 @@ const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
   const keyword = params.get('search');
 
   return (
-    <div
-      className="w-full"
-      onClick={() => {
-        if (!keyword) {
-          setOpenSearchModal(true);
-        }
-      }}
+    <IonHeader
+      slot="fixed"
+      className="fixed top-0 left-0 right-0 bg-white w-full px-4 pb-3 z-10 pt-[calc(.75rem+var(--ion-safe-area-top))]"
     >
-      <div className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]">
+      <div
+        className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]"
+        onClick={() => {
+          if (!keyword) {
+            setOpenSearchModal(true);
+          }
+        }}
+      >
         <div className="flex flex-col">
           <IonText className="font-headline3 text-gray7">
             {keyword ?? t('explore.searchBar')}
@@ -235,7 +249,7 @@ const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
           }}
         />
       </div>
-    </div>
+    </IonHeader>
   );
 };
 

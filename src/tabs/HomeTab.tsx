@@ -1,4 +1,4 @@
-import { IonContent, IonPage, useIonRouter } from '@ionic/react';
+import { IonPage, useIonRouter } from '@ionic/react';
 import { useEffect } from 'react';
 
 import Home from '../pages/home/Home';
@@ -17,9 +17,7 @@ const HomeTab = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
-        <Home />
-      </IonContent>
+      <Home />
     </IonPage>
   );
 };
