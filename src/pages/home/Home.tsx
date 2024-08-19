@@ -183,6 +183,8 @@ const Home = () => {
                       place={tour.placeInfo}
                       user={tour.userInfo}
                       setList={setList}
+                      theme={tour.theme}
+                      directMessageStatus={tour.directMessageStatus}
                     />
                   </Link>
                 ))}
@@ -266,6 +268,7 @@ const TourItem = ({
   place,
   user,
   setList,
+  directMessageStatus,
 }: Omit<Tour, 'placeInfo' | 'userInfo'> & TourItemProps) => {
   const { checkLogin } = useLogin();
   const region = useSignInStore((state) => state.region);
@@ -307,7 +310,7 @@ const TourItem = ({
     <div className="-mr-4">
       {/* title area */}
       <div className="flex flex-col gap-1.5 mb-3 pr-4">
-        <StatusChip available />
+        <StatusChip available={directMessageStatus} />
 
         <div className="pl-1 flex flex-col gap-0.5 grow-0">
           <div className="flex items-center justify-between">

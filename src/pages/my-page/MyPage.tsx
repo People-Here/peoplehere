@@ -179,7 +179,7 @@ const MyPage = () => {
                         title={tour.title}
                         placeName={tour.placeInfo.name}
                         district={tour.placeInfo.district}
-                        available={true}
+                        available={tour.directMessageStatus}
                       />
                     </Link>
                   ))}

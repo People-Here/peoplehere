@@ -336,7 +336,7 @@ const TourDetail = () => {
                 </button>
               ) : (
                 <>
-                  {tourDetail.userInfo.directMessageStatus ? (
+                  {tourDetail.directMessageStatus ? (
                     <button
                       className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
                       onClick={async () => {

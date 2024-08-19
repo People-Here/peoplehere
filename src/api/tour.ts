@@ -133,6 +133,8 @@ export type Tour = {
   like: boolean;
   placeInfo: Place;
   userInfo: User;
+  theme: string;
+  directMessageStatus: boolean;
 };
 
 export type BookmarkedTour = {
@@ -182,6 +184,7 @@ export type TourDetail = {
   };
   like: boolean;
   theme: string;
+  directMessageStatus: boolean;
 };
 
 export type Place = {
