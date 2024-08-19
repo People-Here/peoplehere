@@ -34,6 +34,7 @@ const ChangeStatus = () => {
   const [tourInfo, setTourInfo] = useState<TourDetail>();
   const [active, setActive] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [showChangeCompleteAlert, setShowChangeCompleteAlert] = useState(false);
 
   useEffect(() => {
     if (!tourId) {
@@ -45,7 +46,7 @@ const ChangeStatus = () => {
       const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
       setTourInfo(response.data);
 
-      setActive(response.data.userInfo.directMessageStatus);
+      setActive(response.data.directMessageStatus);
     })();
   }, [tourId, region.countryCode]);
 
@@ -54,6 +55,9 @@ const ChangeStatus = () => {
 
     try {
       await changeMessageReceiveStatus(tourId, active);
+      setShowChangeCompleteAlert(true);
+      const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
+      setTourInfo(response.data);
     } catch (error) {
       console.error('fail to save status', error);
     }
@@ -122,6 +126,7 @@ const ChangeStatus = () => {
           <button
             className="w-full text-white button-primary button-lg font-subheading1"
             onClick={onClickSave}
+            disabled={active === tourInfo.directMessageStatus}
           >
             {t('progress.save')}
           </button>
@@ -140,6 +145,13 @@ const ChangeStatus = () => {
               text: t('progress.cancel'),
             },
           ]}
+        />
+
+        <Alert
+          isOpen={showChangeCompleteAlert}
+          onDismiss={() => setShowChangeCompleteAlert(false)}
+          title="포스트 상태가 변경되었어요."
+          buttons={[{ text: '확인' }]}
         />
 
         <DeleteReason
