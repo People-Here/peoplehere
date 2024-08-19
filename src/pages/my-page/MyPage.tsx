@@ -297,7 +297,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
           {
             text: t('post.edit'),
             handler: () => {
-              router.push(`/post/${id}`);
+              router.push(`/edit-post/${id}`);
             },
           },
           {

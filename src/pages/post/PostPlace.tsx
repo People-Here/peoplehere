@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -20,8 +19,6 @@ import RightChevron from '../../assets/svgs/right-chevron.svg';
 import GridDeleteIcon from '../../assets/svgs/grid-delete.svg';
 import useUserStore from '../../stores/user';
 import usePostPlaceStore from '../../stores/place';
-import { getTourDetail } from '../../api/tour';
-import useSignInStore from '../../stores/signIn';
 import SearchPlace from '../../modals/SearchPlace';
 import Alert from '../../components/Alert';
 import { getDefaultImages } from '../../api/place';
@@ -29,16 +26,18 @@ import Toast from '../../toasts/Toast';
 
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
+export type Image = {
+  imageUrl: string;
+  authorName?: string;
+  authorUrl?: string;
+};
+
 const Post = () => {
   const { t } = useTranslation();
 
   const router = useIonRouter();
-  const location = useLocation();
-
-  const tourId = location.pathname.split('/').at(-1) ?? '';
 
   const user = useUserStore((state) => state.user);
-  const region = useSignInStore((state) => state.region);
   const {
     place: storedPlace,
     setPlace: storePlace,
@@ -48,8 +47,6 @@ const Post = () => {
     setDescription: storeDescription,
     images: storedImages,
     setImages: storeImages,
-    setFetchImages,
-    setTheme,
     setIsDefaultImage,
     clearAll,
   } = usePostPlaceStore((state) => state);
@@ -60,9 +57,7 @@ const Post = () => {
 
   const [title, setTitle] = useState(storedTitle ?? '');
   const [description, setDescription] = useState(storedDescription ?? '');
-  const [images, setImages] = useState<
-    { imageUrl: string; authorName?: string; authorUrl?: string }[]
-  >(storedImages ?? null);
+  const [images, setImages] = useState<Image[]>(storedImages ?? null);
 
   const [showPhotoOptionSheet, setShowPhotoOptionSheet] = useState(false);
   const [showExitAlert, setShowExitAlert] = useState(false);
@@ -81,7 +76,6 @@ const Post = () => {
         };
       }),
     );
-    setFetchImages(true);
     setIsDefaultImage(false);
   };
 
@@ -118,36 +112,12 @@ const Post = () => {
   }, []);
 
   useEffect(() => {
-    if (tourId === 'post') return;
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      setFetchImages(false);
-      const response = await getTourDetail(tourId, region.countryCode.toUpperCase(), 'ORIGIN');
-
-      setPlace({
-        id: response.data.placeInfo.id.toString(),
-        title: response.data.placeInfo.name,
-        address: response.data.placeInfo.address,
-      });
-      setTitle(response.data.title);
-      setDescription(response.data.description);
-      setImages(response.data.placeInfo.imageInfoList);
-      setTheme(response.data.theme);
-
-      if (response.data.placeInfo.imageInfoList[0].authorName) {
-        setIsDefaultImage(true);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
     if (!storedPlace.id) return;
 
     setPlace(storedPlace);
   }, [storedPlace]);
 
-  const uploadPost = () => {
+  const goToPreview = () => {
     if (!place.id || !title || !description) {
       console.error('place, title, description are required');
       return;
@@ -158,7 +128,7 @@ const Post = () => {
     storeDescription(description);
     storeImages(images);
 
-    tourId ? router.push(`/preview-post/${tourId}`) : router.push('/preview-post');
+    router.push('/preview-post');
   };
 
   return (
@@ -195,14 +165,12 @@ const Post = () => {
           <ImageList
             images={images}
             setImages={setImages}
-            setFetchImages={setFetchImages}
             openGallerySheet={() => setShowPhotoOptionSheet(true)}
           />
         ) : (
           <UploadImages
             images={images}
             setImages={setImages}
-            setFetchImages={setFetchImages}
             openGallerySheet={() => setShowPhotoOptionSheet(true)}
           />
         )}
@@ -236,7 +204,7 @@ const Post = () => {
         <IonToolbar className="p-4 mb-4">
           <button
             className="w-full text-white button-primary button-lg font-subheading1"
-            onClick={uploadPost}
+            onClick={goToPreview}
             disabled={!place.id || !title || !description}
           >
             {t('posting.preview.title')}
@@ -291,7 +259,7 @@ const Post = () => {
             },
           },
           {
-            text: '취소',
+            text: t('progress.cancel'),
           },
         ]}
       />
@@ -299,15 +267,15 @@ const Post = () => {
       <Alert
         isOpen={showDefaultImageAlert}
         onDismiss={() => setShowDefaultImageAlert(false)}
-        title="이미 앨범에서 추가했어요."
-        subTitle="구글 이미지로 변경할 경우 앨범에서 추가한 사진은 모두 삭제 돼요. 계속하시겠어요?"
+        title={t('posting.photos.switchingP1')}
+        subTitle={t('posting.photos.switchingP2')}
         buttons={[
           {
-            text: '계속',
+            text: t('progress.continue'),
             onClick: getGoogleDefaultImages,
           },
           {
-            text: '취소',
+            text: t('progress.cancel'),
           },
         ]}
       />
@@ -323,19 +291,8 @@ const Post = () => {
 };
 
 type ImageProps = {
-  images: {
-    authorName?: string;
-    authorUrl?: string;
-    imageUrl: string;
-  }[];
-  setImages: (
-    images: {
-      authorName?: string;
-      authorUrl?: string;
-      imageUrl: string;
-    }[],
-  ) => void;
-  setFetchImages: (fetchImages: boolean) => void;
+  images: Image[];
+  setImages: (images: Image[]) => void;
   openGallerySheet: () => void;
 };
 const UploadImages = ({ images, openGallerySheet }: ImageProps) => {
@@ -377,12 +334,11 @@ const PlaceItem = ({ text, description }: Place) => {
   );
 };
 
-const ImageList = ({ images, setImages, setFetchImages, openGallerySheet }: ImageProps) => {
+const ImageList = ({ images, setImages, openGallerySheet }: ImageProps) => {
   const { t } = useTranslation();
 
   const removeImage = (image: string) => {
     setImages(images.filter((img) => img.imageUrl !== image));
-    setFetchImages(true);
   };
 
   return (

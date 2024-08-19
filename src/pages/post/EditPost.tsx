@@ -124,7 +124,7 @@ const EditPost = () => {
     storeDescription(description);
     storeImages(images);
 
-    router.push(`/post/preview/${tourId}`);
+    router.push(`/preview-post/${tourId}`);
   };
 
   return (

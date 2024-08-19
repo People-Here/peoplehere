@@ -330,7 +330,7 @@ const TourDetail = () => {
               {isMine ? (
                 <button
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
-                  onClick={() => router.push(`/post/${tourId}`)}
+                  onClick={() => router.push(`/edit-post/${tourId}`)}
                 >
                   수정하기
                 </button>

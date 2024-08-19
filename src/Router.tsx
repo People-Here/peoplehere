@@ -99,9 +99,6 @@ const Router = () => {
         <MessageRoom />
       </Route>
 
-      <Route exact path="/post/:id">
-        <PostTab />
-      </Route>
       <Route path="/edit-post">
         <EditPost />
       </Route>
