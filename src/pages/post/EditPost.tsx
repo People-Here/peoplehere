@@ -9,7 +9,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Camera } from '@capacitor/camera';
 
@@ -26,6 +26,7 @@ import SearchPlace from '../../modals/SearchPlace';
 import Alert from '../../components/Alert';
 import Toast from '../../toasts/Toast';
 
+import type { TourDetail } from '../../api/tour';
 import type { Image } from './PostPlace';
 import type { PlaceItem as PlaceItemType } from '../../modals/SearchPlace';
 
@@ -57,6 +58,8 @@ const EditPost = () => {
   const [showExitAlert, setShowExitAlert] = useState(false);
   const [showDefaultImageAlert, setShowDefaultImageAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  const [initialData, setInitialData] = useState<TourDetail>();
 
   const selectPhotosFromGallery = async () => {
     const selectedImages = await Camera.pickImages({
@@ -107,6 +110,8 @@ const EditPost = () => {
       setImages(data.placeInfo.imageInfoList);
       setTheme(data.theme);
 
+      setInitialData(data);
+
       if (data.placeInfo.imageInfoList.some((image) => image.authorName)) {
         setIsDefaultImage(true);
       }
@@ -127,6 +132,18 @@ const EditPost = () => {
     router.push(`/preview-post/${tourId}`);
   };
 
+  const hasUnsavedChange = useMemo(() => {
+    if (!initialData) return false;
+
+    return (
+      title !== initialData.title ||
+      description !== initialData.description ||
+      images.length !== initialData.placeInfo.imageInfoList.length ||
+      images.at(-1)?.imageUrl !== initialData.placeInfo.imageInfoList.at(-1)?.imageUrl ||
+      place?.id !== String(initialData.placeInfo.id)
+    );
+  }, [description, images, initialData, place, title]);
+
   return (
     <IonPage>
       <IonContent>
@@ -134,8 +151,12 @@ const EditPost = () => {
           fixed
           type="close"
           onClickIcon={() => {
-            clearAll();
-            router.goBack();
+            if (hasUnsavedChange) {
+              setShowExitAlert(true);
+            } else {
+              clearAll();
+              router.goBack();
+            }
           }}
         />
 

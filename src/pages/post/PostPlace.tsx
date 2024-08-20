@@ -131,13 +131,15 @@ const Post = () => {
     router.push('/preview-post');
   };
 
+  const hasUnsavedChange = place.id || title || description || images.length;
+
   return (
     <>
       <Header
         fixed
         type="close"
         onClickIcon={() => {
-          if (place.id || title || description || images.length) {
+          if (hasUnsavedChange) {
             setShowExitAlert(true);
           } else {
             clearAll();
