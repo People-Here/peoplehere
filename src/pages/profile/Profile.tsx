@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -26,6 +27,7 @@ import ClockIcon from '../../assets/svgs/clock.svg';
 import DogIcon from '../../assets/svgs/dog.svg';
 import DoubleHeartIcon from '../../assets/svgs/double-heart.svg';
 import LanguageIcon from '../../assets/svgs/language.svg';
+import LanguageGrayIcon from '../../assets/svgs/language-gray.svg';
 import useSignInStore from '../../stores/signIn';
 import DefaultUserImage from '../../assets/images/default-user.png';
 import { getUserProfile } from '../../api/profile';
@@ -37,6 +39,7 @@ import MessageBlockedIcon from '../../assets/svgs/message-blocked.svg';
 import { getTranslateLanguage } from '../../utils/translate';
 import { capitalizeFirstLetter } from '../../utils/mask';
 import { getNewToken } from '../../api/login';
+import AutoTranslate from '../../modals/AutoTranslate';
 
 import type { AxiosError } from 'axios';
 import type { DeviceInfo } from '@capacitor/device';
@@ -55,8 +58,18 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState<ProfileResponse>();
   const [placeList, setPlaceList] = useState<Tour[]>([]);
   const [currentRegion, setCurrentRegion] = useState(region.countryCode);
+  const [showTranslateModal, setShowTranslateModal] = useState(false);
+  const [enableAutoTranslate, setAutoTranslate] = useState(false);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const autoTranslate = await Preferences.get({ key: 'autoTranslate' });
+      setAutoTranslate(autoTranslate.value === 'true');
+    })();
+  }, []);
 
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
@@ -139,55 +152,21 @@ const Profile = () => {
     userInfo?.pet ||
     userInfo?.favorite;
 
-  const handleClickIcon = async () => {
+  const handleClickIcon = () => {
     if (isMe) {
       router.push('/edit-profile');
     } else {
-      await handleClickTranslate();
+      handleClickTranslate();
     }
   };
 
-  const handleClickTranslate = async () => {
+  const handleClickTranslate = () => {
     const userId = location.pathname.split('/').at(-1);
     if (!userId) {
       return;
     }
 
-    if (currentRegion === 'KR') {
-      setCurrentRegion('EN');
-      const response = await getUserProfile(userId, 'US');
-
-      setUserInfo(response.data);
-
-      if (i18n.resolvedLanguage === 'ko') {
-        setUserInfo({
-          ...response.data,
-          languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
-        });
-      } else {
-        setUserInfo({
-          ...response.data,
-          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
-        });
-      }
-    } else {
-      setCurrentRegion('KR');
-      const response = await getUserProfile(userId, 'KR');
-
-      setUserInfo(response.data);
-
-      if (i18n.resolvedLanguage === 'ko') {
-        setUserInfo({
-          ...response.data,
-          languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
-        });
-      } else {
-        setUserInfo({
-          ...response.data,
-          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
-        });
-      }
-    }
+    setShowTranslateModal(true);
   };
 
   if (!userInfo) {
@@ -218,7 +197,7 @@ const Profile = () => {
 
           <IonButtons slot="end">
             <IonIcon
-              src={isMe ? EditIcon : LanguageIcon}
+              src={isMe ? EditIcon : enableAutoTranslate ? LanguageIcon : LanguageGrayIcon}
               className="svg-lg"
               onClick={handleClickIcon}
             />
@@ -333,6 +312,12 @@ const Profile = () => {
             </>
           )}
         </div>
+
+        <AutoTranslate
+          isOpen={showTranslateModal}
+          onDidDismiss={() => setShowTranslateModal(false)}
+          onToggleChange={(value) => setAutoTranslate(value)}
+        />
       </IonContent>
     </IonPage>
   );
