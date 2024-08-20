@@ -31,6 +31,7 @@ import ImageLoadingLarge from '../../assets/images/place-loading-large.gif';
 import LocationGrayIcon from '../../assets/svgs/location-gray.svg';
 import CloseIcon from '../../assets/svgs/close.svg';
 import useUserStore from '../../stores/user';
+import Toast from '../../toasts/Toast';
 
 import type { AxiosError } from 'axios';
 import type { RefresherEventDetail } from '@ionic/react';
@@ -45,9 +46,12 @@ const Home = () => {
   const [list, setList] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
   const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [openLoginToast, setOpenLoginToast] = useState(false);
 
   const region = useSignInStore((state) => state.region);
   const user = useUserStore((state) => state.user);
+
+  const { requestLogout } = useLogin();
 
   useLayoutEffect(() => {
     setLoading(true);
@@ -82,7 +86,8 @@ const Home = () => {
               console.error('user token as expired');
               const errorInstance = error as AxiosError;
               if (errorInstance.response?.status === 400) {
-                router.push('/login');
+                await requestLogout();
+                setOpenLoginToast(true);
               }
             }
           }
@@ -94,7 +99,7 @@ const Home = () => {
 
       setLoading(false);
     })();
-  }, [location.search, region.countryCode]);
+  }, [location.search, region.countryCode, requestLogout]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -200,6 +205,13 @@ const Home = () => {
           />
         </div>
       </IonContent>
+
+      <Toast
+        isOpen={openLoginToast}
+        onDismiss={() => setOpenLoginToast(false)}
+        type="error-small"
+        message={'로그인이 만료되었어요.\n다시 로그인해주세요.'}
+      />
     </div>
   );
 };
