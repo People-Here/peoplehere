@@ -150,7 +150,7 @@ const ChangeStatus = () => {
         <Alert
           isOpen={showChangeCompleteAlert}
           onDismiss={() => setShowChangeCompleteAlert(false)}
-          title="포스트 상태가 변경되었어요."
+          title={t('managePost.status')}
           buttons={[{ text: '확인' }]}
         />
 

@@ -229,9 +229,15 @@ const SearchList = ({ list, onClickItem }: SearchListProps) => {
 };
 
 const NoResult = ({ keyword }: { keyword: string }) => {
+  const { i18n } = useTranslation();
+
   return (
     <div className="flex items-center justify-center w-full mt-44">
-      <IonText className="font-headline3 text-gray5.5 whitespace-pre-line">{`'${keyword}'를 찾을 수 없습니다.\n검색어를 바르게 입력했는지 확인하세요.`}</IonText>
+      <p className="font-headline3 text-gray5.5 whitespace-pre-line">
+        {i18n.resolvedLanguage === 'ko'
+          ? `${keyword}를 찾을 수 없습니다.\n검색어를 바르게 입력했는지 확인하세요.`
+          : `No results found for ${keyword}.\nMake sure that all words are spelled correctly.`}
+      </p>
     </div>
   );
 };

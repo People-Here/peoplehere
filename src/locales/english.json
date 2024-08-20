@@ -13,8 +13,7 @@
     "languages": "Speaks",
     "login": "Log in",
     "logout": "Log out",
-    "signup": "Sign up",
-    "retry": "Back to Login"
+    "signup": "Sign up"
   },
   "progress": {
     "done": "Done",
@@ -247,7 +246,8 @@
     "messageOn": "Messages on",
     "messageOff": "New Messages Off",
     "onDetail": "Display the ‘Talk to Me’ tag on the post to receive new messages.",
-    "offDetail": "Display the ‘On Break’ tag on the post to stop receiving new messages. You can continue messaging with users you’ve already started conversations with."
+    "offDetail": "Display the ‘On Break’ tag on the post to stop receiving new messages. You can continue messaging with users you’ve already started conversations with.",
+    "status": "The post status has been updated."
   },
   "deletePost": {
     "p1": "Delete this post?",

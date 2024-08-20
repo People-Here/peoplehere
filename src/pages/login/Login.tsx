@@ -104,7 +104,7 @@ const Login = () => {
         <Alert
           trigger="error-alert"
           title={t('loginError')}
-          buttons={[{ text: t('user.retry') }]}
+          buttons={[{ text: t('progress.retry') }]}
           bottomText={t('resetPassword.title')}
           onClickBottomText={() => router.push('/reset-password/check-email')}
         />
