@@ -168,20 +168,21 @@ const MyPage = () => {
               {tourList.length > 0 ? (
                 <>
                   {tourList.map((tour) => (
-                    <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
-                      <TourInfo
-                        id={tour.id.toString()}
-                        image={
-                          tour.placeInfo.imageInfoList.length > 0
-                            ? tour.placeInfo.imageInfoList[0].imageUrl
-                            : ''
-                        }
-                        title={tour.title}
-                        placeName={tour.placeInfo.name}
-                        district={tour.placeInfo.district}
-                        available={tour.directMessageStatus}
-                      />
-                    </Link>
+                    // <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
+                    <TourInfo
+                      key={tour.id}
+                      id={tour.id.toString()}
+                      image={
+                        tour.placeInfo.imageInfoList.length > 0
+                          ? tour.placeInfo.imageInfoList[0].imageUrl
+                          : ''
+                      }
+                      title={tour.title}
+                      placeName={tour.placeInfo.name}
+                      district={tour.placeInfo.district}
+                      available={tour.directMessageStatus}
+                    />
+                    // </Link>
                   ))}
 
                   <Link to="/post" className="flex items-center justify-center gap-1 p-3">
@@ -253,18 +254,16 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
       <IonIcon
         icon={ThreeDotsIcon}
         className="absolute top-3 right-3 svg-md"
-        onClick={(e) => {
-          e.preventDefault();
-          setIsActionSheetOpen(true);
-        }}
+        onClick={() => setIsActionSheetOpen(true)}
       />
 
       <IonImg
         src={image}
         className="w-[4.5rem] h-[4.5rem] shrink-0 object-cover rounded-xl overflow-hidden"
+        onClick={() => router.push(`/tour/${id}`)}
       />
 
-      <div>
+      <Link to={`/tour/${id}`}>
         {available ? (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-orange1 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-orange5">
@@ -288,7 +287,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
             {district && <span className="font-body2 text-gray6"> | {district}</span>}
           </p>
         </div>
-      </div>
+      </Link>
 
       <IonActionSheet
         isOpen={isActionSheetOpen}
@@ -309,9 +308,6 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
           {
             text: t('progress.cancel'),
             role: 'cancel',
-            data: {
-              action: 'cancel',
-            },
           },
         ]}
       />
