@@ -91,15 +91,12 @@ const Home = () => {
               }
             }
           }
-
-          const { data } = await getTourList(region.countryCode.toUpperCase(), lang);
-          setList(data.tourList);
         }
       }
 
       setLoading(false);
     })();
-  }, [location.search, region.countryCode, requestLogout]);
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
