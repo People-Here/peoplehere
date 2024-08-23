@@ -97,6 +97,8 @@ const Preview = () => {
       const errorInstance = error as AxiosError;
 
       if (errorInstance.response?.status === 403) {
+        console.warn('try to get new token...');
+
         await getNewToken();
 
         await postTour(formData);

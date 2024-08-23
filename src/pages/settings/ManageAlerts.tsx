@@ -1,4 +1,4 @@
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +15,7 @@ import type { AxiosError } from 'axios';
 
 const ManageAlerts = () => {
   const { t } = useTranslation();
+  const router = useIonRouter();
 
   const user = useUserStore((state) => state.user);
   const region = useSignInStore((state) => state.region);
@@ -32,10 +33,27 @@ const ManageAlerts = () => {
   }, [user.id, region.countryCode]);
 
   const fetchConsentInfo = async () => {
-    const response = await getUserProfile(user.id, region.countryCode);
-
-    if (response.status === 200) {
+    try {
+      const response = await getUserProfile(user.id, region.countryCode);
       setUserConsentInfo(response.data.consentInfo);
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 403) {
+        console.warn('try to get new token...');
+
+        try {
+          await getNewToken();
+          const response = await getUserProfile(user.id, region.countryCode);
+          setUserConsentInfo(response.data.consentInfo);
+        } catch (error) {
+          console.error('user token has expired');
+          const errorInstance = error as AxiosError;
+          if (errorInstance.response?.status === 400) {
+            router.push('/login');
+          }
+        }
+      }
     }
   };
 

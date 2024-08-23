@@ -74,9 +74,10 @@ const MessageTab = () => {
       setMessages(response.data.tourRoomList);
     } catch (error) {
       const errorInstance = error as AxiosError;
-      console.warn('try to get new token...');
 
       if (errorInstance.response?.status === 403) {
+        console.warn('try to get new token...');
+
         try {
           await getNewToken();
           const response = await getMessageRooms(lang);

@@ -77,9 +77,10 @@ const MyPage = () => {
         setTourList(tourListResponse.data.tourList);
       } catch (error) {
         const errorInstance = error as AxiosError;
-        console.warn('try to get new token...');
 
         if (errorInstance.response?.status === 403) {
+          console.warn('try to get new token...');
+
           try {
             await getNewToken();
 
