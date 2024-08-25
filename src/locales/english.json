@@ -76,7 +76,9 @@
     "selectCode": "Choose a country or region",
     "searchCode": "Enter a country or region",
     "skip": "Unavailable to verify now?",
-    "skipDetail": "Do you want to verify later and move on to the sign up page?"
+    "skipDetail": "Do you want to verify later and move on to the sign up page?",
+    "numberInUse": "This number is associated with another account. Try logging in.",
+    "unavailable": "Phone verification is not available in your region. Let’s move on to the setup page."
   },
   "loginInfo": {
     "email": "Choose an email address to use as your account ID.",

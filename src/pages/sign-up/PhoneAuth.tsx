@@ -16,6 +16,24 @@ import { getTranslateLanguage } from '../../utils/translate';
 
 import type { AxiosError } from 'axios';
 
+const phoneAuthWhiteList = [
+  'DZ',
+  'AR',
+  'AU',
+  'AT',
+  'BD',
+  'BB',
+  'BE',
+  'BJ',
+  'BO',
+  'BA',
+  'BR',
+  'BG',
+  'CL',
+  'KR',
+  'US',
+];
+
 const PhoneAuth = () => {
   const { t, i18n } = useTranslation();
 
@@ -28,6 +46,7 @@ const PhoneAuth = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showUnavailableAuth, setShowUnavailableAuth] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -49,6 +68,12 @@ const PhoneAuth = () => {
       screenName: 'verify_phone',
     });
   }, []);
+
+  useEffect(() => {
+    if (!phoneAuthWhiteList.includes(region.countryCode)) {
+      setShowUnavailableAuth(true);
+    }
+  }, [region.countryCode]);
 
   const sendAuthCode = async () => {
     setAuthCode('');
@@ -166,6 +191,18 @@ const PhoneAuth = () => {
           buttons={[
             { text: t('progress.cancel') },
             { text: t('progress.positive'), onClick: () => router.push('/sign-up/email') },
+          ]}
+        />
+
+        <Alert
+          isOpen={showUnavailableAuth}
+          onDismiss={() => setShowUnavailableAuth(false)}
+          title={t('verifyPhone.unavailable')}
+          buttons={[
+            {
+              text: t('progress.confirm'),
+              onClick: () => router.push('/sign-up/email'),
+            },
           ]}
         />
       </IonContent>
