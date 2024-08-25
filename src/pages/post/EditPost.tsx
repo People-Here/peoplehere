@@ -43,6 +43,7 @@ const EditPost = () => {
     setDescription: storeDescription,
     setImages: storeImages,
     setFetchImages,
+    isDefaultImage,
     setIsDefaultImage,
     setTheme,
     clearAll,
@@ -246,22 +247,31 @@ const EditPost = () => {
           onDidDismiss={() => setShowPhotoOptionSheet(false)}
           header={t('posting.photos.title')}
           subHeader={t('posting.photos.detail')}
-          buttons={[
-            {
-              text: t('posting.photos.album'),
-              handler: selectPhotosFromGallery,
-            },
-            {
-              text: t('posting.photos.googlephotos'),
-              handler: async () => {
-                if (images.length) {
-                  setShowDefaultImageAlert(true);
-                } else {
-                  await getGoogleDefaultImages();
-                }
-              },
-            },
-          ]}
+          buttons={
+            isDefaultImage
+              ? [
+                  {
+                    text: t('posting.photos.album'),
+                    handler: selectPhotosFromGallery,
+                  },
+                ]
+              : [
+                  {
+                    text: t('posting.photos.album'),
+                    handler: selectPhotosFromGallery,
+                  },
+                  {
+                    text: t('posting.photos.googlephotos'),
+                    handler: async () => {
+                      if (images.length) {
+                        setShowDefaultImageAlert(true);
+                      } else {
+                        await getGoogleDefaultImages();
+                      }
+                    },
+                  },
+                ]
+          }
         />
 
         <Alert
