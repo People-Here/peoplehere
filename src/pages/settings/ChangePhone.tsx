@@ -88,11 +88,12 @@ const ChangePhone = () => {
         <Header type="back" title={t('personal.editPhone')} />
 
         <div className="flex flex-col gap-2 px-4 mt-5">
-          <SelectInput
-            id="region-modal"
-            label={t('verifyPhone.countryCode')}
-            value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
-          />
+          <div onClick={() => setShowRegionModal(true)}>
+            <SelectInput
+              label={t('verifyPhone.countryCode')}
+              value={`${i18n.resolvedLanguage === 'ko' ? region.koreanName : capitalizeFirstLetter(region.englishName)} (${region.dialCode})`}
+            />
+          </div>
 
           <div className="flex items-center gap-2">
             <LabelInput
@@ -146,7 +147,7 @@ const ChangePhone = () => {
           ) : null}
         </div>
 
-        <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(true)} />
+        <SelectRegion isOpen={showRegionModal} closeModal={() => setShowRegionModal(false)} />
 
         <Alert
           trigger="phone-alert"
