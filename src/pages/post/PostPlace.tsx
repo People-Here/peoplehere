@@ -62,6 +62,7 @@ const Post = () => {
   const [showPhotoOptionSheet, setShowPhotoOptionSheet] = useState(false);
   const [showExitAlert, setShowExitAlert] = useState(false);
   const [showDefaultImageAlert, setShowDefaultImageAlert] = useState(false);
+  const [showNoGoogleImagesAlert, setShowNoGoogleImagesAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
   const selectPhotosFromGallery = async () => {
@@ -88,7 +89,12 @@ const Post = () => {
     try {
       const response = await getDefaultImages(place.id);
       setImages(response.data);
-      setIsDefaultImage(true);
+
+      if (response.data.length === 0) {
+        setShowNoGoogleImagesAlert(true);
+      } else {
+        setIsDefaultImage(true);
+      }
     } catch (error) {
       console.error('Failed to get default images', error);
     }
@@ -278,6 +284,18 @@ const Post = () => {
           },
           {
             text: t('progress.cancel'),
+          },
+        ]}
+      />
+
+      <Alert
+        isOpen={showNoGoogleImagesAlert}
+        onDismiss={() => setShowNoGoogleImagesAlert(false)}
+        title={t('posting.photos.noGoogleP1')}
+        subTitle={t('posting.photos.noGoogleP2')}
+        buttons={[
+          {
+            text: t('progress.confirm'),
           },
         ]}
       />
