@@ -13,26 +13,9 @@ import { sendPhoneCode, verifyPhoneCode } from '../../api/verification';
 import { secondToMinuteSecond } from '../../utils/date';
 import { capitalizeFirstLetter } from '../../utils/mask';
 import { getTranslateLanguage } from '../../utils/translate';
+import { phoneAuthWhiteList } from '../../constants/phoneAuth';
 
 import type { AxiosError } from 'axios';
-
-const phoneAuthWhiteList = [
-  'DZ',
-  'AR',
-  'AU',
-  'AT',
-  'BD',
-  'BB',
-  'BE',
-  'BJ',
-  'BO',
-  'BA',
-  'BR',
-  'BG',
-  'CL',
-  'KR',
-  'US',
-];
 
 const PhoneAuth = () => {
   const { t, i18n } = useTranslation();
@@ -70,7 +53,7 @@ const PhoneAuth = () => {
   }, []);
 
   useEffect(() => {
-    if (!phoneAuthWhiteList.includes(region.countryCode)) {
+    if (!phoneAuthWhiteList.includes(region.dialCode)) {
       setShowUnavailableAuth(true);
     }
   }, [region.countryCode]);
