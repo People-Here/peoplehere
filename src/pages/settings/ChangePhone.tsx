@@ -29,6 +29,7 @@ const ChangePhone = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showLimitAlert, setShowLimitAlert] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -58,6 +59,10 @@ const ChangePhone = () => {
       setTimeLeft(180);
     } catch (error) {
       const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 403) {
+        setShowLimitAlert(true);
+      }
 
       if (errorInstance.response?.status === 409) {
         setErrorMessage('이미 사용 중인 전화번호입니다.');
@@ -153,6 +158,13 @@ const ChangePhone = () => {
           trigger="phone-alert"
           title="전화번호 인증이 어려운 상황인가요?"
           buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-up/email') }]}
+        />
+
+        <Alert
+          isOpen={showLimitAlert}
+          onDismiss={() => setShowLimitAlert(false)}
+          title={t('code.limit')}
+          buttons={[{ text: t('progress.confirm') }]}
         />
       </IonContent>
     </IonPage>

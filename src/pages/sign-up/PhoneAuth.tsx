@@ -30,6 +30,7 @@ const PhoneAuth = () => {
   const [authErrorMessage, setAuthErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showUnavailableAuth, setShowUnavailableAuth] = useState(false);
+  const [showLimitAlert, setShowLimitAlert] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -72,6 +73,10 @@ const PhoneAuth = () => {
       setTimeLeft(180);
     } catch (error) {
       const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 403) {
+        setShowLimitAlert(true);
+      }
 
       if (errorInstance.response?.status === 409) {
         setErrorMessage('이미 사용 중인 전화번호입니다.');
@@ -187,6 +192,13 @@ const PhoneAuth = () => {
               onClick: () => router.push('/sign-up/email'),
             },
           ]}
+        />
+
+        <Alert
+          isOpen={showLimitAlert}
+          onDismiss={() => setShowLimitAlert(false)}
+          title={t('code.limit')}
+          buttons={[{ text: t('progress.confirm') }]}
         />
       </IonContent>
     </IonPage>
