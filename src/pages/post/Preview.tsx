@@ -207,7 +207,7 @@ const Preview = () => {
         <SelectTheme
           currentTheme={theme}
           setTheme={setTheme}
-          onClick={tourId === 'post' ? uploadPost : editPost}
+          onClick={tourId === 'preview-post' ? uploadPost : editPost}
           buttonDisable={isLoading}
         />
       </IonContent>
