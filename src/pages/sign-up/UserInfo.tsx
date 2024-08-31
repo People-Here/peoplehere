@@ -55,6 +55,7 @@ const UserInfo = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     FirebaseAnalytics.setScreenName({
       screenName: 'signup_info',
+      nameOverride: 'SignupInfo',
     });
   }, []);
 

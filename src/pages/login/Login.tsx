@@ -49,6 +49,7 @@ const Login = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     FirebaseAnalytics.setScreenName({
       screenName: 'login',
+      nameOverride: 'Login',
     });
   }, []);
 

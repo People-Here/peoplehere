@@ -103,6 +103,7 @@ const Home = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     FirebaseAnalytics.setScreenName({
       screenName: 'main',
+      nameOverride: 'Main',
     });
   }, []);
 

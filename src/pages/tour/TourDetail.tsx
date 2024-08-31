@@ -119,6 +119,7 @@ const TourDetail = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     FirebaseAnalytics.setScreenName({
       screenName: 'post',
+      nameOverride: 'Post',
     });
   }, []);
 

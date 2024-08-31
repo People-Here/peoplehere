@@ -112,6 +112,7 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
       onWillPresent={async () => {
         await FirebaseAnalytics.setScreenName({
           screenName: 'search_main',
+          nameOverride: 'SearchMain',
         });
         await getHistory();
       }}

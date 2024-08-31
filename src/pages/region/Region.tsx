@@ -23,6 +23,7 @@ const LoginLanding = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       FirebaseAnalytics.setScreenName({
         screenName: 'onboarding',
+        nameOverride: 'Onboarding',
       });
     }
   }, [region, router]);

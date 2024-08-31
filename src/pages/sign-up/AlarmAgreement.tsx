@@ -61,6 +61,7 @@ const AlarmAgreement = () => {
   useEffect(() => {
     FirebaseAnalytics.setScreenName({
       screenName: 'notification_onboarding',
+      nameOverride: 'NotificationOnboarding',
     });
   }, []);
 
