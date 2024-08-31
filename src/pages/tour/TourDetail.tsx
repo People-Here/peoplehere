@@ -410,7 +410,10 @@ const TourDetail = () => {
         <AutoTranslate
           isOpen={showTranslateModal}
           onDidDismiss={() => setShowTranslateModal(false)}
-          onToggleChange={(value) => setAutoTranslate(value)}
+          onToggleChange={async (value) => {
+            setAutoTranslate(value);
+            await fetchTourDetail(tourId);
+          }}
         />
       </IonContent>
     </IonPage>
