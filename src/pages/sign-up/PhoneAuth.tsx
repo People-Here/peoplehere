@@ -31,6 +31,7 @@ const PhoneAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showUnavailableAuth, setShowUnavailableAuth] = useState(false);
   const [showLimitAlert, setShowLimitAlert] = useState(false);
+  const [showAlreadyInUseAlert, setShowAlreadyInUseAlert] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -79,10 +80,8 @@ const PhoneAuth = () => {
       }
 
       if (errorInstance.response?.status === 409) {
-        setErrorMessage('이미 사용 중인 전화번호입니다.');
+        setShowAlreadyInUseAlert(true);
       }
-
-      console.error('fail to send phone code', error);
     } finally {
       setIsLoading(false);
     }
@@ -199,6 +198,21 @@ const PhoneAuth = () => {
           onDismiss={() => setShowLimitAlert(false)}
           title={t('code.limit')}
           buttons={[{ text: t('progress.confirm') }]}
+        />
+
+        <Alert
+          isOpen={showAlreadyInUseAlert}
+          onDismiss={() => setShowAlreadyInUseAlert(false)}
+          title={t('verifyPhone.numberInUse')}
+          buttons={[
+            {
+              text: t('progress.close'),
+            },
+            {
+              text: t('user.login'),
+              onClick: () => router.goBack(),
+            },
+          ]}
         />
       </IonContent>
     </IonPage>
