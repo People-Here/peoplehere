@@ -190,21 +190,25 @@ const Post = () => {
         </div>
 
         <div className="flex flex-col w-full gap-3">
-          <div className="p-3.5 border-[1.5px] border-gray2 rounded-xl">
+          <div>
             <input
-              className="w-full h-full bg-white outline-none font-body1 text-gray8"
+              className="w-full h-full bg-white outline-none font-body1 text-gray8 p-3.5 border-[1.5px] border-gray2 rounded-xl"
               placeholder={t('posting.title')}
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
+              maxLength={40}
             />
+            <p className="mt-1 text-right font-caption2 text-gray5">{title.length}/40</p>
           </div>
-          <div className="h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5">
+          <div>
             <textarea
-              className="w-full h-full bg-white outline-none resize-none font-body1 text-gray8"
+              className="w-full bg-white outline-none resize-none font-body1 text-gray8 h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5"
               placeholder={t('posting.description')}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
+              maxLength={300}
             />
+            <p className="-mt-1 text-right font-caption2 text-gray5">{description.length}/300</p>
           </div>
         </div>
       </div>
