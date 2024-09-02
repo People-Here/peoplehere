@@ -208,7 +208,7 @@ const Post = () => {
               onChange={(e) => setDescription(e.currentTarget.value)}
               maxLength={300}
             />
-            <p className="-mt-1 text-right font-caption2 text-gray5">{description.length}/300</p>
+            <p className="text-right font-caption2 text-gray5">{description.length}/300</p>
           </div>
         </div>
       </div>
