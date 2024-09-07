@@ -101,6 +101,18 @@ const PhoneAuth = () => {
     }
   };
 
+  const onClickSend = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_phone_send', params: {} });
+  };
+
+  const onClickResend = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_phone_resend', params: {} });
+  };
+
+  const onClickVerify = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_phone', params: {} });
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -131,7 +143,10 @@ const PhoneAuth = () => {
                   : 'px-3 button-primary button-lg shrink-0 w-[100px]'
               }
               disabled={isLoading || phoneNumberInput.length === 0}
-              onClick={sendAuthCode}
+              onClick={async () => {
+                await sendAuthCode();
+                showCodeInput ? await onClickResend() : await onClickSend();
+              }}
             >
               <IonText className="font-body1">
                 {showCodeInput ? t('code.resend') : isLoading ? t('code.sending') : t('code.send')}
@@ -158,7 +173,10 @@ const PhoneAuth = () => {
                 <button
                   className="px-3 w-[6.25rem] button-primary button-lg shrink-0"
                   disabled={authCode.length !== 6 || timeLeft === 0}
-                  onClick={confirmAuthCode}
+                  onClick={async () => {
+                    await onClickVerify();
+                    await confirmAuthCode();
+                  }}
                 >
                   <IonText className="text-white font-body1">{t('code.verify')}</IonText>
                 </button>
