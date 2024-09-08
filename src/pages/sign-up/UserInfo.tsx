@@ -81,7 +81,7 @@ const UserInfo = () => {
     await FirebaseAnalytics.logEvent({
       name: 'click_agree_policy',
       params: {
-        marketing_agreement: marketingChecked,
+        marketing_agreement: marketingChecked ? 'Yes' : 'No',
       },
     });
   };

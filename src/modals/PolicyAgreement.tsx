@@ -1,6 +1,8 @@
 import { IonCheckbox } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import colors from '../theme/colors';
 import { FixedModalContainer } from '.';
@@ -20,6 +22,18 @@ const PolicyAgreement = ({
   ...rest
 }: Props & FixedModalProps) => {
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    if (!rest.isOpen) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.logEvent({
+        name: 'view_agree_policy',
+        params: {},
+      });
+    })();
+  }, [rest.isOpen]);
 
   return (
     <FixedModalContainer

@@ -29,6 +29,7 @@ const EmailAuth = () => {
 
   const router = useIonRouter();
   const setEmail = useSignInStore((state) => state.setEmail);
+  const phoneNumber = useSignInStore((state) => state.phoneNumber);
 
   const [emailInput, setEmailInput] = useState('');
   const [authCode, setAuthCode] = useState('');
@@ -56,11 +57,20 @@ const EmailAuth = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    FirebaseAnalytics.setScreenName({
-      screenName: 'set_email',
-      nameOverride: 'SetEmail',
-    });
-  }, []);
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'set_email',
+        nameOverride: 'SetEmail',
+      });
+
+      await FirebaseAnalytics.logEvent({
+        name: 'view_set_email',
+        params: {
+          phone_verification: phoneNumber ? 'Yes' : 'No',
+        },
+      });
+    })();
+  }, [phoneNumber]);
 
   const checkEmailExist = async () => {
     setErrorMessage('');
@@ -119,6 +129,18 @@ const EmailAuth = () => {
     }
 
     router.goBack();
+  };
+
+  const onClickSend = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_email_send', params: {} });
+  };
+
+  const onClickResend = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_email_resend', params: {} });
+  };
+
+  const onClickVerify = async () => {
+    await FirebaseAnalytics.logEvent({ name: 'click_verify_email', params: {} });
   };
 
   return (

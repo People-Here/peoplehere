@@ -49,10 +49,12 @@ const PhoneAuth = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    FirebaseAnalytics.setScreenName({
-      screenName: 'verify_phone',
-      nameOverride: 'VerifyPhone',
-    });
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'verify_phone',
+        nameOverride: 'VerifyPhone',
+      });
+    })();
   }, []);
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { signUp } from '../../api/sign-up';
 import useSignInStore from '../../stores/signIn';
 import { formatDataToString } from '../../utils/date';
 import useLogin from '../../hooks/useLogin';
+import useUserStore from '../../stores/user';
 
 import type { SignInRequest } from '../../api/sign-up';
 import type { Animation } from '@ionic/react';
@@ -29,6 +30,8 @@ const AlarmAgreement = () => {
     phoneNumber,
     policyConsent,
   } = useSignInStore((state) => state);
+
+  const userId = useUserStore((state) => state.user.id);
 
   const { requestLogin } = useLogin();
 
@@ -82,18 +85,28 @@ const AlarmAgreement = () => {
   };
 
   const agreeAlarm = async (agree: boolean) => {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
     try {
       const requestData = generateSignInData(agree);
       await signUp(requestData);
 
       await requestLogin(email, password);
+
       await FirebaseAnalytics.logEvent({
         name: 'signup_complete',
-        params: {},
+        params: {
+          user_id: userId,
+          signup_date: today,
+          signup_country: region.koreanName,
+          signup_phone_verification: phoneNumber.length > 0 ? 'true' : 'false',
+          signup_marketing_agreement: policyConsent.marketing ? 'true' : 'false',
+        },
       });
       await FirebaseAnalytics.setUserProperty({
         name: 'signup_date',
-        value: new Date().toLocaleString(),
+        value: today,
       });
       await FirebaseAnalytics.setUserProperty({
         name: 'signup_country',

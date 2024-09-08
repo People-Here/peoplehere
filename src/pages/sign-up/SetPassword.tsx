@@ -24,7 +24,12 @@ const SetPassword = () => {
     PASSWORD_VALIDATION.moreThan8.test(passwordInput) &&
     PASSWORD_VALIDATION.hasSpecialCharOrNumber.test(passwordInput);
 
-  const onClickNext = () => {
+  const onClickNext = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_set_password',
+      params: {},
+    });
+
     setPassword(passwordInput);
     router.push('/sign-up/info');
   };
