@@ -7,10 +7,11 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import HeartFilledIcon from '../assets/svgs/heart-filled.svg';
 import useLogin from '../hooks/useLogin';
@@ -72,6 +73,20 @@ const BookmarkTab = () => {
           }
         }
       }
+    })();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const isLoggedIn = await checkLogin();
+
+      await FirebaseAnalytics.logEvent({
+        name: 'click_bookmark_navigation',
+        params: {
+          login: isLoggedIn ? 'Yes' : 'No',
+        },
+      });
     })();
   }, []);
 

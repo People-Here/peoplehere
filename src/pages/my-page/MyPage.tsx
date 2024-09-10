@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import SettingIcon from '../../assets/svgs/setting.svg';
 import ChevronRightIcon from '../../assets/svgs/chevron-right.svg';
@@ -65,6 +66,19 @@ const MyPage = () => {
           setNeedProfileInfo(true);
         }
 
+        await FirebaseAnalytics.logEvent({
+          name: 'click_mypage_navigation',
+          params: {
+            login: 'Yes',
+            profile:
+              !response.data.introduce ||
+              !response.data.profileImageUrl ||
+              !response.data.languages.length
+                ? 'No'
+                : 'Yes',
+          },
+        });
+
         setUser({
           id: response.data.id.toString(),
           email: response.data.email,
@@ -98,6 +112,19 @@ const MyPage = () => {
               setNeedProfileInfo(true);
             }
 
+            await FirebaseAnalytics.logEvent({
+              name: 'click_mypage_navigation',
+              params: {
+                login: 'Yes',
+                profile:
+                  !response.data.introduce ||
+                  !response.data.profileImageUrl ||
+                  !response.data.languages.length
+                    ? 'No'
+                    : 'Yes',
+              },
+            });
+
             setUser({
               id: response.data.id.toString(),
               email: response.data.email,
@@ -111,6 +138,15 @@ const MyPage = () => {
           } catch (error) {
             console.error('user token as expired');
             const errorInstance = error as AxiosError;
+
+            await FirebaseAnalytics.logEvent({
+              name: 'click_mypage_navigation',
+              params: {
+                login: 'Yes',
+                profile: user.profileImageUrl ? 'Yes' : 'No',
+              },
+            });
+
             if (errorInstance.response?.status === 400) {
               router.push('/login');
             }

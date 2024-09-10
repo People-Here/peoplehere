@@ -104,6 +104,9 @@ const AlarmAgreement = () => {
           signup_marketing_agreement: policyConsent.marketing ? 'true' : 'false',
         },
       });
+      await FirebaseAnalytics.setUserId({
+        userId,
+      });
       await FirebaseAnalytics.setUserProperty({
         name: 'signup_date',
         value: today,

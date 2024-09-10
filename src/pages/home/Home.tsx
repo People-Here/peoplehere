@@ -177,6 +177,11 @@ const Home = () => {
                           post_photo_count: tour.placeInfo.imageInfoList.length,
                         },
                       });
+
+                      await FirebaseAnalytics.setUserProperty({
+                        name: 'click_post_title',
+                        value: tour.title,
+                      });
                     }}
                   >
                     <TourItem
@@ -235,10 +240,15 @@ const SearchBar = ({ setOpenSearchModal }: SearchBarProps) => {
     >
       <div
         className="w-full h-16 flex items-center pl-6 pr-5 justify-between bg-gray1 rounded-[30px]"
-        onClick={() => {
+        onClick={async () => {
           if (!keyword) {
             setOpenSearchModal(true);
           }
+
+          await FirebaseAnalytics.logEvent({
+            name: 'click_searchbar',
+            params: {},
+          });
         }}
       >
         <div className="flex flex-col">
@@ -288,7 +298,20 @@ const TourItem = ({
     const lang = await getTranslateLanguage();
 
     const isLoggedIn = await checkLogin();
-    if (!isLoggedIn) return;
+    if (!isLoggedIn) {
+      await FirebaseAnalytics.logEvent({
+        name: 'click_heart',
+        params: {
+          login: 'No',
+          heart_status: 'Inactive',
+          post_id: id,
+          post_title: title,
+          p_user_id: user.id,
+        },
+      });
+
+      return;
+    }
 
     try {
       await likeTour(id);
@@ -307,8 +330,8 @@ const TourItem = ({
       await FirebaseAnalytics.logEvent({
         name: 'click_heart',
         params: {
-          screen_name: 'main',
-          heart_status: like ? 'true' : 'false',
+          login: 'Yes',
+          heart_status: like ? 'Inactive' : 'Active',
           post_id: id,
           post_title: title,
           p_user_id: user.id,

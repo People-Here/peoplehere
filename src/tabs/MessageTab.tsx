@@ -11,6 +11,7 @@ import { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import useLogin from '../hooks/useLogin';
 import { getUserProfile } from '../api/profile';
@@ -51,11 +52,20 @@ const MessageTab = () => {
 
       const profileInfo = await getUserProfile(user.id, region.countryCode.toUpperCase());
 
-      if (
+      const needProfileInfo =
         !profileInfo.data.introduce ||
         !profileInfo.data.profileImageUrl ||
-        !profileInfo.data.languages.length
-      ) {
+        !profileInfo.data.languages.length;
+
+      await FirebaseAnalytics.logEvent({
+        name: 'click_inbox_navigation',
+        params: {
+          login: isLoggedIn ? 'Yes' : 'No',
+          profile: needProfileInfo ? 'No' : 'Yes',
+        },
+      });
+
+      if (needProfileInfo) {
         router.push('/edit-profile', 'forward', 'replace');
       }
     })();

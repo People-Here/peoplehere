@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { Camera } from '@capacitor/camera';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import PlusCircleWhiteIcon from '../../assets/svgs/plus-circle-white.svg';
@@ -119,6 +120,20 @@ const Post = () => {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const token = await Preferences.get({ key: 'accessToken' });
+
+      await FirebaseAnalytics.logEvent({
+        name: 'click_create_post_navigation',
+        params: {
+          login: token.value ? 'Yes' : 'No',
+        },
+      });
+    })();
+  }, []);
+
+  useEffect(() => {
     if (!storedPlace.id) return;
 
     setPlace(storedPlace);
@@ -184,7 +199,7 @@ const Post = () => {
           />
         )}
 
-        <div className="mt-[3.25rem] flex flex-col items-center gap-1 mb-5">
+        <div className="mt-[52px] flex flex-col items-center gap-1 mb-5">
           <IonText className="font-headline2 text-gray7">{t('posting.header2')}</IonText>
           <IonText className="font-caption2 text-gray6">{t('posting.translation')}</IonText>
         </div>
@@ -192,7 +207,7 @@ const Post = () => {
         <div className="flex flex-col w-full gap-3">
           <div>
             <input
-              className="w-full h-full bg-white outline-none font-body1 text-gray8 p-3.5 border-[1.5px] border-gray2 rounded-xl"
+              className="w-full h-full bg-white outline-none font-body1 text-gray8 p-3.5 border-[.0938rem] border-gray2 rounded-xl"
               placeholder={t('posting.title')}
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
@@ -202,7 +217,7 @@ const Post = () => {
           </div>
           <div>
             <textarea
-              className="w-full bg-white outline-none resize-none font-body1 text-gray8 h-[8.375rem] border-[1.5px] border-gray2 rounded-xl p-3.5"
+              className="w-full bg-white outline-none resize-none font-body1 text-gray8 h-[134px] border-[.0938rem] border-gray2 rounded-xl p-3.5"
               placeholder={t('posting.description')}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
@@ -334,7 +349,7 @@ const UploadImages = ({ images, openGallerySheet }: ImageProps) => {
 
   return (
     <div
-      className="bg-white border border-gray2 rounded-3xl w-full py-[1.875rem] flex flex-col gap-2 items-center"
+      className="bg-white border border-gray2 rounded-3xl w-full py-[30px] flex flex-col gap-2 items-center"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onClick={openGallerySheet}
     >
@@ -356,14 +371,14 @@ const PlaceItem = ({ text, description }: Place) => {
   return (
     <div
       id="search-modal"
-      className="px-4 py-2.5 border-[1.5px] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3"
+      className="px-4 py-2.5 border-[.0938rem] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3"
     >
       <div className="flex flex-col">
         <IonText className="font-subheading1 text-orange6">{text}</IonText>
         <IonText className="font-caption1 text-gray5.5">{description}</IonText>
       </div>
 
-      <IonIcon icon={RightChevron} className="w-[1.375rem] h-[1.375rem]" />
+      <IonIcon icon={RightChevron} className="w-[22px] h-[22px]" />
     </div>
   );
 };
@@ -376,7 +391,7 @@ const ImageList = ({ images, setImages, openGallerySheet }: ImageProps) => {
   };
 
   return (
-    <div className="p-4 flex flex-col gap-3 border-[1.5px] border-gray2 rounded-3xl w-full">
+    <div className="p-4 flex flex-col gap-3 border-[.0938rem] border-gray2 rounded-3xl w-full">
       <div className="flex items-center justify-between">
         <IonText className="font-caption2 text-gray5.5 pr-1">{t('posting.photos.policy')}</IonText>
 
@@ -394,7 +409,7 @@ const ImageList = ({ images, setImages, openGallerySheet }: ImageProps) => {
           <div key={image.imageUrl} className="relative">
             <IonImg
               src={image.imageUrl}
-              className="w-[4.25rem] h-[4.25rem] object-cover rounded-xl overflow-hidden"
+              className="w-[68px] h-[68px] object-cover rounded-xl overflow-hidden"
             />
             {!image.authorName && (
               <IonIcon

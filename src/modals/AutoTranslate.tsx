@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { IonIcon, IonModal } from '@ionic/react';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import CloseIcon from '../assets/svgs/close.svg';
 
@@ -54,6 +55,13 @@ const AutoTranslate = ({ onToggleChange, ...rest }: Props & ModalProps) => {
                 await Preferences.set({
                   key: 'autoTranslate',
                   value: String(!enableAutoTranslate),
+                });
+
+                await FirebaseAnalytics.logEvent({
+                  name: 'click_translation_switch',
+                  params: {
+                    translation: enableAutoTranslate ? 'No' : 'Yes',
+                  },
                 });
                 setEnableAutoTranslate((prev) => !prev);
                 onToggleChange?.(!enableAutoTranslate);

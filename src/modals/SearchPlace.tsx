@@ -99,6 +99,14 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
       await modalRef.current?.dismiss();
     } catch (error) {
       console.error(error);
+    } finally {
+      await FirebaseAnalytics.logEvent({
+        name: 'search_complete',
+        params: {
+          keyword: search,
+          post_count: searchResult.length,
+        },
+      });
     }
   };
 

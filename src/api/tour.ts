@@ -16,13 +16,8 @@ export const getTourList = async (region: string, lang: string) => {
 };
 
 export const getTourListByUser = async (region: string, lang: string, userId: string) => {
-  const { value } = await Preferences.get({ key: 'accessToken' });
-
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}/account/${userId}`, {
     transformResponse: [(data: string) => parseJSONBigint(data)],
-    headers: {
-      Authorization: value,
-    },
   });
   return response;
 };

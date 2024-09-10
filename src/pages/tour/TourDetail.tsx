@@ -14,7 +14,6 @@ import {
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import i18next from 'i18next';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
@@ -68,10 +67,6 @@ const TourDetail = () => {
   const [enableAutoTranslate, setAutoTranslate] = useState(false);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
-
-  const [currentLanguage, setCurrentLanguage] = useState(
-    region.countryCode === 'KR' ? 'KOREAN' : 'ENGLISH',
-  );
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
@@ -224,23 +219,22 @@ const TourDetail = () => {
             </IonButtons>
           </IonToolbar>
         )}
-        <Link
+        <div
           className="flex justify-center w-full mt-16 mb-12"
-          to={`/detail-profile/${tourDetail.userInfo.id.toString()}`}
           onClick={async () => {
             await FirebaseAnalytics.logEvent({
               name: 'click_profile',
-              params: {
-                screen_name: location.pathname,
-              },
+              params: {},
             });
+
+            router.push(`/detail-profile/${tourDetail.userInfo.id.toString()}`);
           }}
         >
           <UserImage
             src={tourDetail.userInfo.profileImageUrl}
             name={tourDetail.userInfo.firstName}
           />
-        </Link>
+        </div>
 
         <div className={`${themeColors[tourDetail.theme].background}`}>
           <div
@@ -333,7 +327,7 @@ const TourDetail = () => {
                   className={`w-full ${themeColors[tourDetail.theme].buttonText} button-primary button-lg ${themeColors[tourDetail.theme].button} font-subheading1 active:bg-orange4`}
                   onClick={() => router.push(`/edit-post/${tourId}`)}
                 >
-                  수정하기
+                  {t('post.edit')}
                 </button>
               ) : (
                 <>
@@ -344,6 +338,8 @@ const TourDetail = () => {
                         await FirebaseAnalytics.logEvent({
                           name: 'click_message',
                           params: {
+                            login: 'Yes',
+                            profile: 'Yes',
                             post_id: '',
                             post_title: tourDetail.title,
                             p_user_id: tourDetail.userInfo.id.toString(),
@@ -454,23 +450,31 @@ type PlaceInfoProps = {
   lng: number;
 };
 const PlaceInfo = ({ title, address, theme, lat, lng }: PlaceInfoProps) => {
+  const router = useIonRouter();
+
   return (
-    <Link to={`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`}>
-      <div
-        className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
-      >
-        <div className="flex items-center gap-3">
-          <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
+    <div
+      className={`flex items-center justify-between p-3 ${themeColors[theme].cardBackground} rounded-xl`}
+      onClick={async () => {
+        await FirebaseAnalytics.logEvent({
+          name: 'click_place_info',
+          params: {},
+        });
 
-          <div className="flex flex-col gap-0.5">
-            <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
-            <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
-          </div>
+        router.push(`/place-map?title=${title}&address=${address}&lat=${lat}&lng=${lng}`);
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <IonIcon src={theme === 'black' ? MapWhiteIcon : MapIcon} className="svg-xl shrink-0" />
+
+        <div className="flex flex-col gap-0.5">
+          <p className={`${themeColors[theme].cardTitle} font-subheading2`}>{title}</p>
+          <p className={`font-caption2 ${themeColors[theme].cardAddress}`}>{address}</p>
         </div>
-
-        <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
       </div>
-    </Link>
+
+      <IonIcon icon={ChevronRightIcon} className="w-[1.375rem] h-[1.375rem] shrink-0" />
+    </div>
   );
 };
 
@@ -515,7 +519,13 @@ const ImageCarousel = ({
     <>
       <div
         className="relative w-full h-[16.25rem] overflow-hidden mb-5 rounded-[20px] border-[0.5px] border-gray6"
-        onClick={() => setShow(true)}
+        onClick={async () => {
+          setShow(true);
+          await FirebaseAnalytics.logEvent({
+            name: 'click_photo_detail',
+            params: {},
+          });
+        }}
       >
         <div
           ref={carouselRef}
