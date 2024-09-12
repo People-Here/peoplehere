@@ -61,6 +61,7 @@ const Post = () => {
   const [description, setDescription] = useState(storedDescription ?? '');
   const [images, setImages] = useState<Image[]>(storedImages ?? null);
 
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const [showPhotoOptionSheet, setShowPhotoOptionSheet] = useState(false);
   const [showExitAlert, setShowExitAlert] = useState(false);
   const [showDefaultImageAlert, setShowDefaultImageAlert] = useState(false);
@@ -71,6 +72,16 @@ const Post = () => {
     const selectedImages = await Camera.pickImages({
       limit: 12 - images.length,
     });
+
+    if (selectedImages.photos.length > 0) {
+      await FirebaseAnalytics.logEvent({
+        name: 'add_photo_complete',
+        params: {
+          photo_method: 'from_gallery',
+          photo_count: selectedImages.photos.length,
+        },
+      });
+    }
 
     setImages(
       selectedImages.photos.map((photo) => {
@@ -96,10 +107,25 @@ const Post = () => {
         setShowNoGoogleImagesAlert(true);
       } else {
         setIsDefaultImage(true);
+
+        await FirebaseAnalytics.logEvent({
+          name: 'add_photo_complete',
+          params: {
+            photo_method: 'from_google',
+            photo_count: response.data.length,
+          },
+        });
       }
     } catch (error) {
       console.error('Failed to get default images', error);
     }
+  };
+
+  const onClickSearchPlace = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_add_post',
+      params: {},
+    });
   };
 
   useEffect(() => {
@@ -122,13 +148,9 @@ const Post = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
-      const token = await Preferences.get({ key: 'accessToken' });
-
-      await FirebaseAnalytics.logEvent({
-        name: 'click_create_post_navigation',
-        params: {
-          login: token.value ? 'Yes' : 'No',
-        },
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'create_post',
+        nameOverride: 'CreatePost',
       });
     })();
   }, []);
@@ -139,7 +161,12 @@ const Post = () => {
     setPlace(storedPlace);
   }, [storedPlace]);
 
-  const goToPreview = () => {
+  const goToPreview = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_preview',
+      params: {},
+    });
+
     if (!place.id || !title || !description) {
       console.error('place, title, description are required');
       return;
@@ -153,6 +180,15 @@ const Post = () => {
     router.push('/preview-post');
   };
 
+  const onClickExit = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_close_create_post',
+      params: {
+        fill_create_post: Boolean(hasUnsavedChange),
+      },
+    });
+  };
+
   const hasUnsavedChange = place.id || title || description || images.length;
 
   return (
@@ -160,7 +196,9 @@ const Post = () => {
       <Header
         fixed
         type="close"
-        onClickIcon={() => {
+        onClickIcon={async () => {
+          await onClickExit();
+
           if (hasUnsavedChange) {
             setShowExitAlert(true);
           } else {
@@ -174,11 +212,19 @@ const Post = () => {
         <IonText className="mb-4 font-headline2 text-gray7">{t('posting.header1')}</IonText>
 
         {place.id ? (
-          <PlaceItem id={place.id} text={place.title} description={place.address} />
+          <PlaceItem
+            id={place.id}
+            text={place.title}
+            description={place.address}
+            openSearchModal={setShowSearchModal}
+          />
         ) : (
           <button
-            id="search-modal"
             className="w-full py-5 flex items-center justify-center gap-1.5 bg-orange5 rounded-3xl mb-3"
+            onClick={async () => {
+              await onClickSearchPlace();
+              setShowSearchModal(true);
+            }}
           >
             <IonIcon className="svg-lg" src={PlusCircleWhiteIcon} />
             <IonText className="text-white font-heading">{t('newPost.place.title')}</IonText>
@@ -212,6 +258,12 @@ const Post = () => {
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
               maxLength={40}
+              onClick={async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'input_title',
+                  params: {},
+                });
+              }}
             />
             <p className="mt-1 text-right font-caption2 text-gray5">{title.length}/40</p>
           </div>
@@ -222,6 +274,12 @@ const Post = () => {
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
               maxLength={300}
+              onClick={async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'input_detail',
+                  params: {},
+                });
+              }}
             />
             <p className="text-right font-caption2 text-gray5">{description.length}/300</p>
           </div>
@@ -241,7 +299,8 @@ const Post = () => {
       </IonFooter>
 
       <SearchPlace
-        trigger="search-modal"
+        isOpen={showSearchModal}
+        onDidDismiss={() => setShowSearchModal(false)}
         onClickItem={(place) =>
           router.push(
             `/confirm-place?title=${place.title}&address=${place.address}&lat=${place.latitude}&lng=${place.longitude}&id=${place.id}`,
@@ -290,13 +349,23 @@ const Post = () => {
         buttons={[
           {
             text: t('newPost.exit.confirm'),
-            onClick: () => {
+            onClick: async () => {
+              await FirebaseAnalytics.logEvent({
+                name: 'close_popup_close_create_post',
+                params: {},
+              });
               clearAll();
               router.goBack();
             },
           },
           {
             text: t('progress.cancel'),
+            onClick: async () => {
+              await FirebaseAnalytics.logEvent({
+                name: 'close_popup_cancel_create_post',
+                params: {},
+              });
+            },
           },
         ]}
       />
@@ -347,11 +416,21 @@ type ImageProps = {
 const UploadImages = ({ images, openGallerySheet }: ImageProps) => {
   const { t } = useTranslation();
 
+  const onClickAddImage = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_add_photo',
+      params: {},
+    });
+  };
+
   return (
     <div
       className="bg-white border border-gray2 rounded-3xl w-full py-[30px] flex flex-col gap-2 items-center"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onClick={openGallerySheet}
+      onClick={async () => {
+        await onClickAddImage();
+        openGallerySheet();
+      }}
     >
       <div className="bg-gray1.5 px-4 py-3 flex items-center gap-1 w-fit rounded-full">
         <IonIcon src={CameraIcon} className="svg-md" />
@@ -366,12 +445,13 @@ interface Place {
   id: string;
   text: string;
   description: string;
+  openSearchModal: (open: boolean) => void;
 }
-const PlaceItem = ({ text, description }: Place) => {
+const PlaceItem = ({ text, description, openSearchModal }: Place) => {
   return (
     <div
-      id="search-modal"
       className="px-4 py-2.5 border-[.0938rem] border-gray2 bg-gray1 rounded-3xl flex justify-between items-center w-full mb-3"
+      onClick={() => openSearchModal(true)}
     >
       <div className="flex flex-col">
         <IonText className="font-subheading1 text-orange6">{text}</IonText>

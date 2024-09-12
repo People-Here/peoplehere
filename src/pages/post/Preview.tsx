@@ -13,6 +13,7 @@ import {
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import LanguagueIcon from '../../assets/svgs/language.svg';
@@ -72,6 +73,30 @@ const Preview = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'post_preview',
+        nameOverride: 'PostPreview',
+      });
+    })();
+  }, []);
+
+  const successToUpload = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'create_post_complete',
+      params: {
+        skin_color: theme,
+      },
+    });
+
+    await FirebaseAnalytics.setUserProperty({
+      name: 'create_post_check',
+      value: 'yes',
+    });
+  };
+
   const uploadPost = async () => {
     setIsLoading(true);
 
@@ -91,6 +116,8 @@ const Preview = () => {
 
     try {
       await postTour(formData);
+      await successToUpload();
+
       clearAll();
       router.push('/', 'root');
     } catch (error) {
@@ -102,6 +129,7 @@ const Preview = () => {
         await getNewToken();
 
         await postTour(formData);
+        await successToUpload();
         clearAll();
         router.push('/', 'root');
       }
@@ -283,6 +311,13 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
 
   const [expand, setExpand] = useState(true);
 
+  const logToGA = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_upload',
+      params: {},
+    });
+  };
+
   return (
     <IonFooter
       class="ion-no-border"
@@ -323,7 +358,10 @@ const SelectTheme = ({ currentTheme, setTheme, onClick, buttonDisable }: ThemePr
 
         <button
           className="w-full text-white bg-orange5 button-lg font-subheading1 disabled:bg-gray5"
-          onClick={onClick}
+          onClick={async () => {
+            await logToGA();
+            onClick();
+          }}
           disabled={buttonDisable}
         >
           {buttonDisable ? t('posting.preview.uploading') : t('posting.preview.upload')}

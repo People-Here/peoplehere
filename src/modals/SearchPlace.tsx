@@ -56,6 +56,18 @@ const SearchPlace = ({ onClickItem, from, ...rest }: ModalProps & Props) => {
     }
   }, [search]);
 
+  useEffect(() => {
+    if (!rest.isOpen) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'search_create_post',
+        nameOverride: 'SearchCreatePost',
+      });
+    })();
+  }, [rest.isOpen]);
+
   const getHistory = async () => {
     try {
       const response = await getSearchHistory(from);

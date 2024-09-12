@@ -1,8 +1,9 @@
 import { IonContent, IonIcon, IonPage, useIonRouter, useIonViewWillEnter } from '@ionic/react';
 import { useLocation } from 'react-router';
 import { GoogleMap } from '@capacitor/google-maps';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import MapPinIcon from '../../assets/svgs/location.svg';
 import MapIcon from '../../assets/svgs/map.svg';
@@ -28,6 +29,25 @@ const ConfirmPlace = () => {
 
   const mapRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  const onClickSelect = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'add_place_complete',
+      params: {
+        place_name: title,
+      },
+    });
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'place_info',
+        nameOverride: 'PlaceInfo',
+      });
+    })();
+  }, []);
 
   useIonViewWillEnter(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -110,7 +130,8 @@ const ConfirmPlace = () => {
             </button>
             <button
               className="flex-[2] w-full text-white button-primary button-lg font-subheading1"
-              onClick={() => {
+              onClick={async () => {
+                await onClickSelect();
                 setPlace({ id, title, address });
                 router.goBack();
               }}
