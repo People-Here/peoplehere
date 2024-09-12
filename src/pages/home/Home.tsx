@@ -303,6 +303,7 @@ const TourItem = ({
         name: 'click_heart',
         params: {
           login: 'No',
+          screen_name: 'main',
           heart_status: 'Inactive',
           post_id: id,
           post_title: title,
@@ -331,6 +332,7 @@ const TourItem = ({
         name: 'click_heart',
         params: {
           login: 'Yes',
+          screnn_name: 'main',
           heart_status: like ? 'Inactive' : 'Active',
           post_id: id,
           post_title: title,

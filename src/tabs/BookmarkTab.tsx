@@ -8,7 +8,6 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
 import { useTranslation } from 'react-i18next';
 import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
@@ -20,6 +19,7 @@ import useSignInStore from '../stores/signIn';
 import { getNewToken } from '../api/login';
 import { getTranslateLanguage } from '../utils/translate';
 import StatusChip from '../components/StatusChip';
+import useUserStore from '../stores/user';
 
 import type { DeviceInfo } from '@capacitor/device';
 import type { BookmarkedTour, User } from '../api/tour';
@@ -32,6 +32,7 @@ const BookmarkTab = () => {
   const { checkLogin } = useLogin();
 
   const region = useSignInStore((state) => state.region);
+  const userId = useUserStore((state) => state.user.id);
 
   const [list, setList] = useState<BookmarkedTour[]>([]);
 
@@ -81,16 +82,14 @@ const BookmarkTab = () => {
     (async () => {
       const isLoggedIn = await checkLogin();
 
-      await FirebaseAnalytics.logEvent({
-        name: 'click_bookmark_navigation',
-        params: {
-          login: isLoggedIn ? 'Yes' : 'No',
-        },
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'bookmark',
+        nameOverride: 'Bookmark',
       });
     })();
   }, []);
 
-  const removeFromBookmark = async (tourId: string) => {
+  const removeFromBookmark = async (tourId: string, tourTitle: string, authorId: string) => {
     const lang = await getTranslateLanguage();
 
     try {
@@ -104,7 +103,60 @@ const BookmarkTab = () => {
       setList(response.data.tourList);
 
       console.error('fail to remove from bookmark', error);
+    } finally {
+      const isLoggedIn = await checkLogin();
+
+      await FirebaseAnalytics.logEvent({
+        name: 'click_heart',
+        params: {
+          login: isLoggedIn ? 'Yes' : 'No',
+          screen_name: 'bookmark',
+          heart_status: 'Inactive',
+          post_id: tourId,
+          post_title: tourTitle,
+          p_user_id: authorId,
+        },
+      });
     }
+  };
+
+  const onClickTourItem = async (
+    tourId: string,
+    tourTitle: string,
+    placeName: string,
+    placePhotoCount: number,
+    authorId: string,
+    authorName: string,
+  ) => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_post',
+      params: {
+        screen_name: 'bookmark',
+        publisher_check: userId === authorId ? 'Yes' : 'No',
+        place_name: tourTitle,
+        post_title: placeName,
+        post_id: tourId,
+        p_user_id: authorId,
+        p_user_name: authorName,
+        post_photo_count: placePhotoCount,
+      },
+    });
+  };
+
+  const onClickHeartIcon = async (tourId: string, tourTitle: string, authorId: string) => {
+    const isLoggedIn = await checkLogin();
+
+    await FirebaseAnalytics.logEvent({
+      name: 'click_heart',
+      params: {
+        login: isLoggedIn ? 'Yes' : 'No',
+        screen_name: 'bookmark',
+        heart_status: 'false',
+        post_id: tourId,
+        post_title: tourTitle,
+        p_user_id: authorId,
+      },
+    });
   };
 
   return (
@@ -134,7 +186,20 @@ const BookmarkTab = () => {
         ) : (
           <div className="flex flex-col gap-3 px-4 pb-20 mt-16">
             {list.map((item) => (
-              <Link key={item.id} to={`/tour/${item.id}`}>
+              <div
+                key={item.id}
+                onClick={async () => {
+                  await onClickTourItem(
+                    item.id,
+                    item.title,
+                    item.placeInfo.name,
+                    item.placeInfo.imageInfoList.length,
+                    String(item.userInfo.id),
+                    item.userInfo.firstName,
+                  );
+                  router.push(`/tour/${item.id}`);
+                }}
+              >
                 <ListItem
                   title={item.title}
                   placeName={item.placeInfo.name}
@@ -146,9 +211,12 @@ const BookmarkTab = () => {
                     name: item.userInfo.firstName,
                     imageUrl: item.userInfo.profileImageUrl,
                   }}
-                  onClickIcon={() => removeFromBookmark(item.id)}
+                  onClickIcon={async () => {
+                    await onClickHeartIcon(item.id, item.title, String(item.userInfo.id));
+                    await removeFromBookmark(item.id, item.title, String(item.userInfo.id));
+                  }}
                 />
-              </Link>
+              </div>
             ))}
           </div>
         )}

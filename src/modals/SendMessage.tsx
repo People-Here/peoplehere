@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { IonButtons, IonContent, IonIcon, IonModal, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import CloseIcon from '../assets/svgs/close.svg';
 import Footer from '../layouts/Footer';
@@ -14,11 +15,18 @@ import type { ModalProps } from '.';
 
 type Props = {
   tourId: string;
+  tourTitle: string;
   receiverId: string;
   receiverName: string;
 };
 
-const SendMessage = ({ tourId, receiverId, receiverName, ...rest }: Props & ModalProps) => {
+const SendMessage = ({
+  tourId,
+  tourTitle,
+  receiverId,
+  receiverName,
+  ...rest
+}: Props & ModalProps) => {
   const { t } = useTranslation();
 
   const { checkLogin } = useLogin();
@@ -37,6 +45,12 @@ const SendMessage = ({ tourId, receiverId, receiverName, ...rest }: Props & Moda
         tourId,
         receiverId,
         message: input,
+      });
+      await FirebaseAnalytics.logEvent({
+        name: 'complete_send_complete',
+        params: {
+          message_time: new Date().toLocaleString(),
+        },
       });
       await modalRef.current?.dismiss();
     } catch (error) {
@@ -63,6 +77,18 @@ const SendMessage = ({ tourId, receiverId, receiverName, ...rest }: Props & Moda
     } finally {
       setInput('');
     }
+  };
+
+  const logToGA = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'post_send',
+      params: {},
+    });
+
+    await FirebaseAnalytics.setUserProperty({
+      name: 'message_post_title',
+      value: tourTitle,
+    });
   };
 
   return (
@@ -111,7 +137,10 @@ const SendMessage = ({ tourId, receiverId, receiverName, ...rest }: Props & Moda
             },
             {
               text: t('draft.send'),
-              onClick: sendMessage,
+              onClick: async () => {
+                await sendMessage();
+                await logToGA();
+              },
             },
           ]}
         />

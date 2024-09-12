@@ -378,6 +378,7 @@ const TourDetail = () => {
         <SendMessage
           isOpen={openMessageModal}
           tourId={tourId}
+          tourTitle={tourDetail.title}
           receiverId={tourDetail.userInfo.id.toString()}
           receiverName={tourDetail.userInfo.firstName}
           onDidDismiss={() => setOpenMessageModal(false)}

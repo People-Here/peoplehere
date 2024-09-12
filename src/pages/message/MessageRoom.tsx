@@ -183,6 +183,7 @@ const MessageRoom = () => {
         <SendMessage
           trigger="send-message-modal"
           tourId={messages.tourId.toString()}
+          tourTitle={messages.title}
           receiverId={userInfo.id.toString()}
           receiverName={userInfo.firstName}
           onWillDismiss={getMessageList}
