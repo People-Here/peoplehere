@@ -381,6 +381,7 @@ const TourDetail = () => {
           tourTitle={tourDetail.title}
           receiverId={tourDetail.userInfo.id.toString()}
           receiverName={tourDetail.userInfo.firstName}
+          GAEventName="post_send"
           onDidDismiss={() => setOpenMessageModal(false)}
         />
 

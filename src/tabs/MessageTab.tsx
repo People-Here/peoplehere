@@ -7,7 +7,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
@@ -74,6 +74,16 @@ const MessageTab = () => {
   useLayoutEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getAllMessageRooms();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'inbox',
+        nameOverride: 'inBox',
+      });
+    })();
   }, []);
 
   const getAllMessageRooms = async () => {
@@ -185,8 +195,18 @@ const ChatListItem = ({
   date,
   hasSchedule = false,
 }: ChatListItemProps) => {
+  const logToGA = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_conversation',
+      params: {
+        o_user_name: name,
+        place_name: placeName,
+      },
+    });
+  };
+
   return (
-    <div className="flex items-center gap-4 py-4 border-b border-b-gray1.5">
+    <div className="flex items-center gap-4 py-4 border-b border-b-gray1.5" onClick={logToGA}>
       <IonImg
         src={imageUrl}
         alt="user profile"

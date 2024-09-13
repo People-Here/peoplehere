@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useLayoutEffect, useState } from 'react';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import GrayLogoIcon from '../../assets/svgs/logo-gray.svg';
@@ -42,6 +43,7 @@ const MessageRoom = () => {
   const [messages, setMessages] = useState<Message>();
   const [userInfo, setUserInfo] = useState<Message['guestInfo']>();
   const [isLoading, setIsLoading] = useState(true);
+  const [showSendMessageModal, setShowSendMessageModal] = useState(false);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
   const [currentLang, setCurrentLang] = useState('ko');
@@ -102,6 +104,13 @@ const MessageRoom = () => {
     }
   };
 
+  const logWhenReload = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_refresh',
+      params: {},
+    });
+  };
+
   if (!messages || !userInfo) return <LogoRunning />;
 
   return (
@@ -126,7 +135,10 @@ const MessageRoom = () => {
           <IonButtons slot="end">
             <span
               className="flex items-center justify-center border border-gray3 rounded-md font-body2 text-gray6 w-[4.5rem] h-7"
-              onClick={getMessageList}
+              onClick={async () => {
+                await logWhenReload();
+                await getMessageList();
+              }}
             >
               {isLoading ? (
                 <img src={LoadingGIF} alt="loading" width={24} height={24} />
@@ -147,6 +159,8 @@ const MessageRoom = () => {
           title={messages.title}
           tourId={messages.tourId.toString()}
           userId={userInfo.id.toString()}
+          userName={`${userInfo.firstName} ${userInfo.lastName}`}
+          isMine={String(user.id) === String(userInfo.id)}
         />
 
         <div className="px-4 pb-24">
@@ -172,21 +186,31 @@ const MessageRoom = () => {
         <Footer>
           <div className="flex items-center gap-3">
             <button
-              id="send-message-modal"
               className="flex gap-2.5 items-center button-primary button-lg w-full justify-center"
+              onClick={async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'inbox_conversation',
+                  params: {},
+                });
+                setShowSendMessageModal(true);
+              }}
             >
               <IonIcon src={MessageIcon} className="svg-lg" />
               <p className="text-white font-subheading1">{t('inbox.writeDraft')}</p>
             </button>
           </div>
         </Footer>
+
         <SendMessage
-          trigger="send-message-modal"
+          isOpen={showSendMessageModal}
           tourId={messages.tourId.toString()}
           tourTitle={messages.title}
           receiverId={userInfo.id.toString()}
           receiverName={userInfo.firstName}
+          GAEventName="click_send_message"
+          isFirstMessage={messages.messageInfoList.length === 0}
           onWillDismiss={getMessageList}
+          onDidDismiss={() => setShowSendMessageModal(false)}
         />
       </IonContent>
     </IonPage>
@@ -199,19 +223,47 @@ type ChatInfoProps = {
   title: string;
   tourId: string;
   userId: string;
+  userName: string;
+  isMine?: boolean;
 };
-const ChatInfo = ({ imageUrl, languages, title, tourId, userId }: ChatInfoProps) => {
+const ChatInfo = ({
+  imageUrl,
+  languages,
+  title,
+  tourId,
+  userId,
+  userName,
+  isMine,
+}: ChatInfoProps) => {
   const { t } = useTranslation();
+  const router = useIonRouter();
+
+  const logToGA = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_profile',
+      params: {
+        publisher_check: isMine ? 'Yes' : 'No',
+        post_id: tourId,
+        p_user_id: userId,
+        p_user_name: userName,
+      },
+    });
+  };
 
   return (
     <div className="flex items-center gap-4 p-4 pt-2 bg-white border-b border-gray1.5 mt-16">
-      <Link to={`/detail-profile/${userId}`}>
+      <div
+        onClick={async () => {
+          await logToGA();
+          router.push(`/detail-profile/${userId}`);
+        }}
+      >
         <img
           src={imageUrl}
           alt="chat user profile"
           className="object-cover overflow-hidden rounded-full w-11 h-11 border-[0.5px] border-gray2 shrink-0"
         />
-      </Link>
+      </div>
 
       <div>
         <div className="flex items-center">

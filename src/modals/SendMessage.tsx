@@ -18,6 +18,8 @@ type Props = {
   tourTitle: string;
   receiverId: string;
   receiverName: string;
+  GAEventName: string;
+  isFirstMessage?: boolean;
 };
 
 const SendMessage = ({
@@ -25,6 +27,8 @@ const SendMessage = ({
   tourTitle,
   receiverId,
   receiverName,
+  GAEventName,
+  isFirstMessage,
   ...rest
 }: Props & ModalProps) => {
   const { t } = useTranslation();
@@ -49,8 +53,13 @@ const SendMessage = ({
       await FirebaseAnalytics.logEvent({
         name: 'complete_send_complete',
         params: {
+          first_message: isFirstMessage ? 'Yes' : 'No',
           message_time: new Date().toLocaleString(),
         },
+      });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'send_message_check',
+        value: 'yes',
       });
       await modalRef.current?.dismiss();
     } catch (error) {
@@ -63,6 +72,16 @@ const SendMessage = ({
           tourId,
           receiverId,
           message: input,
+        });
+        await FirebaseAnalytics.logEvent({
+          name: 'complete_send_complete',
+          params: {
+            message_time: new Date().toLocaleString(),
+          },
+        });
+        await FirebaseAnalytics.setUserProperty({
+          name: 'send_message_check',
+          value: 'yes',
         });
         await modalRef.current?.dismiss();
       }
@@ -80,15 +99,22 @@ const SendMessage = ({
   };
 
   const logToGA = async () => {
-    await FirebaseAnalytics.logEvent({
-      name: 'post_send',
-      params: {},
-    });
+    if (GAEventName === 'post_send') {
+      await FirebaseAnalytics.logEvent({
+        name: 'post_send',
+        params: {},
+      });
 
-    await FirebaseAnalytics.setUserProperty({
-      name: 'message_post_title',
-      value: tourTitle,
-    });
+      await FirebaseAnalytics.setUserProperty({
+        name: 'message_post_title',
+        value: tourTitle,
+      });
+    } else {
+      await FirebaseAnalytics.logEvent({
+        name: GAEventName,
+        params: {},
+      });
+    }
   };
 
   return (
