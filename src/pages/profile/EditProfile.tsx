@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -99,6 +100,16 @@ const EditProfile = () => {
       }
     })();
   }, [userId]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'edit_profile',
+        nameOverride: 'EditProfile',
+      });
+    })();
+  }, []);
 
   const listItems = [
     {

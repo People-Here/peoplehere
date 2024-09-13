@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Footer from '../layouts/Footer';
 import { getNewToken } from '../api/login';
@@ -38,6 +39,10 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
 
     try {
       await deleteTour(tourId, input);
+      await FirebaseAnalytics.logEvent({
+        name: 'delete_post_complete',
+        params: {},
+      });
       router.push('/profile');
     } catch (error) {
       const errorInstance = error as AxiosError;
@@ -46,6 +51,10 @@ const DeleteReason = ({ tourId, title, isOpen, ...rest }: Props & ModalProps) =>
         await getNewToken();
 
         await deleteTour(tourId, input);
+        await FirebaseAnalytics.logEvent({
+          name: 'delete_post_complete',
+          params: {},
+        });
         router.push('/profile');
       }
       console.error('fail to delete tour', error);

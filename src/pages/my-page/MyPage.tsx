@@ -156,6 +156,16 @@ const MyPage = () => {
     })();
   }, [setUser, user.id, region.countryCode]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'mypage',
+        nameOverride: 'Mypage',
+      });
+    })();
+  }, []);
+
   return (
     <>
       {/* header */}
@@ -172,7 +182,17 @@ const MyPage = () => {
         <p className="font-headline1 text-gray8">{t('mypage.title')}</p>
 
         <IonButtons slot="end">
-          <IonIcon src={SettingIcon} className="svg-lg" onClick={() => router.push('/settings')} />
+          <IonIcon
+            src={SettingIcon}
+            className="svg-lg"
+            onClick={async () => {
+              await FirebaseAnalytics.logEvent({
+                name: 'click_setting',
+                params: {},
+              });
+              router.push('/settings');
+            }}
+          />
         </IonButtons>
       </IonToolbar>
 
@@ -192,7 +212,13 @@ const MyPage = () => {
 
             <button
               className="px-6 text-white button-primary button-lg font-subheading1 w-fit"
-              onClick={() => router.push(`/edit-profile/${user.id}`)}
+              onClick={async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'click_create_profile',
+                  params: {},
+                });
+                router.push(`/edit-profile/${user.id}`);
+              }}
             >
               {t('mypage.createProfile')}
             </button>
@@ -222,10 +248,19 @@ const MyPage = () => {
                     // </Link>
                   ))}
 
-                  <Link to="/post" className="flex items-center justify-center gap-1 p-3">
+                  <div
+                    className="flex items-center justify-center gap-1 p-3"
+                    onClick={async () => {
+                      await FirebaseAnalytics.logEvent({
+                        name: 'click_post_place',
+                        params: {},
+                      });
+                      router.push('/post');
+                    }}
+                  >
                     <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
                     <p className="font-body1 text-orange6">{t('mypage.addPost')}</p>
-                  </Link>
+                  </div>
                 </>
               ) : (
                 <NoPlace />
@@ -251,7 +286,15 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
   return (
     <div
       className="flex items-center justify-between px-4"
-      onClick={() => router.push(`/detail-profile/${user.id}`)}
+      onClick={async () => {
+        await FirebaseAnalytics.logEvent({
+          name: 'click_profile',
+          params: {
+            owner_check: 'Yes',
+          },
+        });
+        router.push(`/detail-profile/${user.id}`);
+      }}
     >
       <div className="flex items-center gap-4">
         <IonImg
@@ -286,12 +329,25 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
 
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
 
+  const logToGA = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'click_post',
+      params: {},
+    });
+  };
+
   return (
     <div className="relative flex gap-3 p-3 bg-white border rounded-xl border-gray2">
       <IonIcon
         icon={ThreeDotsIcon}
         className="absolute top-3 right-3 svg-md"
-        onClick={() => setIsActionSheetOpen(true)}
+        onClick={async () => {
+          await FirebaseAnalytics.logEvent({
+            name: 'click_more_post',
+            params: {},
+          });
+          setIsActionSheetOpen(true);
+        }}
       />
 
       <IonImg
@@ -300,7 +356,12 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
         onClick={() => router.push(`/tour/${id}`)}
       />
 
-      <Link to={`/tour/${id}`}>
+      <div
+        onClick={async () => {
+          await logToGA();
+          router.push(`/tour/${id}`);
+        }}
+      >
         {available ? (
           <div className="flex items-center gap-1 px-1.5 py-[0.1875rem] bg-orange1 rounded-lg w-fit">
             <IonText className="font-semibold text-[0.625rem] -tracking-[0.2px] leading-4 text-orange5">
@@ -324,7 +385,7 @@ const TourInfo = ({ id, image, title, placeName, district, available }: TourInfo
             {district && <span className="font-body2 text-gray6"> | {district}</span>}
           </p>
         </div>
-      </Link>
+      </div>
 
       <IonActionSheet
         isOpen={isActionSheetOpen}

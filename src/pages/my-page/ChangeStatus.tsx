@@ -10,6 +10,7 @@ import {
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
 import { getTourDetail } from '../../api/tour';
@@ -50,6 +51,16 @@ const ChangeStatus = () => {
     })();
   }, [tourId, region.countryCode]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'manage_post',
+        nameOverride: 'ManagePost',
+      });
+    })();
+  }, []);
+
   const onClickSave = async () => {
     if (!tourId) return;
 
@@ -81,7 +92,17 @@ const ChangeStatus = () => {
           </IonTitle>
 
           <IonButtons slot="end">
-            <IonIcon id="delete-tour-alert" src={TrashcanIcon} className="svg-lg" />
+            <IonIcon
+              id="delete-tour-alert"
+              src={TrashcanIcon}
+              className="svg-lg"
+              onClick={async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'click_delete_post',
+                  params: {},
+                });
+              }}
+            />
           </IonButtons>
         </IonToolbar>
 
