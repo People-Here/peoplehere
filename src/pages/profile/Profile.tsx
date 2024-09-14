@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import useUserStore from '../../stores/user';
 import ArrowLeftIcon from '../../assets/svgs/arrow-left.svg';
@@ -68,6 +69,20 @@ const Profile = () => {
     (async () => {
       const autoTranslate = await Preferences.get({ key: 'autoTranslate' });
       setAutoTranslate(autoTranslate.value === 'true');
+    })();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const userId = location.pathname.split('/').at(-1);
+
+      await FirebaseAnalytics.logEvent({
+        name: 'view_profile',
+        params: {
+          owner_check: userId === user.id ? 'Yes' : 'No',
+        },
+      });
     })();
   }, []);
 

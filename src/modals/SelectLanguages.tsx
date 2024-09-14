@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IonCheckbox, IonList, IonText, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import { languages as languageConstants } from '../constants/language';
 import colors from '../theme/colors';
@@ -40,7 +41,13 @@ const SelectLanguages = ({ languages, setLanguages, ...props }: FixedModalProps 
     <FixedModalContainer
       title={t('editProfile.languages')}
       buttonText={t('progress.save')}
-      onClickButton={() => setLanguages(selected)}
+      onClickButton={async () => {
+        await FirebaseAnalytics.logEvent({
+          name: 'languages_complete',
+          params: {},
+        });
+        setLanguages(selected);
+      }}
       {...props}
     >
       <section

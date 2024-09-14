@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import { FixedModalContainer } from '.';
 
@@ -24,7 +25,13 @@ const Introduce = ({ introduce, setIntroduce, ...rest }: FixedModalProps & Props
     <FixedModalContainer
       title={t('profile.introduction')}
       buttonText={t('progress.save')}
-      onClickButton={() => setIntroduce(input)}
+      onClickButton={async () => {
+        await FirebaseAnalytics.logEvent({
+          name: 'intruduction_complete',
+          params: {},
+        });
+        setIntroduce(input);
+      }}
       {...rest}
     >
       <div className="flex flex-col gap-1.5 items-end mb-5 mt-3 h-screen">

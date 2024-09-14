@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import PlusCircleOrange from '../../assets/svgs/plus-circle-orange.svg';
@@ -70,6 +71,16 @@ const EditProfile = () => {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'set_profile',
+        nameOverride: 'SetProfile',
+      });
+    })();
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -219,10 +230,63 @@ const EditProfile = () => {
     }
   };
 
+  const getCompletedItemList = () => {
+    const completedItems = [];
+
+    if (favorite) {
+      completedItems.push('favorite');
+    }
+    if (hobby) {
+      completedItems.push('hobby');
+    }
+    if (pet) {
+      completedItems.push('pet');
+    }
+    if (age) {
+      completedItems.push('age');
+    }
+    if (location) {
+      completedItems.push('location');
+    }
+    if (job) {
+      completedItems.push('job');
+    }
+    if (school) {
+      completedItems.push('school');
+    }
+
+    return completedItems.join(', ');
+  };
+
+  const onClickComplete = async () => {
+    await FirebaseAnalytics.logEvent({
+      name: 'profile_complete',
+      params: {
+        country: region.countryCode,
+        languages: languages.map((lang) => lang.koreanName).join(','),
+        introduction_item_name: getCompletedItemList(),
+      },
+    });
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="close" title={firstName} fixed />
+        <Header
+          type="close"
+          title={firstName}
+          fixed
+          onClickIcon={async () => {
+            await FirebaseAnalytics.logEvent({
+              name: 'click_close_profile',
+              params: {
+                add_profile_photo_status: image.length > 0 ? 'yes' : 'no',
+                introduction_status: introduce.length > 0 ? 'yes' : 'no',
+                language_status: languages.length > 0 ? 'yes' : 'no',
+              },
+            });
+          }}
+        />
 
         {/* title area */}
         <div className="px-4 mt-16 mb-4">
@@ -272,7 +336,10 @@ const EditProfile = () => {
         <Footer>
           <button
             className="w-full button-primary button-lg"
-            onClick={saveProfile}
+            onClick={async () => {
+              await onClickComplete();
+              await saveProfile();
+            }}
             disabled={!image || !introduce || !region.countryCode || languages.length === 0}
           >
             {t('progress.done')}
@@ -382,6 +449,13 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
       promptLabelPhoto: '앨범에서 사진 선택하기',
       promptLabelCancel: '취소',
     });
+
+    if (selectedImage.webPath) {
+      await FirebaseAnalytics.logEvent({
+        name: 'add_profile_photo_complete',
+        params: {},
+      });
+    }
 
     setImage(selectedImage.webPath ?? '');
   };
