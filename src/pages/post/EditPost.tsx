@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Camera } from '@capacitor/camera';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import Header from '../../components/Header';
 import usePostPlaceStore from '../../stores/place';
@@ -98,6 +99,16 @@ const EditPost = () => {
       console.error('Failed to get default images', error);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'edit_post',
+        nameOverride: 'EditPost',
+      });
+    })();
+  }, []);
 
   useEffect(() => {
     if (!tourId) return;

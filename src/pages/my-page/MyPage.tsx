@@ -288,10 +288,8 @@ const UserInfo = ({ image, name }: UserInfoProps) => {
       className="flex items-center justify-between px-4"
       onClick={async () => {
         await FirebaseAnalytics.logEvent({
-          name: 'click_profile',
-          params: {
-            owner_check: 'Yes',
-          },
+          name: 'click_my_profile',
+          params: {},
         });
         router.push(`/detail-profile/${user.id}`);
       }}

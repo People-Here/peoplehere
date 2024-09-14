@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import packageJSON from '../../../package.json';
 import Header from '../../components/Header';
@@ -26,6 +27,7 @@ import { deleteAccount } from '../../api/sign-up';
 import useLogin from '../../hooks/useLogin';
 import { getNewToken } from '../../api/login';
 import LanguageIcon from '../../assets/svgs/language.svg';
+import useSignInStore from '../../stores/signIn';
 
 import type { AxiosError } from 'axios';
 
@@ -33,7 +35,8 @@ const Settings = () => {
   const { t } = useTranslation();
   const router = useIonRouter();
 
-  const { id } = useUserStore((state) => state.user);
+  const { id, firstName, lastName } = useUserStore((state) => state.user);
+  const region = useSignInStore((state) => state.region);
   const { requestLogout } = useLogin();
 
   const [isLogin, setIsLogin] = useState(false);
@@ -54,6 +57,16 @@ const Settings = () => {
     })();
   }, [id]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      await FirebaseAnalytics.setScreenName({
+        screenName: 'setting',
+        nameOverride: 'Setting',
+      });
+    })();
+  }, []);
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -67,17 +80,25 @@ const Settings = () => {
               title={t('personal.title')}
               icon={UserIcon}
               routeTo="/settings/informations"
+              eventName="click_personal_information"
             />
             <MenuItem
               title={t('translation.title')}
               icon={LanguageIcon}
               routeTo="/settings/translate"
+              eventName="click_translation"
             />
-            <MenuItem title={t('notification.title')} icon={BellIcon} routeTo="/settings/alert" />
+            <MenuItem
+              title={t('notification.title')}
+              icon={BellIcon}
+              routeTo="/settings/alert"
+              eventName="click_notification"
+            />
             <MenuItem
               title={t('contactUs.title')}
               icon={CustomerSupportIcon}
               routeTo="/settings/support"
+              eventName="click_contact_us"
             />
             <MenuItem title={t('legal.title')} icon={PaperIcon} routeTo="/settings/policy" />
           </div>
@@ -88,7 +109,15 @@ const Settings = () => {
             {isLogin ? (
               <button
                 className="w-full mb-4 button-gray button-lg font-subheading1 text-gray6"
-                onClick={() => setOpenLogoutModal(true)}
+                onClick={async () => {
+                  await FirebaseAnalytics.logEvent({
+                    name: 'click_logout',
+                    params: {
+                      user_name: `${firstName} ${lastName}`,
+                    },
+                  });
+                  setOpenLogoutModal(true);
+                }}
               >
                 {t('user.logout')}
               </button>
@@ -117,7 +146,13 @@ const Settings = () => {
             {isLogin ? (
               <p
                 className="text-center underline font-caption1 text-gray5.5"
-                onClick={() => setOpenDeleteReasonSheet(true)}
+                onClick={async () => {
+                  await FirebaseAnalytics.logEvent({
+                    name: 'click_delete_account',
+                    params: {},
+                  });
+                  setOpenDeleteReasonSheet(true);
+                }}
               >
                 {t('deleteAccount.title')}
               </p>
@@ -149,6 +184,15 @@ const Settings = () => {
                 try {
                   await deleteAccount(id, deleteReason);
                   await requestLogout();
+                  await FirebaseAnalytics.logEvent({
+                    name: 'delete_account_complete',
+                    params: {
+                      delete_account_reason: deleteReason,
+                      user_id: id,
+                      signup_country: region.countryCode,
+                      delete_account_date: new Date().toLocaleString(),
+                    },
+                  });
                   router.push('/login', 'forward', 'replace');
                 } catch (error) {
                   const errorInstance = error as AxiosError;
@@ -182,7 +226,13 @@ const Settings = () => {
             },
             {
               text: t('user.logout'),
-              onClick: requestLogout,
+              onClick: async () => {
+                await FirebaseAnalytics.logEvent({
+                  name: 'logout_complete',
+                  params: {},
+                });
+                await requestLogout();
+              },
             },
           ]}
           onDismiss={() => setOpenLogoutModal(false)}
@@ -196,16 +246,31 @@ type MenuItemProps = {
   title: string;
   icon: string;
   routeTo: string;
+  eventName?: string;
 };
-const MenuItem = ({ title, icon, routeTo }: MenuItemProps) => {
+const MenuItem = ({ title, icon, routeTo, eventName }: MenuItemProps) => {
+  const router = useIonRouter();
+
+  const logToGA = async () => {
+    if (!eventName) return;
+
+    await FirebaseAnalytics.logEvent({
+      name: eventName,
+      params: {},
+    });
+  };
+
   return (
-    <Link
-      to={routeTo}
+    <div
       className="w-full py-5 flex items-center gap-4 border-b border-gray1.5 bg-white"
+      onClick={async () => {
+        await logToGA();
+        router.push(routeTo);
+      }}
     >
       <IonIcon icon={icon} className="svg-lg" />
       <p className="font-subheading2 text-gray8">{title}</p>
-    </Link>
+    </div>
   );
 };
 

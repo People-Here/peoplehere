@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 
 import { FixedModalContainer } from '.';
 import CheckIcon from '../assets/svgs/check.svg';
@@ -27,7 +28,12 @@ const DeleteUser = (props: Props & FixedModalProps) => {
     <FixedModalContainer
       title={t('deleteAccount.title')}
       buttonText={t('progress.next')}
-      onClickButton={() => {
+      onClickButton={async () => {
+        await FirebaseAnalytics.logEvent({
+          name: 'click_delete_account_next',
+          params: {},
+        });
+
         if (clickedItem) {
           props.setReason(clickedItem);
           props.onConfirm();
