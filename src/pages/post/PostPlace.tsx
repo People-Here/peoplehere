@@ -83,13 +83,10 @@ const Post = () => {
       });
     }
 
-    setImages(
-      selectedImages.photos.map((photo) => {
-        return {
-          imageUrl: photo.webPath,
-        };
-      }),
-    );
+    setImages((prev) => [
+      ...prev,
+      ...selectedImages.photos.map((photo) => ({ imageUrl: photo.webPath })),
+    ]);
     setIsDefaultImage(false);
   };
 
