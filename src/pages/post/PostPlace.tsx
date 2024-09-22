@@ -70,7 +70,7 @@ const Post = () => {
 
   const selectPhotosFromGallery = async () => {
     const selectedImages = await Camera.pickImages({
-      limit: 12 - images.length,
+      limit: isDefaultImage ? 12 : 12 - images.length,
     });
 
     if (selectedImages.photos.length > 0) {
