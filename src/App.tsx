@@ -1,3 +1,5 @@
+import '@capacitor-community/firebase-analytics';
+
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useEffect, useLayoutEffect } from 'react';

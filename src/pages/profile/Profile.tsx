@@ -86,6 +86,64 @@ const Profile = () => {
     })();
   }, []);
 
+  const getProfileInfo = async (userId: string) => {
+    const lang = await getTranslateLanguage();
+
+    try {
+      const response = await getUserProfile(userId, currentRegion);
+      setUserInfo(response.data);
+
+      if (i18n.resolvedLanguage === 'ko') {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+        });
+      } else {
+        setUserInfo({
+          ...response.data,
+          languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+        });
+      }
+    } catch (error) {
+      const errorInstance = error as AxiosError;
+
+      if (errorInstance.response?.status === 403) {
+        console.warn('try to get new token...');
+
+        try {
+          await getNewToken();
+          const response = await getUserProfile(userId, currentRegion);
+          setUserInfo(response.data);
+
+          if (i18n.resolvedLanguage === 'ko') {
+            setUserInfo({
+              ...response.data,
+              languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
+            });
+          } else {
+            setUserInfo({
+              ...response.data,
+              languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
+            });
+          }
+        } catch (error) {
+          console.error('user token as expired');
+          const errorInstance = error as AxiosError;
+          if (errorInstance.response?.status === 400) {
+            router.push('/login');
+          }
+        }
+      }
+    }
+
+    if (userId !== user.id) {
+      const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
+      if (placeListResponse.status === 200) {
+        setPlaceList(placeListResponse.data.tourList);
+      }
+    }
+  };
+
   useEffect(() => {
     const userId = location.pathname.split('/').at(-1);
     if (!userId) {
@@ -101,61 +159,7 @@ const Profile = () => {
       const platformInfo = await Device.getInfo();
       setPlatform(platformInfo.platform);
 
-      const lang = await getTranslateLanguage();
-
-      try {
-        const response = await getUserProfile(userId, currentRegion);
-        setUserInfo(response.data);
-
-        if (i18n.resolvedLanguage === 'ko') {
-          setUserInfo({
-            ...response.data,
-            languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
-          });
-        } else {
-          setUserInfo({
-            ...response.data,
-            languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
-          });
-        }
-      } catch (error) {
-        const errorInstance = error as AxiosError;
-
-        if (errorInstance.response?.status === 403) {
-          console.warn('try to get new token...');
-
-          try {
-            await getNewToken();
-            const response = await getUserProfile(userId, currentRegion);
-            setUserInfo(response.data);
-
-            if (i18n.resolvedLanguage === 'ko') {
-              setUserInfo({
-                ...response.data,
-                languages: response.data.languages.map((lang) => findKoreanLanguageName(lang)),
-              });
-            } else {
-              setUserInfo({
-                ...response.data,
-                languages: response.data.languages.map((lang) => capitalizeFirstLetter(lang)),
-              });
-            }
-          } catch (error) {
-            console.error('user token as expired');
-            const errorInstance = error as AxiosError;
-            if (errorInstance.response?.status === 400) {
-              router.push('/login');
-            }
-          }
-        }
-      }
-
-      if (userId !== user.id) {
-        const placeListResponse = await getTourListByUser(currentRegion, lang, userId);
-        if (placeListResponse.status === 200) {
-          setPlaceList(placeListResponse.data.tourList);
-        }
-      }
+      await getProfileInfo(userId);
     })();
   }, []);
 
@@ -332,7 +336,11 @@ const Profile = () => {
         <AutoTranslate
           isOpen={showTranslateModal}
           onDidDismiss={() => setShowTranslateModal(false)}
-          onToggleChange={(value) => setAutoTranslate(value)}
+          onToggleChange={(value) => {
+            console.log('auto translate', value);
+
+            setAutoTranslate(value);
+          }}
         />
       </IonContent>
     </IonPage>
