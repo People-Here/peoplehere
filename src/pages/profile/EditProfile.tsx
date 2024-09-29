@@ -285,6 +285,7 @@ const EditProfile = () => {
                 language_status: languages.length > 0 ? 'yes' : 'no',
               },
             });
+            router.goBack();
           }}
         />
 
