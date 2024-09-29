@@ -1,13 +1,9 @@
-import '@capacitor-community/firebase-analytics';
-
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useEffect, useLayoutEffect } from 'react';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { useTranslation } from 'react-i18next';
-
-import NavigationBar from './components/NavigationBar';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,6 +30,7 @@ import './i18n';
 import { addFCMListeners, registerNotifications } from './services/fcmService';
 import { sendNotification } from './api/notification';
 import { initializeFirebase } from './services/firebase';
+import NavigationBar from './components/NavigationBar';
 
 setupIonicReact();
 
