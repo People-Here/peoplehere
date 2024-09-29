@@ -146,7 +146,7 @@ const Home = () => {
       const { data, status } = await searchTour(keyword, region.countryCode.toUpperCase(), lang);
 
       if (status === 200) {
-        if (data.tourList.length === 0 || data.tourList.length < 10) {
+        if (data.tourList.length < 10) {
           setIsEndOfList(true);
         }
 
