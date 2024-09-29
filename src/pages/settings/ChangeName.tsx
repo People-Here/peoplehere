@@ -45,7 +45,7 @@ const ChangeName = () => {
 
         <Footer>
           <button className="w-full button-primary button-lg" onClick={updateName}>
-            저장
+            {t('progress.save')}
           </button>
         </Footer>
       </IonContent>

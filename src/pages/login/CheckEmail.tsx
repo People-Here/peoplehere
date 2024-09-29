@@ -55,7 +55,7 @@ const CheckEmail = () => {
       }
 
       if (errorInstance.response?.status === 404) {
-        setErrorMessage('가입되지 않은 이메일입니다.');
+        setErrorMessage(t('resetPassword.error'));
       }
     } finally {
       setIsLoading(false);

@@ -118,7 +118,7 @@ const PhoneAuth = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Header type="back" title="본인인증" />
+        <Header type="back" title={t('verifyPhone.title')} />
 
         <div className="flex flex-col gap-2 px-4 mt-5">
           <div onClick={() => setShowRegionModal(true)}>

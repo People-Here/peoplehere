@@ -56,9 +56,7 @@ const Informations = () => {
                   {region.dialCode} {maskPhoneNumber(user.phoneNumber)}
                 </p>
               ) : (
-                <p className="font-body1 text-orange6">
-                  안전한 만남을 위해 본인인증을 완료해 주세요.
-                </p>
+                <p className="font-body1 text-orange6">{t('personal.needVerify')}</p>
               )}
             </div>
 
