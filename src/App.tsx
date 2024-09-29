@@ -36,8 +36,6 @@ import { sendNotification } from './api/notification';
 import { initializeFirebase } from './services/firebase';
 
 setupIonicReact();
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-initializeFirebase();
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -69,6 +67,8 @@ const App = () => {
         await registerNotifications();
         await addFCMListeners();
         await sendNotification();
+      } else {
+        await initializeFirebase();
       }
     })();
   }, []);
