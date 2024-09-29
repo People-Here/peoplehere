@@ -3,6 +3,8 @@ import {
   IonHeader,
   IonIcon,
   IonImg,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonRefresher,
   IonRefresherContent,
   IonText,
@@ -47,6 +49,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openLoginToast, setOpenLoginToast] = useState(false);
+  const [isEndOfList, setIsEndOfList] = useState(false);
 
   const region = useSignInStore((state) => state.region);
   const user = useUserStore((state) => state.user);
@@ -129,6 +132,42 @@ const Home = () => {
     event.detail.complete();
   };
 
+  const fetchMoreList = async () => {
+    if (list.length === 0 || isEndOfList) {
+      return;
+    }
+
+    const lang = await getTranslateLanguage();
+
+    if (location.search) {
+      const params = new URLSearchParams(location.search);
+      const keyword = params.get('search') ?? '';
+
+      const { data, status } = await searchTour(keyword, region.countryCode.toUpperCase(), lang);
+
+      if (status === 200) {
+        if (data.tourList.length === 0 || data.tourList.length < 10) {
+          setIsEndOfList(true);
+        }
+
+        setList(data.tourList);
+      }
+
+      return;
+    }
+
+    try {
+      const response = await getTourList(region.countryCode.toUpperCase(), lang, list.at(-1)?.id);
+      setList((prev) => [...prev, ...response.data.tourList]);
+
+      if (response.data.tourList.length < 10) {
+        setIsEndOfList(true);
+      }
+    } catch (error) {
+      console.warn('fail to update list');
+    }
+  };
+
   if (loading) {
     return <LogoRunning />;
   }
@@ -146,7 +185,7 @@ const Home = () => {
             />
           </IonRefresher>
 
-          <div className="flex flex-col pb-20 mt-[1.625rem] gap-[1.875rem]">
+          <div className="flex flex-col mt-[1.625rem] gap-[1.875rem]">
             {list.length === 0 ? (
               <div className="mt-60">
                 <div className="flex flex-col items-center gap-8">
@@ -197,6 +236,15 @@ const Home = () => {
                     />
                   </Link>
                 ))}
+
+                <IonInfiniteScroll
+                  onIonInfinite={async (event) => {
+                    await fetchMoreList();
+                    await event.target.complete();
+                  }}
+                >
+                  <IonInfiniteScrollContent loadingSpinner="circular" />
+                </IonInfiniteScroll>
               </>
             )}
           </div>

@@ -3,6 +3,8 @@ import {
   IonButtons,
   IonIcon,
   IonImg,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonText,
   IonToolbar,
   useIonRouter,
@@ -40,6 +42,7 @@ const MyPage = () => {
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
   const [tourList, setTourList] = useState<Tour[]>([]);
+  const [isEndOfList, setIsEndOfList] = useState(false);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
@@ -66,6 +69,17 @@ const MyPage = () => {
           setNeedProfileInfo(true);
         }
 
+        setUser({
+          id: response.data.id.toString(),
+          email: response.data.email,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          profileImageUrl: response.data.profileImageUrl,
+          phoneNumber: response.data.phoneNumber,
+        });
+
+        setTourList(tourListResponse.data.tourList);
+
         await FirebaseAnalytics.logEvent({
           name: 'click_mypage_navigation',
           params: {
@@ -78,17 +92,6 @@ const MyPage = () => {
                 : 'Yes',
           },
         });
-
-        setUser({
-          id: response.data.id.toString(),
-          email: response.data.email,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          profileImageUrl: response.data.profileImageUrl,
-          phoneNumber: response.data.phoneNumber,
-        });
-
-        setTourList(tourListResponse.data.tourList);
       } catch (error) {
         const errorInstance = error as AxiosError;
 
@@ -112,6 +115,17 @@ const MyPage = () => {
               setNeedProfileInfo(true);
             }
 
+            setUser({
+              id: response.data.id.toString(),
+              email: response.data.email,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              profileImageUrl: response.data.profileImageUrl,
+              phoneNumber: response.data.phoneNumber,
+            });
+
+            setTourList(tourListResponse.data.tourList);
+
             await FirebaseAnalytics.logEvent({
               name: 'click_mypage_navigation',
               params: {
@@ -124,17 +138,6 @@ const MyPage = () => {
                     : 'Yes',
               },
             });
-
-            setUser({
-              id: response.data.id.toString(),
-              email: response.data.email,
-              firstName: response.data.firstName,
-              lastName: response.data.lastName,
-              profileImageUrl: response.data.profileImageUrl,
-              phoneNumber: response.data.phoneNumber,
-            });
-
-            setTourList(tourListResponse.data.tourList);
           } catch (error) {
             console.error('user token as expired');
             const errorInstance = error as AxiosError;
@@ -166,6 +169,28 @@ const MyPage = () => {
     })();
   }, []);
 
+  const fetchMoreList = async () => {
+    if (tourList.length === 0 || isEndOfList) return;
+
+    const lang = await getTranslateLanguage();
+
+    try {
+      const tourListResponse = await getTourListByUser(
+        region.countryCode.toUpperCase(),
+        lang,
+        user.id,
+        tourList.at(-1)?.id,
+      );
+      setTourList((prev) => [...prev, ...tourListResponse.data.tourList]);
+
+      if (tourListResponse.data.tourList.length < 10) {
+        setIsEndOfList(true);
+      }
+    } catch (error) {
+      console.error('error while fetching more list');
+    }
+  };
+
   return (
     <>
       {/* header */}
@@ -196,7 +221,7 @@ const MyPage = () => {
         </IonButtons>
       </IonToolbar>
 
-      <div className="h-[100%] px-4 pb-20 mt-20">
+      <div className="h-[100%] px-4 mt-20">
         {needProfileInfo ? (
           <div className="flex flex-col justify-center items-center gap-12 h-[90%]">
             <div className="flex flex-col items-center gap-5">
@@ -231,36 +256,32 @@ const MyPage = () => {
               {tourList.length > 0 ? (
                 <>
                   {tourList.map((tour) => (
-                    // <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
-                    <TourInfo
-                      key={tour.id}
-                      id={tour.id.toString()}
-                      image={
-                        tour.placeInfo.imageInfoList.length > 0
-                          ? tour.placeInfo.imageInfoList[0].imageUrl
-                          : ''
-                      }
-                      title={tour.title}
-                      placeName={tour.placeInfo.name}
-                      district={tour.placeInfo.district}
-                      available={tour.directMessageStatus}
-                    />
-                    // </Link>
+                    <Link key={tour.id} to={`/tour/${tour.id.toString()}`}>
+                      <TourInfo
+                        key={tour.id}
+                        id={tour.id.toString()}
+                        image={
+                          tour.placeInfo.imageInfoList.length > 0
+                            ? tour.placeInfo.imageInfoList[0].imageUrl
+                            : ''
+                        }
+                        title={tour.title}
+                        placeName={tour.placeInfo.name}
+                        district={tour.placeInfo.district}
+                        available={tour.directMessageStatus}
+                      />
+                    </Link>
                   ))}
 
-                  <div
-                    className="flex items-center justify-center gap-1 p-3"
-                    onClick={async () => {
-                      await FirebaseAnalytics.logEvent({
-                        name: 'click_post_place',
-                        params: {},
-                      });
-                      router.push('/post');
+                  <IonInfiniteScroll
+                    className="h-5"
+                    onIonInfinite={async (event) => {
+                      await fetchMoreList();
+                      await event.target.complete();
                     }}
                   >
-                    <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-                    <p className="font-body1 text-orange6">{t('mypage.addPost')}</p>
-                  </div>
+                    <IonInfiniteScrollContent loadingSpinner="circular" />
+                  </IonInfiniteScroll>
                 </>
               ) : (
                 <NoPlace />
@@ -416,10 +437,10 @@ const NoPlace = () => {
 
   return (
     <Link to="/post" className="flex flex-col items-center gap-6 mt-20">
-      <p className="text-center whitespace-pre-wrap font-body1 text-gray5">{t('mypage.noPlace')}</p>
+      <p className="text-center whitespace-pre-wrap font-body1 text-gray5">{t('mypage.noPosts')}</p>
       <button className="flex items-center gap-2 px-3 button-sub button-lg w-fit h-11">
         <IonIcon icon={PlusCircleOrangeIcon} className="svg-md" />
-        <p className="font-body1 text-orange5">{t('newTour.post')}</p>
+        <p className="font-body1 text-orange5">{t('mypage.addPost')}</p>
       </button>
     </Link>
   );

@@ -3,7 +3,7 @@ import { Preferences } from '@capacitor/preferences';
 import { typedGet, typedPost, typedPut } from '.';
 import { parseJSONBigint } from '../utils/parse';
 
-export const getTourList = async (region: string, lang: string) => {
+export const getTourList = async (region: string, lang: string, cursorId?: string, limit = 10) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}`, {
@@ -11,13 +11,27 @@ export const getTourList = async (region: string, lang: string) => {
     headers: {
       Authorization: value,
     },
+    params: {
+      cursorId,
+      limit,
+    },
   });
   return response;
 };
 
-export const getTourListByUser = async (region: string, lang: string, userId: string) => {
+export const getTourListByUser = async (
+  region: string,
+  lang: string,
+  userId: string,
+  cursorId?: string,
+  limit = 10,
+) => {
   const response = await typedGet<TourListResponse>(`/tours/${region}/${lang}/account/${userId}`, {
     transformResponse: [(data: string) => parseJSONBigint(data)],
+    params: {
+      cursorId,
+      limit,
+    },
   });
   return response;
 };
