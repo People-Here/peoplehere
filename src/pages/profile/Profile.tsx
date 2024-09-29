@@ -170,7 +170,8 @@ const Profile = () => {
     userInfo?.school ||
     userInfo?.hobby ||
     userInfo?.pet ||
-    userInfo?.favorite;
+    userInfo?.favorite ||
+    userInfo?.cityName;
 
   const handleClickIcon = () => {
     if (isMe) {
@@ -258,11 +259,11 @@ const Profile = () => {
 
           {hasAdditionalInfo && (
             <div className="flex flex-col gap-2 p-4 bg-white border border-gray2 rounded-xl">
-              {userInfo.address && (
+              {userInfo.cityName && (
                 <IntroduceItem
                   icon="location"
                   title={t('profile.location')}
-                  value={userInfo.address}
+                  value={userInfo.cityName}
                 />
               )}
               {userInfo.birthDate && (

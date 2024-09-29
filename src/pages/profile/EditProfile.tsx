@@ -106,6 +106,7 @@ const EditProfile = () => {
           setFirstName(response.data.firstName);
           setAge(response.data.birthDate);
           setShowAge(response.data.showBirth);
+          setLocation(response.data.cityName ?? '');
         }
       }
     })();
@@ -209,7 +210,7 @@ const EditProfile = () => {
     formData.append('showBirth', String(showAge));
     formData.append('job', job);
     formData.append('school', school);
-    formData.append('placeId', placeId);
+    formData.append('cityId', placeId);
 
     try {
       await updateUserProfile(formData);

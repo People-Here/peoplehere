@@ -72,6 +72,8 @@ export type ProfileResponse = {
   showBirth: boolean;
   phoneNumber: string;
   favorite?: string;
+  cityId?: number;
+  cityName?: string;
   hobby?: string;
   pet?: string;
   job?: string;
