@@ -2,6 +2,8 @@ import {
   IonContent,
   IonIcon,
   IonImg,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonPage,
   IonText,
   IonToolbar,
@@ -35,6 +37,7 @@ const BookmarkTab = () => {
   const userId = useUserStore((state) => state.user.id);
 
   const [list, setList] = useState<BookmarkedTour[]>([]);
+  const [isEndOfList, setIsEndOfList] = useState(false);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
@@ -159,6 +162,27 @@ const BookmarkTab = () => {
     });
   };
 
+  const fetchMoreList = async () => {
+    if (list.length === 0 || isEndOfList) return;
+
+    const lang = await getTranslateLanguage();
+
+    try {
+      const response = await getBookmarkList(
+        region.countryCode.toUpperCase(),
+        lang,
+        list.at(-1)?.id,
+      );
+      setList((prev) => [...prev, ...response.data.tourList]);
+
+      if (response.data.tourList.length < 10) {
+        setIsEndOfList(true);
+      }
+    } catch (error) {
+      console.error('fail to fetch more list', error);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -218,6 +242,16 @@ const BookmarkTab = () => {
                 />
               </div>
             ))}
+
+            <IonInfiniteScroll
+              className="h-5"
+              onIonInfinite={async (event) => {
+                await fetchMoreList();
+                await event.target.complete();
+              }}
+            >
+              <IonInfiniteScrollContent loadingSpinner="circular" />
+            </IonInfiniteScroll>
           </div>
         )}
       </IonContent>
