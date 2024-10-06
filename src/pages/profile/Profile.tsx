@@ -1,4 +1,5 @@
 import {
+  IonActionSheet,
   IonButtons,
   IonContent,
   IonIcon,
@@ -41,6 +42,10 @@ import { getTranslateLanguage } from '../../utils/translate';
 import { capitalizeFirstLetter } from '../../utils/mask';
 import { getNewToken } from '../../api/login';
 import AutoTranslate from '../../modals/AutoTranslate';
+import ThreeDotsIcon from '../../assets/svgs/three-dots.svg';
+import ReportUser from '../../modals/ReportUser';
+import Alert from '../../components/Alert';
+import BlockUser from '../../modals/BlockUser';
 
 import type { AxiosError } from 'axios';
 import type { DeviceInfo } from '@capacitor/device';
@@ -61,6 +66,10 @@ const Profile = () => {
   const [currentRegion, setCurrentRegion] = useState(region.countryCode);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
   const [enableAutoTranslate, setAutoTranslate] = useState(false);
+  const [showUserReportSheet, setShowUserReportSheet] = useState(false);
+  const [showUserReportModal, setShowUserReportModal] = useState(false);
+  const [showUserBlockAlert, setShowUserBlockAlert] = useState(false);
+  const [showUserBlockModal, setShowUserBlockModal] = useState(false);
 
   const [platform, setPlatform] = useState<DeviceInfo['platform']>('web');
 
@@ -216,12 +225,20 @@ const Profile = () => {
             {userInfo.firstName}
           </IonTitle>
 
-          <IonButtons slot="end">
+          <IonButtons slot="end" className="gap-3">
             <IonIcon
               src={isMe ? EditIcon : enableAutoTranslate ? LanguageIcon : LanguageGrayIcon}
               className="svg-lg"
               onClick={handleClickIcon}
             />
+
+            {!isMe && (
+              <IonIcon
+                src={ThreeDotsIcon}
+                className="svg-lg"
+                onClick={() => setShowUserReportSheet(true)}
+              />
+            )}
           </IonButtons>
         </IonToolbar>
 
@@ -337,11 +354,61 @@ const Profile = () => {
         <AutoTranslate
           isOpen={showTranslateModal}
           onDidDismiss={() => setShowTranslateModal(false)}
-          onToggleChange={(value) => {
-            console.log('auto translate', value);
+          onToggleChange={(value) => setAutoTranslate(value)}
+        />
 
-            setAutoTranslate(value);
-          }}
+        <IonActionSheet
+          isOpen={showUserReportSheet}
+          onDidDismiss={() => setShowUserReportSheet(false)}
+          buttons={[
+            {
+              text:
+                i18n.resolvedLanguage === 'ko'
+                  ? `${userInfo.firstName} 님 신고하기`
+                  : `Report ${userInfo.firstName}`,
+              handler: () => setShowUserReportModal(true),
+            },
+            {
+              text:
+                i18n.resolvedLanguage === 'ko'
+                  ? `${userInfo.firstName} 님 차단하기`
+                  : `Block ${userInfo.firstName}`,
+              handler: () => setShowUserBlockAlert(true),
+            },
+            {
+              text: t('progress.cancel'),
+              role: 'cancel',
+            },
+          ]}
+        />
+
+        <ReportUser
+          isOpen={showUserReportModal}
+          onDidDismiss={() => setShowUserReportModal(false)}
+          userId={userInfo.id}
+          userName={userInfo.firstName}
+        />
+
+        <Alert
+          isOpen={showUserBlockAlert}
+          onDismiss={() => setShowUserBlockAlert(false)}
+          title={
+            i18n.resolvedLanguage === 'ko'
+              ? `${userInfo.firstName} 님을 차단할까요?`
+              : `Block ${userInfo.firstName}?`
+          }
+          subTitle={t('profile.blockP2')}
+          buttons={[
+            { text: t('progress.cancel') },
+            { text: t('profile.continueBlock'), onClick: () => setShowUserBlockModal(true) },
+          ]}
+        />
+
+        <BlockUser
+          isOpen={showUserBlockModal}
+          onDidDismiss={() => setShowUserBlockModal(false)}
+          userId={userInfo.id}
+          userName={userInfo.firstName}
         />
       </IonContent>
     </IonPage>
