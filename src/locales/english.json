@@ -219,7 +219,17 @@
     "favorite": "My favorite things:",
     "pet": "Pets:",
     "postList": "Places to visit together",
-    "noPosts": "Still looking..."
+    "noPosts": "Still looking...",
+    "report": "Report {신고 대상 first_name}",
+    "reportTitle": "Why would you like to report?",
+    "reportDescription": "Don’t worry, we won’t tell them. We will review what you share with us here and take action.",
+    "reportCompletedToast": "Your user report has been received.",
+    "block": "Block {차단 대상 first_name}",
+    "blockP1": "Block {차단 대상 first_name}?",
+    "blockP2": "You won’t see each other anymore. Once you block, you won’t be able to undo this. Are you sure you want to continue?",
+    "continueBlock": "Yes, block",
+    "blockHeader": "The user has been blocked!\nWould you like to tell us the reason for blocking?",
+    "blockDescription": "Don’t worry, we won’t tell them."
   },
   "editProfile": {
     "guide": "Set up your profile\nto let people here know more about you.",
