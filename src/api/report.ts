@@ -11,8 +11,8 @@ export const reportUser = async ({ userId, message }: Props) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedPost(
-    '/user/report',
-    { userId, message },
+    '/account/report',
+    { accountId: userId, message },
     {
       headers: {
         Authorization: value,
@@ -26,8 +26,8 @@ export const blockUser = async ({ userId, message }: Props) => {
   const { value } = await Preferences.get({ key: 'accessToken' });
 
   const response = await typedPost(
-    '/user/block',
-    { userId, message },
+    '/account/block',
+    { accountId: userId, message },
     {
       headers: {
         Authorization: value,
