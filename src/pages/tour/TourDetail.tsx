@@ -43,6 +43,7 @@ import { findKoreanLanguageName } from '../../utils/find';
 import { getUserProfile } from '../../api/profile';
 import { capitalizeFirstLetter } from '../../utils/mask';
 import AutoTranslate from '../../modals/AutoTranslate';
+import ReportPost from '../../modals/ReportPost';
 
 import type { DeviceInfo } from '@capacitor/device';
 
@@ -65,6 +66,8 @@ const TourDetail = () => {
   const [showTranslateModal, setShowTranslateModal] = useState(false);
   const [showFullImage, setShowFullImage] = useState(false);
   const [enableAutoTranslate, setAutoTranslate] = useState(false);
+  const [showOptionSheet, setShowOptionSheet] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const [needProfileInfo, setNeedProfileInfo] = useState(false);
 
@@ -216,6 +219,13 @@ const TourDetail = () => {
                 onClick={onClickTranslate}
               />
               {/* <IonIcon src={ShareIcon} className="svg-lg" onClick={onClickShare} /> */}
+              {!isMine && (
+                <IonIcon
+                  src={ThreeDotIcon}
+                  className="svg-lg"
+                  onClick={() => setShowOptionSheet(true)}
+                />
+              )}
             </IonButtons>
           </IonToolbar>
         )}
@@ -412,6 +422,28 @@ const TourDetail = () => {
             setAutoTranslate(value);
             await fetchTourDetail(tourId);
           }}
+        />
+
+        <IonActionSheet
+          isOpen={showOptionSheet}
+          onDidDismiss={() => setShowOptionSheet(false)}
+          buttons={[
+            {
+              text: '포스트 신고하기',
+              handler: () => setShowReportModal(true),
+            },
+            {
+              text: t('progress.cancel'),
+              role: 'cancel',
+            },
+          ]}
+        />
+
+        <ReportPost
+          isOpen={showReportModal}
+          onDidDismiss={() => setShowReportModal(false)}
+          tourId={tourId}
+          tourTitle={tourDetail.title}
         />
       </IonContent>
     </IonPage>

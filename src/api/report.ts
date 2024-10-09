@@ -42,6 +42,16 @@ type ReportPostProps = {
   message: string;
 };
 export const reportPost = async ({ tourId, message }: ReportPostProps) => {
-  const response = await typedPost('/tours/report', { tourId, message });
+  const { value } = await Preferences.get({ key: 'accessToken' });
+
+  const response = await typedPost(
+    '/tours/report',
+    { tourId, message },
+    {
+      headers: {
+        Authorization: value,
+      },
+    },
+  );
   return response;
 };
