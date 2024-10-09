@@ -26,6 +26,7 @@ const ReportPost = ({ tourId, tourTitle, ...rest }: Props & ModalProps) => {
 
     try {
       await reportPost({ tourId, message: input });
+      await modalRef.current?.dismiss();
     } catch (error) {
       console.error('fail to report user', error);
     }

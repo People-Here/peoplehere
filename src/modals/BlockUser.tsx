@@ -26,6 +26,7 @@ const BlockUser = ({ userId, userName, ...rest }: Props & ModalProps) => {
 
     try {
       await blockUser({ userId, message: input });
+      await modalRef.current?.dismiss();
     } catch (error) {
       console.error('fail to block user', error);
     }
