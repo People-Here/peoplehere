@@ -36,3 +36,12 @@ export const blockUser = async ({ userId, message }: Props) => {
   );
   return response;
 };
+
+type ReportPostProps = {
+  tourId: string;
+  message: string;
+};
+export const reportPost = async ({ tourId, message }: ReportPostProps) => {
+  const response = await typedPost('/tours/report', { tourId, message });
+  return response;
+};
