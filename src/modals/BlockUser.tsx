@@ -76,7 +76,7 @@ const BlockUser = ({ userId, userName, ...rest }: Props & ModalProps) => {
             disabled={input.trim().length <= 0}
             onClick={onClickBlock}
           >
-            제출하기
+            {t('progress.submit')}
           </button>
         </Footer>
       </IonContent>

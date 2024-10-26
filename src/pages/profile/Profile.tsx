@@ -319,9 +319,7 @@ const Profile = () => {
           {/* 유저가 만든 장소 */}
           {!isMe && (
             <>
-              <p className="mt-8 mb-3 font-headline1 text-orange6">
-                {userInfo.firstName} 님의 장소
-              </p>
+              <p className="mt-8 mb-3 font-headline1 text-orange6">{t('profile.postList')}</p>
 
               <div className="flex flex-col gap-4">
                 {placeList.length > 0 ? (

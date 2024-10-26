@@ -230,14 +230,14 @@ const EmailAuth = () => {
 
       <Alert
         isOpen={showExistEmailAlert}
-        title="이미 가입된 이메일이에요."
+        title={t('loginInfo.emailInUse')}
         onDismiss={() => setShowExistEmailAlert(false)}
         buttons={[
           {
-            text: '닫기',
+            text: t('progress.close'),
           },
           {
-            text: '로그인',
+            text: t('user.login'),
             onClick: () => router.push('/login'),
           },
         ]}

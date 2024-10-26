@@ -292,7 +292,7 @@ const EditProfile = () => {
 
         {/* title area */}
         <div className="px-4 mt-16 mb-4">
-          <div className="border border-gray3 rounded-2xl flex items-center py-2 flex-col gap-1.5">
+          <div className="border border-gray3 rounded-2xl flex items-center py-2 flex-col gap-1.5 px-8">
             <IonText className="text-center whitespace-pre-wrap font-body1 text-gray6">
               {t('editProfile.guide')}
             </IonText>
@@ -365,40 +365,40 @@ const EditProfile = () => {
       />
       <SimpleInputModal
         trigger="favorite-modal"
-        title="무엇을 좋아하나요?"
-        placeholder="예: 샤워하면서 춤추기, 호밀빵"
+        title={t('editProfile.favorite')}
+        placeholder={t('editProfile.favorite2')}
         maxLength={40}
         value={favorite}
         setValue={setFavorite}
       />
       <SimpleInputModal
         trigger="hobby-modal"
-        title="어떤 취미를 가지고 있나요?"
-        placeholder="예: 배드민턴, 요리"
+        title={t('editProfile.hobby')}
+        placeholder={t('editProfile.hobby2')}
         maxLength={40}
         value={hobby}
         setValue={setHobby}
       />
       <SimpleInputModal
         trigger="pet-modal"
-        title="같이 사는 반려동물이 있나요?"
-        placeholder="예: 하얀 말티즈 밍키와 샐리"
+        title={t('editProfile.pets')}
+        placeholder={t('editProfile.pets2')}
         maxLength={40}
         value={pet}
         setValue={setPet}
       />
       <SimpleInputModal
         trigger="job-modal"
-        title="어떤 일을 하시나요?"
-        placeholder="직업 또는 인생의 목표"
+        title={t('editProfile.work')}
+        placeholder={t('editProfile.work2')}
         maxLength={40}
         value={job}
         setValue={setJob}
       />
       <SimpleInputModal
         trigger="school-modal"
-        title="어떤 학교를 졸업했나요?"
-        placeholder="홈스쿨링, 고등학교, 직업학교 등 출신학교"
+        title={t('editProfile.school')}
+        placeholder={t('editProfile.school2')}
         maxLength={40}
         value={school}
         setValue={setSchool}
@@ -441,15 +441,17 @@ type ImageProps = {
   setImage: (image: string) => void;
 };
 const ImageArea = ({ image, setImage }: ImageProps) => {
+  const { t } = useTranslation();
+
   const selectPhoto = async () => {
     const selectedImage = await Camera.getPhoto({
       quality: 70,
       allowEditing: true,
       resultType: CameraResultType.Uri,
-      promptLabelHeader: '프로필 사진 추가',
-      promptLabelPicture: '사진 촬영하기',
-      promptLabelPhoto: '앨범에서 사진 선택하기',
-      promptLabelCancel: '취소',
+      promptLabelHeader: t('editProfile.photo'),
+      promptLabelPicture: t('editProfile.takePhoto'),
+      promptLabelPhoto: t('editProfile.album'),
+      promptLabelCancel: t('progress.cancel'),
     });
 
     if (selectedImage.webPath) {
@@ -482,7 +484,7 @@ const ImageArea = ({ image, setImage }: ImageProps) => {
 
           <div className="flex flex-col items-center gap-3" onClick={selectPhoto}>
             <IonIcon icon={PlusCircleOrange} className="w-9 h-9" />
-            <IonText className="font-subheading2 text-gray5.5">프로필 사진을 추가하세요</IonText>
+            <IonText className="font-subheading2 text-gray5.5">{t('editProfile.photo')}</IonText>
           </div>
         </>
       )}

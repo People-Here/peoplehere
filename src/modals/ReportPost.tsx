@@ -74,7 +74,7 @@ const ReportPost = ({ tourId, tourTitle, ...rest }: Props & ModalProps) => {
             disabled={input.trim().length <= 0}
             onClick={onClickReport}
           >
-            신고하기
+            {t('progress.report')}
           </button>
         </Footer>
       </IonContent>

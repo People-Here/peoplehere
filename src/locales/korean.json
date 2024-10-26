@@ -27,7 +27,9 @@
     "close": "닫기",
     "leave": "나가기",
     "delete": "삭제",
-    "retry": "다시 시도"
+    "retry": "다시 시도",
+    "submit": "제출하기",
+    "report": "신고하기"
   },
   "code": {
     "send": "인증코드 발송",
@@ -68,7 +70,8 @@
     "detail": "가입하신 이메일을 입력해 주세요.",
     "error": "가입되지 않은 이메일입니다.",
     "newPassword": "새로운 비밀번호를 입력해 주세요.",
-    "warning": "기존과 동일한 비밀번호를 사용할 수 없습니다. 새로운 비밀번호를 설정해 주세요."
+    "warning": "기존과 동일한 비밀번호를 사용할 수 없습니다. 새로운 비밀번호를 설정해 주세요.",
+    "complete": "비밀번호가 재설정 되었습니다."
   },
   "verifyPhone": {
     "title": "본인인증",
@@ -116,7 +119,6 @@
     "allow": "네, 알림을 받을게요",
     "skip": "나중에 설정하기"
   },
-
   "explore": {
     "searchBar": "어디서 만날까요?",
     "noPosts": "해당 장소/지역에 등록된 포스트가 없어요."
@@ -133,9 +135,11 @@
     "description": "여기서 만나면 뭐 할까?",
     "edit": "수정하기",
     "manage": "포스트 관리",
-    "message": "{플레이스 포스트 작성자 first_name} 님에게 쪽지하기",
+    "messageOff": "지금은 쪽지 쉬는 중",
     "blockMessage": "지금은 쪽지 쉬는 중",
-    "sentToast": "전송 완료! 쪽지에서 확인하세요."
+    "sentToast": "전송 완료! 쪽지에서 확인하세요.",
+    "reportTitle": "포스트 신고 사유를 알려주세요",
+    "reportDescription": "걱정 마세요, 해당 회원에게 신고 사실을 알리지 않아요.\n피플히어 운영팀에서 검토 후 제재할게요."
   },
   "posting": {
     "header1": "어디로 가볼까?",
@@ -193,7 +197,6 @@
     "refresh": "새로고침"
   },
   "draft": {
-    "title": "To. {수신자 first_name}",
     "send": "보내기",
     "p1": "쪽지를 보낼까요?"
   },
@@ -211,21 +214,18 @@
     "languages": "구사 언어",
     "country": "출신 국가",
     "introduction": "자기소개",
-    "location": "거주지:",
-    "age": "나이:",
-    "work": "직업:",
-    "school": "출신 학교:",
-    "hobby": "취미:",
-    "pet": "반려동물:",
-    "favorite": "좋아하는 것:",
+    "location": "거주지",
+    "age": "나이",
+    "work": "직업",
+    "school": "출신 학교",
+    "hobby": "취미",
+    "pet": "반려동물",
+    "favorite": "좋아하는 것",
     "postList": "같이 가고 싶은 곳",
     "noPosts": "아직 찾아 보는 중...",
-    "report": "{신고 대상 first_name} 님 신고하기",
     "reportTitle": "신고 사유를 알려주세요",
     "reportDescription": "걱정 마세요, 해당 회원에게 신고 사실을 알리지 않아요.\n피플히어 운영팀에서 검토 후 제재할게요.",
     "reportCompletedToast": "사용자 신고가 접수되었습니다.",
-    "block": "{차단 대상 first_name} 님 차단하기",
-    "blockP1": "{차단 대상 first_name} 님을 차단할까요?",
     "blockP2": "더 이상 서로 마주치지 않아요. 차단한 이후에는 취소할 수 없습니다. 정말 차단할까요?",
     "continueBlock": "네, 차단할게요",
     "blockHeader": "사용자 차단이 완료되었어요!\n차단하신 이유는 무엇인가요?",
@@ -257,6 +257,7 @@
     "pets2": "하얀 말티즈 밍키와 샐리"
   },
   "managePost": {
+    "updateStatus": "상태 변경하기",
     "messageOn": "쪽지 받음",
     "messageOff": "새로운 쪽지 받지 않음",
     "onDetail": "포스트에 ‘쪽지 받음’ 태그를 표시하고, 새로운 쪽지를 받습니다.",

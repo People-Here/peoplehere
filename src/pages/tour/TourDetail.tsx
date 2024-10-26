@@ -400,13 +400,13 @@ const TourDetail = () => {
           onDidDismiss={() => setOpenEditSheet(false)}
           buttons={[
             {
-              text: '상태 변경하기',
+              text: t('managePost.updateStatus'),
               handler: () => {
                 router.push(`/change-status/${tourId}`);
               },
             },
             {
-              text: '취소',
+              text: t('progress.cancel'),
               role: 'cancel',
               data: {
                 action: 'cancel',
@@ -429,7 +429,7 @@ const TourDetail = () => {
           onDidDismiss={() => setShowOptionSheet(false)}
           buttons={[
             {
-              text: '포스트 신고하기',
+              text: t('post.report'),
               handler: () => setShowReportModal(true),
             },
             {

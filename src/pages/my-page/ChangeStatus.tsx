@@ -172,7 +172,7 @@ const ChangeStatus = () => {
           isOpen={showChangeCompleteAlert}
           onDismiss={() => setShowChangeCompleteAlert(false)}
           title={t('managePost.status')}
-          buttons={[{ text: '확인' }]}
+          buttons={[{ text: t('progress.confirm') }]}
         />
 
         <DeleteReason

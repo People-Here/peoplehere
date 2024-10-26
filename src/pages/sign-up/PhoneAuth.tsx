@@ -99,7 +99,7 @@ const PhoneAuth = () => {
       setPhoneNumber(phoneNumberInput);
       router.push('/sign-up/email');
     } else {
-      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
+      setAuthErrorMessage(t('code.wrong'));
     }
   };
 

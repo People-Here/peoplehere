@@ -144,7 +144,7 @@ const ChangeEmail = () => {
         </div>
 
         <button className="hidden" ref={buttonRef} />
-        <Toast type="info" trigger="resend-email-toast" message="이메일 수정을 완료했어요." />
+        <Toast type="info" trigger="resend-email-toast" message={t('personal.emailConfirmed')} />
       </IonContent>
     </IonPage>
   );

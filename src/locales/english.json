@@ -27,7 +27,9 @@
     "close": "Close",
     "leave": "Leave",
     "delete": "Delete",
-    "retry": "Try again"
+    "retry": "Try again",
+    "submit": "Submit",
+    "report": "Report"
   },
   "code": {
     "send": "Send Code",
@@ -68,7 +70,8 @@
     "detail": "Enter the email you signed up for.",
     "error": "This email address isn't registered.",
     "newPassword": "Enter a password that you haven’t used before.",
-    "warning": "Your new password cannot be the same as your old password."
+    "warning": "Your new password cannot be the same as your old password.",
+    "complete": "Your password has been reset."
   },
   "verifyPhone": {
     "title": "Phone verification",
@@ -116,7 +119,6 @@
     "allow": "Yes, notify me",
     "skip": "Skip"
   },
-
   "explore": {
     "searchBar": "Where to meet?",
     "noPosts": "No posts found for your search."
@@ -133,9 +135,11 @@
     "description": "What to do here?",
     "edit": "Edit Post",
     "manage": "Manage Post",
-    "message": "Message {플레이스 포스트 작성자 first_name}",
+    "messageOff": "On Break for Now",
     "blockMessage": "On Break for Now",
-    "sentToast": "Message sent! Check your inbox."
+    "sentToast": "Message sent! Check your inbox.",
+    "reportTitle": "Why would you like to report?",
+    "reportDescription": "Don’t worry, we won’t tell them. We will review what you share with us here and take action."
   },
   "posting": {
     "header1": "Where to go?",
@@ -193,7 +197,6 @@
     "refresh": "Refresh"
   },
   "draft": {
-    "title": "To. {수신자 first_name}",
     "send": "Send",
     "p1": "Send this message?"
   },
@@ -213,26 +216,23 @@
     "introduction": "About Me",
     "location": "I live in",
     "age": "I was born in",
-    "work": "My work:",
-    "school": "Where I went to school:",
+    "work": "My work",
+    "school": "Where I went to school",
     "hobby": "I spend my free time",
-    "favorite": "My favorite things:",
-    "pet": "Pets:",
+    "favorite": "My favorite things",
+    "pet": "Pets",
     "postList": "Places to visit together",
     "noPosts": "Still looking...",
-    "report": "Report {신고 대상 first_name}",
     "reportTitle": "Why would you like to report?",
     "reportDescription": "Don’t worry, we won’t tell them. We will review what you share with us here and take action.",
     "reportCompletedToast": "Your user report has been received.",
-    "block": "Block {차단 대상 first_name}",
-    "blockP1": "Block {차단 대상 first_name}?",
     "blockP2": "You won’t see each other anymore. Once you block, you won’t be able to undo this. Are you sure you want to continue?",
     "continueBlock": "Yes, block",
     "blockHeader": "The user has been blocked!\nWould you like to tell us the reason for blocking?",
     "blockDescription": "Don’t worry, we won’t tell them."
   },
   "editProfile": {
-    "guide": "Set up your profile\nto let people here know more about you.",
+    "guide": "Set up your profile to let people here know more about you.",
     "translation": "Writing in English improves auto-translation.",
     "required": "Required",
     "photo": "Add a Profile Photo",
@@ -257,6 +257,7 @@
     "pets2": "White Maltese Minky and Sally"
   },
   "managePost": {
+    "updateStatus": "Update Status",
     "messageOn": "Messages on",
     "messageOff": "New Messages Off",
     "onDetail": "Display the ‘Talk to Me’ tag on the post to receive new messages.",

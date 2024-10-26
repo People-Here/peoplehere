@@ -44,7 +44,7 @@ const CheckEmail = () => {
         const errorInstance = error as AxiosError;
 
         if (errorInstance.response?.status === 403) {
-          setErrorMessage('하루 이메일 전송 횟수를 초과했어요. 내일 다시 시도해주세요.');
+          setErrorMessage(t('code.limit'));
         }
       }
     } catch (error) {
@@ -68,7 +68,7 @@ const CheckEmail = () => {
     if (response.data === true) {
       router.push('/reset-password');
     } else {
-      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
+      setAuthErrorMessage(t('code.wrong'));
     }
   };
 

@@ -65,7 +65,7 @@ const ChangePhone = () => {
       }
 
       if (errorInstance.response?.status === 409) {
-        setErrorMessage('이미 사용 중인 전화번호입니다.');
+        setErrorMessage(t('verifyPhone.numberInUse'));
       }
 
       console.error('fail to send phone code', error);
@@ -83,7 +83,7 @@ const ChangePhone = () => {
       setUser({ ...user, phoneNumber: phoneNumberInput });
       router.goBack();
     } else {
-      setAuthErrorMessage('잘못된 인증 코드를 입력하셨어요');
+      setAuthErrorMessage(t('code.wrong'));
     }
   };
 
@@ -156,8 +156,11 @@ const ChangePhone = () => {
 
         <Alert
           trigger="phone-alert"
-          title="전화번호 인증이 어려운 상황인가요?"
-          buttons={[{ text: '취소' }, { text: '네', onClick: () => router.push('/sign-up/email') }]}
+          title={t('verifyPhone.skip')}
+          buttons={[
+            { text: t('progress.cancel') },
+            { text: t('progress.positive'), onClick: () => router.push('/sign-up/email') },
+          ]}
         />
 
         <Alert

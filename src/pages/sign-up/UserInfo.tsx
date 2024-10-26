@@ -61,7 +61,7 @@ const UserInfo = () => {
 
   const onClickNext = async () => {
     if (Number(birth.slice(0, 4)) > new Date().getFullYear() - 18) {
-      setAgeError('만 18세 이상이어야 회원으로 가입할 수 있어요.');
+      setAgeError(t('signup.ageLimit'));
       return;
     }
 
